@@ -1,0 +1,36 @@
+.main__dtmf{
+    /* border: 2px solid red; */
+    width: 90%;
+    height: fit-content;
+    padding: 1rem;
+    margin: .5rem 0;
+   
+}
+
+.main__dtmf__maincontent__container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+ 
+}
+
+.dtmf__select__option__container,
+.main__dtmf__wait__time__container,
+.select__number__of__subDTMF__from__main__dtmf__container
+{
+    /* border: 2px solid red; */
+    width: 30%;
+}
+
+.rendering__subdtmf__container{
+    display: flex;
+    /* border: 2px solid blue; */
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.css-3ogxn6-MuiButtonBase-root-MuiIconButton-root:hover{
+    background-color: transparent !important;
+}

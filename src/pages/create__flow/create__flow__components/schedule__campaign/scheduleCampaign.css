@@ -1,0 +1,13 @@
+.schedule__campaign{
+    /* border: 2px solid red; */
+    width: 100%;
+    padding: .5rem;
+}
+
+.schedule__campaign__container{
+    /* border: 2px solid green; */
+    margin: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}

@@ -1,0 +1,5 @@
+@media only screen and (max-width: 600px) {
+  .campaign__manager__heading {
+    font-size: 0.7rem;
+  }
+}

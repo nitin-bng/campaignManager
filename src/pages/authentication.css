@@ -1,0 +1,261 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* common css for signup ans signin page  */
+.signin,.signup{
+    width: 100vw;
+    height: 100vh;
+    background-color: #d2d4d4;
+    background-image: url('../images/bg.jpeg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.415);
+}
+
+.signin__container, .signup__container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.icon__container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.icon__class svg{
+    font-size: 4rem;
+    color: #3f51b6;
+}
+
+.icon__container .text{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3f51b6;
+}
+/* common css for signup ans signin page ends */
+
+
+/* signup.jsx starts */
+.signup__form{
+    width: 60%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    background-color: white;
+    overflow: scroll;
+}
+
+.name__input__container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.firstname, .lastname, .father__name{
+    width: 32%;
+}
+
+.personal__information__container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border: .5px solid rgba(128, 128, 128, 0.868);
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.gender__selection__container,
+.dob__container,
+.religion__container{
+    width: 31%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dob__container{
+    align-items: center;
+}
+
+.gender__selection__container .gender__radio__button{
+    display: flex !important; 
+
+}
+
+.gender__selection__container .gender__radio__button label{
+    margin: 0 !important;
+}
+
+.gender__selection__container .gender__radio__button label span{
+    font-size: .73rem !important;
+}
+
+.religion__selection{
+    width: 50%;
+}
+
+.userename__ph-no__email__password__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.username__phone__container{
+    width: 32%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ph-no__container{
+    margin-top: 1rem;
+    width: 100% !important;
+    border-radius: 5px;
+    height: 45%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
+    width: 100% !important;
+}
+
+.email__password__conatiner{
+    width: 66%;
+}
+
+.password__confirm-password__container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.signup__password, .confirm__password{
+    width: 48%;
+}
+
+.address__container{
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.terms__and__button__container__signup{
+    width: 100%;
+    height: 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.authentication__links__signup{
+    margin-top: 1rem;
+    width: 100%;
+    height: 13%;
+}
+
+.authentication__links__signup .links{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.authentication__links__signup .links a{
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #3f51b6;
+}
+
+.authentication__links__signup .links p{
+    font-weight: 500;
+}
+/* signup.jsx ends */
+
+
+/* signin.jsx starts */
+.signin__form{
+    width: 30%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    background-color: white;
+}
+
+.signin__mailid__and__password__conatiner{
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.terms__and__button__container{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.authentication__links{
+    width: 100%;
+    height: 15%;
+}
+
+.authentication__links .links{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.authentication__links .links a{
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #3f51b6;
+}
+
+.authentication__links .links p{
+    font-weight: 500;
+}
+/* signin.jsx ends */

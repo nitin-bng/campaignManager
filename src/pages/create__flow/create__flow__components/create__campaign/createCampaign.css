@@ -1,0 +1,32 @@
+.create__campaign{
+    /* border: 2px solid red; */
+    height: 100%;
+    overflow: scroll;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.create__campaign__container{
+    width: 100%;
+    height: fit-content;
+    /* border: 2px solid blue; */
+    overflow: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: .5rem;
+}
+
+
+.campaign__name,
+.create__campaign__priority__dropdown,
+.create__campaign__workflow__name,
+.create__campaign__campaign__type__radio__button,
+.cli__container{
+    width: 30%;
+    /* border: 2px solid green; */
+    height: fit-content;
+    margin: .5rem;
+}

@@ -98,6 +98,12 @@ const Signup = () => {
       
   };
 
+  const [operator, setOperator] = React.useState('');
+
+  const handleOperatorChange = (event) => {
+    setOperator(event.target.value);
+  };
+
   return (
     <>
       <div className="signup">
@@ -179,25 +185,19 @@ const Signup = () => {
             <div className="userename__ph-no__email__password__container">
               <div className="username__phone__container">
                 <div className="username__container">
-                  <TextField
-                    id="username"
-                    type="text"
-                    variant="outlined"
-                    label="Enter user name"
-                    fullWidth
-                    required
-                    error={errors.userName}
-                    {...register("userName", {
-                      required: "This field is required",
-                      minLength: { value: 3, message: "Atleast 3 character" },
-                      pattern: {
-                        value: /^[A-Za-z0-9]*$/i,
-                        message:
-                          "Username should consist of number and characters only",
-                      },
-                    })}
-                    helperText={errors.userName ? errors.userName.message : ""}
-                  />
+                <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Operator</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={operator}
+          label="Operator"
+          onChange={handleOperatorChange}
+        >
+          <MenuItem value={10}>some dummy data</MenuItem>
+        
+        </Select>
+      </FormControl>
                 </div>
                 <div className="ph-no__container">
                   <MuiPhoneNumber

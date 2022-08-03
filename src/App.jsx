@@ -7,6 +7,9 @@ import CreateFlow from "./pages/create__flow/CreateFlow";
 import UserConfig from "./pages/user__config/UserConfig";
 import { CommonProvider } from "./helpers/CommonContext";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtp from "./pages/VerifyOtp";
+
 
 const App = () => {
   return (
@@ -17,6 +20,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/verifyotp" element={<VerifyOtp />} />
               <Route path="/home" element={<Home />} />
               <Route path="/create__flow" element={<CreateFlow />} />
               <Route path="/user__configuration" element={<UserConfig />} />

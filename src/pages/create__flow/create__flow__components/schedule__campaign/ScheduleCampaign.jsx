@@ -14,16 +14,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { CommonContext } from "../../../../helpers/CommonContext";
 
-
-
 const ScheduleCampaign = () => {
-
-  const { 
-   channel,
-  setChannel,
-  campaignName,
-  setCampaignName,
-} = useContext(CommonContext);
+  const { channel, setChannel, campaignName, setCampaignName } =
+    useContext(CommonContext);
 
   const [selectPriority, setSelectPriority] = useState("");
   const [createCampCli, setCreateCampCli] = useState();
@@ -36,11 +29,12 @@ const ScheduleCampaign = () => {
     setCreateCampCli(e.target.value);
   };
 
+
+
   return (
     <>
       <div className="schedule__campaign">
         <div className="schedule__campaign__container">
-
           <div className="schedule__campaign__channel__selected campaign__name">
             <Box
               component="form"
@@ -92,7 +86,8 @@ const ScheduleCampaign = () => {
             </Box>
           </div>
 
-          
+          <div className="date__range__picker">
+                      </div>
         </div>
       </div>
     </>

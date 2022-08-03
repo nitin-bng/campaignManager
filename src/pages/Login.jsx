@@ -14,6 +14,8 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import "./authentication.css";
 import { useForm } from "react-hook-form";
 
+import config from "../ApiConfig/Config";
+
 const Login = () => {
   const {
     register,
@@ -21,8 +23,41 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data.email);
+    loginUser(data)
   };
+
+  const loginUser = (data) => {
+    data['type'] = ''
+    fetch(config.server.path + config.server.port1 + config.api.login,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then((res)=>{
+        res.json()
+           .then((res)=>{
+            localStorage.setItem("userType", res.userType)
+            getUserDetails(res.id)
+             console.log(res)
+           })
+    })
+  }
+
+  const getUserDetails = (id) => {
+    fetch(config.server.path + config.server.port1 + "/" + localStorage.getItem("userType")+ "/" + id,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    }).then((res)=>{
+        res.json()
+           .then((res)=>{
+             console.log(res)
+           })
+    })
+  }
 
   return (
     <>
@@ -38,16 +73,16 @@ const Login = () => {
             </div>
 
             <div className="mailid__and__password__conatiner signin__mailid__and__password__conatiner">
-              <div className="email">
+              <div className="login__email__field">
                 <TextField
-                  id="email"
+                  id="Email"
                   type="email"
                   variant="outlined"
                   label="Enter Email"
                   fullWidth
                   required
-                  error={!!errors?.email}
-                  helperText={errors?.email ? errors.email.message : ""}
+                  error={!!errors?.Email}
+                  helperText={errors?.Email ? errors.Email.message : ""}
                   {...register("email", {
                     required: "Requird field",
                     pattern: {
@@ -113,6 +148,7 @@ const Login = () => {
 
             <div className="authentication__links">
               <p className="links">
+                <Link to="/forgotpassword">Forgot Password ?</Link>
                 <Link to="/signup">Do not have an account ?</Link>
                 <p>OR</p>
                 <Link to="/home">Use as guest</Link>

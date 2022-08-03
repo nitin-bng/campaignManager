@@ -37,7 +37,7 @@ const numberOfSubDTMF = [
 
 const SubDTMF = (props) => {
   const [expanded, setExpanded] = React.useState(false);
-  console.log(props);
+  // console.log(props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,

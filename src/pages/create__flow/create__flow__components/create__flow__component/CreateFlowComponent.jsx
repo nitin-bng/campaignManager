@@ -106,7 +106,7 @@ const CreateFlowComponent = () => {
                     label="Select Channel"
                     onChange={handleChange}
                   >
-                    {console.log(channel)}
+                    {/* {console.log(channel)} */}
 
                     <MenuItem value={"ivr"}>IVR</MenuItem>
                     <MenuItem value={"sms"}>SMS</MenuItem>

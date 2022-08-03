@@ -7,15 +7,15 @@ import "./renderingcomponentonlanguageselect.css";
 
 const RenderingComponentOnLanguageSelect = (props) => {
 
-  console.log(props);
+  // console.log(props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
 
   const saveValues = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     props.setDtmfTime(e.target.value);
   };
   useEffect(() => {
-    console.log("dtmfTime", dtmfTime);
+    // console.log("dtmfTime", dtmfTime);
   }, [dtmfTime]);
 
   return (

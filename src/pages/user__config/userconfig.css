@@ -66,6 +66,7 @@ input[type="number"] {
   box-shadow: 2px 2px 3px grey;
   overflow: scroll;
   background-color: white;
+  /* border: 2px solid red; */
 }
 
 .userconfig__maincontent__heading {
@@ -86,10 +87,10 @@ input[type="number"] {
 
 .userconfig__maincontent__information__container {
   width: 100%;
+
 }
 
 .userconfig__maincontent__information {
-  /* border: 2px solid red; */
   width: 100%;
   /* padding: 1rem; */
   display: flex;
@@ -118,7 +119,9 @@ input[type="number"] {
 
 .userconfig__maincontent__form__container {
   width: 100%;
-  height: 40%;
+  height: 60%;
+  /* border: 2px solid red; */
+
 }
 
 .userconfig__maincontent__form {
@@ -145,3 +148,7 @@ input[type="number"] {
   justify-content: center;
   align-items: center;
 }
+
+/* .userconfig__append__country__code__container{
+  margin-top: 2rem;
+} */

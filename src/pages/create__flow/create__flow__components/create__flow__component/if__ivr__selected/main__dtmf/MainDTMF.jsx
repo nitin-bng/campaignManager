@@ -36,7 +36,7 @@ const numberOfSubDTMF = [
 
 const MainDTMF = (props) => {
   const [expanded, setExpanded] = React.useState(false);
-console.log(props);
+// console.log(props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
@@ -101,7 +101,7 @@ console.log(props);
                         onChange={handleChange}
                       >
                         {["Play", "Schedule SMS"].map((number, index) => {
-                          console.log(number);
+                          // console.log(number);
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
                       </Select>
@@ -135,7 +135,7 @@ console.log(props);
                         onChange={handleIVRSelectedChange}
                       >
                         {numberOfSubDTMF.map((number, index) => {
-                          console.log(number);
+                          // console.log(number);
 
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}

@@ -12,7 +12,8 @@ const config = {
         getFeature: '/features',
         setOperator: '/operator/all',
         forgotpassword : '/forgotpassword',
-        createUserConfig: '/update/config/'
+        createUserConfig: '/update/config/',
+        createFlow: '/bng/ui/'
     }
 }
 export default config

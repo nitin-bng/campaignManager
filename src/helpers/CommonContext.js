@@ -14,8 +14,12 @@ export const CommonProvider = ({ children }) => {
   const [ifIVRselectedThenLanguage, setIfIVRselectedThenLanguage] = useState([]);
   const [welcomePromptWaitTime, setWelcomePromptWaitTime] = useState();
   const [numberOfMainDTMFWhenIVRIsSelected,setnumberOfMainDTMFWhenIVRIsSelected] = useState("");
-
   const [campaignName, setCampaignName] = useState()
+
+
+  const [languageJson, setLangugeJson] = useState([]);
+
+
   return (
     <CommonContext.Provider
       value={{
@@ -51,6 +55,14 @@ export const CommonProvider = ({ children }) => {
         campaignName,
         setCampaignName,
         // ceateCampaign
+
+
+
+
+        //dynamic JSON of Language
+        languageJson, 
+        setLangugeJson,
+        //dynamic JSON of Language
       }}
     >
       {children}

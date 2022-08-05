@@ -149,22 +149,9 @@ const UserConfig = () => {
 
 
   const userConfigSubmit = (event) => {
-    // console.log("userconfigsubmit");
-    // localStorage.setItem("createFlowInMenuBarDisbled", true);
-    // console.log("blackOutDays", blackOutDays);
-    // console.log("blackoutStartHour", blackoutStartHour);
-    // console.log("blackoutEndHour", blackoutEndHour);
-    console.log("blackoutDate", blackoutDate);
+    localStorage.setItem("createFlowInMenuBarDisbled", true);
 
-    // console.log("assignChannel", assignChannel);
-    // console.log("assignTps", assignTps);
-    // console.log("startTimeToSendAtBackend", startTimeToSendAtBackend);
-    // console.log("endTimeToSendAtBackend", endTimeToSendAtBackend);
-    // console.log("value", value);
-    // console.log("appendZero", appendZero);
-    // console.log("countryCode", countryCode);
-    // console.log("appendCountryCode", appendCountryCode);
-    // console.log("msisdnLength", msisdnLength);
+    console.log("blackoutDate", blackoutDate);
     event.preventDefault();
 
 
@@ -187,12 +174,7 @@ const UserConfig = () => {
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
     fetch(
-        config.server.path +
-        config.server.port1 +"/"+
-        localStorage.getItem("userType") +
-        config.api.createUserConfig +
-        "/" + 1,
-        // localStorage.getItem("userId"),
+        config.server.path + config.server.port1 + "/"+ localStorage.getItem("userType") +  config.api.createUserConfig + localStorage.getItem("userId"),
       {
         method: "POST",
         headers: {

@@ -147,7 +147,7 @@ const MainDTMF = (props) => {
               <div className="rendering__subdtmf__container">
               {arr1.length > 0 &&
                 arr1.map((el, ind) => {
-                  return <SubDTMF numberOfSubDTMF={el}/>;
+                  return <SubDTMF parentNumber={props.dtmfNumber} numberOfSubDTMF={el}/>;
                 })}
 
               </div>

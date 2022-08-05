@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import { HashRouter } from 'react-router-dom';
+import { StateProvider } from "../src/store/store";
 import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
@@ -9,7 +11,9 @@ root.render(
   <>
   
     <BrowserRouter>
-      <App />
+    <StateProvider>
+            <App />
+        </StateProvider>
 
     </BrowserRouter>
   </>

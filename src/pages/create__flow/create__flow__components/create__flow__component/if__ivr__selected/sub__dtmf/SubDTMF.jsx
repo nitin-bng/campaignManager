@@ -63,7 +63,7 @@ useEffect(() => {
   }
   setArr(arr);
 }, [numberOfMainDTMFWhenIVRIsSelected]);
-
+var subAsParentDTMFNumber = props.parentNumber+ "_"+ props.numberOfSubDTMF
   return (
     <>
       <div className="subDTMF__subdtmf">
@@ -71,7 +71,7 @@ useEffect(() => {
           <Card style={{ backgroundColor: "white", width:props.width }}>
             <CardActions disableSpacing>
               <Typography paragraph>
-                SUB DTMF : {props.numberOfSubDTMF}{" "}
+                SUB DTMF : {props.parentNumber}_{props.numberOfSubDTMF}
               </Typography>
               <ExpandMore
                 expand={expanded}
@@ -150,7 +150,7 @@ useEffect(() => {
                 arr1.map((el, ind) => {
                   return(
                     <div style={{border:"2px solid blue"}}>
-                      <SubDTMF width="225%" numberOfSubDTMF={el}/>
+                      <SubDTMF parentNumber={subAsParentDTMFNumber} width="225%" numberOfSubDTMF={el}/>
                     </div>
                   )
                   

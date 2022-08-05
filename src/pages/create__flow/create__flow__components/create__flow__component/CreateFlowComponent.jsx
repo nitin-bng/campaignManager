@@ -18,6 +18,7 @@ import RenderingComponentOnLanguageSelect from "./if__ivr__selected/rendering__c
 import RenderingComponentOnLanguageSelectOfSMS from "./if__sms__selected/rendering__component__on__language__select__sms/RenderingComponentOnLanguageSelectOfSMS";
 // import MainDTMF from "./if__ivr__selected/main__dtmf/MainDTMF";
 import { CommonContext } from "../../../../helpers/CommonContext";
+import { store } from "../../../../store/store"
 
 import "./createFlowComponent.css";
 
@@ -33,6 +34,8 @@ const MenuProps = {
 };
 
 const CreateFlowComponent = () => {
+
+  const languagesCode = []
   const {
     dtmfTimeHindi,
     setDtmfTimeHindi,
@@ -52,8 +55,14 @@ const CreateFlowComponent = () => {
     channel,
     setChannel,
   } = useContext(CommonContext);
+  debugger
+  const globalState = useContext(store);
+  const {dispatch} = globalState;
   const [selectChannel, setSelectChannel] = useState("");
-  const [languages, setLanguages] = useState([]);
+  // const [languages, setLanguages] = useState([]);
+  let localStore = globalState.state;
+    const languages = globalState.state.languages;
+    
 
   const handleChange = (event) => {
     setChannel(event.target.value);
@@ -61,12 +70,74 @@ const CreateFlowComponent = () => {
   const handelFlowNameChange = (event) => {
     setFlowName(event.target.value);
   };
-  const handleLanguageChange = (event) => {
+  const handleLanguageChange = (e) => {
+    debugger
     const {
       target: { value },
-    } = event;
+    } = e;
 
     setIfIVRselectedThenLanguage(typeof value === "string" ? value.split(",") : value);
+    console.log("globalState", globalState);
+    console.log("dispatch", dispatch);
+    let languageChangeList = []
+    let finalLanguageList = [
+        {
+            "level": 0,
+            "node_type": "LANG_SELECTION",
+            "id": "0",
+            'actions':'',
+        }
+    ]
+console.log("e.target.value", e.target.value);
+
+    for (var x = 0; x< e.target.value.length; x++){
+      for(var y in languages){
+        
+        if(e.target.value[x] == languages[y].lang){
+          languagesCode.push(languages[y].code)
+          languageChangeList.push(
+                {
+                    "id": "0_5",
+                    "input": {
+                        "ivr_key": x + 1,
+                        "sms_key": ''
+                    },
+                    "language": languages[y].code,
+                    "lang_file": {
+                        "ivr": '',
+                        "sms": ''
+                    },
+                    "actionType": {
+                        "ivr": "PLAY",
+                        "sms": "HITURL_SMS"
+                    },
+                    "action_delay_min": 0,
+                    "repeatCount": 0,
+                    "waitTime": '',
+                },
+              )
+          }
+      }
+    }
+    // console.log("languages[y]====>", languages[y].code);
+    console.log("languagesCode languagesCode=======>",  languagesCode);
+    finalLanguageList[0].actions = languageChangeList
+    localStore.ivrCampFlowData.flow["languageChange"] = languagesCode;
+    for(let i=0; i<localStore.ivrCampFlowData.flow.languageChange.length; i++){
+        localStore.ivrCampFlowData.flow.main_file['ivr'][localStore.ivrCampFlowData.flow.languageChange[i]] = '';
+
+        localStore.ivrCampFlowData.flow.main_file['sms'][localStore.ivrCampFlowData.flow.languageChange[i]] = '';
+
+    }
+
+    
+    // localStore.ivrCampFlowData.flow.channel_local = e.target.value
+console.log("finalLanguageList finalLanguageList",finalLanguageList);
+    localStore.ivrCampFlowData.flow.language = finalLanguageList
+    dispatch({ type: 'SET_DATA', nState: localStore });
+    console.log(localStore);
+
+
   };
 
   return (
@@ -142,6 +213,7 @@ const CreateFlowComponent = () => {
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
+                    {console.log("ifIVRselectedThenLanguage", ifIVRselectedThenLanguage)}
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>
                         <Checkbox checked={ifIVRselectedThenLanguage.indexOf(Languages) > -1} />

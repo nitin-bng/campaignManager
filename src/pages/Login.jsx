@@ -39,6 +39,7 @@ const Login = () => {
         res.json()
            .then((res)=>{
             localStorage.setItem("userType", res.userType)
+            localStorage.setItem("userId", res.id)
             getUserDetails(res.id)
              console.log(res)
            })

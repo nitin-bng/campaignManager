@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import MenuAppBar from "../../components/topbar/MenuAppBar";
 import "./createflow.css";
 
@@ -14,6 +14,7 @@ import CreateFlowComponent from "./create__flow__components/create__flow__compon
 import CreateCampaign from "./create__flow__components/create__campaign/CreateCampaign";
 import ScheduleCampaign from "./create__flow__components/schedule__campaign/ScheduleCampaign";
 import Review from "./create__flow__components/review/Review";
+import { CommonContext } from "../../helpers/CommonContext";
 // import MainDTMF from "./create__flow__components/create__flow__component/if__ivr__selected/main__dtmf/MainDTMF";
 
 const steps = [
@@ -24,9 +25,46 @@ const steps = [
 ];
 
 const CreateFlow = () => {
+
+
+  const {
+    dtmfTime,
+    setdtmfTime,
+    dtmfTimeHindi,
+    setDtmfTimeHindi,
+    dtmfTimeEnglish,
+    setDtmfTimeEnglish,
+    dtmfTimeArabic,
+    setDtmfTimeArabic,
+    dtmfTimeSpanish,
+    setDtmfTimeSpanish,
+    ifIVRselectedThenLanguage,
+    setIfIVRselectedThenLanguage,
+    welcomePromptWaitTime,
+    setWelcomePromptWaitTime,
+    numberOfMainDTMFWhenIVRIsSelected,
+    setnumberOfMainDTMFWhenIVRIsSelected,
+    // dtmfTime,
+    // setdtmfTime,
+
+    flowName,
+    setFlowName,
+    channel,
+    setChannel,
+  } = useContext(CommonContext);
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
+    console.log("flowName", flowName);
+    console.log("channel", channel);
+    console.log("ifIVRselectedThenLanguage", ifIVRselectedThenLanguage);
+    console.log("dtmfTimeHindi", dtmfTimeHindi);
+    console.log("dtmfTimeEnglish", dtmfTimeEnglish);
+    console.log("dtmfTimeArabic", dtmfTimeArabic);
+    console.log("dtmfTimeSpanish", dtmfTimeSpanish);
+    console.log("welcomePromptWaitTime", welcomePromptWaitTime);
+    console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 

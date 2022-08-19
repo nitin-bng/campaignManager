@@ -33,7 +33,7 @@ const ExpandMore = styled((props) => {
 
 const SubInput = (props) => {
     const [expanded, setExpanded] = React.useState(false);
-    // console.log(props);
+    console.log(props);
     const [
       numberOfMainDTMFWhenIVRIsSelected,
       setnumberOfMainDTMFWhenIVRIsSelected,

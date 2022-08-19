@@ -35,6 +35,11 @@ const MenuProps = {
 
 const CreateFlowComponent = () => {
 
+  const [data, setData] = useState({
+    'dtmf': 0,
+    'playOption': "PLAY",
+  })
+
   const languagesCode = []
   const {
     dtmfTimeHindi,
@@ -65,11 +70,24 @@ const CreateFlowComponent = () => {
     
 
   const handleChange = (event) => {
+    debugger
     setChannel(event.target.value);
+    localStore.ivrCampFlowData.flow.channel = event.target.value
+    localStorage.setItem('channelName', event.target.value)
+    dispatch({ type: 'SET_DATA', nState: localStore });
+    console.log(localStore);
+
   };
   const handelFlowNameChange = (event) => {
+    debugger
+    localStore.ivrCampFlowData.flow.
+    flowName = event.target.value
     setFlowName(event.target.value);
+    dispatch({ type: 'SET_DATA', nState: localStore });
+    localStorage.setItem('flowName', event.target.value)
+    console.log(localStore);
   };
+
   const handleLanguageChange = (e) => {
     debugger
     const {
@@ -88,7 +106,7 @@ const CreateFlowComponent = () => {
             'actions':'',
         }
     ]
-console.log("e.target.value", e.target.value);
+// console.log("e.target.value", e.target.value);
 
     for (var x = 0; x< e.target.value.length; x++){
       for(var y in languages){
@@ -103,6 +121,7 @@ console.log("e.target.value", e.target.value);
                         "sms_key": ''
                     },
                     "language": languages[y].code,
+                    "languageName": languages[y].lang,
                     "lang_file": {
                         "ivr": '',
                         "sms": ''
@@ -119,7 +138,7 @@ console.log("e.target.value", e.target.value);
           }
       }
     }
-    // console.log("languages[y]====>", languages[y].code);
+    console.log("languages[y]====>", languages[y].code);
     console.log("languagesCode languagesCode=======>",  languagesCode);
     finalLanguageList[0].actions = languageChangeList
     localStore.ivrCampFlowData.flow["languageChange"] = languagesCode;
@@ -177,11 +196,11 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     label="Select Channel"
                     onChange={handleChange}
                   >
-                    {/* {console.log(channel)} */}
+                    {console.log(channel)}
 
-                    <MenuItem value={"ivr"}>IVR</MenuItem>
-                    <MenuItem value={"sms"}>SMS</MenuItem>
-                    <MenuItem value={"ivr/sms"}>IVR/SMS</MenuItem>
+                    <MenuItem value={"IVR"}>IVR</MenuItem>
+                    <MenuItem value={"SMS"}>SMS</MenuItem>
+                    <MenuItem value={"IVR_SMS"}>IVR/SMS</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -225,7 +244,7 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
               </div>
               <div className="hello">
                 {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-                channel === "ivr" ? (
+                channel === "IVR" ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={1}
                     lang="Hindi"
@@ -236,7 +255,7 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-                channel === "ivr" ? (
+                channel === "IVR" ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={2}
                     lang="English"
@@ -247,7 +266,7 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-                channel === "ivr" ? (
+                channel === "IVR" ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={3}
                     lang="Arabic"
@@ -258,7 +277,7 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-                channel === "ivr" ? (
+                channel === "IVR" ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={4}
                     lang="Spanish"
@@ -271,36 +290,36 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
 
                 {/* .................. sms .................. */}
                 {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-                channel === "sms" ? (
+                channel === "SMS" ? (
                   <RenderingComponentOnLanguageSelectOfSMS lang="Hindi" />
                 ) : (
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-                channel === "sms" ? (
+                channel === "SMS" ? (
                   <RenderingComponentOnLanguageSelectOfSMS lang="English" />
                 ) : (
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-                channel === "sms" ? (
+                channel === "SMS" ? (
                   <RenderingComponentOnLanguageSelectOfSMS lang="Arabic" />
                 ) : (
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-                channel === "sms" ? (
+                channel === "SMS" ? (
                   <RenderingComponentOnLanguageSelectOfSMS lang="Spanish" />
                 ) : (
                   ""
                 )}
               </div>
 
-              {channel === "ivr" ? <IfIVRSelected /> : ""}
-              {channel === "sms" ? <IfSMSSelected /> : ""}
+              {channel === "IVR" ? <IfIVRSelected /> : ""}
+              {channel === "SMS" ? <IfSMSSelected /> : ""}
             </div>
           </div>
-          {/* <MainDTMF /> */}
+          
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from "react";
+import React, { useState, useEffect, useContext }  from "react";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -9,11 +9,14 @@ import Select from "@mui/material/Select";
 
 import './ifsmsselected.css'
 import MainInput from "./main__input/MainInput";
+import { store } from "../../../../../store/store";
+
 
 
 
 const IfSMSSelected = () => {
 
+  const globalState = useContext(store);
     const [
         numberOfMainInputsWhenIVRIsSelected,
         setnumberOfMainInputsWhenIVRIsSelected,
@@ -76,7 +79,8 @@ const IfSMSSelected = () => {
           <div className="ifSMSSelected__number__of__Inputs__to__show__container">
             {arr1.length > 0 &&
               arr1.map((el, ind) => {
-                return <MainInput InputsNumber={el} />;
+                console.log("element element =====>" , el);
+                return <MainInput current={el} InputsNumber={el} />;
               })}
           </div>
           

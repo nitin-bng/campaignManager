@@ -37,7 +37,7 @@ const ExpandMore = styled((props) => {
 const MainInput = (props) => {
 
     const [expanded, setExpanded] = React.useState(false);
-// console.log(props);
+console.log(props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
@@ -102,7 +102,7 @@ const MainInput = (props) => {
                         onChange={handleChange}
                       >
                         {["HitURL", "Schedule SMS"].map((number, index) => {
-                          // console.log(number);
+                          console.log(number);
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
                       </Select>
@@ -136,7 +136,7 @@ const MainInput = (props) => {
                         onChange={handleIVRSelectedChange}
                       >
                         {numberOfSubDTMF.map((number, index) => {
-                          // console.log(number);
+                          console.log(number);
 
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}

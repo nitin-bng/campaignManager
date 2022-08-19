@@ -55,10 +55,10 @@ export default function VerifyOtp(props) {
   // let history = useHistory();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("navigate", navigate);
-  console.log("props", props);
+  // console.log("navigate", navigate);
+  // console.log("props", props);
   useEffect(() => {
-    console.log(props);
+    // console.log(props);
     localStorage.getItem("phoneNumber");
     if (navigate != undefined && navigate.location !== undefined) {
       // if (props.location.state.detail == "mobile_no_not_verified") {
@@ -79,14 +79,14 @@ export default function VerifyOtp(props) {
       })
       .catch((error) => {
         setLoader(false);
-        console.log("the error is::", error);
+        // console.log("the error is::", error);
       });
   };
   const handleSubmit = (e) => {
     // e.preventDefault();
     if (otpState === "") {
       setError("OTP is required");
-      console.log("otp bharoooo");
+      // console.log("otp bharoooo");
       return;
     }
     setLoader(true);
@@ -102,7 +102,7 @@ export default function VerifyOtp(props) {
           setLoader(false);
           setResponse(res.status);
           setReason(res.reason);
-          console.log("Response is::", res);
+          // console.log("Response is::", res);
         } else {
           setResponse(res.status);
           setReason(res.reason);
@@ -112,7 +112,7 @@ export default function VerifyOtp(props) {
       })
       .catch((error) => {
         setLoader(false);
-        console.log("the error is::", error);
+        // console.log("the error is::", error);
       });
   };
   const handleModal = () => {

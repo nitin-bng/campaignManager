@@ -6,8 +6,7 @@ import { CommonContext } from "../../../../../../helpers/CommonContext";
 import "./renderingcomponentonlanguageselect.css";
 
 const RenderingComponentOnLanguageSelect = (props) => {
-
-  // console.log(props);
+  console.log("language props ====>",props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
 
   const saveValues = (e) => {
@@ -38,6 +37,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 onChange={saveValues}
               />
             </Box>
+          </div>
+
+          <div className="file__chooser__container">
+            <input accept="audio/*" type="file" class="custom-file-input" placeholder={props.lang} />
+            {/* <span>{props.lang}</span> */}
           </div>
         </div>
       </div>

@@ -151,7 +151,7 @@ const UserConfig = () => {
   const userConfigSubmit = (event) => {
     localStorage.setItem("createFlowInMenuBarDisbled", true);
 
-    console.log("blackoutDate", blackoutDate);
+    // console.log("blackoutDate", blackoutDate);
     event.preventDefault();
 
 
@@ -170,7 +170,7 @@ const UserConfig = () => {
 
   
 
-  console.log("schedule Data ", scheduleData);
+  // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
     fetch(
@@ -188,7 +188,7 @@ const UserConfig = () => {
           if (res.status == "successful") {
             setCreateUpdate(true);
             setShowSuccess(true);
-            console.log(res);
+            // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);
             setStatus(res.status);
@@ -197,7 +197,7 @@ const UserConfig = () => {
         });
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
     // }
   };
@@ -474,15 +474,15 @@ const UserConfig = () => {
                         multiple
                         onChange={(e) => {
                           e.map((ele,idx) => {
-                            console.log(ele.day);
-                            console.log(e);
-                            console.log(ele.year);
-                            console.log(ele.month.number);
+                            // console.log(ele.day);
+                            // console.log(e);
+                            // console.log(ele.year);
+                            // console.log(ele.month.number);
                             blackoutDate[idx] = ele.year + "/" + ele.month.number +  "/"+ ele.day
                             setBlackoutDate(blackoutDate)
                             setValue(blackoutDate)
                           });
-                          console.log(blackoutDate);
+                          // console.log(blackoutDate);
                           // setValue
                         }}
                       />
@@ -515,7 +515,7 @@ const UserConfig = () => {
                             label="Yes"
                             onChange={(e) => {
                               setAppendZero(e.target.value);
-                              console.log(e);
+                              // console.log(e);
                             }}
                           />
                           <FormControlLabel
@@ -523,7 +523,7 @@ const UserConfig = () => {
                             control={<Radio />}
                             onChange={(e) => {
                               setAppendZero(e.target.value);
-                              console.log(e);
+                              // console.log(e);
                             }}
                             label="No"
                           />

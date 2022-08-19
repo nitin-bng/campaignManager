@@ -13,8 +13,11 @@ const config = {
         setOperator: '/operator/all',
         forgotpassword : '/forgotpassword',
         createUserConfig: '/update/config/',
-        createFlow: '/bng/ui/'
+        createFlow: '/bng/ui/',
+        createFlowWithoutContent: '/bng/ui/flow?isContent=false',
     }
 }
 export default config
+
+
 

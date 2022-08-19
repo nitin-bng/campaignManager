@@ -41,7 +41,7 @@ const Login = () => {
             localStorage.setItem("userType", res.userType)
             localStorage.setItem("userId", res.id)
             getUserDetails(res.id)
-             console.log(res)
+            //  console.log(res)
            })
     })
   }
@@ -55,7 +55,7 @@ const Login = () => {
     }).then((res)=>{
         res.json()
            .then((res)=>{
-             console.log(res)
+            //  console.log(res)
            })
     })
   }

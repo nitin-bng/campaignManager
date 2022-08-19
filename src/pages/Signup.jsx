@@ -52,7 +52,7 @@ const Signup = () => {
 
   const [countryCode, setCountryCode] = useState("");
   const [countryName, setCountryName] = useState("");
-console.log(countryCode);
+// console.log(countryCode);
 
   // let history = useHistory();
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ console.log(countryCode);
       var key = latestfeatures[i].subFeature;
       for (var j = 0; j < value.length; j++) {
         if (key == value[j]) {
-          console.log(true);
+          // console.log(true);
           data.push(latestfeatures[i].id);
           data.push(latestfeatures[i].pId);
         }
@@ -114,7 +114,7 @@ console.log(countryCode);
     data["name"] = data.firstName + " " + data.lastName;
     data["countryCode"] = countryCode;
     data["country"] = countryName
-    console.log("data=====>>>", data);
+    // console.log("data=====>>>", data);
     let uniqueArray = [...new Set(values)];
 
     setLoader(true);
@@ -141,7 +141,7 @@ console.log(countryCode);
       })
       .catch((error) => {
         setLoader(false);
-        console.log("the error is::", error);
+        // console.log("the error is::", error);
       });
 
   };
@@ -156,7 +156,7 @@ console.log(countryCode);
         // console.log(res);
       })
       .catch((error) => {
-        console.log("the error is::", error);
+        // console.log("the error is::", error);
       });
   };
 
@@ -170,7 +170,7 @@ console.log(countryCode);
         // console.log(res.dispalyName);
       })
       .catch((error) => {
-        console.log("the error is::", error);
+        // console.log("the error is::", error);
       });
   };
 
@@ -307,8 +307,8 @@ console.log(countryCode);
                       // setPhone(e)
                       setPhoneNumber(value);
                       setError({ ...error, phoneError: "" });
-                      console.log("values::", value )
-                      console.log("country ====>", country);
+                      // console.log("values::", value )
+                      // console.log("country ====>", country);
                       setCountryCode(country.countryCode)
                       setCountryName(country.name)
 

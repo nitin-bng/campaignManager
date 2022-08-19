@@ -100,8 +100,8 @@ const ForgotPassword = () => {
                       // setPhone(e)
                       setPhoneNumber(value);
                       // setError({ ...error, phoneError: "" });
-                      console.log("values::", value )
-                      console.log("country ====>", country);
+                      // console.log("values::", value )
+                      // console.log("country ====>", country);
                       setCountryCode(country.countryCode)
                       setCountryName(country.name)
 

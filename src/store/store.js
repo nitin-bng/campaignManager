@@ -74,11 +74,11 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 const StateProvider = ({ children }) => {
-    console.log("....store....");
+    // console.log("....store....");
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
             case 'SET_DATA':
-                console.log("store : 1", state, action.nState);
+                // console.log("store : 1", state, action.nState);
                 const newState = { ...state, ...action.nState }
                 return newState;
             case 'EMPTY_DATA':
@@ -150,21 +150,21 @@ const StateProvider = ({ children }) => {
                     }
                 };;
             case 'SET_LANGUAGE':
-                console.log("store : 2");
+                // console.log("store : 2");
                 const IvrFlowlang = { ...state, ...action.nState }
                 return IvrFlowlang;
             case 'SET_REPEAT':
                 // const repeatState = { ...state, ...action.nState }
-                console.log("0000000000000000000, ", action.nState, "state", state)
+                // console.log("0000000000000000000, ", action.nState, "state", state)
                 const ls1 = state;
                 ls1.ivrCampFlowData.flow.repeat.value = action.nState.ivrCampFlowData.flow.repeat.value;
                 return ls1;
 
             case 'SET_DTMF_SUB':
-                console.log("store : 3");
-                console.log("%csub_audio_dtmfCount", 'background: pink; color: #bada55', action)
+                // console.log("store : 3");
+                // console.log("%csub_audio_dtmfCount", 'background: pink; color: #bada55', action)
                 const sdb_ls = state;
-                console.log("ssss", sdb_ls, store)
+                // console.log("ssss", sdb_ls, store)
                 const path = action.nState[0].id.split('_');
                 sdb_ls.ivrCampFlowData.flow.actions[path[0] - 1].actions = action.nState;
                 sdb_ls.ivrCampFlowData.flow.actions[path[0] - 1].dtmf_count = action.nState.length;
@@ -172,11 +172,12 @@ const StateProvider = ({ children }) => {
                 return subdtmf;
 
             case 'SET_DTMF_MAIN':
-                console.log("store : 4");
-                console.log("%caction", 'background: #222; color: #bada55', action);
+                debugger
+                // console.log("store : 4");
+                // console.log("%caction", 'background: #222; color: #bada55', action);
                 const lc = state;
 
-                console.log("GENERATING ", action.nState.ivrCampFlowData.flow.main_audio_dtmfCount, "DTMF CARDS FOR MAIN LEVEL");
+                // console.log("GENERATING ", action.nState.ivrCampFlowData.flow.main_audio_dtmfCount, "DTMF CARDS FOR MAIN LEVEL");
 
                 let oldNumOfCards = 0;
                 if (lc.ivrCampFlowData.flow.actions && lc.ivrCampFlowData.flow.actions.length > 0) {
@@ -230,18 +231,18 @@ const StateProvider = ({ children }) => {
                     for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
                         lc.ivrCampFlowData.flow.actions.pop();
                 }
-                console.log(" LC ---> ", lc);
+                // console.log(" LC ---> ", lc);
                 const dtmfMain = { ...state, ...lc }
                 return dtmfMain;
 
             case 'SET_DTMF_TYPE':
-                console.log("store : 5");
-                console.log("%cDTMF TYPE CHANGE", 'background: pink; color: #bada55', action)
+                // console.log("store : 5");
+                // console.log("%cDTMF TYPE CHANGE", 'background: pink; color: #bada55', action)
                 const dtmfType = { ...state }
                 return dtmfType;
 
             case 'SET_MAIN_AUDIO_FILE':
-                console.log("%cSET_MAIN_AUDIO_FILE", 'background: pink; color: #bada55', action)
+                // console.log("%cSET_MAIN_AUDIO_FILE", 'background: pink; color: #bada55', action)
                 const mainAudioFile = { ...state }
                 return mainAudioFile;
 

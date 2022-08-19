@@ -16,12 +16,14 @@ import FormLabel from '@mui/material/FormLabel';
 
 import './createCampaign.css'
 import { CommonContext } from "../../../../helpers/CommonContext";
+import { useEffect } from "react";
 
 
 
 const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const CreateCampaign = () => {
+  const [FlowListData, setFlowListData] = useState([]);
 
   const {
     flowName,
@@ -41,6 +43,28 @@ const CreateCampaign = () => {
   const saveValues = (e) => {
     setCreateCampCli(e.target.value);
   };
+
+useEffect(()=>{
+  getFlowList()
+}, [])
+
+  const getFlowList =  () => {
+    debugger
+    const path = 'http://34.214.61.86:5000/bng/ui/list/flows'
+     fetch(path)
+        .then(response => response.json())
+        .then(function (data) {
+            debugger;
+            console.log("get flowList", data);
+            data.unshift({flowName: "select", id:'select', wfId:'select'});
+            setFlowListData(data);
+            return data;
+
+        }).catch(function (error) {
+            console.log("failed", error);
+            return error;
+        })
+}
 
   return (
     <>
@@ -97,6 +121,7 @@ const CreateCampaign = () => {
                 disabled
                 variant="outlined"
               />
+              
             </Box>
           </div>
 

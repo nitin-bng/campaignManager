@@ -897,22 +897,17 @@ const IfIVRSelected = () => {
     }
   };
 
-
   const setWaitTime = (level, target, dtmf_key) => {
     const val = target.value;
     // console.log(" val ", target, val);
     let localStore = globalState.state;
-    if (level === 'main') localStore.ivrCampFlowData.flow.waitTime = val;
-    else if (level === 'sub')
-        localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime =
-            val;
+    if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
+    else if (level === "sub")
+      localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime = val;
 
-    console.log(
-        'localStore.ivrCampFlowData = ',
-        localStore.ivrCampFlowData
-    );
-    dispatch({ type: 'SET_DATA', nState: localStore });
-};
+    console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
   const [arr1, setArr] = useState([]);
   useEffect(() => {
     var arr = [];
@@ -954,7 +949,7 @@ const IfIVRSelected = () => {
             })}
             <div className="ghghg">
               {languageName.map((el) => {
-                return <span>enter audio file for {el}</span>;
+                return <span>enter hello file for {el}</span>;
               })}
             </div>
             <div className="ghghgh">
@@ -1016,18 +1011,11 @@ const IfIVRSelected = () => {
                   name={"waitTime_" + global.dtmf_key}
                   // value={welcomePromptWaitTime}
                   value={globalState.state.ivrCampFlowData.flow.waitTime}
-
                   // onChange={(e) => {
                   //   // setWelcomePromptWaitTime(e.target.value);
                   //   handleDataInput(e, "mainAudioWaitTime");
                   // }}
-                  onChange={(e) =>
-                    setWaitTime(
-                        'main',
-                        e.target,
-                        null
-                    )
-                }
+                  onChange={(e) => setWaitTime("main", e.target, null)}
                   variant="outlined"
                 />
               </Box>

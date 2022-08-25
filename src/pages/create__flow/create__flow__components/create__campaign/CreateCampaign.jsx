@@ -24,7 +24,15 @@ const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const CreateCampaign = () => {
   const [FlowListData, setFlowListData] = useState([]);
-
+  const initialValues = {
+    campName: '',
+    campPriority: '',
+    wfId: '',
+    start_date: '',
+    campaign_type: '',
+    cli_ivr: '',
+    cli_sms: '',
+};
   const {
     flowName,
     // setFlowName,
@@ -35,8 +43,17 @@ const CreateCampaign = () => {
 
   const [selectPriority, setSelectPriority] = useState("");
   const [createCampCli, setCreateCampCli] = useState()
+  const [scheduleData1, setScheduleData] = useState({});
+  const [flowData, setFlowData] = useState({});
+  var [channelName, getChannelName] = useState(null);
+  const [formValues, setFormValues] = useState(initialValues);
 
-  const handleChange = (event) => {
+  var flowId = '';
+
+
+  var scheduleData = {};
+
+  const handlePriorityChange = (event) => {
     setSelectPriority(event.target.value);
   };
 
@@ -65,6 +82,111 @@ useEffect(()=>{
             return error;
         })
 }
+const getFlow = async (id) => {
+  debugger;
+  localStorage.setItem('wfId', id);
+  flowId = id;
+  const path = 'http://34.214.61.86:5000/bng/ui/get/flow?wfId=' + id;
+  return await fetch(path)
+      .then((response) => response.json())
+      .then(function (data) {
+          setFlowData(data);
+          getChannelName(data.flow.channel);
+          // if(data.flow.channel != "IVR_SMS"){
+          localStorage.setItem('channelName', data.flow.channel);
+          // }
+          localStorage.setItem('flowName', data.service_Data.name);
+          // history.push({
+          //     pathname: '/campaign/ivr',
+          //     state: { detail: data }
+          // });
+          return data;
+      })
+      .catch(function (error) {
+          console.log('failed', error);
+          return error;
+      });
+};
+
+const handleChange = (e, catagory) => {
+  debugger;
+  const { name, value } = e.target;
+  setFormValues({ ...formValues, [name]: value });
+  if (e.target.id == 'campName') {
+      // validateData('campName', e);
+      scheduleData['campName'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'campPriority') {
+      scheduleData['campPriority'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'wfId') {
+      scheduleData['wfId'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+      getFlow(e.target.value);
+  } else if (e.target.id == 'serviceName') {
+      scheduleData['serviceName'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'cli_ivr') {
+      // validateData('cli_ivr', e);
+      scheduleData['cli_ivr'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'cli_sms') {
+      // validateData('cli_sms', e);
+      scheduleData['cli_sms'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'incoming' || e.target.id == 'outgoing') {
+      scheduleData['campaign_type'] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+          ...scheduleData1,
+          ...scheduleData,
+      }));
+  } else if (e.target.id == 'start_date') {
+      if (e.target.value != null) {
+          scheduleData['startDate'] = e.target.value[0];
+          setScheduleData((scheduleData1) => ({
+              ...scheduleData1,
+              ...scheduleData,
+          }));
+          scheduleData['endDate'] = e.target.value[1];
+          setScheduleData((scheduleData1) => ({
+              ...scheduleData1,
+              ...scheduleData,
+          }));
+      } else if (e.target.value == null) {
+          scheduleData['startDate'] = '';
+          setScheduleData((scheduleData1) => ({
+              ...scheduleData1,
+              ...scheduleData,
+          }));
+          scheduleData['endDate'] = '';
+          setScheduleData((scheduleData1) => ({
+              ...scheduleData1,
+              ...scheduleData,
+          }));
+      }
+      console.log(scheduleData1);
+  }
+};
+
+
 
   return (
     <>
@@ -94,11 +216,19 @@ useEffect(()=>{
                 Select Priority
               </InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                name="campaignId"
+                id="campPriority"
+                className="campaignId form-select"
+                aria-label="Default select example"
                 value={selectPriority}
                 label="Select channel"
-                onChange={handleChange}
+                onChange={(event) =>{
+                  handleChange(
+                      event,
+                      'priority'
+                  )
+                  handlePriorityChange(event)}
+                }
               >
                 {priorityArray.map((element, index) => {
                   return <MenuItem value={element}>{element}</MenuItem>;
@@ -114,13 +244,26 @@ useEffect(()=>{
               noValidate
               autoComplete="off"
             >
-              <TextField
-                id="create__flow__component__flow__name"
-                label="Work Flow Name"
-                value={flowName}
-                disabled
-                variant="outlined"
-              />
+             <label>Work Flow Name</label>
+                                            <select
+                                                id="wfId"
+                                                name="wfId"
+                                                className="campaignId form-select"
+                                                aria-label="Default select example"
+                                                onChange={(event) =>
+                                                    handleChange(event, 'wfId')
+                                                }
+                                            >
+                                                {FlowListData &&
+                                                    FlowListData.map((e) => (
+                                                        <option
+                                                            key={e.id}
+                                                            value={e.wfId}
+                                                        >
+                                                            {e.flowName}
+                                                        </option>
+                                                    ))}
+                                            </select>
               
             </Box>
           </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -13,6 +13,7 @@ import { Howl } from "howler";
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
 const RenderingComponentOnLanguageSelect = (props) => {
+  
   let globalState = useContext(store);
   const { dispatch } = globalState;
   let localStore = globalState.state;
@@ -79,6 +80,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
         dispatch({ type: "SET_MAIN_AUDIO_FILE", nState: localStore });
       } else if (target === "lang_audio_file") {
         let id = e.target.id.split("-");
+        console.log(id);
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
@@ -268,6 +270,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const GetMainAudioFiles = (lang, type) => {
     debugger;
     let id = lang.split("-");
+    console.log(id);
+
     if (type == "MainAudioFile") {
       console.log("getMainAudio", type);
       var Filelist = globalState.state.ivrCampFlowData.flow.main_audio_file[
@@ -391,41 +395,82 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 type="number"
                 label={"Wait time for " + props.lang + " language"}
                 variant="outlined"
+                // value={props.languageCode == '_E'
+                // ? globalState.state
+                //       .ivrCampFlowData
+                //       .flow.language[0]
+                //       .actions[0]
+                //       .waitTime
+                // : props.languageCode == '_H'
+                // ? globalState.state
+                //       .ivrCampFlowData
+                //       .flow.language[0]
+                //       .actions[1]
+                //       .waitTime
+                // : props.languageCode == '_S'
+                // ? globalState.state
+                //       .ivrCampFlowData
+                //       .flow.language[0]
+                //       .actions[2]
+                //       .waitTime
+                // : globalState.state
+                //       .ivrCampFlowData
+                //       .flow.language[0]
+                //       .actions[3]
+                //       .waitTime}
                 value={props.dtmfTime}
                 onChange={saveValues}
               />
             </Box>
           </div>
 
-          {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-            <div className="file__chooser__container">
-              <input
-                accept="audio/mp3"
-                type="file"
-                class="custom-file-input"
-                name="main_audio_file"
-                onChange={(event) => {
-                  uploadFiles(
-                    "main_audio_file",
-                    event,
-                    event.currentTarget.files,
-                    lang
-                  );
-                }}
-              />
-              {localStore.ivrCampFlowData.flow.main_audio_file &&
-              localStore.ivrCampFlowData.flow.main_audio_file[lang] &&
-              localStore.ivrCampFlowData.flow.main_audio_file[lang] !== "" ? (
-                <>
-                  <br></br>
-                  {/* show all the audio files uploaded */}
-                  <div item className="fileNames" id={lang + "mainAudioShow"}>
-                    {GetMainAudioFiles(lang, "LangAudioFile")}
-                  </div>
-                </>
-              ) : null}
-            </div>
-          ))}
+          {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}
+          {/* {globalState.state.ivrCampFlowData.flow.languageChange.length > 1 &&
+            globalState.state.ivrCampFlowData.flow.languageChange.map(
+              (lang) => ( */}
+          <div
+            style={{ border: "2px solid red" }}
+            className={props.hideItemStyle}
+            hideItem
+          >
+            <input
+              accept="audio/mp3"
+              type="file"
+              class="custom-file-input"
+              name="lang_audio_file"
+              onChange={(event) => {
+                uploadFiles(
+                  "lang_audio_file",
+                  event,
+                  event.currentTarget.files,
+                  props.languageCode
+                );
+              }}
+              id={props.languageCode + "-Lang"}
+            />
+            {globalState.state.ivrCampFlowData.flow.lang_audio_file &&
+            globalState.state.ivrCampFlowData.flow.lang_audio_file[
+              props.languageCode
+            ] &&
+            globalState.state.ivrCampFlowData.flow.lang_audio_file[
+              props.languageCode
+            ] !== "" ? (
+              <>
+                <br></br>
+                {/* show all the audio files uploaded */}
+                <div
+                  item
+                  className="fileNames"
+                  id={props.languageCode + "langAudioShow"}
+                >
+                  {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
+                </div>
+              </>
+            ) : null}
+          </div>
+          {/* )
+            )} */}
+          {/* ))}  */}
         </div>
       </div>
     </>

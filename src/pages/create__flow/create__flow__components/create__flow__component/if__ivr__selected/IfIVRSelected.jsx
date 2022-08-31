@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import "./ifivrselected.css";
+import classNames from "classnames";
 
 import MainDTMF from "./main__dtmf/MainDTMF";
 import { CommonContext } from "../../../../../helpers/CommonContext";
@@ -23,7 +24,7 @@ import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
 
-const IfIVRSelected = () => {
+const IfIVRSelected = (props) => {
   debugger;
   const {
     welcomePromptWaitTime,
@@ -31,6 +32,7 @@ const IfIVRSelected = () => {
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
   } = useContext(CommonContext);
+
 
   const [data, setData] = useState({
     dtmf: 0,
@@ -931,7 +933,7 @@ const IfIVRSelected = () => {
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
           <hr className="hr" />
-          <div className="main__audio__file__chooser__container__ifIVRSelected">
+          <div className={props.hideItemStyle}>
             {localStore.ivrCampFlowData.flow.language.map((hello) => {
               console.log(
                 "localStore.ivrCampFlowData.flow.language ===>",
@@ -1070,6 +1072,7 @@ const IfIVRSelected = () => {
                   setDataDynamic={setDataDynamic}
                   dataHandleWithObj={dataHandleWithObj}
                   setWaitTime={setWaitTime}
+                  hideItemStyle = {props.hideItemStyle}
 
                   // edit={props.edit}
                   // uploadFiles={uploadFiles}

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import MenuAppBar from "../../components/topbar/MenuAppBar";
 import "./createflow.css";
 
@@ -17,6 +17,8 @@ import { CommonContext } from "../../helpers/CommonContext";
 import { store } from "../../store/store";
 import config from "../../ApiConfig/Config";
 // import MainDTMF from "./create__flow__components/create__flow__component/if__ivr__selected/main__dtmf/MainDTMF";
+import classNames from "classnames";
+
 
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
@@ -25,35 +27,34 @@ const CreateFlow = () => {
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
+  var createCampDataToSend ={}
+  const [hideItem, setHideItem] = useState(true);
+  const hideItemStyle = classNames("file__chooser__container", {
+    hideInput: hideItem,
+    showInput: !hideItem,
+  });
+  const [FlowListData, setFlowListData] = useState([]);
 
-  const {
-    dtmfTime,
-    setdtmfTime,
-    dtmfTimeHindi,
-    setDtmfTimeHindi,
-    dtmfTimeEnglish,
-    setDtmfTimeEnglish,
-    dtmfTimeArabic,
-    setDtmfTimeArabic,
-    dtmfTimeSpanish,
-    setDtmfTimeSpanish,
-    ifIVRselectedThenLanguage,
-    setIfIVRselectedThenLanguage,
-    welcomePromptWaitTime,
-    setWelcomePromptWaitTime,
-    numberOfMainDTMFWhenIVRIsSelected,
-    setnumberOfMainDTMFWhenIVRIsSelected,
-    // dtmfTime,
-    // setdtmfTime,
-
-    flowName,
-    setFlowName,
-    channel,
-    setChannel,
-  } = useContext(CommonContext);
 
   const [activeStep, setActiveStep] = React.useState(0);
-
+  const getFlowList = () => {
+    console.log("get flow list called");
+    debugger;
+    const path = "http://34.214.61.86:5000/bng/ui/list/flows";
+    fetch(path)
+      .then((response) => response.json())
+      .then(function (data) {
+        debugger;
+        console.log("get flowList", data);
+        data.unshift({ flowName: "select", id: "select", wfId: "select" });
+        setFlowListData(data);
+        return data;
+      })
+      .catch(function (error) {
+        console.log("failed", error);
+        return error;
+      });
+  };
   const handleNext = () => {
     // console.log("flowName", flowName);
     // console.log("channel", channel);
@@ -110,49 +111,143 @@ const CreateFlow = () => {
       country: null,
     };
 
-    fetch(
-      config.server.path +
-        config.server.port +
-        config.api.createFlowWithoutContent,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      }
-    )
-      .then(async (response) => {
-        var res = await response.json();
-        console.log("campaign submitted--response", res);
-        if (response.status !== 200 || response.status === "FAILED") {
-          // setFormSubmitted(false);
-        } else {
-          getCompleteFlow(res.wfId);
-          // setFormSubmitted(true);
+    createCampDataToSend = {
+      service_Data: {
+        userid: userId,
+        name: "form.campaign_name",
+        start_date: "getFormattedDate(form.startdateTime)",
+        end_date: "getFormattedDate(form.enddateTime)",
+        start_time: "getFormattedTime(form.startdateTime)",
+        end_time: "getFormattedTime(form.enddateTime)",
+        priority: "5",
+        status: "scheduled",
+        is_capping: "true",
+        service_id: "getServiceId(form.service)",
+        service_name: "form.service",
+        operator_id: "form.operator",
+        publisher_id: "1",
+        agency: "1",
+        advertiser: "1",
+        media_type: "AUDIO",
+        device_type: "mobile",
+        description: "form.description",
+        kpi: "vv",
+        type: "IVR",
+        flow: "JSON",
+        max_click_count: "0",
+        max_impression_count: "0",
+        total_click_count: "99999",
+        total_impression_count: "888777",
+        // 'service_name': form.service,
+        campaign_frequency: "form.CampaignFrequency",
+      },
+      timezone: {
+        operator: "+",
+        timezonevalue: "00:00",
+      },
+      blackouthour: "form.blackouthour",
+      flow: globalState.state.ivrCampFlowData.flow,
+      publisher: null,
+      device: null,
+      country: null,
+    };
+
+
+
+    if (activeStep === 0) {
+      console.log("activeStep === 0");
+      fetch(
+        config.server.path +
+          config.server.port +
+          config.api.createFlowWithoutContent,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(createCampDataToSend),
         }
-      })
-      .catch((e) => console.log("error in submitting form", e));
+      )
+        .then(async (response) => {
+          var res = await response.json();
+          console.log("flow without content submitted--response", res);
+          if (response.status !== 200 || response.status === "FAILED") {
+            // setFormSubmitted(false);
+          } else {
+            getCompleteFlow(res.wfId);
+            localStorage.setItem("wfId", res.wfId)
+            // setFormSubmitted(true);
+
+       
+          }
+        })
+        .catch((e) => console.log("error in submitting form", e));
+
+
+
+
+        const getCompleteFlow = (id) => {
+          debugger;
+          // const path = 'http//:34.214.61.86:5000/bng/ui/flowjson?wfId=' + id
+          let localStore = globalState.state;
+          fetch(
+            "http://34.214.61.86:5000/bng/ui/flowjson?wfId=" +
+              id +
+              "&flowName=" +
+              localStorage.getItem("flowName"),
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(dataToSend),
+            }
+          )
+            .then((response) => response.json())
+            .then(function (data) {
+            getFlowList()
+
+              return data;
+            })
+            .catch(function (error) {
+              console.log("failed", error);
+              return error;
+            });
+        };
+    } else if (activeStep === 1) {
+      console.log("activeStep === 1");
+      const path = 'http://34.214.61.86:5000/bng/ui/flow/content?isContent=true&campId='+ localStorage.getItem('campId') +'&wfId=' + localStorage.getItem('wfId')
+            fetch(path, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            })
+                .then(async response => {
+                    var res = await response.json();
+                    console.log("campaign submitted--response", res);
+                    // setLoading(false);
+                    if (response.status !== 200 || response.status === "FAILED") {
+                        // return false;
+                        // setFormSubmitted(false);
+                    } else {
+                        //TO DO : RESET STORE
+                        // setFormSubmitted(true);
+                        // dispatch({ type: 'EMPTY_DATA', nState: null });
+                        // return true;
+                    }
+                    // .then(e => {
+                    //     console.log("campaign submitted--response", e,);
+                    //     return e;
+                })
+                .catch((e) => console.log("error in submitting form", e));
+
+
+    } else if (activeStep === 2) {
+      console.log("activeStep === 2");
+    } else if (activeStep === 3) {
+      console.log("activeStep === 3");
+    }
   };
 
-  const getCompleteFlow = (id) => {
-    debugger
-    // const path = 'http//:34.214.61.86:5000/bng/ui/flowjson?wfId=' + id
-    let localStore = globalState.state;
-    fetch('http://34.214.61.86:5000/bng/ui/flowjson?wfId=' + id + '&flowName=' + localStorage.getItem('flowName'), {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSend)
-    })
-        .then(response => response.json())
-        .then(function (data) {
-            return data;
-
-        }).catch(function (error) {
-            console.log("failed", error);
-            return error;
-        })
-}
+  
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -174,7 +269,7 @@ const CreateFlow = () => {
             <div className="create__flow__maincontent">
               <Box
                 className="create__flow__maincontent__box"
-                sx={{ width: "100%", height: "100%" }}
+                sx={{ width: "100%", height: "100%", overflow: "scroll" }}
               >
                 <Stepper activeStep={activeStep}>
                   {steps.map((label, index) => {
@@ -200,11 +295,11 @@ const CreateFlow = () => {
                   <React.Fragment>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent />
+                        <CreateFlowComponent hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
-                        <CreateCampaign />
+                        <CreateCampaign getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 2 ? (
-                        <ScheduleCampaign />
+                        <ScheduleCampaign hideItemStyle={hideItemStyle} />
                       ) : activeStep === 3 ? (
                         <Review />
                       ) : (
@@ -212,7 +307,16 @@ const CreateFlow = () => {
                       )}
                     </Typography>
 
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        position: "fixed",
+                        width: "90%",
+                        backgroundColor: "white",
+                        flexDirection: "row",
+                        pt: 2,
+                      }}
+                    >
                       <Button
                         color="inherit"
                         disabled={activeStep === 0}

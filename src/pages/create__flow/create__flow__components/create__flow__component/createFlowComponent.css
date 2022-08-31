@@ -88,3 +88,8 @@
     align-items: center;
     margin-top: 1rem;
 }
+
+
+.hideInput{
+    display: none;
+}

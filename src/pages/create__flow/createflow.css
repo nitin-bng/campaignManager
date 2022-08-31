@@ -51,7 +51,7 @@
     width: 90%;
     height: 95%;
     box-shadow: 2px 2px 3px grey;
-    /* overflow: scroll; */
+    overflow: scroll;
     background-color: white;
     padding:  1rem 0rem;
     /* border: 2px solid red; */

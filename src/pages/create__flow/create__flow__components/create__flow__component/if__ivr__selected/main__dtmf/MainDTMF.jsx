@@ -47,7 +47,7 @@ const MainDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -570,6 +570,49 @@ const MainDTMF = (props) => {
     }
   };
 
+
+  const AudioFiles = (props) => {
+    debugger;
+    console.log('audiofileprops', props);
+    const Filelist = globalState.state.ivrCampFlowData.flow.actions[
+        props.dtmf
+    ].audio_file[props.lang]
+        .split(',')
+        .map((e, index) => {
+            return (
+                <span key={e}>
+                    <span style={{ color: 'darkgray' }}>
+                        {' '}
+                        {index + 1} -{' '}
+                    </span>
+                    {globalState.state.temp.uploads.length > 0
+                        ? globalState.state.temp.uploads.find(
+                              (f) => e === f.s_name
+                          )
+                            ? globalState.state.temp.uploads.find(
+                                  (f) => e === f.s_name
+                              ).l_name
+                            : e
+                        : e}
+                    <BsCheckCircle size={15} className="checkedIcon" />
+                    <IoIosCloseCircleOutline
+                        className="checkedIcon"
+                        size={15}
+                        style={{ color: 'red' }}
+                    />
+                    <FiPlayCircle
+                        className="checkedIcon"
+                        size={15}
+                        style={{ color: 'purple' }}
+                    />
+                    <br></br>
+                    <br></br>
+                </span>
+            );
+        });
+    return <span> {Filelist} </span>;
+};
+
   const [arr1, setArr] = useState([]);
   useEffect(() => {
     var arr = [];
@@ -687,7 +730,7 @@ const MainDTMF = (props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  <div className="main__audio__file__chooser__container__ifIVRSelected">
+                  <div className={props.hideItemStyle}>
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -728,25 +771,28 @@ const MainDTMF = (props) => {
                                 );
                               }}
                             />
-                            {localStore.ivrCampFlowData.flow.main_audio_file &&
-                            localStore.ivrCampFlowData.flow.main_audio_file[
-                              lang
-                            ] &&
-                            localStore.ivrCampFlowData.flow.main_audio_file[
-                              lang
-                            ] !== "" ? (
-                              <>
-                                <br></br>
-                                {/* show all the audio files uploaded */}
-                                <div
-                                  item
-                                  className="fileNames"
-                                  id={lang + "mainAudioShow"}
-                                >
-                                  {GetMainAudioFiles(lang, "MainAudioFile")}
-                                </div>
-                              </>
-                            ) : null}
+                            {globalState.state
+                                                    .ivrCampFlowData.flow
+                                                    .actions[
+                                                    props.global.dtmf_key - 1
+                                                ].audio_file[lang] ? (
+                                                    // (<div>{globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].audio_file[lang]}</div>)
+                                                    <div>
+                                                        <AudioFiles
+                                                            dtmf={
+                                                                props.global
+                                                                    .dtmf_key -
+                                                                1
+                                                            }
+                                                            lang={lang}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        Please upload the audio
+                                                        file
+                                                    </div>
+                                                )}
                           </div>
                         )
                       )}
@@ -770,6 +816,7 @@ const MainDTMF = (props) => {
                       parentNumber={props.dtmfNumber}
                       numberOfSubDTMF={e}
                       dataHandleWithObj={props.dataHandleWithObj}
+                      hideItemStyle = {props.hideItemStyle}
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
                     />

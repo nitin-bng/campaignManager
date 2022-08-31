@@ -53,7 +53,7 @@ const SubDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
@@ -859,7 +859,7 @@ const SubDTMF = (props) => {
                     </FormControl>
                   </div>
 
-                  <div className="main__audio__file__chooser__container__ifIVRSelected">
+                  <div className={props.hideItemStyle}>
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -945,6 +945,7 @@ const SubDTMF = (props) => {
                           dataHandleWithObj={
                             props.dataHandleWithObj
                         }
+                        hideItemStyle= {props.hideItemStyle}
                         />
                       </div>
                     );

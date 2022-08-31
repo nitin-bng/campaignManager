@@ -18,7 +18,8 @@ import RenderingComponentOnLanguageSelect from "./if__ivr__selected/rendering__c
 import RenderingComponentOnLanguageSelectOfSMS from "./if__sms__selected/rendering__component__on__language__select__sms/RenderingComponentOnLanguageSelectOfSMS";
 // import MainDTMF from "./if__ivr__selected/main__dtmf/MainDTMF";
 import { CommonContext } from "../../../../helpers/CommonContext";
-import { store } from "../../../../store/store"
+import { store } from "../../../../store/store";
+import classNames from "classnames";
 
 import "./createFlowComponent.css";
 
@@ -33,14 +34,19 @@ const MenuProps = {
   },
 };
 
-const CreateFlowComponent = () => {
-
+const CreateFlowComponent = (props) => {
   const [data, setData] = useState({
-    'dtmf': 0,
-    'playOption': "PLAY",
-  })
+    dtmf: 0,
+    playOption: "PLAY",
+  });
 
-  const languagesCode = []
+  // const [hideItem, setHideItem] = useState(true);
+  // const hideItemStyle = classNames("file__chooser__container", {
+  //   "hideInput": hideItem,
+  //   "showInput": !hideItem,
+  // });
+
+  const languagesCode = [];
   const {
     dtmfTimeHindi,
     setDtmfTimeHindi,
@@ -60,103 +66,103 @@ const CreateFlowComponent = () => {
     channel,
     setChannel,
   } = useContext(CommonContext);
-  debugger
+  debugger;
   const globalState = useContext(store);
-  const {dispatch} = globalState;
+  const { dispatch } = globalState;
   const [selectChannel, setSelectChannel] = useState("");
   // const [languages, setLanguages] = useState([]);
   let localStore = globalState.state;
-    const languages = globalState.state.languages;
-    
+  const languages = globalState.state.languages;
 
   const handleChange = (event) => {
-    debugger
+    debugger;
     setChannel(event.target.value);
-    localStore.ivrCampFlowData.flow.channel = event.target.value
-    localStorage.setItem('channelName', event.target.value)
-    dispatch({ type: 'SET_DATA', nState: localStore });
+    localStore.ivrCampFlowData.flow.channel = event.target.value;
+    localStorage.setItem("channelName", event.target.value);
+    dispatch({ type: "SET_DATA", nState: localStore });
     console.log(localStore);
-
   };
   const handelFlowNameChange = (event) => {
-    debugger
-    localStore.ivrCampFlowData.flow.
-    flowName = event.target.value
+    debugger;
+    localStore.ivrCampFlowData.flow.flowName = event.target.value;
     setFlowName(event.target.value);
-    dispatch({ type: 'SET_DATA', nState: localStore });
-    localStorage.setItem('flowName', event.target.value)
+    dispatch({ type: "SET_DATA", nState: localStore });
+    localStorage.setItem("flowName", event.target.value);
     console.log(localStore);
   };
 
   const handleLanguageChange = (e) => {
-    debugger
+    debugger;
     const {
       target: { value },
     } = e;
 
-    setIfIVRselectedThenLanguage(typeof value === "string" ? value.split(",") : value);
+    setIfIVRselectedThenLanguage(
+      typeof value === "string" ? value.split(",") : value
+    );
     console.log("globalState", globalState);
     console.log("dispatch", dispatch);
-    let languageChangeList = []
+    let languageChangeList = [];
     let finalLanguageList = [
-        {
-            "level": 0,
-            "node_type": "LANG_SELECTION",
-            "id": "0",
-            'actions':'',
-        }
-    ]
-// console.log("e.target.value", e.target.value);
+      {
+        level: 0,
+        node_type: "LANG_SELECTION",
+        id: "0",
+        actions: "",
+      },
+    ];
+    // console.log("e.target.value", e.target.value);
 
-    for (var x = 0; x< e.target.value.length; x++){
-      for(var y in languages){
-        
-        if(e.target.value[x] == languages[y].lang){
-          languagesCode.push(languages[y].code)
-          languageChangeList.push(
-                {
-                    "id": "0_5",
-                    "input": {
-                        "ivr_key": x + 1,
-                        "sms_key": ''
-                    },
-                    "language": languages[y].code,
-                    "languageName": languages[y].lang,
-                    "lang_file": {
-                        "ivr": '',
-                        "sms": ''
-                    },
-                    "actionType": {
-                        "ivr": "PLAY",
-                        "sms": "HITURL_SMS"
-                    },
-                    "action_delay_min": 0,
-                    "repeatCount": 0,
-                    "waitTime": '',
-                },
-              )
-          }
+    for (var x = 0; x < e.target.value.length; x++) {
+      for (var y in languages) {
+        if (e.target.value[x] == languages[y].lang) {
+          languagesCode.push(languages[y].code);
+          languageChangeList.push({
+            id: "0_5",
+            input: {
+              ivr_key: x + 1,
+              sms_key: "",
+            },
+            language: languages[y].code,
+            languageName: languages[y].lang,
+            lang_file: {
+              ivr: "",
+              sms: "",
+            },
+            actionType: {
+              ivr: "PLAY",
+              sms: "HITURL_SMS",
+            },
+            action_delay_min: 0,
+            repeatCount: 0,
+            waitTime: "",
+          });
+        }
       }
     }
     console.log("languages[y]====>", languages[y].code);
-    console.log("languagesCode languagesCode=======>",  languagesCode);
-    finalLanguageList[0].actions = languageChangeList
+    console.log("languagesCode languagesCode=======>", languagesCode);
+    finalLanguageList[0].actions = languageChangeList;
     localStore.ivrCampFlowData.flow["languageChange"] = languagesCode;
-    for(let i=0; i<localStore.ivrCampFlowData.flow.languageChange.length; i++){
-        localStore.ivrCampFlowData.flow.main_file['ivr'][localStore.ivrCampFlowData.flow.languageChange[i]] = '';
+    for (
+      let i = 0;
+      i < localStore.ivrCampFlowData.flow.languageChange.length;
+      i++
+    ) {
+      localStore.ivrCampFlowData.flow.main_file["ivr"][
+        localStore.ivrCampFlowData.flow.languageChange[i]
+      ] = "";
 
-        localStore.ivrCampFlowData.flow.main_file['sms'][localStore.ivrCampFlowData.flow.languageChange[i]] = '';
-
+      localStore.ivrCampFlowData.flow.main_file["sms"][
+        localStore.ivrCampFlowData.flow.languageChange[i]
+      ] = "";
     }
 
-    
     // localStore.ivrCampFlowData.flow.channel_local = e.target.value
-console.log("finalLanguageList finalLanguageList",finalLanguageList);
-    localStore.ivrCampFlowData.flow.language = finalLanguageList
-    dispatch({ type: 'SET_DATA', nState: localStore });
+    console.log("finalLanguageList finalLanguageList", finalLanguageList);
+    localStore.ivrCampFlowData.flow.language = finalLanguageList;
+    dispatch({ type: "SET_DATA", nState: localStore });
     console.log(localStore);
-
-
   };
 
   return (
@@ -175,9 +181,10 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                   noValidate
                   autoComplete="off"
                 >
+                  
                   <TextField
                     id="create__flow__component__flow__name"
-                    value={flowName}
+                    value={localStore.ivrCampFlowData.flow.flowName ? localStore.ivrCampFlowData.flow.flowName:""}
                     label="flow name"
                     variant="outlined"
                     onChange={handelFlowNameChange}
@@ -192,11 +199,11 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={channel}
+                    value={localStore.ivrCampFlowData.flow.channel}
                     label="Select Channel"
                     onChange={handleChange}
                   >
-                    {console.log(channel)}
+                    {/* {console.log(channel)} */}
 
                     <MenuItem value={"IVR"}>IVR</MenuItem>
                     <MenuItem value={"SMS"}>SMS</MenuItem>
@@ -232,10 +239,13 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
-                    {console.log("ifIVRselectedThenLanguage", ifIVRselectedThenLanguage)}
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>
-                        <Checkbox checked={ifIVRselectedThenLanguage.indexOf(Languages) > -1} />
+                        <Checkbox
+                          checked={
+                            ifIVRselectedThenLanguage.indexOf(Languages) > -1
+                          }
+                        />
                         <ListItemText primary={Languages} />
                       </MenuItem>
                     ))}
@@ -250,6 +260,8 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     lang="Hindi"
                     dtmfTime={dtmfTimeHindi}
                     setDtmfTime={setDtmfTimeHindi}
+                    languageCode="_H"
+                    hideItemStyle={props.hideItemStyle}
                   />
                 ) : (
                   ""
@@ -261,6 +273,8 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     lang="English"
                     dtmfTime={dtmfTimeEnglish}
                     setDtmfTime={setDtmfTimeEnglish}
+                    languageCode="_E"
+                    hideItemStyle={props.hideItemStyle}
                   />
                 ) : (
                   ""
@@ -272,6 +286,8 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     lang="Arabic"
                     dtmfTime={dtmfTimeArabic}
                     setDtmfTime={setDtmfTimeArabic}
+                    languageCode="_A"
+                    hideItemStyle={props.hideItemStyle}
                   />
                 ) : (
                   ""
@@ -283,6 +299,8 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                     lang="Spanish"
                     dtmfTime={dtmfTimeSpanish}
                     setDtmfTime={setDtmfTimeSpanish}
+                    languageCode="_S"
+                    hideItemStyle={props.hideItemStyle}
                   />
                 ) : (
                   ""
@@ -315,11 +333,18 @@ console.log("finalLanguageList finalLanguageList",finalLanguageList);
                 )}
               </div>
 
-              {channel === "IVR" ? <IfIVRSelected /> : ""}
-              {channel === "SMS" ? <IfSMSSelected /> : ""}
+              {channel === "IVR" ? (
+                <IfIVRSelected hideItemStyle={props.hideItemStyle} />
+              ) : (
+                ""
+              )}
+              {channel === "SMS" ? (
+                <IfSMSSelected hideItemStyle={props.hideItemStyle} />
+              ) : (
+                ""
+              )}
             </div>
           </div>
-          
         </div>
       </div>
     </>

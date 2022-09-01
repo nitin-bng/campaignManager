@@ -189,7 +189,7 @@ const CreateFlowComponent = (props) => {
                     variant="outlined"
                     onChange={handelFlowNameChange}
                     disabled = {props.disableEditingWhileCreatingCamp}
-
+                    required
                   />
                 </Box>
               </div>

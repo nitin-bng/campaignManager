@@ -595,7 +595,7 @@ const IfIVRSelected = (props) => {
               url: "",
               dtmf_count: 0,
               actions:
-                current.type === "PLAY"
+                current.type === "PLAY" 
                   ? []
                   : [
                       {
@@ -912,6 +912,7 @@ const IfIVRSelected = (props) => {
   };
   const [arr1, setArr] = useState([]);
   useEffect(() => {
+    localStorage.setItem("colorStateCounter" , 1)
     var arr = [];
     for (var i = 1; i < numberOfMainDTMFWhenIVRIsSelected + 1; i++) {
       arr.push(i);
@@ -1006,7 +1007,8 @@ const IfIVRSelected = (props) => {
                     // disableProperties &&
                     disableChannel == "SMS" ||
                     // !disableProperties &&
-                    disableChannel == "SMS"
+                    disableChannel == "SMS" ||
+                    props.disableEditingWhileCreatingCamp
                   }
                   label="Welcome prompt Wait Time"
                   type="number"
@@ -1032,14 +1034,16 @@ const IfIVRSelected = (props) => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={numberOfMainDTMFWhenIVRIsSelected}
+                  value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || null }
                   label="DTMF"
                   // onChange={handleChange}
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);
+                    console.log('here',)
                   }}
                   name="main_audio_dtmfCount"
+                  disabled= {props.disableEditingWhileCreatingCamp}
                 >
                   {numberOfDTMF.map((number, index) => {
                     return (
@@ -1073,7 +1077,7 @@ const IfIVRSelected = (props) => {
                   dataHandleWithObj={dataHandleWithObj}
                   setWaitTime={setWaitTime}
                   hideItemStyle = {props.hideItemStyle}
-
+                  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                   // edit={props.edit}
                   // uploadFiles={uploadFiles}
                   // setRepeat={setRepeat}

@@ -1,5 +1,5 @@
 .subDTMF__subdtmf{
-    width: 48%;
+    width: 100%;
     /* border: 2px solid red; */
     display: flex;
 
@@ -21,5 +21,5 @@
 }
 
 .rendering__sub__subdtmf__container{
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }

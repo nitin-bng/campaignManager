@@ -23,8 +23,6 @@ import CreateFlowComponent from "../create__flow__component/CreateFlowComponent"
 import { store } from "../../../../store/store";
 const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-
-
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
   var [update, updateForm] = useState(false);
@@ -53,6 +51,8 @@ const CreateCampaign = (props) => {
   var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
 
+  const [showFlow, setShowFlow] = useState(false);
+
   var flowId = "";
 
   var scheduleData = {};
@@ -69,9 +69,7 @@ const CreateCampaign = (props) => {
     debugger;
     // setData([]);
     // props.getFlowList();
-}, []);
-
-
+  }, []);
 
   const getFlow = async (id) => {
     debugger;
@@ -107,6 +105,7 @@ const CreateCampaign = (props) => {
   const handleChange = (e, catagory) => {
     debugger;
     const { name, value } = e.target;
+    console.log(e.target);
     setFormValues({ ...formValues, [name]: value });
     if (e.target.id == "campName") {
       // validateData('campName', e);
@@ -115,7 +114,7 @@ const CreateCampaign = (props) => {
         ...scheduleData1,
         ...scheduleData,
       }));
-    } else if (e.target.id == "campPriority") {
+    } else if (e.target.name == "campPriority") {
       scheduleData["campPriority"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -188,7 +187,7 @@ const CreateCampaign = (props) => {
     console.log(scheduleData1);
 
     if (update) {
-      fetch("http://34.214.61.86" + ":" + "5000" +"/bng/ui/update/campaign", {
+      fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/update/campaign", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -225,6 +224,7 @@ const CreateCampaign = (props) => {
               // });
               // showSuccess(true)
               console.log(res);
+              setShowFlow(true);
             } else if (res.length == 0) {
             }
           });
@@ -251,7 +251,10 @@ const CreateCampaign = (props) => {
   return (
     <>
       <div className="create__campaign">
-        <div className="create__campaign__container">
+        <div
+          className="create__campaign__container"
+          style={{ border: "2px solid red", height: "30vh" }}
+        >
           <div className="campaign__name">
             <Box
               component="form"
@@ -277,64 +280,84 @@ const CreateCampaign = (props) => {
               <InputLabel id="demo-simple-select-label">
                 Select Priority
               </InputLabel>
-              {/* <Select
-                name="campPriority"
-                id="campPriority"
-                className="campaignId form-select"
-                aria-label="Default select example"
-                // value={selectPriority}
-                value={formValues.campPriority}
-                label="Select channel"
-                // onChange={(event) => {
-                //   handleChange(event, "priority");
-                //   handlePriorityChange(event);
-                // }}
-                onChange={(event) => handleChange(event, "priority")}
-              > */}
-              {/* <Select
-                                                // name="campaignId"
-                                                id="campPriority"
-                                                className="campaignId form-select"
-                                                aria-label="Default select example"
-                                                name="campPriority"
-                                                value={formValues.campPriority}
-                                                onChange={(event) =>
-                                                    handleChange(
-                                                        event,
-                                                        'priority'
-                                                    )
-                                                }
-                                            >
-                {priorityArray.map((element, index) => {
-                  return <MenuItem value={element}>{element}</MenuItem>;
-                })}
-              </Select> */}
-              <select
-                // name="campaignId"
-                id="campPriority"
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select campPriority"
+                label="Select Channel"
                 className="campaignId form-select"
                 aria-label="Default select example"
                 name="campPriority"
                 value={formValues.campPriority}
                 onChange={(event) => handleChange(event, "priority")}
               >
-                <option value="select">select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+                {/* {console.log(channel)} */}
+
+                <MenuItem id="campPriority" value="select">
+                  select
+                </MenuItem>
+                <MenuItem id="campPriority" value={1}>
+                  1
+                </MenuItem>
+                <MenuItem id="campPriority" value={2}>
+                  2
+                </MenuItem>
+                <MenuItem id="campPriority" value={3}>
+                  3
+                </MenuItem>
+                <MenuItem id="campPriority" value="4">
+                  4
+                </MenuItem>
+                <MenuItem id="campPriority" value="5">
+                  5
+                </MenuItem>
+                <MenuItem id="campPriority" value="6">
+                  6
+                </MenuItem>
+                <MenuItem id="campPriority" value="7">
+                  7
+                </MenuItem>
+                <MenuItem id="campPriority" value="8">
+                  8
+                </MenuItem>
+                <MenuItem id="campPriority" value="9">
+                  9
+                </MenuItem>
+                <MenuItem id="campPriority" value="10">
+                  10
+                </MenuItem>
+              </Select>
             </FormControl>
           </div>
 
           <div className="create__campaign__workflow__name">
-            <Box
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                Work flow name{" "}
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select wfId"
+                label="Select Channel"
+                className="campaignId form-select"
+                aria-label="Default select example"
+                name="wfId"
+                value={formValues.wfId}
+                onChange={(event) => handleChange(event, "wfId")}
+              >
+                {/* {console.log(channel)} */}
+                {props.FlowListData &&
+                  props.FlowListData.map((e) => (
+                    // <option key={e.id} value={e.wfId}>
+                    //   {e.flowName}
+                    // </option>
+                    <MenuItem key={e.id} value={e.wfId}>
+                      {e.flowName}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+
+            {/* <Box
               component="form"
               style={{ width: "100%" }}
               noValidate
@@ -347,7 +370,7 @@ const CreateCampaign = (props) => {
                 className="campaignId form-select"
                 aria-label="Default select example"
                 onChange={(event) => handleChange(event, "wfId")}
-                // value={localStorage.getItem("flowName")}
+                value={localStorage.getItem("flowName")}
               >
                 {props.FlowListData &&
                   props.FlowListData.map((e) => (
@@ -356,7 +379,7 @@ const CreateCampaign = (props) => {
                     </option>
                   ))}
               </select>
-            </Box>
+            </Box> */}
           </div>
 
           <div className="create__campaign__campaign__type__radio__button">
@@ -412,12 +435,17 @@ const CreateCampaign = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="if__IVR__selected"
                 type="number"
                 label={"cli"}
                 variant="outlined"
-                value={createCampCli}
-                onChange={saveValues}
+
+                className="form-control"
+                id="cli_ivr"
+                aria-describedby="emailHelp"
+                placeholder={"enter cli for ivr"}
+                name="cli_ivr"
+                value={formValues.cli_ivr}
+                onChange={(event) => handleChange(event, "cli_ivr")}
               />
             </Box>
           </div>
@@ -429,9 +457,13 @@ const CreateCampaign = (props) => {
             {update ? "update" : "Submit"}
           </button>
         </div>
-        <div style={{ border: "2px solid red", paddingBottom: "2rem" }}>
-          <CreateFlowComponent />
-        </div>
+        {showFlow ? (
+          <div style={{ paddingBottom: "2rem" }}>
+            <CreateFlowComponent
+                disableEditingWhileCreatingCamp = {true}
+              />
+          </div>
+        ) : null}
       </div>
     </>
   );

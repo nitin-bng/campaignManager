@@ -21,7 +21,6 @@ import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { store } from "../../../../../../store/store";
 
-
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
@@ -77,83 +76,105 @@ const SubDTMF = (props) => {
 
   const uploadFiles = async (target, e, files, lang, current) => {
     debugger;
-    console.log('-------target and files------',target,files,'event',e,'lang',lang);
+    console.log(
+      "-------target and files------",
+      target,
+      files,
+      "event",
+      e,
+      "lang",
+      lang
+    );
     // return
     try {
-        const uploadedFiles = await uploadMultipleFiles(files);
-        console.log('%c ==FILES UPLOADED==','background:yellow',uploadedFiles);
-        let localStore = globalState.state;
-        const localFileName = uploadedFiles.response;
-        const serverFileName = uploadedFiles.key;
+      const uploadedFiles = await uploadMultipleFiles(files);
+      console.log("%c ==FILES UPLOADED==", "background:yellow", uploadedFiles);
+      let localStore = globalState.state;
+      const localFileName = uploadedFiles.response;
+      const serverFileName = uploadedFiles.key;
 
-        //set origional and server name mapping in temp
-        localStore.temp.uploads.push({l_name: localFileName,s_name: serverFileName,});
+      //set origional and server name mapping in temp
+      localStore.temp.uploads.push({
+        l_name: localFileName,
+        s_name: serverFileName,
+      });
 
-        if (target === 'main_audio_file' ||target === 'thanks_audio_file') {
-            const key = e.target.name;
-            const dict = {};
-            let oldStateFiles = '';
-            // console.log("local", localStore)
-            if (localStore.ivrCampFlowData.flow &&localStore.ivrCampFlowData.flow[target]) {
-                oldStateFiles =
-                    localStore.ivrCampFlowData.flow[target][lang] + ',';
-            }
-
-            console.log('oldState', oldStateFiles);
-            dict[lang] = oldStateFiles + uploadedFiles[0].key;
-            localStore.ivrCampFlowData.flow[key] = {
-                ...localStore.ivrCampFlowData.flow[key],
-                ...dict,
-            };
-            localStore.ivrCampFlowData.flow['type'] = 'PLAY';
-            dispatch({ type: 'SET_MAIN_AUDIO_FILE', nState: localStore });
-        } else if (target === 'repeat_audio_file') {
-            // const key = e.target.name;
-            const dict = {};
-            dict[lang] = uploadedFiles[0].key;
-            let localStoreB = localStore.ivrCampFlowData.flow;
-            let localStoreC = localStore.ivrCampFlowData.flow;
-            let traverseArr = current.id.split('_');
-            for (let i = 0; i < traverseArr.length; i++) {
-                localStoreC = localStoreC.actions[traverseArr[i] - 1];
-            }
-            localStoreC.repeat.audio_file = dict;
-            findAndModifyFirst(localStoreB,'actions',{ id: current.id },localStoreC);
-            localStore.ivrCampFlowData.flow = localStoreB;
-            dispatch({ type: 'SET_DATA', nState: localStore });
-        } else {
-            const targetArray = target.split('_');
-            console.log(target, '......', targetArray);
-
-            let previousData = traverseAndModify(props.current.id,props.current,null,null,'return');
-            // }
-            previousData.audio_file[lang] = previousData.audio_file[lang]
-                ? previousData.audio_file[lang] +
-                  ',' +
-                  uploadedFiles.response
-                : uploadedFiles.response;
-            previousData.file['ivr'][lang] = previousData.file['ivr'][lang]
-                ? previousData.file['ivr'][lang] +
-                  ',' +
-                  uploadedFiles.response
-                : uploadedFiles.response;
-            localStore = findAndModifyFirst(
-                localStore,
-                'actions',
-                { id: props.current.id },
-                previousData,
-                'edit'
-            );
-
-            dispatch({ type: 'SET_DATA', nState: localStore });
-
+      if (target === "main_audio_file" || target === "thanks_audio_file") {
+        const key = e.target.name;
+        const dict = {};
+        let oldStateFiles = "";
+        // console.log("local", localStore)
+        if (
+          localStore.ivrCampFlowData.flow &&
+          localStore.ivrCampFlowData.flow[target]
+        ) {
+          oldStateFiles = localStore.ivrCampFlowData.flow[target][lang] + ",";
         }
-    } catch (e) {
-        console.log('%c ----------------- ERROR IN FILEUPLOAD ---------------------','background:red',e);
-        return;
-    }
-};
 
+        console.log("oldState", oldStateFiles);
+        dict[lang] = oldStateFiles + uploadedFiles[0].key;
+        localStore.ivrCampFlowData.flow[key] = {
+          ...localStore.ivrCampFlowData.flow[key],
+          ...dict,
+        };
+        localStore.ivrCampFlowData.flow["type"] = "PLAY";
+        dispatch({ type: "SET_MAIN_AUDIO_FILE", nState: localStore });
+      } else if (target === "repeat_audio_file") {
+        // const key = e.target.name;
+        const dict = {};
+        dict[lang] = uploadedFiles[0].key;
+        let localStoreB = localStore.ivrCampFlowData.flow;
+        let localStoreC = localStore.ivrCampFlowData.flow;
+        let traverseArr = current.id.split("_");
+        for (let i = 0; i < traverseArr.length; i++) {
+          localStoreC = localStoreC.actions[traverseArr[i] - 1];
+        }
+        localStoreC.repeat.audio_file = dict;
+        findAndModifyFirst(
+          localStoreB,
+          "actions",
+          { id: current.id },
+          localStoreC
+        );
+        localStore.ivrCampFlowData.flow = localStoreB;
+        dispatch({ type: "SET_DATA", nState: localStore });
+      } else {
+        const targetArray = target.split("_");
+        console.log(target, "......", targetArray);
+
+        let previousData = traverseAndModify(
+          props.current.id,
+          props.current,
+          null,
+          null,
+          "return"
+        );
+        // }
+        previousData.audio_file[lang] = previousData.audio_file[lang]
+          ? previousData.audio_file[lang] + "," + uploadedFiles.response
+          : uploadedFiles.response;
+        previousData.file["ivr"][lang] = previousData.file["ivr"][lang]
+          ? previousData.file["ivr"][lang] + "," + uploadedFiles.response
+          : uploadedFiles.response;
+        localStore = findAndModifyFirst(
+          localStore,
+          "actions",
+          { id: props.current.id },
+          previousData,
+          "edit"
+        );
+
+        dispatch({ type: "SET_DATA", nState: localStore });
+      }
+    } catch (e) {
+      console.log(
+        "%c ----------------- ERROR IN FILEUPLOAD ---------------------",
+        "background:red",
+        e
+      );
+      return;
+    }
+  };
 
   async function uploadMultipleFiles(props) {
     debugger;
@@ -217,7 +238,6 @@ const SubDTMF = (props) => {
 
   const GetMainAudioFiles = (lang, type) => {
     debugger;
- 
 
     let id = lang.split("-");
     if (type == "MainAudioFile") {
@@ -341,86 +361,100 @@ const SubDTMF = (props) => {
       .map((x, i) => i + 1);
   };
 
-
-
   const setDataDynamic = (type, e, current) => {
+    debugger
     const val = e.target.value;
     let localStore = globalState.state;
     console.log(current, e.target.value, props);
-    console.log('===================================================');
+    console.log("===================================================");
 
     // const oldNumOfCards = localStore.ivrCampFlowData.flow.actions[current.dtmf_key - 1].dtmf_count;
-    const oldNumOfCards = traverseAndModify(current.id,current,'dtmf_count',null,'read');
+    const oldNumOfCards = traverseAndModify(
+      current.id,
+      current,
+      "dtmf_count",
+      null,
+      "read"
+    );
     const newNumOfCards = e.target.value;
 
     // localStore.ivrCampFlowData.flow.actions[current.dtmf_key - 1].dtmf_count = e.target.value;
-    traverseAndModify(current.id,current,'dtmf_count',e.target.value,'edit');
+    traverseAndModify(
+      current.id,
+      current,
+      "dtmf_count",
+      e.target.value,
+      "edit"
+    );
 
-    console.log('---------', localStore);
-    let childActions = traverseAndModify(current.id,null,null,null,'return').actions;
-    console.log('---------', localStore, 'childdddddddd', childActions);
+    console.log("---------", localStore);
+    let childActions = traverseAndModify(
+      current.id,
+      null,
+      null,
+      null,
+      "return"
+    ).actions;
+    console.log("---------", localStore, "childdddddddd", childActions);
     if (newNumOfCards > oldNumOfCards) {
-        debugger;
-        let languageSelect = {};
-        localStore.ivrCampFlowData.flow.languageChange.map((e) => {
-            languageSelect[e] = '';
+      debugger;
+      let languageSelect = {};
+      localStore.ivrCampFlowData.flow.languageChange.map((e) => {
+        languageSelect[e] = "";
+      });
+      genArray(newNumOfCards - oldNumOfCards).forEach((e) => {
+        childActions.push({
+          dtmf_key: oldNumOfCards + e,
+          audio_file: {},
+          parent_dtmf: current.dtmf_key,
+          type: "PLAY",
+          level: current.level + 1,
+          waitTime: "",
+          url: "",
+          url_success: "",
+          url_fail: "",
+          url_action: "",
+          dtmf_count: 0,
+          actions: [
+            //     //    { true ?
+            //     //     {
+            //     //        hit_url: 'yo'
+            //     // }:
+            //     // ''
+            // }
+          ],
+          action_tag: "",
+          sms: "",
+          file: {
+            ivr: languageSelect,
+            sms: languageSelect,
+          },
+          node_type: "PROCESSING",
+          input: {
+            ivr_key: oldNumOfCards + e,
+            sms_key: "",
+          },
+          actionType: {
+            ivr: "",
+            sms: "",
+          },
+          id: `${current.id}_${oldNumOfCards + e}`,
+          repeat: {
+            value: false,
+            dtmf: 0,
+            audio_file: [],
+            max_count: 0,
+          },
         });
-        genArray(newNumOfCards - oldNumOfCards).forEach((e) => {
-            childActions.push({
-                dtmf_key: oldNumOfCards + e,
-                audio_file: {},
-                parent_dtmf: current.dtmf_key,
-                type: 'PLAY',
-                level: current.level + 1,
-                waitTime: '',
-                url: '',
-                url_success: '',
-                url_fail: '',
-                url_action: '',
-                dtmf_count: 0,
-                actions: [
-                    //     //    { true ?
-                    //     //     {
-                    //     //        hit_url: 'yo'
-                    //     // }:
-                    //     // ''
-                    // }
-                ],
-                action_tag: '',
-                sms: '',
-                file: {
-                    ivr: languageSelect,
-                    sms: languageSelect,
-                },
-                node_type: 'PROCESSING',
-                input: {
-                    ivr_key: oldNumOfCards + e,
-                    sms_key: '',
-                },
-                actionType: {
-                    ivr: '',
-                    sms: '',
-                },
-                id: `${current.id}_${oldNumOfCards + e}`,
-                repeat: {
-                    value: false,
-                    dtmf: 0,
-                    audio_file: [],
-                    max_count: 0,
-                },
-            });
-        });
+      });
     } else {
-        //delete cards from the end of the array
-        for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
-            childActions.pop();
+      //delete cards from the end of the array
+      for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
+        childActions.pop();
     }
-    console.log('---------', localStore);
-    traverseAndModify(current.id, current, 'actions', childActions, 'edit');
-};
-
-
-
+    console.log("---------", localStore);
+    traverseAndModify(current.id, current, "actions", childActions, "edit");
+  };
 
   const detectLevel = (e, target, current) => {
     debugger;
@@ -591,7 +625,7 @@ const SubDTMF = (props) => {
 
     for (let i = 0; i < traverseArr.length; i++) {
       localStoreC = localStoreC.actions[traverseArr[i] - 1];
-      console.log("----", localStoreC)
+      console.log("----", localStoreC);
     }
 
     if (type === "read") {
@@ -758,6 +792,11 @@ const SubDTMF = (props) => {
   };
 
   const [arr1, setArr] = useState([]);
+
+  const [bgCounterState, setBgCounterState] = useState(1);
+
+
+
   useEffect(() => {
     var arr = [];
     for (var i = 1; i < numberOfMainDTMFWhenIVRIsSelected + 1; i++) {
@@ -765,13 +804,13 @@ const SubDTMF = (props) => {
     }
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
-  var subAsParentDTMFNumber = props.parentNumber + "_" + props.numberOfSubDTMF;
 
   return (
     <>
+    {console.log('data is again here',props.current)}
       <div className="subDTMF__subdtmf">
         <div className="sudDTMF__subdtmf__container">
-          <Card style={{ backgroundColor: "white", width: props.width }}>
+          <Card style={{ backgroundColor:props.isBgColor?"white":"#f5f5f5", width: props.width }}>
             <CardActions disableSpacing>
               <Typography paragraph>SUB DTMF</Typography>
               <ExpandMore
@@ -801,14 +840,23 @@ const SubDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={selectOptionForMainDTMF}
+                        value={props.current.type}
                         label="DTMF__option"
+                        disabled = {props.disableEditingWhileCreatingCamp}
                         onChange={(e) => {
                           handleDtmfOptionChange(e);
-                         
-                            traverseAndModify(props.current.id,props.current,'type',e.target.value,'edit')
-                    props.dataHandleWithObj(e, props.global || props.current)
-                        
+
+                          traverseAndModify(
+                            props.current.id,
+                            props.current,
+                            "type",
+                            e.target.value,
+                            "edit"
+                          );
+                          props.dataHandleWithObj(
+                            e,
+                            props.global || props.current
+                          );
                         }}
                         name="type"
                       >
@@ -829,9 +877,17 @@ const SubDTMF = (props) => {
                         id="if__IVR__selected"
                         type="number"
                         label="Main Wait Time"
-                        // value={traverseAndModify(props.current.id,props.current,'waitTime',null,'read')}
+                        disabled = {props.disableEditingWhileCreatingCamp}
+
+                        value={traverseAndModify(props.current.id,props.current,'waitTime',null,'read')}
                         onChange={(e) =>
-                            traverseAndModify(props.current.id,props.current,'waitTime',e.target.value,'edit')
+                          traverseAndModify(
+                            props.current.id,
+                            props.current,
+                            "waitTime",
+                            e.target.value,
+                            "edit"
+                          )
                         }
                         variant="outlined"
                       />
@@ -845,7 +901,10 @@ const SubDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-select"
-                        value={numberOfMainDTMFWhenIVRIsSelected}
+                        value={props.current.dtmf_count}
+                        disabled = {props.disableEditingWhileCreatingCamp}
+
+                        // value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || 0 : props.current.dtmf_count}
                         label="DTMF"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
@@ -891,7 +950,14 @@ const SubDTMF = (props) => {
                               name="main_audio_file"
                               onChange={(event) => {
                                 uploadFiles(
-                                  'level' +props.current.level +'_' +props.current.parent_dtmf +'_' +props.current.dtmf_key +'_' +lang,
+                                  "level" +
+                                    props.current.level +
+                                    "_" +
+                                    props.current.parent_dtmf +
+                                    "_" +
+                                    props.current.dtmf_key +
+                                    "_" +
+                                    lang,
                                   event,
                                   event.currentTarget.files,
                                   lang
@@ -930,9 +996,10 @@ const SubDTMF = (props) => {
                 {props.current.actions &&
                   props.current.actions.map((e, index) => {
                     return (
-                      <div style={{ border: "2px solid blue" }}>
+                      <div style={{}}>
                         <SubDTMF
-                          width="225%"
+                          width="100%"
+                          isBgColor = {!props.isBgColor}
                           data={props}
                           current={e}
                           handleDataChange={props.handleDataChange}
@@ -942,10 +1009,9 @@ const SubDTMF = (props) => {
                           setDataDynamic={props.setDataDynamic}
                           parentNumber={props.dtmfNumber}
                           numberOfSubDTMF={e}
-                          dataHandleWithObj={
-                            props.dataHandleWithObj
-                        }
-                        hideItemStyle= {props.hideItemStyle}
+                          dataHandleWithObj={props.dataHandleWithObj}
+                          hideItemStyle={props.hideItemStyle}
+                          disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                         />
                       </div>
                     );

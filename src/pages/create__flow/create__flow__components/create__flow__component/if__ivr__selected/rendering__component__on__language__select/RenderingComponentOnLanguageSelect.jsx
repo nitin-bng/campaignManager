@@ -420,6 +420,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 //       .waitTime}
                 value={props.dtmfTime}
                 onChange={saveValues}
+                disabled= {props.disableEditingWhileCreatingCamp}
               />
             </Box>
           </div>
@@ -429,7 +430,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
             globalState.state.ivrCampFlowData.flow.languageChange.map(
               (lang) => ( */}
           <div
-            style={{ border: "2px solid red" }}
+            style={{ }}
             className={props.hideItemStyle}
             hideItem
           >

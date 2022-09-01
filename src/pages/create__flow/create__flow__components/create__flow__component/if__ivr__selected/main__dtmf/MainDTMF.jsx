@@ -619,12 +619,16 @@ const MainDTMF = (props) => {
     for (var i = 1; i < numberOfMainDTMFWhenIVRIsSelected + 1; i++) {
       arr.push(i);
     }
+
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
+
+
 
   return (
     <>
       <div className="main__dtmf">
+      {console.log('data is here',props.data)}
         <div className="main__dtmf__container">
           <Card
             style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -653,7 +657,7 @@ const MainDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={selectOptionForMainDTMF}
+                        value={globalState.state.ivrCampFlowData.flow.actions[props.data-1].type}
                         label="DTMF__option"
                         onChange={(e) => {
                           handleChange(e);
@@ -662,9 +666,10 @@ const MainDTMF = (props) => {
                             props.global || props.current
                           );
                         }}
+                        disabled={props.disableEditingWhileCreatingCamp}
                         name="type"
                       >
-                        {["PLAY", "Schedule SMS"].map((number, index) => {
+                        {["PLAY"].map((number, index) => {
                           console.log(number);
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
@@ -685,7 +690,8 @@ const MainDTMF = (props) => {
                           // disableProperties &&
                           disableChannel == "SMS" ||
                           // !disableProperties &&
-                          disableChannel == "SMS"
+                          disableChannel == "SMS" ||
+                          props.disableEditingWhileCreatingCamp
                         }
                         type="number"
                         label="Main Wait iolkljk Time"
@@ -709,24 +715,28 @@ const MainDTMF = (props) => {
 
                   <div className="select__number__of__subDTMF__from__main__dtmf__container">
                     <FormControl style={{ width: "100%" }}>
+                      {console.log("ggffggff",props)}
                       <InputLabel id="demo-simple-select-label">
-                        main DTMF
+                        fyg DTMF
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={numberOfMainDTMFWhenIVRIsSelected}
+                        value={props.global.dtmf_count || null}
                         label="DTMF"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.global);
                         }}
+                        disabled= {props.disableEditingWhileCreatingCamp}
                       >
                         {numberOfSubDTMF.map((number, index) => {
                           console.log(number);
 
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
+
+                        
                       </Select>
                     </FormControl>
                   </div>
@@ -808,6 +818,7 @@ const MainDTMF = (props) => {
                     <SubDTMF
                       data={props}
                       current={e}
+                      isBgColor = {true}
                       handleDataChange={props.handleDataChange}
                       onChange={props.handleChange}
                       uploadFiles={props.uploadFiles}
@@ -817,6 +828,7 @@ const MainDTMF = (props) => {
                       numberOfSubDTMF={e}
                       dataHandleWithObj={props.dataHandleWithObj}
                       hideItemStyle = {props.hideItemStyle}
+                      disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
                     />

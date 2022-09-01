@@ -188,6 +188,8 @@ const CreateFlowComponent = (props) => {
                     label="flow name"
                     variant="outlined"
                     onChange={handelFlowNameChange}
+                    disabled = {props.disableEditingWhileCreatingCamp}
+
                   />
                 </Box>
               </div>
@@ -202,6 +204,7 @@ const CreateFlowComponent = (props) => {
                     value={localStore.ivrCampFlowData.flow.channel}
                     label="Select Channel"
                     onChange={handleChange}
+                    disabled = {props.disableEditingWhileCreatingCamp}
                   >
                     {/* {console.log(channel)} */}
 
@@ -238,6 +241,8 @@ const CreateFlowComponent = (props) => {
                     input={<OutlinedInput label="Select language" />}
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
+                    disabled = {props.disableEditingWhileCreatingCamp}
+
                   >
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>
@@ -262,6 +267,8 @@ const CreateFlowComponent = (props) => {
                     setDtmfTime={setDtmfTimeHindi}
                     languageCode="_H"
                     hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+
                   />
                 ) : (
                   ""
@@ -275,6 +282,8 @@ const CreateFlowComponent = (props) => {
                     setDtmfTime={setDtmfTimeEnglish}
                     languageCode="_E"
                     hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+
                   />
                 ) : (
                   ""
@@ -288,6 +297,8 @@ const CreateFlowComponent = (props) => {
                     setDtmfTime={setDtmfTimeArabic}
                     languageCode="_A"
                     hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+
                   />
                 ) : (
                   ""
@@ -301,6 +312,8 @@ const CreateFlowComponent = (props) => {
                     setDtmfTime={setDtmfTimeSpanish}
                     languageCode="_S"
                     hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+
                   />
                 ) : (
                   ""
@@ -334,7 +347,8 @@ const CreateFlowComponent = (props) => {
               </div>
 
               {channel === "IVR" ? (
-                <IfIVRSelected hideItemStyle={props.hideItemStyle} />
+                <IfIVRSelected  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+                hideItemStyle={props.hideItemStyle} />
               ) : (
                 ""
               )}

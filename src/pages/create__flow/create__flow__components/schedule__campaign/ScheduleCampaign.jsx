@@ -717,7 +717,7 @@ const ScheduleCampaign = () => {
                     </div>
                     <div className="card-body text-center p-0">
                       <div className="table-responsive table-striped ctable">
-                        <TableContainer component={Paper}>
+                        {/* <TableContainer component={Paper}> */}
                           <Table
                             className={classes.table}
                             aria-label="simple table"
@@ -728,7 +728,6 @@ const ScheduleCampaign = () => {
                                 <TableCell align="right">Job Name</TableCell>
                                 <TableCell align="right">Priority</TableCell>
                                 <TableCell align="right">Status</TableCell>
-                                {/* <TableCell align="right">Action</TableCell> */}
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -754,10 +753,11 @@ const ScheduleCampaign = () => {
                               ))}
                             </TableBody>
                           </Table>
-                        </TableContainer>
+                        {/* </TableContainer> */}
                       </div>
                     </div>
                   </div>
+                  // <>fjhgj</>
                 )}
               </div>
             ) : (

@@ -149,7 +149,7 @@ const SubInput = (props) => {
                 {arr1.length > 0 &&
                   arr1.map((el, ind) => {
                     return (
-                      <div style={{ border: "2px solid blue" }}>
+                      <div style={{ }}>
                         <SubInput width="225%" numberOfSubDTMF={el} />
                       </div>
                     );

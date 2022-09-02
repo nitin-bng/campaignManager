@@ -28,6 +28,7 @@ import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
 
 import config from "../../../../../../ApiConfig/Config";
+import { useError } from "../../../../../../store/errorContext";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -51,7 +52,7 @@ const SubDTMF = (props) => {
 
   var hellohello = [];
   var languageName = [];
-
+  const {errorDispatch} = useError()
   const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -805,9 +806,26 @@ const SubDTMF = (props) => {
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
+
+  useEffect(()=>{
+    console.log('sub ran', props.showError)
+    props.setShowError(false)
+    errorDispatch({type: "SUB_DTMF", payload: false})
+  },[])
+
+  useEffect(()=>{
+    if(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+
+      errorDispatch({type: "SUB_DTMF", payload: true})
+    }
+    else{
+      errorDispatch({type: "SUB_DTMF", payload: false})
+    }
+  },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
+
+
   return (
     <>
-    {console.log('data is again here',props.current)}
       <div className="subDTMF__subdtmf">
         <div className="sudDTMF__subdtmf__container">
           <Card style={{ backgroundColor:props.isBgColor?"white":"#f5f5f5", width: props.width }}>
@@ -890,6 +908,8 @@ const SubDTMF = (props) => {
                           )
                         }
                         variant="outlined"
+                        required
+                        error={props.showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}
                       />
                     </Box>
                   </div>
@@ -1012,6 +1032,8 @@ const SubDTMF = (props) => {
                           dataHandleWithObj={props.dataHandleWithObj}
                           hideItemStyle={props.hideItemStyle}
                           disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+                          showError={props.showError}
+                          setShowError={props.setShowError}
                         />
                       </div>
                     );

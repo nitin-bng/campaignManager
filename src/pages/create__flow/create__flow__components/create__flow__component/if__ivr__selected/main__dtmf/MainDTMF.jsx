@@ -28,6 +28,7 @@ import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
 
 import config from "../../../../../../ApiConfig/Config";
+import { useError } from "../../../../../../store/errorContext";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -48,6 +49,7 @@ const MainDTMF = (props) => {
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
+  const {errorDispatch} = useError()
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -624,6 +626,21 @@ const MainDTMF = (props) => {
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
 
+  useEffect(()=>{
+    console.log('main ran', props.showError)
+    props.setShowError(false)
+    errorDispatch({type: "MAIN_DTMF", payload: false})
+  },[])
+
+  useEffect(()=>{
+    if(globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].waitTime){
+
+      errorDispatch({type: "MAIN_DTMF", payload: true})
+    }
+    else{
+      errorDispatch({type: "MAIN_DTMF", payload: false})
+    }
+  },[globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].waitTime])
 
   return (
     <>
@@ -709,6 +726,10 @@ const MainDTMF = (props) => {
                           )
                         }
                         variant="outlined"
+                        required
+                        error={props.showError ? globalState.state.ivrCampFlowData.flow.actions[
+                          props.global.dtmf_key - 1
+                        ].waitTime ? false:true:false}
                       />
                     </Box>
                   </div>
@@ -831,6 +852,8 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
+                      showError={props.showError}
+                      setShowError={props.setShowError}
                     />
                   );
                 })}

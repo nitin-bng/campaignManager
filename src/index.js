@@ -6,15 +6,16 @@ import { StateProvider } from "../src/store/store";
 import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
+import { ErrorProvider } from "./store/errorContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
-  
     <BrowserRouter>
-    <StateProvider>
-            <App />
-        </StateProvider>
-
+      <StateProvider>
+        <ErrorProvider>
+              <App />
+        </ErrorProvider>
+    </StateProvider>
     </BrowserRouter>
   </>
 );

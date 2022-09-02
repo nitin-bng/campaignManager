@@ -18,12 +18,16 @@ import { store } from "../../store/store";
 import config from "../../ApiConfig/Config";
 // import MainDTMF from "./create__flow__components/create__flow__component/if__ivr__selected/main__dtmf/MainDTMF";
 import classNames from "classnames";
+import { useError } from "../../store/errorContext";
 
 
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
+  const {errorState} = useError()
+  const {ifIVRselectedThenLanguage} = useContext(CommonContext)
+  const [showError, setShowError] = useState(false)
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
@@ -55,6 +59,20 @@ const CreateFlow = () => {
         return error;
       });
   };
+
+const checkMandatoryFields =() =>{
+  let result = true
+  const keys = Object.keys(errorState)
+
+  for(let key of keys){
+    if(!errorState[key]){
+      result = false
+      break
+    }
+  }
+  return result
+}
+
   const handleNext = () => {
     // console.log("flowName", flowName);
     // console.log("channel", channel);
@@ -65,8 +83,10 @@ const CreateFlow = () => {
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
+    if(checkMandatoryFields()){
+     
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
+    setShowError(false)
     console.log("local store on click of next button", localStore);
     const userId = JSON.parse(localStorage.getItem("userId"));
 
@@ -245,7 +265,11 @@ const CreateFlow = () => {
     } else if (activeStep === 3) {
       console.log("activeStep === 3");
     }
-  };
+  }
+else{
+  setShowError(true)
+}
+}
 
   
 
@@ -254,7 +278,7 @@ const CreateFlow = () => {
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+   setActiveStep(0)
   };
   return (
     <>
@@ -292,10 +316,10 @@ const CreateFlow = () => {
                     </Box>
                   </React.Fragment>
                 ) : (
-                  <React.Fragment>
+                  <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent hideItemStyle={hideItemStyle} />
+                        <CreateFlowComponent showError={showError} setShowError={setShowError} hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
                         <CreateCampaign getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 2 ? (
@@ -331,7 +355,7 @@ const CreateFlow = () => {
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
                     </Box>
-                  </React.Fragment>
+                      </>
                 )}
               </Box>
             </div>

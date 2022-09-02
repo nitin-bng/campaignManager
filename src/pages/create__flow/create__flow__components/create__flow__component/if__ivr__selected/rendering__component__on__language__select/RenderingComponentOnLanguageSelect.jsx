@@ -12,6 +12,7 @@ import { Howl } from "howler";
 
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
+import { useError } from "../../../../../../store/errorContext";
 const RenderingComponentOnLanguageSelect = (props) => {
   
   let globalState = useContext(store);
@@ -20,14 +21,30 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
+  const { errorDispatch} = useError()
 
   const saveValues = (e) => {
     // console.log(e.target.value);
     props.setDtmfTime(e.target.value);
   };
-  useEffect(() => {
-    // console.log("dtmfTime", dtmfTime);
-  }, [dtmfTime]);
+  // useEffect(() => {
+  //   console.log("dtmfTime", dtmfTime);
+  // }, [dtmfTime]);
+
+  useEffect(()=>{
+    console.log('rendering ran', props.showError)
+    props.setShowError(false)
+    errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
+  },[])
+
+  useEffect(()=>{
+    if(props.dtmfTime){
+      errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: true})
+    }
+    else{
+      errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
+    }
+  },[props.dtmfTime])
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -421,10 +438,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 value={props.dtmfTime}
                 onChange={saveValues}
                 disabled= {props.disableEditingWhileCreatingCamp}
+                required
+                error={props.showError ? props.dtmfTime ? false:true:false}
               />
             </Box>
           </div>
-
           {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}
           {/* {globalState.state.ivrCampFlowData.flow.languageChange.length > 1 &&
             globalState.state.ivrCampFlowData.flow.languageChange.map(

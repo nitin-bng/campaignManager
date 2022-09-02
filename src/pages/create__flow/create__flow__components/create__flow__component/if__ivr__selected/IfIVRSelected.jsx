@@ -23,6 +23,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
+import { useError } from "../../../../../store/errorContext";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -41,9 +42,27 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
+  const {errorDispatch} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
+
+
+  useEffect(()=>{
+    console.log('ivr ran', props.showError)
+    props.setShowError(false)
+    errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
+  },[])
+  
+  useEffect(()=>{
+    if(globalState.state.ivrCampFlowData.flow.waitTime && globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount){
+      errorDispatch({type: 'IF_IVR_SELECTED', payload: true})
+    }
+    else{
+      errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
+      
+    }
+  },[globalState.state.ivrCampFlowData.flow.waitTime, globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount])
 
   const handleDataInput = (e, type) => {
     if (type === "mainAudioWaitTime") {
@@ -1021,13 +1040,14 @@ const IfIVRSelected = (props) => {
                   // }}
                   onChange={(e) => setWaitTime("main", e.target, null)}
                   variant="outlined"
+                  required
+                  error={props.showError ? globalState.state.ivrCampFlowData.flow.waitTime ? false : true :false}
                 />
               </Box>
             </div>
-
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel id="demo-simple-select-label" required error={props.showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}>
                   {" "}
                   hello DTMF
                 </InputLabel>
@@ -1085,6 +1105,8 @@ const IfIVRSelected = (props) => {
                   // disableProperties={disableProperties}
                   // resetFileArray={resetFileArray}
                   // disableChannel={disableChannel}
+                  showError = {props.showError}
+                  setShowError={props.setShowError}
                 />
               );
             })}

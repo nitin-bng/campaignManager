@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Languages } from "../../../../helpers/All__mapping";
 
@@ -22,6 +22,7 @@ import { store } from "../../../../store/store";
 import classNames from "classnames";
 
 import "./createFlowComponent.css";
+import { useError } from "../../../../store/errorContext";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,10 +36,12 @@ const MenuProps = {
 };
 
 const CreateFlowComponent = (props) => {
+  const {showError, setShowError} = props
   const [data, setData] = useState({
     dtmf: 0,
     playOption: "PLAY",
   });
+  const { errorDispatch} = useError()
 
   // const [hideItem, setHideItem] = useState(true);
   // const hideItemStyle = classNames("file__chooser__container", {
@@ -60,7 +63,7 @@ const CreateFlowComponent = (props) => {
     setIfIVRselectedThenLanguage,
     // dtmfTime,
     // setdtmfTime,
-
+    
     flowName,
     setFlowName,
     channel,
@@ -73,7 +76,7 @@ const CreateFlowComponent = (props) => {
   // const [languages, setLanguages] = useState([]);
   let localStore = globalState.state;
   const languages = globalState.state.languages;
-
+  
   const handleChange = (event) => {
     debugger;
     setChannel(event.target.value);
@@ -82,6 +85,20 @@ const CreateFlowComponent = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log(localStore);
   };
+
+  useEffect(()=>{
+    errorDispatch({type:'CREATE_FLOW_COMPONENT', payload: false})
+  },[])
+
+  useEffect(()=>{
+    if(localStore.ivrCampFlowData.flow.channel.length && ifIVRselectedThenLanguage.length && localStore.ivrCampFlowData.flow.flowName){
+      errorDispatch({type:'CREATE_FLOW_COMPONENT', payload: true})
+    }
+    else{
+      errorDispatch({type:'CREATE_FLOW_COMPONENT', payload: false})
+    }
+  },[localStore.ivrCampFlowData.flow.channel,ifIVRselectedThenLanguage, localStore.ivrCampFlowData.flow.flowName])
+
   const handelFlowNameChange = (event) => {
     debugger;
     localStore.ivrCampFlowData.flow.flowName = event.target.value;
@@ -90,6 +107,7 @@ const CreateFlowComponent = (props) => {
     localStorage.setItem("flowName", event.target.value);
     console.log(localStore);
   };
+  
 
   const handleLanguageChange = (e) => {
     debugger;
@@ -99,14 +117,14 @@ const CreateFlowComponent = (props) => {
 
     setIfIVRselectedThenLanguage(
       typeof value === "string" ? value.split(",") : value
-    );
-    console.log("globalState", globalState);
-    console.log("dispatch", dispatch);
-    let languageChangeList = [];
-    let finalLanguageList = [
-      {
-        level: 0,
-        node_type: "LANG_SELECTION",
+      );
+      console.log("globalState", globalState);
+      console.log("dispatch", dispatch);
+      let languageChangeList = [];
+      let finalLanguageList = [
+        {
+          level: 0,
+          node_type: "LANG_SELECTION",
         id: "0",
         actions: "",
       },
@@ -148,22 +166,23 @@ const CreateFlowComponent = (props) => {
       let i = 0;
       i < localStore.ivrCampFlowData.flow.languageChange.length;
       i++
-    ) {
-      localStore.ivrCampFlowData.flow.main_file["ivr"][
-        localStore.ivrCampFlowData.flow.languageChange[i]
-      ] = "";
-
-      localStore.ivrCampFlowData.flow.main_file["sms"][
-        localStore.ivrCampFlowData.flow.languageChange[i]
-      ] = "";
-    }
-
-    // localStore.ivrCampFlowData.flow.channel_local = e.target.value
-    console.log("finalLanguageList finalLanguageList", finalLanguageList);
-    localStore.ivrCampFlowData.flow.language = finalLanguageList;
-    dispatch({ type: "SET_DATA", nState: localStore });
-    console.log(localStore);
-  };
+      ) {
+        localStore.ivrCampFlowData.flow.main_file["ivr"][
+          localStore.ivrCampFlowData.flow.languageChange[i]
+        ] = "";
+        
+        localStore.ivrCampFlowData.flow.main_file["sms"][
+          localStore.ivrCampFlowData.flow.languageChange[i]
+        ] = "";
+      }
+      
+      // localStore.ivrCampFlowData.flow.channel_local = e.target.value
+      console.log("finalLanguageList finalLanguageList", finalLanguageList);
+      localStore.ivrCampFlowData.flow.language = finalLanguageList;
+      dispatch({ type: "SET_DATA", nState: localStore });
+      console.log(localStore);
+    };
+  
 
   return (
     <>
@@ -190,12 +209,13 @@ const CreateFlowComponent = (props) => {
                     onChange={handelFlowNameChange}
                     disabled = {props.disableEditingWhileCreatingCamp}
                     required
+                    error={showError ? localStore.ivrCampFlowData.flow.flowName ? false : true:false}
                   />
                 </Box>
               </div>
               <div className="create__flow__component__select__channel__dropdown__container">
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
+                  <InputLabel id="demo-simple-select-label" required error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}>
                     Select channel
                   </InputLabel>
                   <Select
@@ -205,6 +225,7 @@ const CreateFlowComponent = (props) => {
                     label="Select Channel"
                     onChange={handleChange}
                     disabled = {props.disableEditingWhileCreatingCamp}
+                    required
                   >
                     {/* {console.log(channel)} */}
 
@@ -229,6 +250,8 @@ const CreateFlowComponent = (props) => {
                       paddingRight: "4px",
                     }}
                     id="demo-multiple-checkbox-label"
+                    required
+                    error={showError ? ifIVRselectedThenLanguage.length ? false: true : false}
                   >
                     Select Languages
                   </InputLabel>
@@ -242,7 +265,7 @@ const CreateFlowComponent = (props) => {
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                     disabled = {props.disableEditingWhileCreatingCamp}
-
+                    required
                   >
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>
@@ -268,7 +291,8 @@ const CreateFlowComponent = (props) => {
                     languageCode="_H"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-
+                    showError={showError}
+                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -283,7 +307,8 @@ const CreateFlowComponent = (props) => {
                     languageCode="_E"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-
+                    showError={showError}
+                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -298,7 +323,8 @@ const CreateFlowComponent = (props) => {
                     languageCode="_A"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-
+                    showError={showError}
+                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -313,7 +339,8 @@ const CreateFlowComponent = (props) => {
                     languageCode="_S"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-
+                    showError={showError}
+                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -348,7 +375,7 @@ const CreateFlowComponent = (props) => {
 
               {channel === "IVR" ? (
                 <IfIVRSelected  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                hideItemStyle={props.hideItemStyle} />
+                hideItemStyle={props.hideItemStyle} showError={showError} setShowError={setShowError}/>
               ) : (
                 ""
               )}

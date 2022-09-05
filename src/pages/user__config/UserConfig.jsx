@@ -301,7 +301,7 @@ const UserConfig = () => {
                 <div className="userconfig__maincontent__form__container">
                   <div className="userconfig__maincontent__form">
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackoutday__dropdown__container">
-                      {/* <FormControl style={{ width: "80%" }}>
+                      <FormControl style={{ width: "80%" }}>
                         <InputLabel
                           style={{
                             backgroundColor: "white",
@@ -335,7 +335,7 @@ const UserConfig = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                      </FormControl> */}
+                      </FormControl>
                       <CustomWidthTooltip title={BlackOutDayInfo}>
                         <HelpIcon
                           style={{
@@ -406,7 +406,7 @@ const UserConfig = () => {
                     </div>
 
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container">
-                      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack style={{ width: "80%" }} spacing={3}>
                           <TimePicker
                             label="Blackout start hour"
@@ -424,7 +424,7 @@ const UserConfig = () => {
                             renderInput={(params) => <TextField {...params} />}
                           />
                         </Stack>
-                      </LocalizationProvider> */}
+                      </LocalizationProvider>
 
                       <CustomWidthTooltip title={BlackoutStartHourInfo}>
                         <HelpIcon
@@ -438,7 +438,7 @@ const UserConfig = () => {
                     </div>
 
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-end-hour__container">
-                      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack style={{ width: "80%" }} spacing={3}>
                           <TimePicker
                             label="Blackout end hour"
@@ -456,7 +456,7 @@ const UserConfig = () => {
                             renderInput={(params) => <TextField {...params} />}
                           />
                         </Stack>
-                      </LocalizationProvider> */}
+                      </LocalizationProvider>
                       <CustomWidthTooltip title={BlackoutEndHourInfo}>
                         <HelpIcon
                           style={{

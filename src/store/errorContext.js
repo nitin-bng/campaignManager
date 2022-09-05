@@ -5,7 +5,8 @@ const initialValue = {
     rederingComponentOnLanguageSelect: true,
     ifIvrSelected: true,
     mainDtmf: true,
-    subDtmf: true
+    subDtmf: true,
+    createCampaign: true,
 }
 
 const errorReducer = (state, action) =>{
@@ -21,6 +22,8 @@ switch (action.type) {
         return {...state, mainDtmf: action.payload}
     case "SUB_DTMF":
         return {...state, subDtmf: action.payload}
+    case "CREATE_CAMPAIGN":
+        return {...state, createCampaign: action.payload}
     default:
         return state
 }

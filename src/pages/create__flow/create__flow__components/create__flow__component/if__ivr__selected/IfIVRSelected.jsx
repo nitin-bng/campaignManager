@@ -1000,7 +1000,6 @@ const IfIVRSelected = (props) => {
                     display: "flex",
                     height: "fit-content",
                     flexDirection: "column",
-                    
                     // border: "2px solid blue",
                   }}
                 >
@@ -1023,6 +1022,7 @@ const IfIVRSelected = (props) => {
                         lang
                       );
                     }}
+                    required
                   />
                   {localStore.ivrCampFlowData.flow.main_audio_file &&
                   localStore.ivrCampFlowData.flow.main_audio_file[lang] &&
@@ -1110,6 +1110,8 @@ const IfIVRSelected = (props) => {
                   }}
                   name="main_audio_dtmfCount"
                   disabled={props.disableEditingWhileCreatingCamp}
+                  required
+                  error={showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}
                 >
                   {numberOfDTMF.map((number, index) => {
                     return (

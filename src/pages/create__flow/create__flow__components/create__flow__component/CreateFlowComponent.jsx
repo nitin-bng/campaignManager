@@ -225,6 +225,7 @@ const CreateFlowComponent = (props) => {
                     onChange={handleChange}
                     disabled = {props.disableEditingWhileCreatingCamp}
                     required
+                    error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
                   >
                     {/* {console.log(channel)} */}
 
@@ -251,7 +252,7 @@ const CreateFlowComponent = (props) => {
                     id="demo-multiple-checkbox-label"
                     required
                     error={showError ? ifIVRselectedThenLanguage.length ? false: true : false}
-                  >
+                    >
                     Select Languages
                   </InputLabel>
                   <Select
@@ -265,6 +266,7 @@ const CreateFlowComponent = (props) => {
                     MenuProps={MenuProps}
                     disabled = {props.disableEditingWhileCreatingCamp}
                     required
+                    error={showError ? ifIVRselectedThenLanguage.length ? false: true : false}
                   >
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>

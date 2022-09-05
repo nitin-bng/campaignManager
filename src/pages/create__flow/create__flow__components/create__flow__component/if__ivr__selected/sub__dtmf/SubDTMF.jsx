@@ -51,7 +51,7 @@ const SubDTMF = (props) => {
 
   var hellohello = [];
   var languageName = [];
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, setAudioError} = useError()
   const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -199,6 +199,10 @@ const SubDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
+        setAudioError(prev=>{
+          prev.pop()
+          return prev
+        })
         return response;
       })
       .catch((e) => {
@@ -807,6 +811,9 @@ const SubDTMF = (props) => {
 
 
   useEffect(()=>{
+    if(props.hideItemStyle === undefined){
+      setAudioError(prev=>[...prev, true])
+    }
     setShowError(false)
     errorDispatch({type: "SUB_DTMF", payload: false})
   },[])
@@ -981,6 +988,7 @@ const SubDTMF = (props) => {
                                   lang
                                 );
                               }}
+                              required
                             />
                             {localStore.ivrCampFlowData.flow.main_audio_file &&
                             localStore.ivrCampFlowData.flow.main_audio_file[

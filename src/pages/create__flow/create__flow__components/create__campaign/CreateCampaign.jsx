@@ -22,6 +22,7 @@ import RenderingComponentOnLanguageSelect from "../create__flow__component/if__i
 import CreateFlowComponent from "../create__flow__component/CreateFlowComponent";
 import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
+import { ErrorSharp } from "@material-ui/icons";
 const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const CreateCampaign = (props) => {
@@ -51,9 +52,7 @@ const CreateCampaign = (props) => {
   const [flowData, setFlowData] = useState({});
   var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
-
-  const [showFlow, setShowFlow] = useState(false);
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError,errorState, errorDispatch} = useError()
 
   var flowId = "";
 
@@ -72,6 +71,8 @@ const CreateCampaign = (props) => {
     // setData([]);
     // props.getFlowList();
   }, []);
+
+
 
   useEffect(()=>{
     setShowError(false)
@@ -242,7 +243,6 @@ const CreateCampaign = (props) => {
               // });
               // showSuccess(true)
               console.log(res);
-              setShowFlow(true);
             } else if (res.length == 0) {
             }
           });
@@ -525,34 +525,10 @@ const CreateCampaign = (props) => {
               />
             </Box>
           </div>
-          <div
-            style={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            <button
-              type="submit"
-              className="btn btn-primary submitJob"
-              onClick={(e) => handleSubmit(e)}
-              style={{
-                width: "10%",
-                border:'none',
-                outline:"nonne",
-                padding: ".7rem",
-                borderRadius: ".2rem",
-                backgroundColor: "#1976d2",
-                color: "white",
-                fontWeight:"600",
-                transition:"all 0.5s"
-              }}
-            >
-              {update ? "update" : "Submit"}
-            </button>
-          </div>
         </div>
-        {showFlow ? (
           <div style={{ paddingBottom: "2rem" }}>
             <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
           </div>
-        ) : null}
       </div>
     </>
   );

@@ -42,13 +42,16 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, setAudioError} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
 
   useEffect(()=>{
+    if(props.hideItemStyle === undefined){
+      setAudioError(prev=>[...prev, true])
+    }
     setShowError(false)
     errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
   },[])
@@ -270,6 +273,10 @@ const IfIVRSelected = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
+        setAudioError(prev=>{
+          prev.pop()
+          return prev
+        })
         return response;
       })
       .catch((e) => {

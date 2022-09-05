@@ -13,6 +13,8 @@ import { Howl } from "howler";
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
 import { useError } from "../../../../../../store/errorContext";
+import { areAllAudioUploaded } from "../../../../../../services/areAllAudioUploaded";
+import Review from "../../../review/Review";
 const RenderingComponentOnLanguageSelect = (props) => {
   let globalState = useContext(store);
   const { dispatch } = globalState;
@@ -20,7 +22,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, setAudioError} = useError()
+  // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
     // console.log(e.target.value);
@@ -31,7 +34,10 @@ const RenderingComponentOnLanguageSelect = (props) => {
   // }, [dtmfTime]);
 
   useEffect(()=>{
-    setShowError(false)
+    console.log('nitin',props.hideItemStyle)
+    if(props.hideItemStyle === undefined){
+      setAudioError(prev=>[...prev, true])
+    }
     errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
   },[])
 
@@ -245,6 +251,10 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
+        setAudioError(prev=>{
+          prev.pop()
+          return prev
+        })
         return response;
       })
       .catch((e) => {
@@ -286,7 +296,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
     debugger;
     let id = lang.split("-");
     console.log(id);
-
     if (type == "MainAudioFile") {
       console.log("getMainAudio", type);
       var Filelist = globalState.state.ivrCampFlowData.flow.main_audio_file[
@@ -411,7 +420,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         }
       }
     }
-
     return <span> {Filelist} </span>;
   };
 
@@ -470,6 +478,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 );
               }}
               id={props.languageCode + "-Lang"}
+              required
             />
             {globalState.state.ivrCampFlowData.flow.lang_audio_file &&
             globalState.state.ivrCampFlowData.flow.lang_audio_file[

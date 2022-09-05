@@ -24,6 +24,8 @@ switch (action.type) {
         return {...state, subDtmf: action.payload}
     case "CREATE_CAMPAIGN":
         return {...state, createCampaign: action.payload}
+    case "INITIALIZE":
+        return {...initialValue}
     default:
         return state
 }
@@ -36,9 +38,10 @@ const ErrorContext = createContext()
 const ErrorProvider = ({children}) =>{
     const [showError, setShowError] = useState(false)
     const [errorState, errorDispatch] = useReducer(errorReducer,initialValue)
+    const [audioError, setAudioError] = useState([])
 
 
-    return <ErrorContext.Provider value={{showError, setShowError, errorState, errorDispatch}}>
+    return <ErrorContext.Provider value={{showError, setShowError, errorState, errorDispatch, audioError, setAudioError}}>
         {children}
     </ErrorContext.Provider>
 }

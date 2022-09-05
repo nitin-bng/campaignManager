@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 
 const initialValue = {
     createFlowComponent: true,
@@ -31,10 +31,11 @@ switch (action.type) {
 const ErrorContext = createContext()
 
 const ErrorProvider = ({children}) =>{
+    const [showError, setShowError] = useState(false)
     const [errorState, errorDispatch] = useReducer(errorReducer,initialValue)
 
 
-    return <ErrorContext.Provider value={{errorState, errorDispatch}}>
+    return <ErrorContext.Provider value={{showError, setShowError, errorState, errorDispatch}}>
         {children}
     </ErrorContext.Provider>
 }

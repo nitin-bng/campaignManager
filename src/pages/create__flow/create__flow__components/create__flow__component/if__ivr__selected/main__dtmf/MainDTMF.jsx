@@ -49,7 +49,7 @@ const MainDTMF = (props) => {
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
-  const {errorDispatch} = useError()
+  const {showError,setShowError, errorDispatch} = useError()
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -627,8 +627,7 @@ const MainDTMF = (props) => {
 
 
   useEffect(()=>{
-    console.log('main ran', props.showError)
-    props.setShowError(false)
+    setShowError(false)
     errorDispatch({type: "MAIN_DTMF", payload: false})
   },[])
 
@@ -727,7 +726,7 @@ const MainDTMF = (props) => {
                         }
                         variant="outlined"
                         required
-                        error={props.showError ? globalState.state.ivrCampFlowData.flow.actions[
+                        error={showError ? globalState.state.ivrCampFlowData.flow.actions[
                           props.global.dtmf_key - 1
                         ].waitTime ? false:true:false}
                       />
@@ -852,8 +851,6 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
-                      showError={props.showError}
-                      setShowError={props.setShowError}
                     />
                   );
                 })}

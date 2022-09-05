@@ -42,15 +42,14 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
 
   useEffect(()=>{
-    console.log('ivr ran', props.showError)
-    props.setShowError(false)
+    setShowError(false)
     errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
   },[])
   
@@ -1085,13 +1084,13 @@ const IfIVRSelected = (props) => {
                   onChange={(e) => setWaitTime("main", e.target, null)}
                   variant="outlined"
                   required
-                  error={props.showError ? globalState.state.ivrCampFlowData.flow.waitTime ? false : true :false}
+                  error={showError ? globalState.state.ivrCampFlowData.flow.waitTime ? false : true :false}
                 />
               </Box>
             </div>
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-simple-select-label" required error={props.showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}>
+                <InputLabel id="demo-simple-select-label" required error={showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}>
                   {" "}
                   hello DTMF
                 </InputLabel>
@@ -1154,9 +1153,7 @@ const IfIVRSelected = (props) => {
                   // disableProperties={disableProperties}
                   // resetFileArray={resetFileArray}
                   // disableChannel={disableChannel}
-                  showError = {props.showError}
-                  setShowError={props.setShowError}
-                />
+                  />
               );
             })}
           </div>

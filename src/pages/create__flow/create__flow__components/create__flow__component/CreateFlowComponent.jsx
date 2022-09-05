@@ -36,12 +36,11 @@ const MenuProps = {
 };
 
 const CreateFlowComponent = (props) => {
-  const {showError, setShowError} = props
   const [data, setData] = useState({
     dtmf: 0,
     playOption: "PLAY",
   });
-  const { errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
 
   // const [hideItem, setHideItem] = useState(true);
   // const hideItemStyle = classNames("file__chooser__container", {
@@ -291,8 +290,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_H"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -307,8 +304,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_E"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -323,8 +318,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_A"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -339,8 +332,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_S"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -375,7 +366,7 @@ const CreateFlowComponent = (props) => {
 
               {channel === "IVR" ? (
                 <IfIVRSelected  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                hideItemStyle={props.hideItemStyle} showError={showError} setShowError={setShowError}/>
+                hideItemStyle={props.hideItemStyle}/>
               ) : (
                 ""
               )}

@@ -25,9 +25,8 @@ const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
-  const {errorState} = useError()
+  const {showError,setShowError, errorState} = useError()
   const {ifIVRselectedThenLanguage} = useContext(CommonContext)
-  const [showError, setShowError] = useState(false)
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
@@ -319,7 +318,7 @@ else{
                   <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent showError={showError} setShowError={setShowError} hideItemStyle={hideItemStyle} />
+                        <CreateFlowComponent  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
                         <CreateCampaign getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 2 ? (

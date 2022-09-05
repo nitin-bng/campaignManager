@@ -20,7 +20,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
-  const { errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
 
   const saveValues = (e) => {
     // console.log(e.target.value);
@@ -31,8 +31,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   // }, [dtmfTime]);
 
   useEffect(()=>{
-    console.log('rendering ran', props.showError)
-    props.setShowError(false)
+    setShowError(false)
     errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
   },[])
 
@@ -436,7 +435,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 onChange={saveValues}
                 disabled= {props.disableEditingWhileCreatingCamp}
                 required
-                error={props.showError ? props.dtmfTime ? false:true:false}
+                error={showError ? props.dtmfTime ? false:true:false}
               />
             </Box>
           </div>

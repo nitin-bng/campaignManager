@@ -510,7 +510,7 @@ const CreateCampaign = (props) => {
         </div>
         {showFlow ? (
           <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent setShowError={()=>{}} disableEditingWhileCreatingCamp={true} />
+            <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
           </div>
         ) : null}
       </div>

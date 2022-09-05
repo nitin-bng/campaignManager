@@ -30,3 +30,8 @@
     height: fit-content;
     margin: .5rem;
 }
+
+.submitJob:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}

@@ -14,7 +14,6 @@ import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
 import { useError } from "../../../../../../store/errorContext";
 const RenderingComponentOnLanguageSelect = (props) => {
-  
   let globalState = useContext(store);
   const { dispatch } = globalState;
   let localStore = globalState.state;
@@ -297,34 +296,49 @@ const RenderingComponentOnLanguageSelect = (props) => {
         .split(",")
         .map((e, index) => {
           return (
-            <span key={e}>
-              <span style={{ color: "darkgray" }}> {index + 1} - </span>
+            <span
+              // style={{ border: "2px solid green", marginTop:"-10px"}}
+              key={e}
+            >
+              <span style={{ color: "darkgray" }}>
+                
+                {index + 1} - {e}
+              </span>
+              <br />
               {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-              {e}
-              <BsCheckCircle size={15} className="checkedIcon" />
-              <IoIosCloseCircleOutline
-                className="checkedIcon"
-                size={15}
-                style={{ color: "red", cursor: "pointer" }}
-              />
-              <FiPlayCircle
-                className="checkedIcon"
-                size={15}
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
+              {/* {e} */}
+              <div
+                className="playingOptions"
                 style={{
-                  color: "purple",
-                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  marginTop: "5px",
                 }}
-              />
-              <FiPauseCircle
-                size={15}
-                className="checkedIcon"
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
-                style={{ cursor: "pointer" }}
-              />
-
+              >
+                <BsCheckCircle size={15} className="checkedIcon" />
+                <IoIosCloseCircleOutline
+                  className="checkedIcon"
+                  size={15}
+                  style={{ color: "red", cursor: "pointer" }}
+                />
+                <FiPlayCircle
+                  className="checkedIcon"
+                  size={15}
+                  // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                  onClick={() => playPauseAudio(e)}
+                  style={{
+                    color: "purple",
+                    cursor: "pointer",
+                  }}
+                />
+                <FiPauseCircle
+                  size={15}
+                  className="checkedIcon"
+                  // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                  onClick={() => playPauseAudio(e)}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
           );
@@ -347,44 +361,50 @@ const RenderingComponentOnLanguageSelect = (props) => {
               .split(",")
               .map((e, index) => {
                 return (
-                  <span key={e}>
-                    <span style={{ color: "darkgray" }}> {index + 1} - </span>
+                  <span
+                    // style={{ border: "2px solid green"}}
+                    key={e}
+                  >
+                    <span style={{ color: "darkgray" }}>
+                      
+                      {index + 1} - {e}
+                    </span>
+                    <br />
                     {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-                    {e}
-                    <BsCheckCircle size={15} className="checkedIcon" />
-                    <IoIosCloseCircleOutline
-                      className="checkedIcon"
-                      size={15}
+                    {/* {e} */}
+                    <div
+                      className="playingOptions"
                       style={{
-                        color: "red",
-                        cursor: "pointer",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        // marginTop: "5px",
+                        margin:"auto"
                       }}
-                    />
-                    <FiPlayCircle
-                      className="checkedIcon"
-                      size={15}
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{
-                        color: "purple",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <FiPauseCircle
-                      size={15}
-                      className="checkedIcon"
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <br></br>
-                    <br></br>
+                    >
+                      <BsCheckCircle size={15} className="checkedIcon" />
+                      <IoIosCloseCircleOutline
+                        className="checkedIcon"
+                        size={15}
+                        style={{ color: "red", cursor: "pointer" }}
+                      />
+                      <FiPlayCircle
+                        className="checkedIcon"
+                        size={15}
+                        // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                        onClick={() => playPauseAudio(e)}
+                        style={{
+                          color: "purple",
+                          cursor: "pointer",
+                        }}
+                      />
+                      <FiPauseCircle
+                        size={15}
+                        className="checkedIcon"
+                        // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                        onClick={() => playPauseAudio(e)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
                     {/* <span className="m-t-10"> </span> */}
                   </span>
                 );
@@ -412,29 +432,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 type="number"
                 label={"Wait time for " + props.lang + " language"}
                 variant="outlined"
-                // value={props.languageCode == '_E'
-                // ? globalState.state
-                //       .ivrCampFlowData
-                //       .flow.language[0]
-                //       .actions[0]
-                //       .waitTime
-                // : props.languageCode == '_H'
-                // ? globalState.state
-                //       .ivrCampFlowData
-                //       .flow.language[0]
-                //       .actions[1]
-                //       .waitTime
-                // : props.languageCode == '_S'
-                // ? globalState.state
-                //       .ivrCampFlowData
-                //       .flow.language[0]
-                //       .actions[2]
-                //       .waitTime
-                // : globalState.state
-                //       .ivrCampFlowData
-                //       .flow.language[0]
-                //       .actions[3]
-                //       .waitTime}
                 value={props.dtmfTime}
                 onChange={saveValues}
                 disabled= {props.disableEditingWhileCreatingCamp}
@@ -447,13 +444,21 @@ const RenderingComponentOnLanguageSelect = (props) => {
           {/* {globalState.state.ivrCampFlowData.flow.languageChange.length > 1 &&
             globalState.state.ivrCampFlowData.flow.languageChange.map(
               (lang) => ( */}
+
           <div
-            style={{ }}
+            style={{  }}
             className={props.hideItemStyle}
             hideItem
           >
             <input
               accept="audio/mp3"
+              style={{
+                // border: "2px solid green",
+                justifyContent: "center",
+                display: "flex",
+                overflow: "hidden",
+                // height: "10px",
+              }}
               type="file"
               class="custom-file-input"
               name="lang_audio_file"
@@ -475,13 +480,23 @@ const RenderingComponentOnLanguageSelect = (props) => {
               props.languageCode
             ] !== "" ? (
               <>
-                <br></br>
+                
                 {/* show all the audio files uploaded */}
                 <div
                   item
                   className="fileNames"
                   id={props.languageCode + "langAudioShow"}
+                  style={{
+                    border: ".2px solid black",
+                    width:'200px',
+                    fontSize: "10px",
+                    wordWrap: "break-word",
+                    paddingBottom: "3px",
+                    margin:"auto",
+                    marginBottom:"10px"
+                  }}
                 >
+                  
                   {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
                 </div>
               </>

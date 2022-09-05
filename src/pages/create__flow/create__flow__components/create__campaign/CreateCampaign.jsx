@@ -250,10 +250,10 @@ const CreateCampaign = (props) => {
 
   return (
     <>
-      <div className="create__campaign">
+      <div className="create__campaign" style={{boxShadow:"2px 2px 2px grey",}}>
         <div
           className="create__campaign__container"
-          style={{ border: "2px solid red", height: "30vh" }}
+          style={{ height: "30vh" }}
         >
           <div className="campaign__name">
             <Box
@@ -382,18 +382,52 @@ const CreateCampaign = (props) => {
             </Box> */}
           </div>
 
-          <div className="create__campaign__campaign__type__radio__button">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
+          <div
+            className="create__campaign__campaign__type__radio__button"
+            style={{
+              // border: "2px solid blue",
+              height: "50px",
+            }}
+          >
+            <FormControl
+              style={{
+                border: "1px solid grey",
+                borderRadius: "5px",
+                display: "flex",
+                height: "100%",
+                position: "relative",
+              }}
+            >
+              <FormLabel
+                id="demo-row-radio-buttons-group-label"
+                style={{
+                  position: "absolute",
+                  top: "-13px",
+                  left: "7px",
+                  padding: "0 4px",
+                  backgroundColor: "white",
+                  fontSize: "15px",
+                }}
+              >
                 Campaign Type
               </FormLabel>
               <div
                 style={{
                   display: "flex",
+                  justifyContent: "space-between",
                   marginTop: "6px",
+                  padding: "5px",
+                  boxSizing: "border-box",
+                  // border: "2px solid green",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    // border: "2px solid red",
+                    display: "flex",
+                    width: "40%",
+                  }}
+                >
                   <span className="campaignInputCheckbox">Incoming</span>
                   <input
                     type="radio"
@@ -402,13 +436,16 @@ const CreateCampaign = (props) => {
                     value="incoming"
                     onChange={(e) => handleChange(e, "incoming")}
                     style={{
-                      marginLeft: "20px",
+                      marginLeft: "10px",
+                      // border: "2px solid red",
                     }}
                   />
                 </div>
                 <div
                   style={{
-                    marginLeft: "20px",
+                    // border: "2px solid red",
+                    display: "flex",
+                    width: "40%",
                   }}
                 >
                   <span className="campaignInputCheckbox">Outgoing</span>
@@ -419,7 +456,7 @@ const CreateCampaign = (props) => {
                     value="outgoing"
                     onChange={(e) => handleChange(e, "outgoing")}
                     style={{
-                      marginLeft: "20px",
+                      marginLeft: "10px",
                     }}
                   />
                 </div>
@@ -438,7 +475,6 @@ const CreateCampaign = (props) => {
                 type="number"
                 label={"cli"}
                 variant="outlined"
-
                 className="form-control"
                 id="cli_ivr"
                 aria-describedby="emailHelp"
@@ -449,19 +485,32 @@ const CreateCampaign = (props) => {
               />
             </Box>
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary submitJob"
-            onClick={(e) => handleSubmit(e)}
+          <div
+            style={{ display: "flex", width: "100%", justifyContent: "center" }}
           >
-            {update ? "update" : "Submit"}
-          </button>
+            <button
+              type="submit"
+              className="btn btn-primary submitJob"
+              onClick={(e) => handleSubmit(e)}
+              style={{
+                width: "10%",
+                border:'none',
+                outline:"nonne",
+                padding: ".7rem",
+                borderRadius: ".2rem",
+                backgroundColor: "#1976d2",
+                color: "white",
+                fontWeight:"600",
+                transition:"all 0.5s"
+              }}
+            >
+              {update ? "update" : "Submit"}
+            </button>
+          </div>
         </div>
         {showFlow ? (
           <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent
-                disableEditingWhileCreatingCamp = {true}
-              />
+            <CreateFlowComponent setShowError={()=>{}} disableEditingWhileCreatingCamp={true} />
           </div>
         ) : null}
       </div>

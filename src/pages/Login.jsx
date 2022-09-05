@@ -7,16 +7,21 @@ import {
   Checkbox,
   Typography,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PersonIcon from "@material-ui/icons/Person";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import "./authentication.css";
 import { useForm } from "react-hook-form";
 
+
+
 import config from "../ApiConfig/Config";
 
 const Login = () => {
+  const Navigate = useNavigate()
+
+
   const {
     register,
     handleSubmit,
@@ -42,6 +47,7 @@ const Login = () => {
             localStorage.setItem("userId", res.id)
             getUserDetails(res.id)
             //  console.log(res)
+            Navigate("/home")
            })
     })
   }
@@ -59,6 +65,7 @@ const Login = () => {
            })
     })
   }
+
 
   return (
     <>

@@ -17,6 +17,7 @@ import { store } from "../../../../../store/store";
 import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
 
 import config from "../../../../../ApiConfig/Config";
+import Typography from "@mui/material/Typography";
 
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -33,7 +34,6 @@ const IfIVRSelected = (props) => {
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
   } = useContext(CommonContext);
-
 
   const [data, setData] = useState({
     dtmf: 0,
@@ -319,34 +319,49 @@ const IfIVRSelected = (props) => {
         .split(",")
         .map((e, index) => {
           return (
-            <span key={e}>
-              <span style={{ color: "darkgray" }}> {index + 1} - </span>
+            <span
+              // style={{ border: "2px solid green", marginTop:"-10px"}}
+              key={e}
+            >
+              <span style={{ color: "darkgray" }}>
+                {/* {" "} */}
+                {index + 1} - {e}
+              </span>{" "}
+              <br />
               {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-              {e}
-              <BsCheckCircle size={15} className="checkedIcon" />
-              <IoIosCloseCircleOutline
-                className="checkedIcon"
-                size={15}
-                style={{ color: "red", cursor: "pointer" }}
-              />
-              <FiPlayCircle
-                className="checkedIcon"
-                size={15}
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
+              {/* {e} */}
+              <div
+                className="playingOptions"
                 style={{
-                  color: "purple",
-                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  marginTop: "5px",
                 }}
-              />
-              <FiPauseCircle
-                size={15}
-                className="checkedIcon"
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
-                style={{ cursor: "pointer" }}
-              />
-
+              >
+                <BsCheckCircle size={15} className="checkedIcon" />
+                <IoIosCloseCircleOutline
+                  className="checkedIcon"
+                  size={15}
+                  style={{ color: "red", cursor: "pointer" }}
+                />
+                <FiPlayCircle
+                  className="checkedIcon"
+                  size={15}
+                  id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                  onClick={() => playPauseAudio(e)}
+                  style={{
+                    color: "purple",
+                    cursor: "pointer",
+                  }}
+                />
+                <FiPauseCircle
+                  size={15}
+                  className="checkedIcon"
+                  id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
+                  onClick={() => playPauseAudio(e)}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
           );
@@ -614,7 +629,7 @@ const IfIVRSelected = (props) => {
               url: "",
               dtmf_count: 0,
               actions:
-                current.type === "PLAY" 
+                current.type === "PLAY"
                   ? []
                   : [
                       {
@@ -931,7 +946,7 @@ const IfIVRSelected = (props) => {
   };
   const [arr1, setArr] = useState([]);
   useEffect(() => {
-    localStorage.setItem("colorStateCounter" , 1)
+    localStorage.setItem("colorStateCounter", 1);
     var arr = [];
     for (var i = 1; i < numberOfMainDTMFWhenIVRIsSelected + 1; i++) {
       arr.push(i);
@@ -953,7 +968,10 @@ const IfIVRSelected = (props) => {
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
           <hr className="hr" />
-          <div className={props.hideItemStyle}>
+          <div
+            style={{boxShadow:"2px 2px 3px grey"}}
+            className={props.hideItemStyle}
+          >
             {localStore.ivrCampFlowData.flow.language.map((hello) => {
               console.log(
                 "localStore.ivrCampFlowData.flow.language ===>",
@@ -969,15 +987,31 @@ const IfIVRSelected = (props) => {
                 hellohello
               );
             })}
-            <div className="ghghg">
+            <div className="ghghg" style={{ margin:"10px 0"}}>
               {languageName.map((el) => {
-                return <span>enter hello file for {el}</span>;
+                return <Typography style={{fontSize:"12px"}}>enter hello file for {el}</Typography>;
               })}
             </div>
-            <div className="ghghgh">
+            <div className="ghghgh" style={{ }}>
               {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-                <div className="file__chooser__container">
+                <div
+                  className="file__chooser__container"
+                  style={{
+                    width: "200px",
+                    display: "flex",
+                    height: "fit-content",
+                    flexDirection: "column",
+                    
+                    // border: "2px solid blue",
+                  }}
+                >
                   <input
+                    style={{
+                      // border: "2px solid green",
+                      display: "flex",
+                      overflow: "hidden",
+                      // height: "10px",
+                    }}
                     accept="audio/mp3"
                     type="file"
                     class="custom-file-input"
@@ -996,18 +1030,28 @@ const IfIVRSelected = (props) => {
                   localStore.ivrCampFlowData.flow.main_audio_file[lang] !==
                     "" ? (
                     <>
-                      <br></br>
+                      {/* <br></br> */}
                       {/* show all the audio files uploaded */}
                       <div
+                        style={{
+                          border: ".2px solid black",
+                          width: "200px",
+                          fontSize: "10px",
+                          wordWrap: "break-word",
+                          marginBottom:"10px",
+                          paddingBottom:"3px"
+                        }}
                         item
                         className="fileNames"
                         id={lang + "mainAudioShow"}
                       >
                         {GetMainAudioFiles(lang, "MainAudioFile")}
                       </div>
+                      {/* <hr /> */}
                     </>
                   ) : null}
                 </div>
+
               ))}
             </div>
           </div>
@@ -1054,16 +1098,19 @@ const IfIVRSelected = (props) => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || null }
+                  value={
+                    globalState.state.ivrCampFlowData.flow
+                      .main_audio_dtmfCount || null
+                  }
                   label="DTMF"
                   // onChange={handleChange}
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);
-                    console.log('here',)
+                    console.log("here");
                   }}
                   name="main_audio_dtmfCount"
-                  disabled= {props.disableEditingWhileCreatingCamp}
+                  disabled={props.disableEditingWhileCreatingCamp}
                 >
                   {numberOfDTMF.map((number, index) => {
                     return (
@@ -1096,8 +1143,10 @@ const IfIVRSelected = (props) => {
                   setDataDynamic={setDataDynamic}
                   dataHandleWithObj={dataHandleWithObj}
                   setWaitTime={setWaitTime}
-                  hideItemStyle = {props.hideItemStyle}
-                  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+                  hideItemStyle={props.hideItemStyle}
+                  disableEditingWhileCreatingCamp={
+                    props.disableEditingWhileCreatingCamp
+                  }
                   // edit={props.edit}
                   // uploadFiles={uploadFiles}
                   // setRepeat={setRepeat}

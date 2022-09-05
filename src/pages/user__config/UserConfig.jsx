@@ -29,14 +29,13 @@ import { blackout__days } from "../../helpers/All__mapping";
 import { useState } from "react";
 import { addDays } from "date-fns";
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+// import "react-date-range/dist/styles.css"; // main style file
+// import "react-date-range/dist/theme/default.css"; // theme css file
 
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
-
 
 import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";

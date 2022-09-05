@@ -321,9 +321,9 @@ else{
                       {activeStep === 0 ? (
                         <CreateFlowComponent showError={showError} setShowError={setShowError} hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
-                        <CreateCampaign getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
+                        <CreateCampaign disableEditingWhileCreatingCamp={true} getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 2 ? (
-                        <ScheduleCampaign hideItemStyle={hideItemStyle} />
+                        <ScheduleCampaign disableEditingWhileCreatingCamp={true} hideItemStyle={hideItemStyle} />
                       ) : activeStep === 3 ? (
                         <Review />
                       ) : (

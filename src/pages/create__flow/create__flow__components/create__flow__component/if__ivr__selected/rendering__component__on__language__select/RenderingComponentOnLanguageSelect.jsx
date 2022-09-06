@@ -22,21 +22,19 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
-  const {showError, setShowError, errorDispatch, setAudioError} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
-    // console.log(e.target.value);
-    props.setDtmfTime(e.target.value);
+    props.setDtmfTime(e.target.value >=0 ? e.target.value :0);
   };
   // useEffect(() => {
   //   console.log("dtmfTime", dtmfTime);
   // }, [dtmfTime]);
 
   useEffect(()=>{
-    console.log('nitin',props.hideItemStyle)
     if(props.hideItemStyle === undefined){
-      setAudioError(prev=>[...prev, true])
+      errorDispatch({type:'AUDIO', payload: true})
     }
     errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
   },[])
@@ -251,10 +249,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        setAudioError(prev=>{
-          prev.pop()
-          return prev
-        })
+        errorDispatch({type:'AUDIO', payload: false})
         return response;
       })
       .catch((e) => {

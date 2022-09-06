@@ -989,13 +989,11 @@ const Navigate = useNavigate()
                                 console.log(endDate);
 
                                 scheduleData["endDate"] = endDate;
-                                console.log("nitin", scheduleData);
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,
                                     ...scheduleData,
                                   };
-                                  console.log("nitin", result);
                                   return result;
                                 });
                               } else {
@@ -1009,13 +1007,11 @@ const Navigate = useNavigate()
                                 console.log(endDate);
 
                                 scheduleData["endDate"] = endDate;
-                                console.log("nitin", scheduleData);
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,
                                     ...scheduleData,
                                   };
-                                  console.log("nitin", result);
                                   return result;
                                 });
                               }
@@ -1031,13 +1027,11 @@ const Navigate = useNavigate()
                                   item.selection.startDate.getDate();
                                 console.log(startDate);
                                 scheduleData["startDate"] = startDate;
-                                console.log("nitin", scheduleData);
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,
                                     ...scheduleData,
                                   };
-                                  console.log("nitin", result);
                                   return result;
                                 });
                               } else {
@@ -1050,13 +1044,11 @@ const Navigate = useNavigate()
                                   item.selection.startDate.getDate();
                                 console.log(startDate);
                                 scheduleData["startDate"] = startDate;
-                                console.log("nitin", scheduleData);
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,
                                     ...scheduleData,
                                   };
-                                  console.log("nitin", result);
                                   return result;
                                 });
                               }

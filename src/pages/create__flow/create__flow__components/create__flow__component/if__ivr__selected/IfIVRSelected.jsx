@@ -42,7 +42,7 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {showError, setShowError, errorDispatch, setAudioError} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
@@ -50,7 +50,7 @@ const IfIVRSelected = (props) => {
 
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
-      setAudioError(prev=>[...prev, true])
+      errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
     errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
@@ -273,10 +273,7 @@ const IfIVRSelected = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        setAudioError(prev=>{
-          prev.pop()
-          return prev
-        })
+        errorDispatch({type:'AUDIO', payload: false})
         return response;
       })
       .catch((e) => {
@@ -940,7 +937,7 @@ const IfIVRSelected = (props) => {
   };
 
   const setWaitTime = (level, target, dtmf_key) => {
-    const val = target.value;
+    const val = target.value >=0 ? target.value :0
     // console.log(" val ", target, val);
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;

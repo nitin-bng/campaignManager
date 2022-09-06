@@ -131,7 +131,7 @@ const CreateCampaign = (props) => {
   const handleChange = (e, catagory) => {
     debugger;
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setFormValues({ ...formValues, [name]: !isNaN(value)? value >=0 ? value : 0:value });
     if (e.target.id == "campName") {
       // validateData('campName', e);
       scheduleData["campName"] = e.target.value;

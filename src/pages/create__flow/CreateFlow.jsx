@@ -24,15 +24,10 @@ const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
-  const {
-    showError,
-    setShowError,
-    errorState,
-    errorDispatch,
-    audioError,
-    setAudioError,
-  } = useError();
-  const { ifIVRselectedThenLanguage } = useContext(CommonContext);
+
+  const {showError,setShowError, errorState, errorDispatch} = useError()
+  const {ifIVRselectedThenLanguage} = useContext(CommonContext)
+
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
@@ -100,6 +95,123 @@ const CreateFlow = () => {
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
+
+    if(checkMandatoryFields() && !errorState.audioError.length){
+     
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setShowError(false)
+    console.log("local store on click of next button", localStore);
+    const userId = JSON.parse(localStorage.getItem("userId"));
+
+    dataToSend = {
+      service_Data: {
+        userid: userId,
+        name: "form.campaign_name",
+        start_date: "getFormattedDate(form.startdateTime)",
+        end_date: "getFormattedDate(form.enddateTime)",
+        start_time: "getFormattedTime(form.startdateTime)",
+        end_time: "getFormattedTime(form.enddateTime)",
+        priority: "5",
+        status: "scheduled",
+        is_capping: "true",
+        service_id: "getServiceId(form.service)",
+        service_name: "form.service",
+        operator_id: "form.operator",
+        publisher_id: "1",
+        agency: "1",
+        advertiser: "1",
+        media_type: "AUDIO",
+        device_type: "mobile",
+        description: "form.description",
+        kpi: "vv",
+        type: "IVR",
+        flow: "JSON",
+        max_click_count: "0",
+        max_impression_count: "0",
+        total_click_count: "99999",
+        total_impression_count: "888777",
+        // 'service_name': form.service,
+        campaign_frequency: "form.CampaignFrequency",
+      },
+      timezone: {
+        operator: "+",
+        timezonevalue: "00:00",
+      },
+      blackouthour: "form.blackouthour",
+      flow: globalState.state.ivrCampFlowData.flow,
+      publisher: null,
+      device: null,
+      country: null,
+    };
+
+    createCampDataToSend = {
+      service_Data: {
+        userid: userId,
+        name: "form.campaign_name",
+        start_date: "getFormattedDate(form.startdateTime)",
+        end_date: "getFormattedDate(form.enddateTime)",
+        start_time: "getFormattedTime(form.startdateTime)",
+        end_time: "getFormattedTime(form.enddateTime)",
+        priority: "5",
+        status: "scheduled",
+        is_capping: "true",
+        service_id: "getServiceId(form.service)",
+        service_name: "form.service",
+        operator_id: "form.operator",
+        publisher_id: "1",
+        agency: "1",
+        advertiser: "1",
+        media_type: "AUDIO",
+        device_type: "mobile",
+        description: "form.description",
+        kpi: "vv",
+        type: "IVR",
+        flow: "JSON",
+        max_click_count: "0",
+        max_impression_count: "0",
+        total_click_count: "99999",
+        total_impression_count: "888777",
+        // 'service_name': form.service,
+        campaign_frequency: "form.CampaignFrequency",
+      },
+      timezone: {
+        operator: "+",
+        timezonevalue: "00:00",
+      },
+      blackouthour: "form.blackouthour",
+      flow: globalState.state.ivrCampFlowData.flow,
+      publisher: null,
+      device: null,
+      country: null,
+    };
+
+
+
+    if (activeStep === 0) {
+      console.log("activeStep === 0");
+      fetch(
+        config.server.path +
+          config.server.port +
+          config.api.createFlowWithoutContent,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(createCampDataToSend),
+        }
+      )
+        .then(async (response) => {
+          var res = await response.json();
+          console.log("flow without content submitted--response", res);
+          if (response.status !== 200 || response.status === "FAILED") {
+            // setFormSubmitted(false);
+          } else {
+            getCompleteFlow(res.wfId);
+            localStorage.setItem("wfId", res.wfId)
+            // setFormSubmitted(true);
+
+       
     if (checkMandatoryFields() && !audioError.length) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setShowError(false);
@@ -284,8 +396,10 @@ const CreateFlow = () => {
   };
 
   const handleBack = () => {
-    errorDispatch({ type: "INITIALIZE" });
-    setAudioError([]);
+
+    errorDispatch({type:'INITIALIZE'})
+    errorDispatch({type: 'AUDIO', payload: true})
+
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 

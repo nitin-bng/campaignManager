@@ -83,8 +83,6 @@ const checkMandatoryFields =() =>{
 //   return result
 // }
 
-console.log('Nitin', errorState, showError, audioError)
-
 
   const handleNext = () => {
     // console.log("flowName", flowName);

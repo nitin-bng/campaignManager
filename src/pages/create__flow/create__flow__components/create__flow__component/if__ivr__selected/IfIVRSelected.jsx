@@ -940,7 +940,7 @@ const IfIVRSelected = (props) => {
   };
 
   const setWaitTime = (level, target, dtmf_key) => {
-    const val = target.value;
+    const val = target.value >=0 ? target.value :0
     // console.log(" val ", target, val);
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;

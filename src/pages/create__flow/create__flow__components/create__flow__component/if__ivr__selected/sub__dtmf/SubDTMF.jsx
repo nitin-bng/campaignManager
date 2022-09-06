@@ -908,7 +908,7 @@ const SubDTMF = (props) => {
                             props.current.id,
                             props.current,
                             "waitTime",
-                            e.target.value,
+                            e.target.value >=0 ? e.target.value :0,
                             "edit"
                           )
                         }

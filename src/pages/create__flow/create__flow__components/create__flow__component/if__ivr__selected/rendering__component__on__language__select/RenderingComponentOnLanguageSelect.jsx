@@ -26,15 +26,13 @@ const RenderingComponentOnLanguageSelect = (props) => {
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
-    // console.log(e.target.value);
-    props.setDtmfTime(e.target.value);
+    props.setDtmfTime(e.target.value >=0 ? e.target.value :0);
   };
   // useEffect(() => {
   //   console.log("dtmfTime", dtmfTime);
   // }, [dtmfTime]);
 
   useEffect(()=>{
-    console.log('nitin',props.hideItemStyle)
     if(props.hideItemStyle === undefined){
       setAudioError(prev=>[...prev, true])
     }

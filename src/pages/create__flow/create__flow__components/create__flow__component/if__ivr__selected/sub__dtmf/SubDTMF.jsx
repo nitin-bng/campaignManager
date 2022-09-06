@@ -966,7 +966,7 @@ const SubDTMF = (props) => {
                         (lang) => (
                           <div className="file__chooser__container">
                             <input
-                              accept="audio/mp3"
+                              accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"

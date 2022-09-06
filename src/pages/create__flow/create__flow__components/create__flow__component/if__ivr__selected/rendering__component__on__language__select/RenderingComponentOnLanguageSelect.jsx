@@ -453,7 +453,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
             hideItem
           >
             <input
-              accept="audio/mp3"
+              accept="audio/wav"
               style={{
                 // border: "2px solid green",
                 justifyContent: "center",

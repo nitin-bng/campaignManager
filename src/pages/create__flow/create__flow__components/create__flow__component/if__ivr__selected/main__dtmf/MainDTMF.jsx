@@ -50,6 +50,7 @@ const MainDTMF = (props) => {
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
   const {showError,setShowError, errorDispatch} = useError()
+  const [iseFilled, setIsFilled] = useState(false)
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -631,20 +632,22 @@ const MainDTMF = (props) => {
     if(props.hideItemStyle === undefined){
       errorDispatch({type:'AUDIO', payload: true})
     }
-
     setShowError(false)
-    errorDispatch({type: "MAIN_DTMF", payload: false})
   },[])
-
+  
   useEffect(()=>{
-    if(globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].waitTime){
-
-      errorDispatch({type: "MAIN_DTMF", payload: true})
-    }
-    else{
+    if(iseFilled){
       errorDispatch({type: "MAIN_DTMF", payload: false})
     }
-  },[globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].waitTime])
+    else
+      if( !globalState.state.ivrCampFlowData.flow.actions[
+        props.global.dtmf_key - 1
+      ].waitTime){
+      errorDispatch({type: "MAIN_DTMF", payload: true})
+    }
+  },[iseFilled, globalState.state.ivrCampFlowData.flow.actions[
+    props.global.dtmf_key - 1
+  ].waitTime])
 
   return (
     <>
@@ -722,18 +725,19 @@ const MainDTMF = (props) => {
                             props.global.dtmf_key - 1
                           ].waitTime
                         }
-                        onChange={(e) =>
+                        onChange={(e) =>{
+                          setIsFilled(()=>e.target.value !== '')
                           props.setWaitTime(
                             "sub",
                             e.target,
                             props.global.dtmf_key
                           )
-                        }
+                        }}
                         variant="outlined"
                         required
-                        error={showError ? globalState.state.ivrCampFlowData.flow.actions[
+                        error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.actions[
                           props.global.dtmf_key - 1
-                        ].waitTime ? false:true:false}
+                        ].waitTime ) >=0 ? false:true:false}
                       />
                     </Box>
                   </div>
@@ -791,7 +795,7 @@ const MainDTMF = (props) => {
                         (lang) => (
                           <div className="file__chooser__container">
                             <input
-                              accept="audio/mp3"
+                              accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"

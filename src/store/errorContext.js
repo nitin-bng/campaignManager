@@ -4,14 +4,14 @@ const initialValue = {
     createFlowComponent: true,
     rederingComponentOnLanguageSelect: true,
     ifIvrSelected: true,
-    mainDtmf: true,
-    subDtmf: true,
     createCampaign: true,
+    mainDtmf: [],
+    subDtmf: [],
     audioError: []
 }
 
 const errorReducer = (state, action) =>{
-
+let newVal = ''
 switch (action.type) {
     case "INITIALIZE":
         return {...initialValue}
@@ -22,13 +22,27 @@ switch (action.type) {
     case "IF_IVR_SELECTED":
         return {...state, ifIvrSelected: action.payload}
     case "MAIN_DTMF":
-        return {...state, mainDtmf: action.payload}
+         newVal = state.mainDtmf
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, mainDtmf:newVal}
     case "SUB_DTMF":
-        return {...state, subDtmf: action.payload}
+         newVal = state.subDtmf
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, subDtmf:newVal}
     case "CREATE_CAMPAIGN":
         return {...state, createCampaign: action.payload}
     case "AUDIO":
-        let newVal = state.audioError
+         newVal = state.audioError
         if(action.payload){
             newVal.push(true)
         }

@@ -62,12 +62,18 @@ const CreateFlow = () => {
   const checkMandatoryFields = () => {
     let result = true;
     const keys = Object.keys(errorState);
-
+    console.log('function', errorState)
     for (let key of keys) {
+      if(Array.isArray(errorState[key]) && errorState[key].length !== 0){
+        result = false;
+        break
+
+      }else{
       if (!errorState[key]) {
         result = false;
         break;
-      }
+      }}
+      
     }
     return result;
   };
@@ -96,7 +102,8 @@ const CreateFlow = () => {
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
 
-    if(checkMandatoryFields() && !errorState.audioError.length){
+    if(checkMandatoryFields()){
+      console.log('Nitin, function ran')
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setShowError(false)
@@ -279,14 +286,13 @@ const CreateFlow = () => {
         console.log("activeStep === 3");
       }
     } else {
+      console.log('Nitin, function failed')
       setShowError(true);
     }
         };
 
   const handleBack = () => {
-
     errorDispatch({type:'INITIALIZE'})
-    errorDispatch({type: 'AUDIO', payload: true})
 
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };

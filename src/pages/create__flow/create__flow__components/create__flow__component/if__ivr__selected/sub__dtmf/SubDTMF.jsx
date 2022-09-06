@@ -60,6 +60,7 @@ const SubDTMF = (props) => {
 
   const [selectOptionForMainDTMF, setSelectOptionForMainDTMF] =
     React.useState("");
+    const [iseFilled, setIsFilled] = useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -807,24 +808,40 @@ const SubDTMF = (props) => {
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
 
+  // useEffect(()=>{
+  //   if(props.hideItemStyle === undefined){
+  //     errorDispatch({type:'AUDIO', payload: true})
+  //   }
+  //   setShowError(false)
+  //   errorDispatch({type: "SUB_DTMF", payload: false})
+  // },[])
+
+  // useEffect(()=>{
+  //   if(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+
+  //     errorDispatch({type: "SUB_DTMF", payload: true})
+  //   }
+  //   else{
+  //     errorDispatch({type: "SUB_DTMF", payload: false})
+  //   }
+  // },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
+
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
       errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
-    errorDispatch({type: "SUB_DTMF", payload: false})
   },[])
-
+  
   useEffect(()=>{
-    if(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
-
-      errorDispatch({type: "SUB_DTMF", payload: true})
+    if(iseFilled){
+      errorDispatch({type: "MAIN_DTMF", payload: false})
     }
-    else{
-      errorDispatch({type: "SUB_DTMF", payload: false})
+    else
+      if(!traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+      errorDispatch({type: "MAIN_DTMF", payload: true})
     }
-  },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
-
+  },[iseFilled, traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
 
   return (
     <>
@@ -900,7 +917,8 @@ const SubDTMF = (props) => {
                         disabled = {props.disableEditingWhileCreatingCamp}
 
                         value={traverseAndModify(props.current.id,props.current,'waitTime',null,'read')}
-                        onChange={(e) =>
+                        onChange={(e) =>{
+                          setIsFilled(()=>e.target.value !== '')
                           traverseAndModify(
                             props.current.id,
                             props.current,
@@ -908,10 +926,10 @@ const SubDTMF = (props) => {
                             e.target.value >=0 ? e.target.value :0,
                             "edit"
                           )
-                        }
+                        }}
                         variant="outlined"
                         required
-                        error={showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}
+                        error={showError ? parseInt(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')) >=0 ? false:true:false}
                       />
                     </Box>
                   </div>
@@ -966,7 +984,7 @@ const SubDTMF = (props) => {
                         (lang) => (
                           <div className="file__chooser__container">
                             <input
-                              accept="audio/mp3"
+                              accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"

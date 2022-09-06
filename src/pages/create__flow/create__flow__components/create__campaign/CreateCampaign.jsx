@@ -52,8 +52,8 @@ const CreateCampaign = (props) => {
   const [flowData, setFlowData] = useState({});
   var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
-  const {showError, setShowError,errorState, errorDispatch} = useError()
-
+  const { showError, setShowError, errorState, errorDispatch } = useError();
+  const [showFlowState, setShowFlowState] = useState(false)
   var flowId = "";
 
   var scheduleData = {};
@@ -72,23 +72,30 @@ const CreateCampaign = (props) => {
     // props.getFlowList();
   }, []);
 
+  useEffect(() => {
+    setShowError(false);
+    errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
+  }, []);
 
-
-  useEffect(()=>{
-    setShowError(false)
-    errorDispatch({type: 'CREATE_CAMPAIGN', payload: false})
-  },[])
-  
-  useEffect(()=>{
-    if(formValues.campName && formValues.campPriority && formValues.wfId && formValues.campaign_type && formValues.cli_ivr){
-      errorDispatch({type: 'CREATE_CAMPAIGN', payload: true})
+  useEffect(() => {
+    if (
+      formValues.campName &&
+      formValues.campPriority &&
+      formValues.wfId &&
+      formValues.campaign_type &&
+      formValues.cli_ivr
+    ) {
+      errorDispatch({ type: "CREATE_CAMPAIGN", payload: true });
+    } else {
+      errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
     }
-    else{
-      errorDispatch({type: 'CREATE_CAMPAIGN', payload: false})
-      
-    }
-  },[formValues.campName, formValues.campPriority , formValues.wfId , formValues.campaign_type , formValues.cli_ivr])
-
+  }, [
+    formValues.campName,
+    formValues.campPriority,
+    formValues.wfId,
+    formValues.campaign_type,
+    formValues.cli_ivr,
+  ]);
 
   const getFlow = async (id) => {
     debugger;
@@ -200,59 +207,79 @@ const CreateCampaign = (props) => {
   };
 
   const handleSubmit = (e) => {
-    if(formValues.campName && formValues.campPriority && formValues.wfId && formValues.campaign_type && formValues.cli_ivr){
-      setShowError(false)
-    e.preventDefault();
-    console.log(scheduleData1);
+    if (
+      formValues.campName &&
+      formValues.campPriority &&
+      formValues.wfId &&
+      formValues.campaign_type &&
+      formValues.cli_ivr
+    ) {
+      setShowError(false);
+      e.preventDefault();
+      console.log(scheduleData1);
 
-    if (update) {
-
-      fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/update/campaign", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({...scheduleData1, userId: localStorage.getItem("userId")}),
-      })
-        .then((res) => {
-          res.json().then((res) => {
-            if (res) {
-              // showSuccess(true);
-              console.log(res);
-            } else if (res.length == 0) {
-            }
+      if (update) {
+        fetch(
+          "http://34.214.61.86" + ":" + "5000" + "/bng/ui/update/campaign",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...scheduleData1,
+              userId: localStorage.getItem("userId"),
+            }),
+          }
+        )
+          .then((res) => {
+            res.json().then((res) => {
+              if (res) {
+                // showSuccess(true);
+                console.log(res);
+              } else if (res.length == 0) {
+              }
+            });
+          })
+          .catch((e) => {
+            console.log(e);
           });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      } else {
+        fetch(
+          "http://34.214.61.86" + ":" + "5000" + "/bng/ui/create/campaign",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...scheduleData1,
+              userId: localStorage.getItem("userId"),
+            }),
+          }
+        )
+          .then((res) => {
+            res.json().then((res) => {
+              if (res) {
+                localStorage.setItem("campId", res.campId);
+                // history.push({
+                //   pathname: "/Campaigns/createFlow",
+                //   state: { detail: flowData },
+                // });
+                // showSuccess(true)
+                console.log(res);
+                setShowFlowState(true)
+
+              } else if (res.length == 0) {
+              }
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     } else {
-      fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/create/campaign", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({...scheduleData1,  userId: localStorage.getItem("userId")}),
-      })
-        .then((res) => {
-          res.json().then((res) => {
-            if (res) {
-              localStorage.setItem("campId", res.campId);
-              // history.push({
-              //   pathname: "/Campaigns/createFlow",
-              //   state: { detail: flowData },
-              // });
-              // showSuccess(true)
-              console.log(res);
-            } else if (res.length == 0) {
-            }
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }}else{
-      setShowError(true)
+      setShowError(true);
     }
   };
 
@@ -271,11 +298,11 @@ const CreateCampaign = (props) => {
 
   return (
     <>
-      <div className="create__campaign" style={{boxShadow:"2px 2px 2px grey",}}>
-        <div
-          className="create__campaign__container"
-          style={{ height: "30vh" }}
-        >
+      <div
+        className="create__campaign"
+        style={{ boxShadow: "2px 2px 2px grey" }}
+      >
+        <div className="create__campaign__container" style={{ height: "30vh" }}>
           <div className="campaign__name">
             <Box
               component="form"
@@ -293,16 +320,20 @@ const CreateCampaign = (props) => {
                 onChange={(event) => handleChange(event, "jobName")}
                 variant="outlined"
                 required
-                error={showError ? formValues.campName ? false : true :false}
-                />
+                error={showError ? (formValues.campName ? false : true) : false}
+              />
             </Box>
           </div>
 
           <div className="create__campaign__priority__dropdown">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label"
+              <InputLabel
+                id="demo-simple-select-label"
                 required
-                error={showError ? formValues.campPriority ? false : true :false}>
+                error={
+                  showError ? (formValues.campPriority ? false : true) : false
+                }
+              >
                 Select Priority
               </InputLabel>
               <Select
@@ -315,7 +346,9 @@ const CreateCampaign = (props) => {
                 value={formValues.campPriority}
                 onChange={(event) => handleChange(event, "priority")}
                 required
-                error={showError ? formValues.campPriority ? false : true :false}
+                error={
+                  showError ? (formValues.campPriority ? false : true) : false
+                }
               >
                 {/* {console.log(channel)} */}
 
@@ -358,9 +391,10 @@ const CreateCampaign = (props) => {
 
           <div className="create__campaign__workflow__name">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label"
-              required
-              error={showError ? formValues.wfId ? false : true :false}
+              <InputLabel
+                id="demo-simple-select-label"
+                required
+                error={showError ? (formValues.wfId ? false : true) : false}
               >
                 Work flow name{" "}
               </InputLabel>
@@ -374,11 +408,10 @@ const CreateCampaign = (props) => {
                 value={formValues.wfId}
                 onChange={(event) => handleChange(event, "wfId")}
                 required
-                error={showError ? formValues.wfId ? false : true :false}
+                error={showError ? (formValues.wfId ? false : true) : false}
               >
                 {props.FlowListData &&
                   props.FlowListData.map((e) => (
-              
                     <MenuItem key={e.id} value={e.wfId}>
                       {e.flowName}
                     </MenuItem>
@@ -425,7 +458,6 @@ const CreateCampaign = (props) => {
                 height: "100%",
                 position: "relative",
               }}
-              
             >
               <FormLabel
                 id="demo-row-radio-buttons-group-label"
@@ -438,12 +470,14 @@ const CreateCampaign = (props) => {
                   fontSize: "15px",
                 }}
                 required
-                error={showError ? formValues.campaign_type ? false : true :false}
+                error={
+                  showError ? (formValues.campaign_type ? false : true) : false
+                }
               >
                 Campaign Type
               </FormLabel>
               <RadioGroup row>
-              {/* <div
+                {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -493,9 +527,20 @@ const CreateCampaign = (props) => {
                   />
                 </div>
               </div> */}
-              <FormControlLabel name="campaign_type" value="incoming" control={<Radio />} label="Incoming" onChange={(e) => handleChange(e, "incoming")} 
-              />
-              <FormControlLabel name="campaign_type" value="outgoing" control={<Radio />} label="Outgoing" onChange={(e) => handleChange(e, "outgoing")} />
+                <FormControlLabel
+                  name="campaign_type"
+                  value="incoming"
+                  control={<Radio />}
+                  label="Incoming"
+                  onChange={(e) => handleChange(e, "incoming")}
+                />
+                <FormControlLabel
+                  name="campaign_type"
+                  value="outgoing"
+                  control={<Radio />}
+                  label="Outgoing"
+                  onChange={(e) => handleChange(e, "outgoing")}
+                />
               </RadioGroup>
             </FormControl>
           </div>
@@ -519,14 +564,32 @@ const CreateCampaign = (props) => {
                 value={formValues.cli_ivr}
                 onChange={(event) => handleChange(event, "cli_ivr")}
                 required
-                error={showError ? formValues.cli_ivr ? false : true :false}
+                error={showError ? (formValues.cli_ivr ? false : true) : false}
               />
             </Box>
           </div>
         </div>
-          <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
-          </div>
+        <button
+          style={{
+            margin: "auto",
+            marginBottom: "1rem",
+            dispaly: "flex",
+            width: "10%",
+            padding: ".5rem",
+          }}
+          onClick={(e) => {
+            handleSubmit(e);
+          }}
+        >
+          Submit
+        </button>
+        {
+          showFlowState ?  <div style={{ paddingBottom: "2rem" }}>
+          <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
+        </div>
+        : null
+        }
+       
       </div>
     </>
   );

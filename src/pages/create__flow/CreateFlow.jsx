@@ -20,24 +20,24 @@ import config from "../../ApiConfig/Config";
 import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 
-
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
+
   const {showError,setShowError, errorState, errorDispatch} = useError()
   const {ifIVRselectedThenLanguage} = useContext(CommonContext)
+
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
-  var createCampDataToSend ={}
+  var createCampDataToSend = {};
   const [hideItem, setHideItem] = useState(true);
   const hideItemStyle = classNames("file__chooser__container", {
     hideInput: hideItem,
     showInput: !hideItem,
   });
   const [FlowListData, setFlowListData] = useState([]);
-
 
   const [activeStep, setActiveStep] = React.useState(0);
   const getFlowList = () => {
@@ -59,30 +59,31 @@ const CreateFlow = () => {
       });
   };
 
-const checkMandatoryFields =() =>{
-  let result = true
-  const keys = Object.keys(errorState)
+  const checkMandatoryFields = () => {
+    let result = true;
+    const keys = Object.keys(errorState);
 
-  for(let key of keys){
-    if(!errorState[key]){
-      result = false
-      break
+    for (let key of keys) {
+      if (!errorState[key]) {
+        result = false;
+        break;
+      }
     }
-  }
-  return result
-}
+    return result;
+  };
 
-// const checkAudioError = () => {
-//   let result = true
-//   for(let val of audioError){
-//     if(val === false){
-//       result = true
-//       break
-//     }
-//   }
-//   return result
-// }
+  // const checkAudioError = () => {
+  //   let result = true
+  //   for(let val of audioError){
+  //     if(val === false){
+  //       result = true
+  //       break
+  //     }
+  //   }
+  //   return result
+  // }
 
+  console.log("Nitin", errorState, showError, audioError);
 
   const handleNext = () => {
     // console.log("flowName", flowName);
@@ -94,6 +95,7 @@ const checkMandatoryFields =() =>{
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
+
     if(checkMandatoryFields() && !errorState.audioError.length){
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -210,12 +212,120 @@ const checkMandatoryFields =() =>{
             // setFormSubmitted(true);
 
        
+    if (checkMandatoryFields() && !audioError.length) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setShowError(false);
+      console.log("local store on click of next button", localStore);
+      const userId = JSON.parse(localStorage.getItem("userId"));
+
+      dataToSend = {
+        service_Data: {
+          userid: userId,
+          name: "form.campaign_name",
+          start_date: "getFormattedDate(form.startdateTime)",
+          end_date: "getFormattedDate(form.enddateTime)",
+          start_time: "getFormattedTime(form.startdateTime)",
+          end_time: "getFormattedTime(form.enddateTime)",
+          priority: "5",
+          status: "scheduled",
+          is_capping: "true",
+          service_id: "getServiceId(form.service)",
+          service_name: "form.service",
+          operator_id: "form.operator",
+          publisher_id: "1",
+          agency: "1",
+          advertiser: "1",
+          media_type: "AUDIO",
+          device_type: "mobile",
+          description: "form.description",
+          kpi: "vv",
+          type: "IVR",
+          flow: "JSON",
+          max_click_count: "0",
+          max_impression_count: "0",
+          total_click_count: "99999",
+          total_impression_count: "888777",
+          // 'service_name': form.service,
+          campaign_frequency: "form.CampaignFrequency",
+        },
+        timezone: {
+          operator: "+",
+          timezonevalue: "00:00",
+        },
+        blackouthour: "form.blackouthour",
+        flow: globalState.state.ivrCampFlowData.flow,
+        publisher: null,
+        device: null,
+        country: null,
+      };
+
+      createCampDataToSend = {
+        service_Data: {
+          userid: userId,
+          name: "form.campaign_name",
+          start_date: "getFormattedDate(form.startdateTime)",
+          end_date: "getFormattedDate(form.enddateTime)",
+          start_time: "getFormattedTime(form.startdateTime)",
+          end_time: "getFormattedTime(form.enddateTime)",
+          priority: "5",
+          status: "scheduled",
+          is_capping: "true",
+          service_id: "getServiceId(form.service)",
+          service_name: "form.service",
+          operator_id: "form.operator",
+          publisher_id: "1",
+          agency: "1",
+          advertiser: "1",
+          media_type: "AUDIO",
+          device_type: "mobile",
+          description: "form.description",
+          kpi: "vv",
+          type: "IVR",
+          flow: "JSON",
+          max_click_count: "0",
+          max_impression_count: "0",
+          total_click_count: "99999",
+          total_impression_count: "888777",
+          // 'service_name': form.service,
+          campaign_frequency: "form.CampaignFrequency",
+        },
+        timezone: {
+          operator: "+",
+          timezonevalue: "00:00",
+        },
+        blackouthour: "form.blackouthour",
+        flow: globalState.state.ivrCampFlowData.flow,
+        publisher: null,
+        device: null,
+        country: null,
+      };
+
+      if (activeStep === 0) {
+        console.log("activeStep === 0");
+        fetch(
+          config.server.path +
+            config.server.port +
+            config.api.createFlowWithoutContent,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(createCampDataToSend),
           }
-        })
-        .catch((e) => console.log("error in submitting form", e));
-
-
-
+        )
+          .then(async (response) => {
+            var res = await response.json();
+            console.log("flow without content submitted--response", res);
+            if (response.status !== 200 || response.status === "FAILED") {
+              // setFormSubmitted(false);
+            } else {
+              getCompleteFlow(res.wfId);
+              localStorage.setItem("wfId", res.wfId);
+              // setFormSubmitted(true);
+            }
+          })
+          .catch((e) => console.log("error in submitting form", e));
 
         const getCompleteFlow = (id) => {
           debugger;
@@ -234,7 +344,7 @@ const checkMandatoryFields =() =>{
           )
             .then((response) => response.json())
             .then(function (data) {
-            getFlowList()
+              getFlowList();
 
               return data;
             })
@@ -243,56 +353,58 @@ const checkMandatoryFields =() =>{
               return error;
             });
         };
-    } else if (activeStep === 1) {
-      console.log("activeStep === 1");
-      
-      const path = 'http://34.214.61.86:5000/bng/ui/flow/content?isContent=true&campId='+ localStorage.getItem('campId') +'&wfId=' + localStorage.getItem('wfId')
-            fetch(path, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend)
-            })
-                .then(async response => {
-                    var res = await response.json();
-                    console.log("campaign submitted--response", res);
-                    // setLoading(false);
-                    if (response.status !== 200 || response.status === "FAILED") {
-                        // return false;
-                        // setFormSubmitted(false);
-                    } else {
-                        //TO DO : RESET STORE
-                        // setFormSubmitted(true);
-                        // dispatch({ type: 'EMPTY_DATA', nState: null });
-                        // return true;
-                    }
-                    // .then(e => {
-                    //     console.log("campaign submitted--response", e,);
-                    //     return e;
-                })
-                .catch((e) => console.log("error in submitting form", e));
+      } else if (activeStep === 1) {
+        console.log("activeStep === 1");
 
 
-    } else if (activeStep === 2) {
-      console.log("activeStep === 2");
-    } else if (activeStep === 3) {
-      console.log("activeStep === 3");
+        const path =
+          "http://34.214.61.86:5000/bng/ui/flow/content?isContent=true&campId=" +
+          localStorage.getItem("campId") +
+          "&wfId=" +
+          localStorage.getItem("wfId");
+        fetch(path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        })
+          .then(async (response) => {
+            var res = await response.json();
+            console.log("campaign submitted--response", res);
+            // setLoading(false);
+            if (response.status !== 200 || response.status === "FAILED") {
+              // return false;
+              // setFormSubmitted(false);
+            } else {
+              //TO DO : RESET STORE
+              // setFormSubmitted(true);
+              // dispatch({ type: 'EMPTY_DATA', nState: null });
+              // return true;
+            }
+            // .then(e => {
+            //     console.log("campaign submitted--response", e,);
+            //     return e;
+          })
+          .catch((e) => console.log("error in submitting form", e));
+      } else if (activeStep === 2) {
+        console.log("activeStep === 2");
+      } else if (activeStep === 3) {
+        console.log("activeStep === 3");
+      }
+    } else {
+      setShowError(true);
     }
-  }
-else{
-  setShowError(true)
-}
-}
-
-  
+  };
 
   const handleBack = () => {
+
     errorDispatch({type:'INITIALIZE'})
     errorDispatch({type: 'AUDIO', payload: true})
+
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
-   setActiveStep(0)
+    setActiveStep(0);
   };
   return (
     <>
@@ -333,11 +445,20 @@ else{
                   <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent  hideItemStyle={hideItemStyle} />
+                        <CreateFlowComponent hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
-                        <CreateCampaign disableEditingWhileCreatingCamp={true} getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
+                        <CreateCampaign
+                          disableEditingWhileCreatingCamp={true}
+                          getFlowList={getFlowList}
+                          FlowListData={FlowListData}
+                          setFlowListData={setFlowListData}
+                          hideItemStyle={hideItemStyle}
+                        />
                       ) : activeStep === 2 ? (
-                        <ScheduleCampaign disableEditingWhileCreatingCamp={true} hideItemStyle={hideItemStyle} />
+                        <ScheduleCampaign
+                          disableEditingWhileCreatingCamp={true}
+                          hideItemStyle={hideItemStyle}
+                        />
                       ) : activeStep === 3 ? (
                         <Review />
                       ) : (
@@ -369,7 +490,7 @@ else{
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
                     </Box>
-                      </>
+                  </>
                 )}
               </Box>
             </div>

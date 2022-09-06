@@ -60,6 +60,7 @@ const SubDTMF = (props) => {
 
   const [selectOptionForMainDTMF, setSelectOptionForMainDTMF] =
     React.useState("");
+    const [iseFilled, setIsFilled] = useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -807,24 +808,39 @@ const SubDTMF = (props) => {
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
 
+  // useEffect(()=>{
+  //   if(props.hideItemStyle === undefined){
+  //     errorDispatch({type:'AUDIO', payload: true})
+  //   }
+  //   setShowError(false)
+  //   errorDispatch({type: "SUB_DTMF", payload: false})
+  // },[])
+
+  // useEffect(()=>{
+  //   if(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+
+  //     errorDispatch({type: "SUB_DTMF", payload: true})
+  //   }
+  //   else{
+  //     errorDispatch({type: "SUB_DTMF", payload: false})
+  //   }
+  // },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
+
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
       errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
-    errorDispatch({type: "SUB_DTMF", payload: false})
   },[])
-
+  
   useEffect(()=>{
-    if(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
-
-      errorDispatch({type: "SUB_DTMF", payload: true})
-    }
-    else{
+    if(iseFilled){
       errorDispatch({type: "SUB_DTMF", payload: false})
     }
-  },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
-
+    else{
+      errorDispatch({type: "SUB_DTMF", payload: true})
+    }
+  },[iseFilled])
 
   return (
     <>
@@ -900,7 +916,8 @@ const SubDTMF = (props) => {
                         disabled = {props.disableEditingWhileCreatingCamp}
 
                         value={traverseAndModify(props.current.id,props.current,'waitTime',null,'read')}
-                        onChange={(e) =>
+                        onChange={(e) =>{
+                          setIsFilled(()=>e.target.value !== '')
                           traverseAndModify(
                             props.current.id,
                             props.current,
@@ -908,7 +925,7 @@ const SubDTMF = (props) => {
                             e.target.value >=0 ? e.target.value :0,
                             "edit"
                           )
-                        }
+                        }}
                         variant="outlined"
                         required
                         error={showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}

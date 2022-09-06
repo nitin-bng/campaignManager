@@ -64,10 +64,16 @@ const CreateFlow = () => {
     const keys = Object.keys(errorState);
 
     for (let key of keys) {
+      if(Array.isArray(errorState[key]) && errorState[key].length !==0){
+        result = false;
+        break
+
+      }else{
       if (!errorState[key]) {
         result = false;
         break;
-      }
+      }}
+      
     }
     return result;
   };
@@ -96,7 +102,7 @@ const CreateFlow = () => {
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
 
-    if(checkMandatoryFields() && !errorState.audioError.length){
+    if(checkMandatoryFields()){
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setShowError(false)

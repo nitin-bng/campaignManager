@@ -91,6 +91,8 @@ const Navigate = useNavigate()
   const globalState = useContext(store);
   let localStore = globalState.state;
   const languages = globalState.state.languages;
+
+  const { setCampaignName, campaignName } = globalState;
   var blackoutDay = [];
   const weekDaya = [
     { Day: "sunday", id: 1 },
@@ -113,7 +115,7 @@ const Navigate = useNavigate()
   const [options] = useState(weekDaya);
   const [selectedDayValue, setSelectedDayValue] = useState([]);
   const initialValues = {
-    jobName: "",
+    jobName: {campaignName},
     priority: "",
     campaignId: "",
     Channel: "",
@@ -430,6 +432,7 @@ const Navigate = useNavigate()
     setFormErrors(validate(formValues));
     scheduleData1.userID = localStorage.getItem("userId");
     scheduleData1.country = localStorage.getItem("userCountry");
+    scheduleData1.jobName =campaignName;
 
     console.log(scheduleData1);
     // scheduleData["fileName"] = fileName
@@ -523,7 +526,7 @@ const Navigate = useNavigate()
                         }}
                       >
                         {/* <div className="mb-3 col-4" style={{ display: "flex" }}> */}
-                        <div className="campaign__name">
+                        <div className="campaign__name" style={{display : "none"}}>
                           <Box
                             component="form"
                             style={{ width: "100%" }}
@@ -532,8 +535,8 @@ const Navigate = useNavigate()
                           >
                             <TextField
                               label="Job Name"
-                              // value={campaignName}
-                              // value={formValues.campName}
+                              value={campaignName}
+                              // value={formValues.jobName}
                               // onChange={(e) => setCampaignName(e.target.value)}
                               variant="outlined"
                               type="text"

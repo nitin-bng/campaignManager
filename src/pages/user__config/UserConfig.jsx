@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -28,7 +28,7 @@ import "./userconfig.css";
 import { blackout__days } from "../../helpers/All__mapping";
 import { useState } from "react";
 import { addDays } from "date-fns";
-
+import moment from "moment";
 // import "react-date-range/dist/styles.css"; // main style file
 // import "react-date-range/dist/theme/default.css"; // theme css file
 
@@ -96,6 +96,113 @@ You should not select previous dates
 
 `;
 
+const formJSON = [
+  {
+    page_label: "User Configuration Form",
+    table_name: "user_configuration_table",
+    fields: [
+      {
+        field_type: "header",
+        field_id: "General_User_Configurations",
+        header_id: 1,
+        field_value: "",
+        field_data: "varchar",
+        field_size: 24,
+        default_value: null,
+        header_name: "General User Configurations",
+      },
+      {
+        field_id: "Black_out_day",
+        field_name: "Black out day",
+        field_label: "Select black out day from above list",
+        field_value: "",
+        field_mandatory: "yes",
+        field_options: [
+          {
+            option_label: "sunday",
+          },
+          {
+            option_label: "monday",
+          },
+          {
+            option_label: "teausday",
+          },
+          {
+            option_label: "wednesday",
+          },
+          {
+            option_label: "thursday",
+          },
+          {
+            option_label: "friday",
+          },
+          {
+            option_label: "saturday",
+          },
+        ],
+        field_type: "select",
+        field_data: "varchar",
+        field_size: 16,
+        default_value: null,
+      },
+      {
+        field_id: "Required_channel",
+        field_name: "Required channel",
+        field_label: "Enter required channel here",
+        field_mandatory: "yes",
+        field_placeholder: "Enter required channel",
+        field_type: "number",
+        field_value: "",
+        field_data: "numeric",
+        field_size: 24,
+        validation_type: "numeric",
+        field_error: "enter a valid channel no",
+        default_value: null,
+      },
+      {
+        field_id: "Required_TPS",
+        field_name: "Required TPS",
+        field_label: "Enter required TPS here",
+        field_mandatory: "yes",
+        field_placeholder: "Enter required TPS",
+        field_type: "number",
+        field_value: "",
+        field_data: "numeric",
+        field_size: 24,
+        validation_type: "numeric",
+        field_error: "enter a valid TPS no",
+        default_value: null,
+      },
+      {
+        field_id: "Blackout_hour",
+        field_name: "Blackout hour",
+        field_label: "Select blackout hour",
+        field_mandatory: "yes",
+        field_type: "time",
+        field_value: "",
+        field_data: "varchar",
+        field_size: 24,
+        validation_type: "string",
+        field_error: "select valid blackout hour ",
+        default_value: null,
+      },
+      {
+        field_id: "Blackout_date",
+        field_name: "Blackout date",
+        field_label: "Select blackout date",
+        field_mandatory: "yes",
+        field_type: "date",
+        field_value: "",
+        field_data: "varchar",
+        field_size: 24,
+        validation_type: "string",
+        field_error: "select valid blackout date ",
+        default_value: null,
+      },
+    ],
+  },
+];
+
 const UserConfig = () => {
   const [assignChannel, setAssignChannel] = useState("");
   const [assignTps, setAssignTps] = useState("");
@@ -113,19 +220,36 @@ const UserConfig = () => {
   const [blackoutEndHour, setBlackoutEndHour] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
-  const [blackoutDate, setBlackoutDate] = React.useState(
-    []
-  );
+  const [blackoutDate, setBlackoutDate] = React.useState([]);
   const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [openModal, setOpenModal] = useState(false)
-  const [reason, setReason] = useState("")
-  const [status, setStatus] = useState("")
+  const [openModal, setOpenModal] = useState(false);
+  const [reason, setReason] = useState("");
+  const [status, setStatus] = useState("");
   const [scheduleData1, setScheduleData] = useState({});
   const [elements, setElements] = useState(null);
-  var scheduleData = {};
 
+  const [selectedStartDate, handleStartDateChange] = useState(new Date());
+  const [selectedEndDate, handleEndDateChange] = useState(new Date());
+
+  const [getChannel, setGetChannel] = useState();
+  const [getTps, setGetTps] = useState();
+  const [dayName, setDayName] = useState([]);
+  const [values, setValues] = useState([]);
+  const [getEndHour, setgetEndHour] = useState();
+  const initialValues = {
+    requiredChannel: "",
+    days: "",
+    totalTps: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+  };
+
+  const [formValues, setFormValues] = useState(initialValues);
+
+  var scheduleData = {};
 
   const handleChange = (event) => {
     const {
@@ -144,36 +268,35 @@ const UserConfig = () => {
     setBlackoutEndHour(newblackoutHour);
   };
 
-
-
-
   const userConfigSubmit = (event) => {
     localStorage.setItem("createFlowInMenuBarDisbled", true);
 
     // console.log("blackoutDate", blackoutDate);
     event.preventDefault();
 
-
     scheduleData = {
-      "assignChannel" : assignChannel,
-      "assignTps" : assignTps,
-      "msisdnLength": msisdnLength,
-      "appendCountryCode": appendCountryCode,
-      "countryCode": countryCode,
-      "appendZero": appendZero,
-      "days" : blackOutDays,
-      "date" : blackoutDate,
-      "startTime" : startTimeToSendAtBackend,
-      "endTime" : endTimeToSendAtBackend
-  }
+      requiredChannel: assignChannel,
+      totalTps: assignTps,
+      msisdnLength: msisdnLength,
+      appendCountryCode: appendCountryCode,
+      countryCode: countryCode,
+      appendZero: appendZero,
+      days: blackOutDays,
+      date: blackoutDate,
+      startTime: startTimeToSendAtBackend,
+      endTime: endTimeToSendAtBackend,
+    };
 
-  
-
-  // console.log("schedule Data ", scheduleData);
+    // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
     fetch(
-        config.server.path + config.server.port1 + "/"+ localStorage.getItem("userType") +  config.api.createUserConfig + localStorage.getItem("userId"),
+      config.server.path +
+        config.server.port1 +
+        "/" +
+        localStorage.getItem("userType") +
+        config.api.createUserConfig +
+        localStorage.getItem("userId"),
       {
         method: "POST",
         headers: {
@@ -205,81 +328,99 @@ const UserConfig = () => {
     setShowSuccess(false);
   };
   const handleModal = () => {
-    setOpenModal(false)
-    if (status === 'unsuccessful' && reason === "Only Required channel = 9 and Required TPS = 9 are available.") {
-        // history.push({
-        //     pathname: '/Configuration/User',
-        //     state: { detail: 'true' }
-        // });
+    setOpenModal(false);
+    if (
+      status === "unsuccessful" &&
+      reason === "Only Required channel = 9 and Required TPS = 9 are available."
+    ) {
+      // history.push({
+      //     pathname: '/Configuration/User',
+      //     state: { detail: 'true' }
+      // });
     }
-}
+  };
   useEffect(() => {
-    // setElements(formJSON[0]);
-    // console.log(formJSON);
-    // fetch("http://34.214.61.86" + ":" + "8085/" + localStorage.getItem("userType") + Configs.api.getUserConfig + '/' + localStorage.getItem('userId'), {
-    //     method: 'GET',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    // }).then((res) => {
-    //     res.json()
-    //         .then((res) => {
-    //             var formatedData = []
-    //             var dateData = []
-    //             if (res.status == "successful" && res.requiredChannel != 0) {
-    //                 debugger
-    //                 for (var i = 0; i < res.date.length; i++) {
-    //                     //    var key = res.data[i].split("T")
-    //                     dateData.push(res.date[i].split("T")[0])
-    //                     formatedData.push(moment(res.date[i].split("T")[0]).toString())
-    //                 }
-    //                 setCreateUpdate(true)
-    //                 setGetChannel(res.requiredChannel)
-    //                 setGetTps(res.totalTps)
-    //                 setDayName(res.days)
-    //                 if (res.startTime == null) {
-    //                     handleStartDateChange(new Date())
-    //                 } else {
-    //                     handleStartDateChange(res.startTime)
-    //                 }
-    //                 if (res.endTime == null) {
-    //                     handleEndDateChange(new Date())
-    //                 } else {
-    //                     handleEndDateChange(res.endTime)
-    //                 }
-    //                 // setGetDate(res.date)
-    //                 setValues(formatedData)
-    //                 setgetEndHour(res.endTime)
-    //                 scheduleData = {
-    //                     "days": res.days,
-    //                     "requiredChannel": res.requiredChannel,
-    //                     "totalTps": res.totalTps,
-    //                     "date": dateData,
-    //                     "startTime": moment(res.startTime).format('HH:MM:SS'),
-    //                     "endTime": moment(res.endTime).format('HH:MM:SS')
-    //                 }
-    //                 setFormValues({
-    //                     ...formValues, "days": res.days,
-    //                     "requiredChannel": res.requiredChannel,
-    //                     "totalTps": res.totalTps,
-    //                     "date": dateData,
-    //                     "startTime": moment(res.startTime).format('HH:MM:SS'),
-    //                     "endTime": moment(res.endTime).format('HH:MM:SS')
-    //                 });
+    setElements(formJSON[0]);
+    console.log(formJSON);
+    fetch(
+      "http://34.214.61.86" +
+        ":" +
+        "8085/" +
+        localStorage.getItem("userType") +
+        "/getConfig" +
+        "/" +
+        localStorage.getItem("userId"),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        res.json().then((res) => {
+          var formatedData = [];
+          var dateData = [];
+          console.log("rishabh", res);
+          if (res.status === "successful" && res.requiredChannel != 0) {
+            debugger;
+            for (var i = 0; i < res.date.length; i++) {
+              //    var key = res.data[i].split("T")
+              dateData.push(res.date[i].split("T")[0]);
+              formatedData.push(moment(res.date[i].split("T")[0]).toString());
+            }
+            setCreateUpdate(true);
+            setGetChannel(res.requiredChannel);
+            setGetTps(res.totalTps);
+            // setDayName(res.days)
+            console.log("nitin", res);
+            setBlackOutDays(res.days);
 
-    //                 setScheduleData(scheduleData1 => ({
-    //                     ...scheduleData1,
-    //                     ...scheduleData
-    //                 }));
-    //             }
-    //             else if (res.length == 0) {
-    //                 // showError(true)
+            if (res.startTime == null) {
+              handleStartDateChange(new Date());
+            } else {
+              handleStartDateChange(res.startTime);
+            }
+            if (res.endTime == null) {
+              handleEndDateChange(new Date());
+            } else {
+              handleEndDateChange(res.endTime);
+            }
+            // setGetDate(res.date)
+            setValues(formatedData);
+            setgetEndHour(res.endTime);
+            scheduleData = {
+              days: res.days,
+              requiredChannel: res.requiredChannel,
+              totalTps: res.totalTps,
+              date: dateData,
+              startTime: moment(res.startTime).format("HH:MM:SS"),
+              endTime: moment(res.endTime).format("HH:MM:SS"),
+            };
+            setFormValues({
+              ...formValues,
+              days: res.days,
+              requiredChannel: res.requiredChannel,
+              totalTps: res.totalTps,
+              date: dateData,
+              startTime: moment(res.startTime).format("HH:MM:SS"),
+              endTime: moment(res.endTime).format("HH:MM:SS"),
+            });
 
-    //             }
-    //         })
-    // })
-    //     .catch((e) => { console.log(e) });
+            setScheduleData((scheduleData1) => ({
+              ...scheduleData1,
+              ...scheduleData,
+            }));
+          } else if (res.length == 0) {
+            // showError(true)
+          }
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
+  console.log("blackout days from PI", blackOutDays);
 
   return (
     <>
@@ -472,14 +613,15 @@ const UserConfig = () => {
                         value={blackoutDate}
                         multiple
                         onChange={(e) => {
-                          e.map((ele,idx) => {
+                          e.map((ele, idx) => {
                             // console.log(ele.day);
                             // console.log(e);
                             // console.log(ele.year);
                             // console.log(ele.month.number);
-                            blackoutDate[idx] = ele.year + "/" + ele.month.number +  "/"+ ele.day
-                            setBlackoutDate(blackoutDate)
-                            setValue(blackoutDate)
+                            blackoutDate[idx] =
+                              ele.year + "/" + ele.month.number + "/" + ele.day;
+                            setBlackoutDate(blackoutDate);
+                            setValue(blackoutDate);
                           });
                           // console.log(blackoutDate);
                           // setValue
@@ -660,21 +802,27 @@ const UserConfig = () => {
                 </div>
               )}
             </div>
-
-            
           </div>
 
-     
-            {
-                openModal &&
-                <div className='bg-modal' style={{marginLeft:"-17%"}}>
-                    <div className="modal-content" style={{width:"25%", height:"22%"}}>
-                        <h3 className="title" style={{fontSize:"13px"}}>{reason}</h3>
-                        <button className="closeBtn" style={{width:"20%"}} onClick={(e) => handleModal(e)}>Okay</button>
-                    </div>
-                </div>
-            }
-           
+          {openModal && (
+            <div className="bg-modal" style={{ marginLeft: "-17%" }}>
+              <div
+                className="modal-content"
+                style={{ width: "25%", height: "22%" }}
+              >
+                <h3 className="title" style={{ fontSize: "13px" }}>
+                  {reason}
+                </h3>
+                <button
+                  className="closeBtn"
+                  style={{ width: "20%" }}
+                  onClick={(e) => handleModal(e)}
+                >
+                  Okay
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

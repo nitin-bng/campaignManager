@@ -28,9 +28,8 @@ const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
   var [update, updateForm] = useState(false);
-  const { dispatch } = globalState;
+  const { dispatch, setCampaignName, campaignName } = globalState;
   const initialValues = {
-    campName: "",
     campPriority: "",
     wfId: "",
     start_date: "",
@@ -41,9 +40,6 @@ const CreateCampaign = (props) => {
   const {
     flowName,
     // setFlowName,
-
-    campaignName,
-    setCampaignName,
   } = useContext(CommonContext);
 
   const [selectPriority, setSelectPriority] = useState("");
@@ -79,7 +75,7 @@ const CreateCampaign = (props) => {
 
   useEffect(() => {
     if (
-      formValues.campName &&
+      campaignName &&
       formValues.campPriority &&
       formValues.wfId &&
       formValues.campaign_type &&
@@ -90,7 +86,7 @@ const CreateCampaign = (props) => {
       errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
     }
   }, [
-    formValues.campName,
+    campaignName,
     formValues.campPriority,
     formValues.wfId,
     formValues.campaign_type,
@@ -208,7 +204,7 @@ const CreateCampaign = (props) => {
 
   const handleSubmit = (e) => {
     if (
-      formValues.campName &&
+      campaignName &&
       formValues.campPriority &&
       formValues.wfId &&
       formValues.campaign_type &&
@@ -314,13 +310,14 @@ const CreateCampaign = (props) => {
                 id="campName"
                 name="campName"
                 label="Campaign Name"
-                // value={campaignName}
-                value={formValues.campName}
+                value={campaignName}
+                // value={formValues.campName}
                 // onChange={(e) => setCampaignName(e.target.value)}
-                onChange={(event) => handleChange(event, "jobName")}
+                // onChange={(event) => handleChange(event, "jobName")}
+                onChange={(e) => setCampaignName(e.target.value)}
                 variant="outlined"
                 required
-                error={showError ? (formValues.campName ? false : true) : false}
+                error={showError ? (campaignName ? false : true) : false}
               />
             </Box>
           </div>

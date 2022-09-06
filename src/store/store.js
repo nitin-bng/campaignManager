@@ -1,6 +1,6 @@
 // store.js
 import { sub } from 'date-fns';
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 
 const initialState = {
     navBarToggle: {
@@ -250,8 +250,10 @@ const StateProvider = ({ children }) => {
                 throw new Error();
         };
     }, initialState);
+  const [campaignName, setCampaignName] = useState(null);
 
-    return <Provider value={{ state, dispatch }}>{children}</Provider>;
+
+    return <Provider value={{ state, dispatch, campaignName,  setCampaignName}}>{children}</Provider>;
 };
 
 const genArray = (n) => {

@@ -37,6 +37,7 @@ import { store } from "../../../../store/store";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { useNavigate } from "react-router-dom";
 
 var rows = [];
 const useStyles = makeStyles({
@@ -54,13 +55,23 @@ function createData(jobId, jobName, priority, status) {
   return { jobId, jobName, priority, status };
 }
 const ScheduleCampaign = (props) => {
+
+const Navigate = useNavigate()
+
+  const todaysDate = {
+    startDate: new Date(),
+    endDate: null,
+  };
+
   const [state, setState] = useState([
     {
-      startDate: Date.now(),
+      startDate: new Date(),
       endDate: null,
       key: "selection",
     },
   ]);
+  console.log("todaydate", state[0].startDate);
+
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
@@ -466,10 +477,13 @@ const ScheduleCampaign = (props) => {
     elem.click();
   };
   const handleConfirm = () => {
-    getcampaignScheduleList();
+    // getcampaignScheduleList();
     showSuccess(false);
     showForm(false);
     updateForm(false);
+    Navigate("/home")
+
+
   };
 
   const handleDateSelect = (ranges) => {
@@ -483,8 +497,8 @@ const ScheduleCampaign = (props) => {
           <div style={{ width: "100%", height: "100%" }}>
             {!success ? (
               <div className="col-sm-12 create__flow__component" style={{}}>
-                {/* {form || update ?  */}
-                {/* ( */}
+                {/* {form || update ? 
+                 (  */}
                 <div
                   className="parent-container create__flow__component__container"
                   style={{}}
@@ -951,7 +965,10 @@ const ScheduleCampaign = (props) => {
                           <DateRange
                             style={{ border: "2px solid red" }}
                             editableDateInputs={true}
+                            moveRangeOnFirstSelection={true}
+                            dateDisplayFormat={"MMM d, yyyy"}
                             onChange={(item) => {
+                              console.log("rishabh selection", item);
                               setState([item.selection]);
                               console.log(item.selection);
                               // console.log(item.selection.endDate)
@@ -1044,7 +1061,7 @@ const ScheduleCampaign = (props) => {
                                 });
                               }
                             }}
-                            moveRangeOnFirstSelection={false}
+                            minDate={todaysDate.startDate}
                             ranges={state}
                           />
 
@@ -1119,11 +1136,12 @@ const ScheduleCampaign = (props) => {
                     </form>
                   </div>
                 </div>
-                {/* )  */}
+               {/* )  */}
 
-                {/* :  */}
+                 {/* :  */}
 
-                {/* (
+                
+                  {/* (
                   <div className="listContainer">
                     <div style={{ textAlign: "end" }}>
                       <button
@@ -1174,8 +1192,8 @@ const ScheduleCampaign = (props) => {
                       </div>
                     </div>
                   </div>
-                ) */}
-                {/* } */}
+                ) 
+                }  */}
               </div>
             ) : (
               <div className="successCard">

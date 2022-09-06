@@ -138,7 +138,7 @@ const CreateCampaign = (props) => {
         ...scheduleData1,
         ...scheduleData,
       }));
-    } else if (e.target.id == "wfId") {
+    } else if (e.target.name == "wfId") {
       scheduleData["wfId"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -206,12 +206,13 @@ const CreateCampaign = (props) => {
     console.log(scheduleData1);
 
     if (update) {
+
       fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/update/campaign", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(scheduleData1),
+        body: JSON.stringify({...scheduleData1, userId: localStorage.getItem("userId")}),
       })
         .then((res) => {
           res.json().then((res) => {
@@ -231,7 +232,7 @@ const CreateCampaign = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(scheduleData1),
+        body: JSON.stringify({...scheduleData1,  userId: localStorage.getItem("userId")}),
       })
         .then((res) => {
           res.json().then((res) => {
@@ -375,12 +376,9 @@ const CreateCampaign = (props) => {
                 required
                 error={showError ? formValues.wfId ? false : true :false}
               >
-                {/* {console.log(channel)} */}
                 {props.FlowListData &&
                   props.FlowListData.map((e) => (
-                    // <option key={e.id} value={e.wfId}>
-                    //   {e.flowName}
-                    // </option>
+              
                     <MenuItem key={e.id} value={e.wfId}>
                       {e.flowName}
                     </MenuItem>

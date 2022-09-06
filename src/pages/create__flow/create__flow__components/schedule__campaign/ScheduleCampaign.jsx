@@ -16,10 +16,27 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
+import Stack from "@mui/material/Stack";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+
+import DatePicker from "react-multi-date-picker";
 import { store } from "../../../../store/store";
+// import DateRangePicker from 'rsuite/DateRangePicker';
+import { DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 var rows = [];
 const useStyles = makeStyles({
@@ -36,7 +53,14 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 function createData(jobId, jobName, priority, status) {
   return { jobId, jobName, priority, status };
 }
-const ScheduleCampaign = () => {
+const ScheduleCampaign = (props) => {
+  const [state, setState] = useState([
+    {
+      startDate: Date.now(),
+      endDate: null,
+      key: "selection",
+    },
+  ]);
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
@@ -188,7 +212,7 @@ const ScheduleCampaign = () => {
           ...scheduleData1,
           ...scheduleData,
         }));
-      } else if (e.target.id == "priority") {
+      } else if (e.target.name == "priority") {
         scheduleData["priority"] = e.target.value;
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
@@ -258,18 +282,14 @@ const ScheduleCampaign = () => {
         //   blackoutDay = e.target.value;
         blackoutDay = e.target.value;
         console.log(blackoutDay);
-       
       } else if (e.target.id == "uploadCsvFfile") {
         let files = e.target.files;
         var formData = new FormData();
         formData.append("file", files[0]);
-        fetch(
-          "http://34.214.61.86" + ":" + "5000" + "/bng/ui/uploadMsisdn",
-          {
-            method: "POST",
-            body: formData,
-          }
-        )
+        fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/uploadMsisdn", {
+          method: "POST",
+          body: formData,
+        })
           .then((res) => {
             res.json().then((res) => {
               if (res) {
@@ -345,7 +365,6 @@ const ScheduleCampaign = () => {
     // console.log("scheduleData1::", scheduleData1);
 
     console.log(scheduleData);
-    
   };
   const handleDayChange = (event, values) => {
     debugger;
@@ -355,7 +374,7 @@ const ScheduleCampaign = () => {
   const validate = (values) => {
     debugger;
     errors = {};
-   
+
     if (!values.jobName) {
       errors.jobName = "jobName is required!";
     }
@@ -399,6 +418,8 @@ const ScheduleCampaign = () => {
     debugger;
     setFormErrors(validate(formValues));
     scheduleData1.userID = localStorage.getItem("userId");
+    scheduleData1.country = localStorage.getItem("userCountry");
+
     console.log(scheduleData1);
     // scheduleData["fileName"] = fileName
     if (Object.keys(errors).length == 0 && !stringInputError) {
@@ -451,173 +472,414 @@ const ScheduleCampaign = () => {
     updateForm(false);
   };
 
+  const handleDateSelect = (ranges) => {
+    console.log(ranges); // native Date object
+  };
+
   return (
     <>
       <div className="schedule__campaign">
-        <div className="schedule__campaign__container">
+        <div className="schedule__campaign__container" style={{}}>
           <div style={{ width: "100%", height: "100%" }}>
             {!success ? (
-              <div className="col-sm-12">
-                {form || update ? (
+              <div className="col-sm-12 create__flow__component" style={{}}>
+                {/* {form || update ?  */}
+                {/* ( */}
+                <div
+                  className="parent-container create__flow__component__container"
+                  style={{}}
+                >
                   <div
-                    className="parent-container"
-                    style={{ background: "#e8edf2" }}
+                    className="child-container basic__flow__details__container"
+                    style={{}}
                   >
-                    <div className="child-container">
-                      <h3 className="mb-4 header-title">
-                        Create Campaign Schedule
-                      </h3>
-                      <form className="jobForm" style={{ textAlign: "left" }}>
-                        <div
-                          className="row"
-                          style={{ height: "100%", textAlign: "left" }}
-                        >
-                          <div className="mb-3 col-4">
-                            <label>Job Name</label>
-                            <input
+                    <div
+                      className="basic__flow__details__heading__container"
+                      style={{}}
+                    >
+                      <h1>Schedule Campaign</h1>
+                    </div>
+                    <form className="jobForm" style={{ width: "100%" }}>
+                      <div
+                        className="create__campaign__container"
+                        style={{
+                          // border: "2px solid blue",
+                          height: "100%",
+                          textAlign: "left",
+                        }}
+                      >
+                        {/* <div className="mb-3 col-4" style={{ display: "flex" }}> */}
+                        <div className="campaign__name">
+                          <Box
+                            component="form"
+                            style={{ width: "100%" }}
+                            noValidate
+                            autoComplete="off"
+                          >
+                            <TextField
+                              label="Job Name"
+                              // value={campaignName}
+                              // value={formValues.campName}
+                              // onChange={(e) => setCampaignName(e.target.value)}
+                              variant="outlined"
                               type="text"
                               className="form-control"
                               id="jobName"
                               aria-describedby="emailHelp"
-                              placeholder={"enter job name"}
                               name="jobName"
                               onChange={(event) =>
                                 handleChange(event, "jobName")
                               }
                             />
-                            <label
-                              className={
-                                stringInputError
-                                  ? "showStringErrorJob"
-                                  : "hideStringErrorJob"
-                              }
-                            >
-                              Enter a valid job name
-                            </label>
-                            <p>{formErrors.jobName}</p>
-                          </div>
-                          <div className="mb-3 col-4">
-                            <label>Priority</label>
-                            {/* <input type="text" className="form-control" id="priority" aria-describedby="emailHelp"
-                                    placeholder={'enter priority'}
-                                    onChange={event => handleChange(event, "priority")}
-                                /> */}
-                            <select
+                          </Box>
+                        </div>
+                        {/* <label>Job Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="jobName"
+                            aria-describedby="emailHelp"
+                            placeholder={"enter job name"}
+                            name="jobName"
+                            onChange={(event) => handleChange(event, "jobName")}
+                          />
+                          <label
+                            className={
+                              stringInputError
+                                ? "showStringErrorJob"
+                                : "hideStringErrorJob"
+                            }
+                          >
+                            Enter a valid job name
+                          </label>
+                          <p>{formErrors.jobName}</p> */}
+                        {/* </div> */}
+
+                        <div className="create__campaign__priority__dropdown">
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">
+                              Select Priority
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              label="Select Channel"
+                              // value={formValues.campPriority}
                               name="priority"
-                              id="priority"
+                              id="demo-simple-select priority"
                               className="campaignId form-select"
                               aria-label="Default select example"
                               onChange={(event) =>
                                 handleChange(event, "priority")
                               }
                             >
-                              <option value="select">select</option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                              <option value="6">6</option>
-                              <option value="7">7</option>
-                              <option value="8">8</option>
-                              <option value="9">9</option>
-                              <option value="10">10</option>
-                            </select>
-                            <p>{formErrors.priority}</p>
-                          </div>
-                          <div className="mb-3 col-4">
-                            <label>Capaign Name</label>
-                            <select
+                              {/* {console.log(channel)} */}
+
+                              <MenuItem id="priority" value="select">
+                                select
+                              </MenuItem>
+                              <MenuItem id="priority" value={1}>
+                                1
+                              </MenuItem>
+                              <MenuItem id="priority" value={2}>
+                                2
+                              </MenuItem>
+                              <MenuItem id="priority" value={3}>
+                                3
+                              </MenuItem>
+                              <MenuItem id="priority" value="4">
+                                4
+                              </MenuItem>
+                              <MenuItem id="priority" value="5">
+                                5
+                              </MenuItem>
+                              <MenuItem id="priority" value="6">
+                                6
+                              </MenuItem>
+                              <MenuItem id="priority" value="7">
+                                7
+                              </MenuItem>
+                              <MenuItem id="priority" value="8">
+                                8
+                              </MenuItem>
+                              <MenuItem id="priority" value="9">
+                                9
+                              </MenuItem>
+                              <MenuItem id="priority" value="10">
+                                10
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+
+                        {/* <div className="mb-3 col-4">
+                          <label>Priority</label>
+                         
+                          <select
+                            name="priority"
+                            id="priority"
+                            className="campaignId form-select"
+                            aria-label="Default select example"
+                            onChange={(event) =>
+                              handleChange(event, "priority")
+                            }
+                          >
+                            <option value="select">select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                          <p>{formErrors.priority}</p>
+                        </div> */}
+
+                        <div className="create__campaign__workflow__name">
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">
+                              Capaign Name{" "}
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              label="Select Channel"
+                              // value={formValues.wfId}
+
                               name="campaignId"
-                              id="campaignId"
+                              id="demo-simple-select campaignId"
                               className="campaignId form-select"
                               aria-label="Default select example"
                               onChange={(event) =>
                                 handleChange(event, "campaignId")
                               }
                             >
+                              {/* {console.log(channel)} */}
+
                               {campaignListData &&
                                 campaignListData.map((e) => (
-                                  <option key={e.campName} value={e.campId}>
+                                  <MenuItem key={e.campName} value={e.campId}>
                                     {e.campName}
-                                  </option>
+                                  </MenuItem>
                                 ))}
-                            </select>
-                            <p>{formErrors.campaignId}</p>
-                          </div>
-                          <div className="mb-3 col-4">
-                            {/* <label>Channel</label>
-                                <select name="Channel" id="Channel" className="channel form-select" aria-label="Default select example"  onChange={event => handleChange(event, "Channel")} disabled>
-                                    <option value={localStorage.getItem("channelName")}>{localStorage.getItem("channelName")}</option>
-                                </select>
-                                <p>{formErrors.Channel}</p> */}
-                            <label>Channel</label>
-                            {localStorage.getItem("channelName") &&
-                            (localStorage.getItem("channelName") == "IVR" ||
-                              localStorage.getItem("channelName") == "SMS") ? (
-                              <select
-                                name="Channel"
-                                id="Channel"
-                                className="channel form-select"
-                                aria-label="Default select example"
-                                onChange={(event) =>
-                                  handleChange(event, "Channel")
-                                }
-                                disabled
-                              >
-                                <option
-                                  value={localStorage.getItem("channelName")}
-                                >
-                                  {localStorage.getItem("channelName")}
+                            </Select>
+                          </FormControl>
+
+                          {/* <Box
+              component="form"
+              style={{ width: "100%" }}
+              noValidate
+              autoComplete="off"
+            >
+              <label>Work Flow Name</label>
+              <select
+                id="wfId"
+                name="wfId"
+                className="campaignId form-select"
+                aria-label="Default select example"
+                onChange={(event) => handleChange(event, "wfId")}
+                value={localStorage.getItem("flowName")}
+              >
+                {props.FlowListData &&
+                  props.FlowListData.map((e) => (
+                    <option key={e.id} value={e.wfId}>
+                      {e.flowName}
+                    </option>
+                  ))}
+              </select>
+            </Box> */}
+                        </div>
+
+                        {/* <div className="mb-3 col-4">
+                          <label>Capaign Name</label>
+                          <select
+                            name="campaignId"
+                            id="campaignId"
+                            className="campaignId form-select"
+                            aria-label="Default select example"
+                            onChange={(event) =>
+                              handleChange(event, "campaignId")
+                            }
+                          >
+                            {campaignListData &&
+                              campaignListData.map((e) => (
+                                <option key={e.campName} value={e.campId}>
+                                  {e.campName}
                                 </option>
-                              </select>
-                            ) : localStorage.getItem("channelName") &&
-                              localStorage.getItem("channelName") ==
-                                "IVR_SMS" ? (
-                              <select
-                                name="Channel"
-                                id="Channel"
-                                className="channel form-select"
-                                aria-label="Default select example"
-                                onChange={(event) =>
-                                  handleChange(event, "Channel")
-                                }
+                              ))}
+                          </select>
+                          <p>{formErrors.campaignId}</p>
+                        </div> */}
+
+                        <div
+                          className="create__flow__component__select__channel__dropdown__container"
+                          style={{ width: "20%" }}
+                        >
+                          <FormControl fullWidth>
+                            <InputLabel
+                              id="demo-simple-select-label"
+                              required
+                              // error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
+                            >
+                              Select channel
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={localStore.ivrCampFlowData.flow.channel}
+                              label="Select Channel"
+                              onChange={handleChange}
+                              disabled={props.disableEditingWhileCreatingCamp}
+                              required
+                            >
+                              {/* {console.log(channel)} */}
+
+                              <MenuItem value={"IVR"}>IVR</MenuItem>
+                              <MenuItem value={"SMS"}>SMS</MenuItem>
+                              <MenuItem value={"IVR_SMS"}>IVR/SMS</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+
+                        {/* <div className="mb-3 col-4">
+                       
+                          <label>Channel</label>
+                          {localStorage.getItem("channelName") &&
+                          (localStorage.getItem("channelName") == "IVR" ||
+                            localStorage.getItem("channelName") == "SMS") ? (
+                            <select
+                              name="Channel"
+                              id="Channel"
+                              className="channel form-select"
+                              aria-label="Default select example"
+                              onChange={(event) =>
+                                handleChange(event, "Channel")
+                              }
+                              disabled
+                            >
+                              <option
+                                value={localStorage.getItem("channelName")}
                               >
-                                <option value="Select">Select</option>
-                                <option value="IVR">ivr</option>
-                                <option value="SMS">sms</option>
-                              </select>
-                            ) : (
-                              <select
-                                name="Channel"
-                                id="Channel"
-                                className="channel form-select"
-                                aria-label="Default select example"
-                                onChange={(event) =>
-                                  handleChange(event, "Channel")
-                                }
+                                {localStorage.getItem("channelName")}
+                              </option>
+                            </select>
+                          ) : localStorage.getItem("channelName") &&
+                            localStorage.getItem("channelName") == "IVR_SMS" ? (
+                            <select
+                              name="Channel"
+                              id="Channel"
+                              className="channel form-select"
+                              aria-label="Default select example"
+                              onChange={(event) =>
+                                handleChange(event, "Channel")
+                              }
+                            >
+                              <option value="Select">Select</option>
+                              <option value="IVR">ivr</option>
+                              <option value="SMS">sms</option>
+                            </select>
+                          ) : (
+                            <select
+                              name="Channel"
+                              id="Channel"
+                              className="channel form-select"
+                              aria-label="Default select example"
+                              onChange={(event) =>
+                                handleChange(event, "Channel")
+                              }
+                            >
+                              <option value="Select">Select</option>
+                              <option value="IVR">ivr</option>
+                              <option value="SMS">sms</option>
+                              <option value="IVR_SMS">ivr/sms</option>
+                            </select>
+                          )}
+                          <p>{formErrors.Channel}</p>
+                        </div> */}
+
+                        <div
+                          className="create__flow__component__select__channel__dropdown__container"
+                          style={{ width: "20%" }}
+                        >
+                          <FormControl fullWidth>
+                            <InputLabel
+                              id="demo-simple-select-label"
+                              required
+                              // error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
+                            >
+                              Operator
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              value={localStorage.getItem("operatorName")}
+                              label="Select Channel"
+                              name="Operator"
+                              id="demo-simple-select Operator"
+                              className="operator form-select"
+                              aria-label="Default select example"
+                              onChange={(event) =>
+                                handleChange(event, "Operator")
+                              }
+                              disabled
+                            >
+                              {/* {console.log(channel)} */}
+
+                              <MenuItem
+                                value={localStorage.getItem("operatorName")}
                               >
-                                <option value="Select">Select</option>
-                                <option value="IVR">ivr</option>
-                                <option value="SMS">sms</option>
-                                <option value="IVR_SMS">ivr/sms</option>
-                              </select>
-                            )}
-                            <p>{formErrors.Channel}</p>
-                          </div>
-                          
-                          <div className="mb-3 col-4">
-                            <label>Operator</label>
-                            <select name="Operator" id="Operator" className="operator form-select" aria-label="Default select example"  onChange={event => handleChange(event, "Operator")} disabled>
-                                    <option value="jio">jio</option>
-                                </select>
-                            <p>{formErrors.Operator}</p>
-                          </div>
-                          <div className="mb-3 col-4">
-                            <label style={{ width: "100%" }}>
-                              Day Start Time
-                            </label>
-                            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                {localStorage.getItem("operatorName")}
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+
+                        {/* 
+                        <div className="mb-3 col-4">
+                          <label>Operator</label>
+                          <select
+                            name="Operator"
+                            id="Operator"
+                            className="operator form-select"
+                            aria-label="Default select example"
+                            onChange={(event) =>
+                              handleChange(event, "Operator")
+                            }
+                            disabled
+                          >
+                            <option value={localStorage.getItem("operatorName")}>{localStorage.getItem("operatorName")}</option>
+                          </select>
+                          <p>{formErrors.Operator}</p>
+                        </div> */}
+                        {/* <div className="mb-3 col-4"> */}
+                        {/* <label style={{ width: "100%" }}>
+                            Day Start Time
+                          </label> */}
+
+                        <div
+                          className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container"
+                          style={{ width: "20%" }}
+                        >
+                          <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Stack style={{ width: "80%" }} spacing={3}>
+                              <TimePicker
+                                label="Day Start Time"
+                                // value={blackoutStartHour}
+                                id="dayStartTime"
+                                value={selectedStartDate}
+                                name="dayStartTime"
+                                onChange={(event) =>
+                                  handleChange(event, "dayStartTime")
+                                }
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </Stack>
+                          </LocalizationProvider>
+                        </div>
+                        {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardTimePicker
                                         placeholder="select start time"
                                         mask="__:__ _M"
@@ -628,12 +890,34 @@ const ScheduleCampaign = () => {
                                     />
                                 </MuiPickersUtilsProvider>
                                 <p>{formErrors.dayStartTime}</p> */}
-                          </div>
-                          <div className="mb-3 col-4">
-                            <label style={{ width: "100%" }}>
-                              Day End Time
-                            </label>
-                            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        {/* </div> */}
+                        {/* <div className="mb-3 col-4"> */}
+                        {/* <label style={{ width: "100%" }}>Day End Time</label> */}
+
+                        <div
+                          className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container"
+                          style={{ width: "20%" }}
+                        >
+                          <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Stack style={{ width: "80%" }} spacing={3}>
+                              <TimePicker
+                                label="Day End Time"
+                                // value={blackoutStartHour}
+                                id="dayEndTime"
+                                value={selectedEndDate}
+                                name="dayEndTime"
+                                onChange={(time) =>
+                                  handleChange(time, "dayEndTime")
+                                }
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </Stack>
+                          </LocalizationProvider>
+                        </div>
+
+                        {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardTimePicker
                                         placeholder="select end time"
                                         mask="__:__ _M"
@@ -644,16 +928,136 @@ const ScheduleCampaign = () => {
                                     />
                                 </MuiPickersUtilsProvider>
                                 <p>{formErrors.dayEndTime}</p> */}
-                          </div>
-                          <div className="mb-3 col-4">
-                            <label style={{ marginBottom: "16px" }}>
-                              Select Date
-                            </label>
-                            {/* <DateRangePickerComponent id="daterangepicker" /> */}
+                        {/* </div> */}
+                        <br />
+                        <div
+                          className="dateRangerPickerOfSchedule"
+                          style={{
+                            border: "2px solid green",
+                            display: "flex",
+                            // width: "100%",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {/* <label style={{ marginBottom: "16px" }}>
+                            Select Date
+                          </label> */}
+                          {/* <DateRangePickerComponent id="daterangepicker" /> */}
+                          {/* <Calendar
+        date={new Date()}
+        onChange={(e)=> handleDateSelect(e)}
+      /> */}
 
-                            {/* <p>{formErrors.dateRange}</p> */}
-                          </div>
+                          <DateRange
+                            style={{ border: "2px solid red" }}
+                            editableDateInputs={true}
+                            onChange={(item) => {
+                              setState([item.selection]);
+                              console.log(item.selection);
+                              // console.log(item.selection.endDate)
+                              // console.log(item.selection.endDate.getFullYear())
+                              // console.log(item.selection.endDate.getMonth())
+                              // console.log(item.selection.endDate.getDate())
+                              // console.log(item.selection.endDate.getFullYear()+ "-"+ item.selection.endDate.getMonth() + "-"+ item.selection.endDate.getDate())
 
+                              if (item.selection.endDate.getDate() <= 9) {
+                                const endDate =
+                                  item.selection.endDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.endDate.getMonth() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.endDate.getDate();
+                                console.log(endDate);
+
+                                scheduleData["endDate"] = endDate;
+                                console.log("nitin", scheduleData);
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  console.log("nitin", result);
+                                  return result;
+                                });
+                              } else {
+                                const endDate =
+                                  item.selection.endDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.endDate.getMonth() +
+                                  "-" +
+                                  item.selection.endDate.getDate();
+                                console.log(endDate);
+
+                                scheduleData["endDate"] = endDate;
+                                console.log("nitin", scheduleData);
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  console.log("nitin", result);
+                                  return result;
+                                });
+                              }
+
+                              if (item.selection.startDate.getDate() <= 9) {
+                                const startDate =
+                                  item.selection.startDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getMonth() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getDate();
+                                console.log(startDate);
+                                scheduleData["startDate"] = startDate;
+                                console.log("nitin", scheduleData);
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  console.log("nitin", result);
+                                  return result;
+                                });
+                              } else {
+                                const startDate =
+                                  item.selection.startDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getMonth() +
+                                  "-" +
+                                  item.selection.startDate.getDate();
+                                console.log(startDate);
+                                scheduleData["startDate"] = startDate;
+                                console.log("nitin", scheduleData);
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  console.log("nitin", result);
+                                  return result;
+                                });
+                              }
+                            }}
+                            moveRangeOnFirstSelection={false}
+                            ranges={state}
+                          />
+
+                          {/* <p>{formErrors.dateRange}</p> */}
+                        </div>
+                        <div
+                          className="scheduleCampButtonsContainer"
+                          style={{
+                            width: "50%",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
                           <div
                             className="mb-3 col-4"
                             style={{ display: "grid" }}
@@ -684,27 +1088,42 @@ const ScheduleCampaign = () => {
                             </button>
                             <p>{formErrors.file}</p>
                           </div>
+
+                          <div
+                            style={{
+                              textAlign: "center",
+                              marginBottom: "4rem",
+                              marginTop: "4rem",
+                            }}
+                          >
+                            <button
+                              type="submit"
+                              className="btn btn-primary submitJob"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSubmit(e);
+                              }}
+                            >
+                              Submit
+                            </button>
+                            <button
+                              type="submit"
+                              className="btn btn-primary cancelJob"
+                              onClick={(e) => showListData(e)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
-                      </form>
-                      <div style={{ textAlign: "center" }}>
-                        <button
-                          type="submit"
-                          className="btn btn-primary submitJob"
-                          onClick={(e) => handleSubmit(e)}
-                        >
-                          Submit
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary cancelJob"
-                          onClick={(e) => showListData(e)}
-                        >
-                          Cancel
-                        </button>
                       </div>
-                    </div>
+                    </form>
                   </div>
-                ) : (
+                </div>
+                {/* )  */}
+
+                {/* :  */}
+
+                {/* (
                   <div className="listContainer">
                     <div style={{ textAlign: "end" }}>
                       <button
@@ -717,7 +1136,6 @@ const ScheduleCampaign = () => {
                     </div>
                     <div className="card-body text-center p-0">
                       <div className="table-responsive table-striped ctable">
-                        {/* <TableContainer component={Paper}> */}
                           <Table
                             className={classes.table}
                             aria-label="simple table"
@@ -753,12 +1171,11 @@ const ScheduleCampaign = () => {
                               ))}
                             </TableBody>
                           </Table>
-                        {/* </TableContainer> */}
                       </div>
                     </div>
                   </div>
-                  // <>fjhgj</>
-                )}
+                ) */}
+                {/* } */}
               </div>
             ) : (
               <div className="successCard">

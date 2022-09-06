@@ -29,14 +29,13 @@ import { blackout__days } from "../../helpers/All__mapping";
 import { useState } from "react";
 import { addDays } from "date-fns";
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+// import "react-date-range/dist/styles.css"; // main style file
+// import "react-date-range/dist/theme/default.css"; // theme css file
 
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
-
 
 import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";
@@ -301,7 +300,7 @@ const UserConfig = () => {
                 <div className="userconfig__maincontent__form__container">
                   <div className="userconfig__maincontent__form">
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackoutday__dropdown__container">
-                      {/* <FormControl style={{ width: "80%" }}>
+                      <FormControl style={{ width: "80%" }}>
                         <InputLabel
                           style={{
                             backgroundColor: "white",
@@ -335,7 +334,7 @@ const UserConfig = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                      </FormControl> */}
+                      </FormControl>
                       <CustomWidthTooltip title={BlackOutDayInfo}>
                         <HelpIcon
                           style={{
@@ -406,7 +405,7 @@ const UserConfig = () => {
                     </div>
 
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container">
-                      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack style={{ width: "80%" }} spacing={3}>
                           <TimePicker
                             label="Blackout start hour"
@@ -424,7 +423,7 @@ const UserConfig = () => {
                             renderInput={(params) => <TextField {...params} />}
                           />
                         </Stack>
-                      </LocalizationProvider> */}
+                      </LocalizationProvider>
 
                       <CustomWidthTooltip title={BlackoutStartHourInfo}>
                         <HelpIcon
@@ -438,7 +437,7 @@ const UserConfig = () => {
                     </div>
 
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-end-hour__container">
-                      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack style={{ width: "80%" }} spacing={3}>
                           <TimePicker
                             label="Blackout end hour"
@@ -456,7 +455,7 @@ const UserConfig = () => {
                             renderInput={(params) => <TextField {...params} />}
                           />
                         </Stack>
-                      </LocalizationProvider> */}
+                      </LocalizationProvider>
                       <CustomWidthTooltip title={BlackoutEndHourInfo}>
                         <HelpIcon
                           style={{

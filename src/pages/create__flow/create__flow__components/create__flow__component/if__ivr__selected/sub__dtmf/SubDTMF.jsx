@@ -46,13 +46,12 @@ const numberOfSubDTMF = [
 ];
 
 const SubDTMF = (props) => {
-  console.log("sub dtmf props", props);
 
   // const { current } = props.current;
 
   var hellohello = [];
   var languageName = [];
-  const {errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, setAudioError} = useError()
   const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -200,6 +199,10 @@ const SubDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
+        setAudioError(prev=>{
+          prev.pop()
+          return prev
+        })
         return response;
       })
       .catch((e) => {
@@ -808,8 +811,10 @@ const SubDTMF = (props) => {
 
 
   useEffect(()=>{
-    console.log('sub ran', props.showError)
-    props.setShowError(false)
+    if(props.hideItemStyle === undefined){
+      setAudioError(prev=>[...prev, true])
+    }
+    setShowError(false)
     errorDispatch({type: "SUB_DTMF", payload: false})
   },[])
 
@@ -909,7 +914,7 @@ const SubDTMF = (props) => {
                         }
                         variant="outlined"
                         required
-                        error={props.showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}
+                        error={showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}
                       />
                     </Box>
                   </div>
@@ -921,7 +926,7 @@ const SubDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-select"
-                        value={props.current.dtmf_count}
+                        value={props.current.dtmf_count || null}
                         disabled = {props.disableEditingWhileCreatingCamp}
 
                         // value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || 0 : props.current.dtmf_count}
@@ -983,6 +988,7 @@ const SubDTMF = (props) => {
                                   lang
                                 );
                               }}
+                              required
                             />
                             {localStore.ivrCampFlowData.flow.main_audio_file &&
                             localStore.ivrCampFlowData.flow.main_audio_file[
@@ -1032,8 +1038,6 @@ const SubDTMF = (props) => {
                           dataHandleWithObj={props.dataHandleWithObj}
                           hideItemStyle={props.hideItemStyle}
                           disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                          showError={props.showError}
-                          setShowError={props.setShowError}
                         />
                       </div>
                     );

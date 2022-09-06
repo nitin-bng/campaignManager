@@ -21,6 +21,8 @@ import IfIVRSelected from "../create__flow__component/if__ivr__selected/IfIVRSel
 import RenderingComponentOnLanguageSelect from "../create__flow__component/if__ivr__selected/rendering__component__on__language__select/RenderingComponentOnLanguageSelect";
 import CreateFlowComponent from "../create__flow__component/CreateFlowComponent";
 import { store } from "../../../../store/store";
+import { useError } from "../../../../store/errorContext";
+import { ErrorSharp } from "@material-ui/icons";
 const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const CreateCampaign = (props) => {
@@ -50,8 +52,7 @@ const CreateCampaign = (props) => {
   const [flowData, setFlowData] = useState({});
   var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
-
-  const [showFlow, setShowFlow] = useState(false);
+  const {showError, setShowError,errorState, errorDispatch} = useError()
 
   var flowId = "";
 
@@ -70,6 +71,24 @@ const CreateCampaign = (props) => {
     // setData([]);
     // props.getFlowList();
   }, []);
+
+
+
+  useEffect(()=>{
+    setShowError(false)
+    errorDispatch({type: 'CREATE_CAMPAIGN', payload: false})
+  },[])
+  
+  useEffect(()=>{
+    if(formValues.campName && formValues.campPriority && formValues.wfId && formValues.campaign_type && formValues.cli_ivr){
+      errorDispatch({type: 'CREATE_CAMPAIGN', payload: true})
+    }
+    else{
+      errorDispatch({type: 'CREATE_CAMPAIGN', payload: false})
+      
+    }
+  },[formValues.campName, formValues.campPriority , formValues.wfId , formValues.campaign_type , formValues.cli_ivr])
+
 
   const getFlow = async (id) => {
     debugger;
@@ -105,7 +124,6 @@ const CreateCampaign = (props) => {
   const handleChange = (e, catagory) => {
     debugger;
     const { name, value } = e.target;
-    console.log(e.target);
     setFormValues({ ...formValues, [name]: value });
     if (e.target.id == "campName") {
       // validateData('campName', e);
@@ -182,7 +200,8 @@ const CreateCampaign = (props) => {
   };
 
   const handleSubmit = (e) => {
-    debugger;
+    if(formValues.campName && formValues.campPriority && formValues.wfId && formValues.campaign_type && formValues.cli_ivr){
+      setShowError(false)
     e.preventDefault();
     console.log(scheduleData1);
 
@@ -224,7 +243,6 @@ const CreateCampaign = (props) => {
               // });
               // showSuccess(true)
               console.log(res);
-              setShowFlow(true);
             } else if (res.length == 0) {
             }
           });
@@ -232,6 +250,8 @@ const CreateCampaign = (props) => {
         .catch((e) => {
           console.log(e);
         });
+    }}else{
+      setShowError(true)
     }
   };
 
@@ -271,13 +291,17 @@ const CreateCampaign = (props) => {
                 // onChange={(e) => setCampaignName(e.target.value)}
                 onChange={(event) => handleChange(event, "jobName")}
                 variant="outlined"
-              />
+                required
+                error={showError ? formValues.campName ? false : true :false}
+                />
             </Box>
           </div>
 
           <div className="create__campaign__priority__dropdown">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
+              <InputLabel id="demo-simple-select-label"
+                required
+                error={showError ? formValues.campPriority ? false : true :false}>
                 Select Priority
               </InputLabel>
               <Select
@@ -289,6 +313,8 @@ const CreateCampaign = (props) => {
                 name="campPriority"
                 value={formValues.campPriority}
                 onChange={(event) => handleChange(event, "priority")}
+                required
+                error={showError ? formValues.campPriority ? false : true :false}
               >
                 {/* {console.log(channel)} */}
 
@@ -331,7 +357,10 @@ const CreateCampaign = (props) => {
 
           <div className="create__campaign__workflow__name">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
+              <InputLabel id="demo-simple-select-label"
+              required
+              error={showError ? formValues.wfId ? false : true :false}
+              >
                 Work flow name{" "}
               </InputLabel>
               <Select
@@ -343,6 +372,8 @@ const CreateCampaign = (props) => {
                 name="wfId"
                 value={formValues.wfId}
                 onChange={(event) => handleChange(event, "wfId")}
+                required
+                error={showError ? formValues.wfId ? false : true :false}
               >
                 {/* {console.log(channel)} */}
                 {props.FlowListData &&
@@ -381,7 +412,6 @@ const CreateCampaign = (props) => {
               </select>
             </Box> */}
           </div>
-
           <div
             className="create__campaign__campaign__type__radio__button"
             style={{
@@ -397,6 +427,7 @@ const CreateCampaign = (props) => {
                 height: "100%",
                 position: "relative",
               }}
+              
             >
               <FormLabel
                 id="demo-row-radio-buttons-group-label"
@@ -408,10 +439,13 @@ const CreateCampaign = (props) => {
                   backgroundColor: "white",
                   fontSize: "15px",
                 }}
+                required
+                error={showError ? formValues.campaign_type ? false : true :false}
               >
                 Campaign Type
               </FormLabel>
-              <div
+              <RadioGroup row>
+              {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -428,7 +462,7 @@ const CreateCampaign = (props) => {
                     width: "40%",
                   }}
                 >
-                  <span className="campaignInputCheckbox">Incoming</span>
+                  <label htmlFor="incoming" className="campaignInputCheckbox">Incoming</label>
                   <input
                     type="radio"
                     id="incoming"
@@ -448,7 +482,7 @@ const CreateCampaign = (props) => {
                     width: "40%",
                   }}
                 >
-                  <span className="campaignInputCheckbox">Outgoing</span>
+                  <label htmlFor="outgoing" className="campaignInputCheckbox">Outgoing</label>
                   <input
                     type="radio"
                     id="outgoing"
@@ -460,7 +494,11 @@ const CreateCampaign = (props) => {
                     }}
                   />
                 </div>
-              </div>
+              </div> */}
+              <FormControlLabel name="campaign_type" value="incoming" control={<Radio />} label="Incoming" onChange={(e) => handleChange(e, "incoming")} 
+              />
+              <FormControlLabel name="campaign_type" value="outgoing" control={<Radio />} label="Outgoing" onChange={(e) => handleChange(e, "outgoing")} />
+              </RadioGroup>
             </FormControl>
           </div>
 
@@ -482,37 +520,15 @@ const CreateCampaign = (props) => {
                 name="cli_ivr"
                 value={formValues.cli_ivr}
                 onChange={(event) => handleChange(event, "cli_ivr")}
+                required
+                error={showError ? formValues.cli_ivr ? false : true :false}
               />
             </Box>
           </div>
-          <div
-            style={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            <button
-              type="submit"
-              className="btn btn-primary submitJob"
-              onClick={(e) => handleSubmit(e)}
-              style={{
-                width: "10%",
-                border:'none',
-                outline:"nonne",
-                padding: ".7rem",
-                borderRadius: ".2rem",
-                backgroundColor: "#1976d2",
-                color: "white",
-                fontWeight:"600",
-                transition:"all 0.5s"
-              }}
-            >
-              {update ? "update" : "Submit"}
-            </button>
-          </div>
         </div>
-        {showFlow ? (
           <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent setShowError={()=>{}} disableEditingWhileCreatingCamp={true} />
+            <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
           </div>
-        ) : null}
       </div>
     </>
   );

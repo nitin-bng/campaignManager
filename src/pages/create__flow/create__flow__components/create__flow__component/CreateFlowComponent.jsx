@@ -36,12 +36,11 @@ const MenuProps = {
 };
 
 const CreateFlowComponent = (props) => {
-  const {showError, setShowError} = props
   const [data, setData] = useState({
     dtmf: 0,
     playOption: "PLAY",
   });
-  const { errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, errorState} = useError()
 
   // const [hideItem, setHideItem] = useState(true);
   // const hideItemStyle = classNames("file__chooser__container", {
@@ -226,6 +225,7 @@ const CreateFlowComponent = (props) => {
                     onChange={handleChange}
                     disabled = {props.disableEditingWhileCreatingCamp}
                     required
+                    error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
                   >
                     {/* {console.log(channel)} */}
 
@@ -252,7 +252,7 @@ const CreateFlowComponent = (props) => {
                     id="demo-multiple-checkbox-label"
                     required
                     error={showError ? ifIVRselectedThenLanguage.length ? false: true : false}
-                  >
+                    >
                     Select Languages
                   </InputLabel>
                   <Select
@@ -266,6 +266,7 @@ const CreateFlowComponent = (props) => {
                     MenuProps={MenuProps}
                     disabled = {props.disableEditingWhileCreatingCamp}
                     required
+                    error={showError ? ifIVRselectedThenLanguage.length ? false: true : false}
                   >
                     {Languages.map((Languages) => (
                       <MenuItem key={Languages} value={Languages}>
@@ -291,8 +292,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_H"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -307,8 +306,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_E"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -323,8 +320,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_A"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -339,8 +334,6 @@ const CreateFlowComponent = (props) => {
                     languageCode="_S"
                     hideItemStyle={props.hideItemStyle}
                     disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                    showError={showError}
-                    setShowError={setShowError}
                   />
                 ) : (
                   ""
@@ -375,7 +368,7 @@ const CreateFlowComponent = (props) => {
 
               {channel === "IVR" ? (
                 <IfIVRSelected  disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
-                hideItemStyle={props.hideItemStyle} showError={showError} setShowError={setShowError}/>
+                hideItemStyle={props.hideItemStyle}/>
               ) : (
                 ""
               )}

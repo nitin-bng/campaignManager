@@ -25,9 +25,8 @@ const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
-  const {errorState} = useError()
+  const {showError,setShowError, errorState, errorDispatch, audioError, setAudioError} = useError()
   const {ifIVRselectedThenLanguage} = useContext(CommonContext)
-  const [showError, setShowError] = useState(false)
   const { dispatch } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
@@ -73,6 +72,20 @@ const checkMandatoryFields =() =>{
   return result
 }
 
+// const checkAudioError = () => {
+//   let result = true
+//   for(let val of audioError){
+//     if(val === false){
+//       result = true
+//       break
+//     }
+//   }
+//   return result
+// }
+
+console.log('Nitin', errorState, showError, audioError)
+
+
   const handleNext = () => {
     // console.log("flowName", flowName);
     // console.log("channel", channel);
@@ -83,7 +96,7 @@ const checkMandatoryFields =() =>{
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
-    if(checkMandatoryFields()){
+    if(checkMandatoryFields() && !audioError.length){
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setShowError(false)
@@ -234,6 +247,7 @@ const checkMandatoryFields =() =>{
         };
     } else if (activeStep === 1) {
       console.log("activeStep === 1");
+      
       const path = 'http://34.214.61.86:5000/bng/ui/flow/content?isContent=true&campId='+ localStorage.getItem('campId') +'&wfId=' + localStorage.getItem('wfId')
             fetch(path, {
                 method: "POST",
@@ -274,6 +288,8 @@ else{
   
 
   const handleBack = () => {
+    errorDispatch({type:'INITIALIZE'})
+    setAudioError([])
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -319,7 +335,7 @@ else{
                   <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent showError={showError} setShowError={setShowError} hideItemStyle={hideItemStyle} />
+                        <CreateFlowComponent  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
                         <CreateCampaign getFlowList={getFlowList} FlowListData= {FlowListData} setFlowListData = { setFlowListData}  hideItemStyle={hideItemStyle} />
                       ) : activeStep === 2 ? (

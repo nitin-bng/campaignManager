@@ -49,7 +49,7 @@ const MainDTMF = (props) => {
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
-  const {errorDispatch} = useError()
+  const {showError,setShowError, errorDispatch, setAudioError} = useError()
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -271,6 +271,10 @@ const MainDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
+        setAudioError(prev=>{
+          prev.pop()
+          return prev
+        })
         return response;
       })
       .catch((e) => {
@@ -627,8 +631,11 @@ const MainDTMF = (props) => {
 
 
   useEffect(()=>{
-    console.log('main ran', props.showError)
-    props.setShowError(false)
+    if(props.hideItemStyle === undefined){
+      setAudioError(prev=>[...prev, true])
+    }
+
+    setShowError(false)
     errorDispatch({type: "MAIN_DTMF", payload: false})
   },[])
 
@@ -727,7 +734,7 @@ const MainDTMF = (props) => {
                         }
                         variant="outlined"
                         required
-                        error={props.showError ? globalState.state.ivrCampFlowData.flow.actions[
+                        error={showError ? globalState.state.ivrCampFlowData.flow.actions[
                           props.global.dtmf_key - 1
                         ].waitTime ? false:true:false}
                       />
@@ -801,6 +808,7 @@ const MainDTMF = (props) => {
                                   lang
                                 );
                               }}
+                              required
                             />
                             {globalState.state
                                                     .ivrCampFlowData.flow
@@ -852,8 +860,6 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
-                      showError={props.showError}
-                      setShowError={props.setShowError}
                     />
                   );
                 })}

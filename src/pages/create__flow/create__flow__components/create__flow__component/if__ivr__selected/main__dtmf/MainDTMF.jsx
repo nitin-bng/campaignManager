@@ -639,10 +639,15 @@ const MainDTMF = (props) => {
     if(iseFilled){
       errorDispatch({type: "MAIN_DTMF", payload: false})
     }
-    else{
+    else
+      if( !globalState.state.ivrCampFlowData.flow.actions[
+        props.global.dtmf_key - 1
+      ].waitTime){
       errorDispatch({type: "MAIN_DTMF", payload: true})
     }
-  },[iseFilled])
+  },[iseFilled, globalState.state.ivrCampFlowData.flow.actions[
+    props.global.dtmf_key - 1
+  ].waitTime])
 
   return (
     <>
@@ -730,9 +735,9 @@ const MainDTMF = (props) => {
                         }}
                         variant="outlined"
                         required
-                        error={showError ? globalState.state.ivrCampFlowData.flow.actions[
+                        error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.actions[
                           props.global.dtmf_key - 1
-                        ].waitTime ? false:true:false}
+                        ].waitTime ) >=0 ? false:true:false}
                       />
                     </Box>
                   </div>

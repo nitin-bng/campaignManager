@@ -57,7 +57,7 @@ const IfIVRSelected = (props) => {
   },[])
   
   useEffect(()=>{
-    if(globalState.state.ivrCampFlowData.flow.waitTime && globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount){
+    if(parseInt(globalState.state.ivrCampFlowData.flow.waitTime) >=0 && parseInt(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount) >=0){
       errorDispatch({type: 'IF_IVR_SELECTED', payload: true})
     }
     else{
@@ -937,8 +937,8 @@ const IfIVRSelected = (props) => {
   };
 
   const setWaitTime = (level, target, dtmf_key) => {
-    const val = target.value >=0 ? target.value :0
-    // console.log(" val ", target, val);
+    const val = target.value >= 0 ? target.value :0
+    console.log(" Nitin val ", val);
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
     else if (level === "sub")
@@ -1088,7 +1088,7 @@ const IfIVRSelected = (props) => {
                   onChange={(e) => setWaitTime("main", e.target, null)}
                   variant="outlined"
                   required
-                  error={showError ? globalState.state.ivrCampFlowData.flow.waitTime ? false : true :false}
+                  error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.waitTime, 10) >=0 ? false : true :false}
                 />
               </Box>
             </div>

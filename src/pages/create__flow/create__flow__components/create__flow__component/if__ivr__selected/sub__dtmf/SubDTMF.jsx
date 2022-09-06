@@ -835,12 +835,13 @@ const SubDTMF = (props) => {
   
   useEffect(()=>{
     if(iseFilled){
-      errorDispatch({type: "SUB_DTMF", payload: false})
+      errorDispatch({type: "MAIN_DTMF", payload: false})
     }
-    else{
-      errorDispatch({type: "SUB_DTMF", payload: true})
+    else
+      if(!traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+      errorDispatch({type: "MAIN_DTMF", payload: true})
     }
-  },[iseFilled])
+  },[iseFilled, traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
 
   return (
     <>
@@ -928,7 +929,7 @@ const SubDTMF = (props) => {
                         }}
                         variant="outlined"
                         required
-                        error={showError ? traverseAndModify(props.current.id,props.current,'waitTime',null,'read') ? false:true:false}
+                        error={showError ? parseInt(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')) >=0 ? false:true:false}
                       />
                     </Box>
                   </div>

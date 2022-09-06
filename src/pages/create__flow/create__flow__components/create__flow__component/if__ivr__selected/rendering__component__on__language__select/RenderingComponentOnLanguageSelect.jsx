@@ -26,7 +26,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
-    props.setDtmfTime(e.target.value >=0 ? e.target.value :0);
+    let value = e.target.value >=0 ? e.target.value :0
+    console.log('nitin wait time language', value)
+    props.setDtmfTime(value);
   };
   // useEffect(() => {
   //   console.log("dtmfTime", dtmfTime);
@@ -40,10 +42,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
   },[])
 
   useEffect(()=>{
-    if(props.dtmfTime){
+    if(parseInt(props.dtmfTime) >=0){
+      console.log('Nitin true',props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: true})
     }
     else{
+      console.log('Nitin false', props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
     }
   },[props.dtmfTime])
@@ -438,7 +442,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 onChange={saveValues}
                 disabled= {props.disableEditingWhileCreatingCamp}
                 required
-                error={showError ? props.dtmfTime ? false:true:false}
+                error={showError ? parseInt(props.dtmfTime, 10) >= 0 ? false:true:false}
               />
             </Box>
           </div>

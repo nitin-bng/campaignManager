@@ -49,7 +49,7 @@ const MainDTMF = (props) => {
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
-  const {showError,setShowError, errorDispatch, setAudioError} = useError()
+  const {showError,setShowError, errorDispatch} = useError()
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -271,10 +271,7 @@ const MainDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        setAudioError(prev=>{
-          prev.pop()
-          return prev
-        })
+        errorDispatch({type:'AUDIO', payload: false})
         return response;
       })
       .catch((e) => {
@@ -632,7 +629,7 @@ const MainDTMF = (props) => {
 
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
-      setAudioError(prev=>[...prev, true])
+      errorDispatch({type:'AUDIO', payload: true})
     }
 
     setShowError(false)

@@ -25,7 +25,7 @@ const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   let globalState = useContext(store);
-  const {showError,setShowError, errorState, errorDispatch, audioError, setAudioError} = useError()
+  const {showError,setShowError, errorState, errorDispatch} = useError()
   const {ifIVRselectedThenLanguage} = useContext(CommonContext)
   const { dispatch } = globalState;
   let localStore = globalState.state;
@@ -94,7 +94,7 @@ const checkMandatoryFields =() =>{
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
-    if(checkMandatoryFields() && !audioError.length){
+    if(checkMandatoryFields() && !errorState.audioError.length){
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setShowError(false)
@@ -287,7 +287,7 @@ else{
 
   const handleBack = () => {
     errorDispatch({type:'INITIALIZE'})
-    setAudioError([])
+    errorDispatch({type: 'AUDIO', payload: true})
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 

@@ -51,7 +51,7 @@ const SubDTMF = (props) => {
 
   var hellohello = [];
   var languageName = [];
-  const {showError, setShowError, errorDispatch, setAudioError} = useError()
+  const {showError, setShowError, errorDispatch} = useError()
   const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -199,10 +199,7 @@ const SubDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        setAudioError(prev=>{
-          prev.pop()
-          return prev
-        })
+        errorDispatch({type:'AUDIO', payload: false})
         return response;
       })
       .catch((e) => {
@@ -812,7 +809,7 @@ const SubDTMF = (props) => {
 
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
-      setAudioError(prev=>[...prev, true])
+      errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
     errorDispatch({type: "SUB_DTMF", payload: false})

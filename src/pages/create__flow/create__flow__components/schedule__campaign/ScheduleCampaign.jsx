@@ -22,6 +22,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import {getDateInFormat} from "../../../../services/getDateInFormat"
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -30,6 +31,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import Stack from "@mui/material/Stack";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import {useError} from "../../../../store/errorContext"
 
 import DatePicker from "react-multi-date-picker";
 import { store } from "../../../../store/store";
@@ -54,14 +56,17 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 function createData(jobId, jobName, priority, status) {
   return { jobId, jobName, priority, status };
 }
+let localDate = new Date()
+
 const ScheduleCampaign = (props) => {
   const Navigate = useNavigate();
-
+  const {showError} = useError()
+  const [errorMessage, setErrorMessage] = useState('')
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
   };
-
+  
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -70,27 +75,27 @@ const ScheduleCampaign = (props) => {
     },
   ]);
   console.log("todaydate", state[0].startDate);
-
+  
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
     new Date()
-  );
-  const [selectedBlackoutEndDate, handleBlackoutEndDate] = useState(new Date());
-  const [fileName, setfileName] = useState(null);
-  const [scheduleData1, setScheduleData] = useState({});
-  var [form, showForm] = useState(false);
-  var [tabledata, setData] = useState([]);
-  var [update, updateForm] = useState(false);
-  var [success, showSuccess] = useState(false);
-  const [stringInputError, handlestringInputError] = useState(false);
-  const [campaignListData, setCampaignListData] = useState([]);
+    );
+    const [selectedBlackoutEndDate, handleBlackoutEndDate] = useState(new Date());
+    const [fileName, setfileName] = useState(null);
+    const [scheduleData1, setScheduleData] = useState({});
+    var [form, showForm] = useState(false);
+    var [tabledata, setData] = useState([]);
+    var [update, updateForm] = useState(false);
+    var [success, showSuccess] = useState(false);
+    const [stringInputError, handlestringInputError] = useState(false);
+    const [campaignListData, setCampaignListData] = useState([]);
   const classes = useStyles();
   const scheduleData = {};
   const globalState = useContext(store);
   let localStore = globalState.state;
   const languages = globalState.state.languages;
-
+  
   const {
     setCampaignName,
     campaignName,
@@ -116,8 +121,6 @@ const ScheduleCampaign = (props) => {
     { title: "Schindler's List", year: 1993 },
     { title: "Pulp Fiction", year: 1994 },
   ];
-  const [options] = useState(weekDaya);
-  const [selectedDayValue, setSelectedDayValue] = useState([]);
   const initialValues = {
     jobName: { campaignName },
     priority: { campaignSchedulePriority },
@@ -125,11 +128,14 @@ const ScheduleCampaign = (props) => {
     Channel: "",
     Country: "",
     Operator: "",
-    dayStartTime: "",
-    dayEndTime: "",
+    dayStartTime: localDate.getHours() + ":" + localDate.getMinutes() + ":" + localDate.getSeconds(),
+    dayEndTime:  localDate.getHours() + ":" + localDate.getMinutes() + ":" + localDate.getSeconds(),
     dateRange: "",
     file: "",
   };
+  const [options] = useState(weekDaya);
+  const [selectedDayValue, setSelectedDayValue] = useState([]);
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   var errors;
@@ -457,7 +463,7 @@ const ScheduleCampaign = (props) => {
     const date = new Date()
     const startTimeArray = scheduleData1.dailyStartTime.split(':')
     const endTimeArray = scheduleData1.dailyEndTime.split(':')
-    if(changeDateFormat(date) === scheduleData1.startDate){
+    if(getDateInFormat(date) === scheduleData1.startDate){
       console.log('same day', date.getHours(), ~~(startTimeArray[0]))
       if(date.getHours() > ~~(startTimeArray[0]) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() > ~~(startTimeArray[1])) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() === ~~(startTimeArray[1]) && date.getSeconds() > ~~(startTimeArray[2]))){
        throw Error('Start time has already passed')
@@ -512,7 +518,12 @@ const ScheduleCampaign = (props) => {
     }
   }
   catch(e){
-    console.log('error occured', e.message)
+    if(e.message.includes('split')){
+      setErrorMessage("Please select Start and End time")
+    }
+    else{
+    setErrorMessage(e.message)
+    }
   }
 }
   const showFormData = (e) => {
@@ -527,6 +538,7 @@ const ScheduleCampaign = (props) => {
   };
   const deleteFormData = (id) => {};
   const dummyClick = (id) => {
+    debugger
     const elem = document.getElementById(id);
     elem.click();
   };
@@ -537,30 +549,6 @@ const ScheduleCampaign = (props) => {
     updateForm(false);
     Navigate("/home");
   };
-
-  const changeDateFormat = (date) =>{
-    let result = ''
-    let year = date.getFullYear()
-    let month = date.getMonth()+1
-    let currDate = date.getDate()
-
-    result =  year + '-'
-    if(month > 9){
-      result += month
-    }
-
-    else{
-      result += '0'+ month
-    }
-    result += '-'
-    if(currDate > 9){
-      result += currDate 
-    }
-    else{
-      result += '0'+ currDate 
-    }
-    return result
-  }
 
   const handleDateSelect = (ranges) => {
     console.log(ranges); // native Date object
@@ -994,8 +982,10 @@ const ScheduleCampaign = (props) => {
                                 id="dayStartTime"
                                 value={selectedStartDate}
                                 name="dayStartTime"
-                                onChange={(event) =>
+                                onChange={(event) =>{
+                                  setErrorMessage('')
                                   handleChange(event, "dayStartTime")
+                                }
                                 }
                                 renderInput={(params) => (
                                   <TextField {...params} />
@@ -1034,8 +1024,10 @@ const ScheduleCampaign = (props) => {
                                 id="dayEndTime"
                                 value={selectedEndDate}
                                 name="dayEndTime"
-                                onChange={(time) =>
+                                onChange={(time) =>{
+                                  setErrorMessage('')
                                   handleChange(time, "dayEndTime")
+                                }
                                 }
                                 renderInput={(params) => (
                                   <TextField {...params} />
@@ -1092,8 +1084,8 @@ const ScheduleCampaign = (props) => {
                               setState([item.selection]);
                               console.log('Nitin before function',item.selection.endDate.getMonth());
 
-                               scheduleData["endDate"] = changeDateFormat(item.selection.endDate)
-                               scheduleData["startDate"] = changeDateFormat(item.selection.startDate)
+                               scheduleData["endDate"] = getDateInFormat(item.selection.endDate)
+                               scheduleData["startDate"] = getDateInFormat(item.selection.startDate)
                                console.log('Nitin after function',scheduleData["startDate"],scheduleData["endDate"] )
                                 setScheduleData((scheduleData1) => {
                                   let result = {
@@ -1303,6 +1295,7 @@ const ScheduleCampaign = (props) => {
                         Cancel
                       </button>
                     </div>
+                    {errorMessage && <div style={{color:"Red"}}>{errorMessage}</div>}
                   </div>
                 </div>
                 {/* )  */}

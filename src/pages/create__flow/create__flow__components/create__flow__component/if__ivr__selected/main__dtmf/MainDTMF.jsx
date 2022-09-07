@@ -50,7 +50,7 @@ const MainDTMF = (props) => {
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
   const {showError,setShowError, errorDispatch} = useError()
-  const [iseFilled, setIsFilled] = useState(false)
+  const [isFilled, setIsFilled] = useState(false)
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -633,19 +633,25 @@ const MainDTMF = (props) => {
       errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
+
+    return ()=>{
+      errorDispatch({type: "MAIN_DTMF", payload: false})
+    }
   },[])
   
   useEffect(()=>{
-    if(iseFilled){
+    if(isFilled){
       errorDispatch({type: "MAIN_DTMF", payload: false})
     }
-    else
-      if( !globalState.state.ivrCampFlowData.flow.actions[
-        props.global.dtmf_key - 1
-      ].waitTime){
-      errorDispatch({type: "MAIN_DTMF", payload: true})
-    }
-  },[iseFilled, globalState.state.ivrCampFlowData.flow.actions[
+  },[isFilled])
+
+  useEffect(()=>{
+    if(!isFilled && !globalState.state.ivrCampFlowData.flow.actions[
+      props.global.dtmf_key - 1
+    ].waitTime){
+    errorDispatch({type: "MAIN_DTMF", payload: true})
+  }
+  },[isFilled, globalState.state.ivrCampFlowData.flow.actions[
     props.global.dtmf_key - 1
   ].waitTime])
 

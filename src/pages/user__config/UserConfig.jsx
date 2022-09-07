@@ -275,8 +275,8 @@ const UserConfig = () => {
     event.preventDefault();
 
     scheduleData = {
-      requiredChannel: assignChannel,
-      totalTps: assignTps,
+      assignChannel: assignChannel,
+      assignTps: assignTps,
       msisdnLength: msisdnLength,
       appendCountryCode: appendCountryCode,
       countryCode: countryCode,
@@ -292,7 +292,7 @@ const UserConfig = () => {
     // if (Object.keys(errors).length == 0) {
     fetch(
       config.server.path +
-        config.server.port1 +
+        config.server.port3+
         "/" +
         localStorage.getItem("userType") +
         config.api.createUserConfig +
@@ -345,7 +345,7 @@ const UserConfig = () => {
     fetch(
       "http://34.214.61.86" +
         ":" +
-        "8085/" +
+        "8087/" +
         localStorage.getItem("userType") +
         "/getConfig" +
         "/" +

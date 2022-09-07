@@ -34,7 +34,7 @@ const Login = () => {
 
   const loginUser = (data) => {
     data['type'] = ''
-    fetch(config.server.path + config.server.port1 + config.api.login,{
+    fetch(config.server.path + config.server.port3 + config.api.login,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ const Login = () => {
   }
 
   const getUserDetails = (id) => {
-    fetch(config.server.path + config.server.port1 + "/" + localStorage.getItem("userType")+ "/" + id,{
+    fetch(config.server.path + config.server.port3 + "/" + localStorage.getItem("userType")+ "/" + id,{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

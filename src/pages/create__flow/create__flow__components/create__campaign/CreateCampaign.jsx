@@ -98,7 +98,7 @@ const CreateCampaign = (props) => {
     debugger;
     localStorage.setItem("wfId", id);
     flowId = id;
-    const path = "http://34.214.61.86:5000/bng/ui/get/flow?wfId=" + id;
+    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -169,7 +169,7 @@ const CreateCampaign = (props) => {
         ...scheduleData1,
         ...scheduleData,
       }));
-    } else if (e.target.id == "incoming" || e.target.id == "outgoing") {
+    } else if (e.target.value == "incoming" || e.target.value == "outgoing") {
       scheduleData["campaign_type"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -217,7 +217,7 @@ const CreateCampaign = (props) => {
 
       if (update) {
         fetch(
-          "http://34.214.61.86" + ":" + "5000" + "/bng/ui/update/campaign",
+          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/update/campaign",
           {
             method: "PUT",
             headers: {
@@ -243,7 +243,7 @@ const CreateCampaign = (props) => {
           });
       } else {
         fetch(
-          "http://34.214.61.86" + ":" + "5000" + "/bng/ui/create/campaign",
+          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campaign",
           {
             method: "POST",
             headers: {

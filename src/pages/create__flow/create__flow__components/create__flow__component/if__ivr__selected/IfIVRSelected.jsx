@@ -260,7 +260,7 @@ const IfIVRSelected = (props) => {
       console.log("-----------------props------", formData.getAll("file"));
     });
     // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
-    const path = config.server.path + ":" + "5000" + "" + "/bng/ui/uploadFile";
+    const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
 
     // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
     // const path = 'http://35.154.125.150:5080/uploadMultipleFile';

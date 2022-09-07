@@ -119,7 +119,7 @@ const Signup = () => {
 
     setLoader(true);
     // setOpenModal(true);
-    fetch(config.server.path + config.server.port1 + config.api.signUp, {
+    fetch(config.server.path + config.server.port3 + config.api.signUp, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data, features: uniqueArray }),
@@ -149,7 +149,7 @@ const Signup = () => {
 
 
   const getFeatures = () => {
-    fetch(config.server.path + config.server.port1 + config.api.getFeature)
+    fetch(config.server.path + config.server.port3 + config.api.getFeature)
       .then((result) => result.json())
       .then((res) => {
         setFeaturesFromAPI(res);
@@ -161,7 +161,7 @@ const Signup = () => {
   };
 
   const getOperator = () => {
-    fetch(config.server.path + config.server.port1 + config.api.setOperator)
+    fetch(config.server.path + config.server.port3 + config.api.setOperator)
       .then((result) => result.json())
       .then((res) => {
         setOperatorsFromAPI(res);

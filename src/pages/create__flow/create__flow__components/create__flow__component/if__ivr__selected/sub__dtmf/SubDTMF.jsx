@@ -932,6 +932,7 @@ const SubDTMF = (props) => {
                             "edit"
                           )
                         }}
+                        onWheel={(e) => e.target.blur()}
                         variant="outlined"
                         required
                         error={showError ? parseInt(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')) >=0 ? false:true:false}

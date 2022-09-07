@@ -739,6 +739,7 @@ const MainDTMF = (props) => {
                             props.global.dtmf_key
                           )
                         }}
+                        onWheel={(e) => e.target.blur()}
                         variant="outlined"
                         required
                         error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.actions[

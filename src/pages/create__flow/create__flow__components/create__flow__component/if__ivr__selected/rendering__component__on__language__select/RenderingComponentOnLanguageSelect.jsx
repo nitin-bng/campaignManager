@@ -440,6 +440,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 variant="outlined"
                 value={props.dtmfTime}
                 onChange={saveValues}
+                onWheel={(e) => e.target.blur()}
                 disabled= {props.disableEditingWhileCreatingCamp}
                 required
                 error={showError ? parseInt(props.dtmfTime, 10) >= 0 ? false:true:false}

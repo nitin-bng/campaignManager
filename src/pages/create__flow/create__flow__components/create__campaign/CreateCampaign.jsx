@@ -562,6 +562,7 @@ const CreateCampaign = (props) => {
                 name="cli_ivr"
                 value={formValues.cli_ivr}
                 onChange={(event) => handleChange(event, "cli_ivr")}
+                onWheel={(e) => e.target.blur()}
                 required
                 error={showError ? (formValues.cli_ivr ? false : true) : false}
               />

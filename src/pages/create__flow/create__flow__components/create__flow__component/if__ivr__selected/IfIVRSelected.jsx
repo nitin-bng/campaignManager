@@ -1086,6 +1086,7 @@ const IfIVRSelected = (props) => {
                   //   handleDataInput(e, "mainAudioWaitTime");
                   // }}
                   onChange={(e) => setWaitTime("main", e.target, null)}
+                  onWheel={(e) => e.target.blur()}
                   variant="outlined"
                   required
                   error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.waitTime, 10) >=0 ? false : true :false}

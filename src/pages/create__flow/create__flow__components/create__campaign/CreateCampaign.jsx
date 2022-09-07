@@ -251,6 +251,8 @@ const CreateCampaign = (props) => {
             body: JSON.stringify({
               ...scheduleData1,
               userId: localStorage.getItem("userId"),
+              campName: campaignName,
+
             }),
           }
         )

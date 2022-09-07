@@ -23,14 +23,15 @@ import CreateFlowComponent from "../create__flow__component/CreateFlowComponent"
 import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
 import { ErrorSharp } from "@material-ui/icons";
+import './createCampaign.css'
 const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
   var [update, updateForm] = useState(false);
-  const { dispatch, setCampaignName, campaignName } = globalState;
+  const { dispatch, setCampaignName, campaignName ,campaignSchedulePriority, setCampaignSchedulePriority} = globalState;
   const initialValues = {
-    campPriority: "",
+    campPriority: {campaignSchedulePriority},
     wfId: "",
     start_date: "",
     campaign_type: "",
@@ -76,7 +77,7 @@ const CreateCampaign = (props) => {
   useEffect(() => {
     if (
       campaignName &&
-      formValues.campPriority &&
+      campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
       formValues.cli_ivr
@@ -87,7 +88,7 @@ const CreateCampaign = (props) => {
     }
   }, [
     campaignName,
-    formValues.campPriority,
+    campaignSchedulePriority,
     formValues.wfId,
     formValues.campaign_type,
     formValues.cli_ivr,
@@ -205,7 +206,7 @@ const CreateCampaign = (props) => {
   const handleSubmit = (e) => {
     if (
       campaignName &&
-      formValues.campPriority &&
+      campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
       formValues.cli_ivr
@@ -252,6 +253,7 @@ const CreateCampaign = (props) => {
               ...scheduleData1,
               userId: localStorage.getItem("userId"),
               campName: campaignName,
+              campPriority : campaignSchedulePriority,
 
             }),
           }
@@ -330,7 +332,7 @@ const CreateCampaign = (props) => {
                 id="demo-simple-select-label"
                 required
                 error={
-                  showError ? (formValues.campPriority ? false : true) : false
+                  showError ? (campaignSchedulePriority ? false : true) : false
                 }
               >
                 Select Priority
@@ -342,18 +344,14 @@ const CreateCampaign = (props) => {
                 className="campaignId form-select"
                 aria-label="Default select example"
                 name="campPriority"
-                value={formValues.campPriority}
-                onChange={(event) => handleChange(event, "priority")}
+                value={campaignSchedulePriority}
+                onChange={(event) => setCampaignSchedulePriority(event.target.value)}
                 required
                 error={
-                  showError ? (formValues.campPriority ? false : true) : false
+                  showError ? (campaignSchedulePriority? false : true) : false
                 }
               >
                 {/* {console.log(channel)} */}
-
-                <MenuItem id="campPriority" value="select">
-                  select
-                </MenuItem>
                 <MenuItem id="campPriority" value={1}>
                   1
                 </MenuItem>
@@ -532,6 +530,7 @@ const CreateCampaign = (props) => {
                   control={<Radio />}
                   label="Incoming"
                   onChange={(e) => handleChange(e, "incoming")}
+                  style={{marginLeft:"5px"}}
                 />
                 <FormControlLabel
                   name="campaign_type"
@@ -569,16 +568,23 @@ const CreateCampaign = (props) => {
           </div>
         </div>
         <button
-          style={{
-            margin: "auto",
-            marginBottom: "1rem",
-            dispaly: "flex",
-            width: "10%",
-            padding: ".5rem",
-          }}
+          style={{padding:".5rem 1rem",
+          border:"none" ,
+          outline: "none",
+          backgroundColor:" #1976d2",
+          color: "white",
+          textTransform:"uppercase",
+          textShadow: "1px 1px 2px black",
+          width:"10%",
+          margin:"auto",
+          marginBottom:"1rem",
+          transition:"all 0.5s",
+          fontWeight:"700"
+        }}
           onClick={(e) => {
             handleSubmit(e);
           }}
+          className="submitJob"
         >
           Submit
         </button>

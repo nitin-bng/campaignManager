@@ -38,7 +38,7 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { useNavigate } from "react-router-dom";
-
+import "../create__campaign/createCampaign.css";
 var rows = [];
 const useStyles = makeStyles({
   table: {
@@ -55,8 +55,7 @@ function createData(jobId, jobName, priority, status) {
   return { jobId, jobName, priority, status };
 }
 const ScheduleCampaign = (props) => {
-
-const Navigate = useNavigate()
+  const Navigate = useNavigate();
 
   const todaysDate = {
     startDate: new Date(),
@@ -92,7 +91,12 @@ const Navigate = useNavigate()
   let localStore = globalState.state;
   const languages = globalState.state.languages;
 
-  const { setCampaignName, campaignName } = globalState;
+  const {
+    setCampaignName,
+    campaignName,
+    campaignSchedulePriority,
+    setCampaignSchedulePriority,
+  } = globalState;
   var blackoutDay = [];
   const weekDaya = [
     { Day: "sunday", id: 1 },
@@ -115,8 +119,8 @@ const Navigate = useNavigate()
   const [options] = useState(weekDaya);
   const [selectedDayValue, setSelectedDayValue] = useState([]);
   const initialValues = {
-    jobName: {campaignName},
-    priority: "",
+    jobName: { campaignName },
+    priority: { campaignSchedulePriority },
     campaignId: "",
     Channel: "",
     Country: "",
@@ -191,6 +195,27 @@ const Navigate = useNavigate()
         console.log("get flowList", data);
         data.unshift({ campName: "select" });
         setCampaignListData(data);
+        data.forEach((element) => {
+          console.log("rishabh running runnig");
+          console.log("===========>", element.campName, campaignName);
+          // console.log(campaignName);
+          if (element.campName == campaignName) {
+            console.log("rishabh running runnig");
+            setScheduleData((prev) => {
+              return {
+                ...prev,
+                campId: element.campId,
+              };
+            });
+
+            setFormValues((prev) => {
+              return {
+                ...prev,
+                campaignId: element.campId,
+              };
+            });
+          }
+        });
         return data;
       })
       .catch(function (error) {
@@ -231,7 +256,7 @@ const Navigate = useNavigate()
           ...scheduleData1,
           ...scheduleData,
         }));
-      } else if (e.target.id == "campaignId") {
+      } else if (e.target.name == "campaignId") {
         scheduleData["campId"] = e.target.value;
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
@@ -432,7 +457,8 @@ const Navigate = useNavigate()
     setFormErrors(validate(formValues));
     scheduleData1.userID = localStorage.getItem("userId");
     scheduleData1.country = localStorage.getItem("userCountry");
-    scheduleData1.jobName =campaignName;
+    scheduleData1.jobName = campaignName;
+    scheduleData1.priority = campaignSchedulePriority;
 
     console.log(scheduleData1);
     // scheduleData["fileName"] = fileName
@@ -484,9 +510,7 @@ const Navigate = useNavigate()
     showSuccess(false);
     showForm(false);
     updateForm(false);
-    Navigate("/home")
-
-
+    Navigate("/home");
   };
 
   const handleDateSelect = (ranges) => {
@@ -496,19 +520,27 @@ const Navigate = useNavigate()
   return (
     <>
       <div className="schedule__campaign">
-        <div className="schedule__campaign__container" style={{}}>
-          <div style={{ width: "100%", height: "100%" }}>
+        <div
+          className="schedule__campaign__container"
+          style={{ }}
+        >
+          <div
+            style={{ width: "100%", height: "100%", }}
+          >
             {!success ? (
-              <div className="col-sm-12 create__flow__component" style={{}}>
+              <div
+                className="col-sm-12 create__flow__component"
+                style={{  }}
+              >
                 {/* {form || update ? 
                  (  */}
                 <div
                   className="parent-container create__flow__component__container"
-                  style={{}}
+                  style={{ }}
                 >
                   <div
                     className="child-container basic__flow__details__container"
-                    style={{}}
+                    style={{ }}
                   >
                     <div
                       className="basic__flow__details__heading__container"
@@ -516,17 +548,36 @@ const Navigate = useNavigate()
                     >
                       <h1>Schedule Campaign</h1>
                     </div>
-                    <form className="jobForm" style={{ width: "100%" }}>
+
+                    <form
+                      className="jobForm"
+                      style={{
+                        width: "100%",
+                        // border: "2px solid red",
+                        padding: "1rem 0",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                      }}
+                    >
                       <div
-                        className="create__campaign__container"
+                        className="create__campaign__container left"
                         style={{
+                          display: "flex",
+                          flexWrap: "wrap",
                           // border: "2px solid blue",
                           height: "100%",
-                          textAlign: "left",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "50%",
+                          // textAlign: "left",
                         }}
                       >
                         {/* <div className="mb-3 col-4" style={{ display: "flex" }}> */}
-                        <div className="campaign__name" style={{display : "none"}}>
+                        <div
+                          className="campaign__name"
+                          style={{ display: "none" }}
+                        >
                           <Box
                             component="form"
                             style={{ width: "100%" }}
@@ -572,28 +623,29 @@ const Navigate = useNavigate()
                           <p>{formErrors.jobName}</p> */}
                         {/* </div> */}
 
-                        <div className="create__campaign__priority__dropdown">
+                        <div
+                          className="create__campaign__priority__dropdown"
+                          style={{ display: "none" }}
+                        >
                           <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
                               Select Priority
                             </InputLabel>
                             <Select
+                              disabled
                               labelId="demo-simple-select-label"
                               label="Select Channel"
-                              // value={formValues.campPriority}
+                              value={campaignSchedulePriority}
                               name="priority"
                               id="demo-simple-select priority"
                               className="campaignId form-select"
                               aria-label="Default select example"
-                              onChange={(event) =>
-                                handleChange(event, "priority")
-                              }
+                              // onChange={(event) =>
+                              //   handleChange(event, "priority")
+                              // }
                             >
                               {/* {console.log(channel)} */}
 
-                              <MenuItem id="priority" value="select">
-                                select
-                              </MenuItem>
                               <MenuItem id="priority" value={1}>
                                 1
                               </MenuItem>
@@ -655,33 +707,37 @@ const Navigate = useNavigate()
                           <p>{formErrors.priority}</p>
                         </div> */}
 
-                        <div className="create__campaign__workflow__name">
+                        <div
+                          className="create__campaign__workflow__name"
+                          style={{ display: "none" }}
+                        >
                           <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
+                            {/* <InputLabel id="demo-simple-select-label">
                               Capaign Name{" "}
-                            </InputLabel>
-                            <Select
-                              labelId="demo-simple-select-label"
-                              label="Select Channel"
-                              // value={formValues.wfId}
-
+                            </InputLabel> */}
+                            <TextField
+                              labelId="demo-simple-TextField-label"
+                              label="Selected campaign name"
+                              value={campaignName}
+                              disabled
                               name="campaignId"
                               id="demo-simple-select campaignId"
                               className="campaignId form-select"
                               aria-label="Default select example"
-                              onChange={(event) =>
-                                handleChange(event, "campaignId")
-                              }
+                              // onChange={(event) =>
+                              //   handleChange(event, "campaignId")
+                              // }
                             >
-                              {/* {console.log(channel)} */}
+                              {console.log("rishabh colsole", campaignName)}
 
-                              {campaignListData &&
+                              {/* {campaignListData &&
                                 campaignListData.map((e) => (
                                   <MenuItem key={e.campName} value={e.campId}>
                                     {e.campName}
+
                                   </MenuItem>
-                                ))}
-                            </Select>
+                                ))} */}
+                            </TextField>
                           </FormControl>
 
                           {/* <Box
@@ -732,7 +788,7 @@ const Navigate = useNavigate()
 
                         <div
                           className="create__flow__component__select__channel__dropdown__container"
-                          style={{ width: "20%" }}
+                          style={{ width: "40%", margin: "1rem" }}
                         >
                           <FormControl fullWidth>
                             <InputLabel
@@ -818,7 +874,7 @@ const Navigate = useNavigate()
 
                         <div
                           className="create__flow__component__select__channel__dropdown__container"
-                          style={{ width: "20%" }}
+                          style={{ width: "40%", margin: "1rem" }}
                         >
                           <FormControl fullWidth>
                             <InputLabel
@@ -875,11 +931,14 @@ const Navigate = useNavigate()
                           </label> */}
 
                         <div
-                          className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container"
-                          style={{ width: "20%" }}
+                          className="create__flow__component__select__channel__dropdown__container"
+                          style={{ width: "40%", margin: "1rem" }}
                         >
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Stack style={{ width: "80%" }} spacing={3}>
+                          <LocalizationProvider
+                            style={{ width: "100%" }}
+                            dateAdapter={AdapterDateFns}
+                          >
+                            <Stack style={{ width: "100%", marginTop: "1rem" }}>
                               <TimePicker
                                 label="Day Start Time"
                                 // value={blackoutStartHour}
@@ -912,11 +971,14 @@ const Navigate = useNavigate()
                         {/* <label style={{ width: "100%" }}>Day End Time</label> */}
 
                         <div
-                          className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container"
-                          style={{ width: "20%" }}
+                          className="create__flow__component__select__channel__dropdown__container"
+                          style={{ width: "40%", margin: "1rem" }}
                         >
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Stack style={{ width: "80%" }} spacing={3}>
+                          <LocalizationProvider
+                            style={{ width: "100%" }}
+                            dateAdapter={AdapterDateFns}
+                          >
+                            <Stack style={{ width: "100%", marginTop: "1rem" }}>
                               <TimePicker
                                 label="Day End Time"
                                 // value={blackoutStartHour}
@@ -947,12 +1009,18 @@ const Navigate = useNavigate()
                                 <p>{formErrors.dayEndTime}</p> */}
                         {/* </div> */}
                         <br />
+
+                       
+                      </div>
+
+                      <div className="right">
                         <div
                           className="dateRangerPickerOfSchedule"
                           style={{
-                            border: "2px solid green",
+                            
                             display: "flex",
-                            // width: "100%",
+                            flexDirection: "column",
+                            width: "100%",
                             justifyContent: "center",
                           }}
                         >
@@ -966,7 +1034,7 @@ const Navigate = useNavigate()
       /> */}
 
                           <DateRange
-                            style={{ border: "2px solid red" }}
+                            style={{ }}
                             editableDateInputs={true}
                             moveRangeOnFirstSelection={true}
                             dateDisplayFormat={"MMM d, yyyy"}
@@ -1062,10 +1130,46 @@ const Navigate = useNavigate()
 
                           {/* <p>{formErrors.dateRange}</p> */}
                         </div>
-                        <div
+                      </div>
+                    </form>
+                    <div
+                      style={{
+                        textAlign: "center",
+                        marginBottom: "1rem",
+                        marginTop: "1rem",
+                        display:"flex",
+                        justifyContent:"space-between",
+                        width:"90%",
+                        // border:"2px solid green"
+                      }}
+                    >
+                      <button
+                        type="submit"
+                        className="btn btn-primary submitJob"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit(e);
+                        }}
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #1976d2",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          // width:"10%",
+                          // margin: "auto",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Submit
+                      </button>
+                      <div
                           className="scheduleCampButtonsContainer"
                           style={{
-                            width: "50%",
+                            width: "30%",
                             display: "flex",
                             flexDirection: "column",
                           }}
@@ -1074,7 +1178,7 @@ const Navigate = useNavigate()
                             className="mb-3 col-4"
                             style={{ display: "grid" }}
                           >
-                            <label>Upload Csv File</label>
+                            {/* <label>Upload Csv Fileimage.png</label> */}
                             <input
                               type="file"
                               name="file"
@@ -1084,59 +1188,65 @@ const Navigate = useNavigate()
                               onChange={(e) =>
                                 handleChange(e, "uploadCsvFfile")
                               }
+                              
                             />
                             <button
-                              className="uploadFileButton"
-                              style={{ height: "45px" }}
+                              className="uploadFileButton submitJob"
+                              // style={{ height: "45px" }}
                               type="button"
                               component="span"
                               onClick={() => dummyClick(`uploadCsvFfile`)}
+                              style={{
+                                padding: ".5rem 1rem",
+                                border: "none",
+                                outline: "none",
+                                backgroundColor: " #1976d2",
+                                color: "white",
+                                textTransform: "uppercase",
+                                textShadow: "1px 1px 2px black",
+                                // width:"10%",
+                                // margin: "auto",
+                                transition: "all 0.5s",
+                                fontWeight: "700",
+                      
+                              }}
                             >
-                              <span style={{ fontSize: "14px" }}>
-                                {" "}
+                              <span style={{ fontSize: "14px"}}>
                                 {fileName !== null ? fileName : "Upload File"}
                               </span>
-                              <PublishIcon className="upicon" />
+                              {/* <PublishIcon style={{ fontSize: "20px" ,border:"2px solid green" }} className="upicon" /> */}
                             </button>
                             <p>{formErrors.file}</p>
                           </div>
-
-                          <div
-                            style={{
-                              textAlign: "center",
-                              marginBottom: "4rem",
-                              marginTop: "4rem",
-                            }}
-                          >
-                            <button
-                              type="submit"
-                              className="btn btn-primary submitJob"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleSubmit(e);
-                              }}
-                            >
-                              Submit
-                            </button>
-                            <button
-                              type="submit"
-                              className="btn btn-primary cancelJob"
-                              onClick={(e) => showListData(e)}
-                            >
-                              Cancel
-                            </button>
-                          </div>
                         </div>
-                      </div>
-                    </form>
+                      <button
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #1976d2",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          // width:"10%",
+                          // margin: "auto",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                        type="submit"
+                        className="btn btn-primary cancelJob submitJob"
+                        onClick={(e) => showListData(e)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-               {/* )  */}
+                {/* )  */}
 
-                 {/* :  */}
+                {/* :  */}
 
-                
-                  {/* (
+                {/* (
                   <div className="listContainer">
                     <div style={{ textAlign: "end" }}>
                       <button

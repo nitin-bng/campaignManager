@@ -48,7 +48,6 @@ const Login = () => {
             getUserDetails(res.id)
 
             //  console.log(res)
-            Navigate("/home")
            })
     })
   }
@@ -67,6 +66,7 @@ const Login = () => {
              console.log(res.user.country);
              localStorage.setItem("userCountry", res.user.country)
              localStorage.setItem("operatorName", res.user.operatorName)
+             Navigate("/home")
 
            })
     })
@@ -164,8 +164,8 @@ const Login = () => {
               <p className="links">
                 <Link to="/forgotpassword">Forgot Password ?</Link>
                 <Link to="/signup">Do not have an account ?</Link>
-                <p>OR</p>
-                <Link to="/home">Use as guest</Link>
+                {/* <p>OR</p>
+                <Link to="/home">Use as guest</Link> */}
               </p>
             </div>
           </div>

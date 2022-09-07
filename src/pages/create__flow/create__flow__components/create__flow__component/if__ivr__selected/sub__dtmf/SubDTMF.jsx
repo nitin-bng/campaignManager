@@ -812,13 +812,25 @@ const SubDTMF = (props) => {
           <span key={e}>
             <span style={{ color: "darkgray" }}> {index + 1} - </span>
             {/* {globalState.state.temp.uploads.find(f => e === f.s_name).l_name} */}
+            <span style={{ color: "darkgray" }}>
+
             {globalState.state.temp.uploads.length > 0
               ? globalState.state.temp.uploads.find((f) => e === f.s_name)
                 ? globalState.state.temp.uploads.find((f) => e === f.s_name)
                     .l_name
                 : e
               : e}
+            </span>
 
+              <br />
+<div
+              className="playingOptions"
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginTop: "5px",
+              }}
+            >
             <BsCheckCircle size={15} className="checkedIcon" />
             <IoIosCloseCircleOutline
               className="checkedIcon"
@@ -830,8 +842,8 @@ const SubDTMF = (props) => {
               size={15}
               style={{ color: "purple" }}
             />
-            <br></br>
-            <br></br>
+            </div>
+     
           </span>
         );
       });
@@ -1043,7 +1055,7 @@ const SubDTMF = (props) => {
                     </FormControl>
                   </div>
 
-                  <div className={props.hideItemStyle}>
+                  <div className={props.hideItemStyle} style={{ width: "100%" }}>
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -1059,20 +1071,32 @@ const SubDTMF = (props) => {
                         hellohello
                       );
                     })}
-                    <div className="ghghg">
+                    <div className="ghghg" style={{ margin:"10px 0"}}>
                       {languageName.map((el) => {
-                        return <span>enter audio file for {el}</span>;
+                        return <Typography style={{fontSize:"12px"}}>enter hello file for {el}</Typography>;
                       })}
                     </div>
                     <div className="ghghgh">
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <div className="file__chooser__container">
+                          <div className="file__chooser__container"  style={{
+                            width: "200px",
+                            display: "flex",
+                            height: "fit-content",
+                            flexDirection: "column",
+                            // border: "2px solid blue",
+                          }}>
                             <input
                               accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"
+                              style={{
+                                // border: "2px solid green",
+                                display: "flex",
+                                overflow: "hidden",
+                                // height: "10px",
+                              }}
                               onChange={(event) => {
                                 uploadFiles(
                                   "level" +
@@ -1112,7 +1136,14 @@ const SubDTMF = (props) => {
                                     null,
                                     "return"
                                   ).audio_file[lang] ? (
-                                    <div>
+                                    <div style={{
+                                      border: ".2px solid black",
+                                      width: "200px",
+                                      fontSize: "10px",
+                                      wordWrap: "break-word",
+                                      marginBottom: "10px",
+                                      paddingBottom: "3px",
+                                    }}>
                                       <AudioFilesL2
                                         current={props.current}
                                         parentDtmf={
@@ -1123,9 +1154,10 @@ const SubDTMF = (props) => {
                                       />
                                     </div>
                                   ) : (
-                                    <div>
-                                      Please hbefknjcsavbe;lrsvd the audio file
-                                    </div>
+                                    // <div>
+                                    //   Please upload the audio file
+                                    // </div>
+                                    null
                                   )}
                                 </div>
                               </>

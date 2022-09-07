@@ -302,6 +302,9 @@ const CreateCampaign = (props) => {
         className="create__campaign"
         style={{ boxShadow: "2px 2px 2px grey" }}
       >
+        <div className="basic__flow__details__heading__container">
+              <h1>Create Campaign</h1>
+            </div>
         <div className="create__campaign__container" style={{ height: "30vh" }}>
           <div className="campaign__name">
             <Box

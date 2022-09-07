@@ -375,6 +375,16 @@ const UserConfig = () => {
             // setDayName(res.days)
             console.log("nitin", res);
             setBlackOutDays(res.days);
+            setAssignChannel(res.assignChannel)
+            setAssignTps(res.assignTps)
+            setBlackoutDate(res.date)
+            setValue(res.date)
+            setAppendZero(res.appendZero)
+            setCountryCode(res.countryCode)
+            setAppendCountryCode(res.appendCountryCode)
+            setMsisdnLength(res.msisdnLength)
+            setBlackoutStartHour(res.startTime)
+            setBlackoutEndHour(res.endTime)
 
             if (res.startTime == null) {
               handleStartDateChange(new Date());
@@ -649,6 +659,7 @@ const UserConfig = () => {
                           row
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="row-radio-buttons-group"
+                          value={appendZero}
                         >
                           <FormControlLabel
                             value="true"
@@ -719,6 +730,7 @@ const UserConfig = () => {
                           row
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="row-radio-buttons-group"
+                          value={appendCountryCode}
                         >
                           <FormControlLabel
                             value="true"

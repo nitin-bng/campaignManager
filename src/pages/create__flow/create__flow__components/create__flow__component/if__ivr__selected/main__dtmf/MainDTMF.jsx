@@ -633,6 +633,10 @@ const MainDTMF = (props) => {
       errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
+
+    return ()=>{
+      errorDispatch({type: "MAIN_DTMF", payload: false})
+    }
   },[])
   
   useEffect(()=>{
@@ -642,7 +646,7 @@ const MainDTMF = (props) => {
   },[isFilled])
 
   useEffect(()=>{
-    if(isFilled && !globalState.state.ivrCampFlowData.flow.actions[
+    if(!isFilled && !globalState.state.ivrCampFlowData.flow.actions[
       props.global.dtmf_key - 1
     ].waitTime){
     errorDispatch({type: "MAIN_DTMF", payload: true})

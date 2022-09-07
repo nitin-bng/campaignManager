@@ -831,6 +831,9 @@ const SubDTMF = (props) => {
       errorDispatch({type:'AUDIO', payload: true})
     }
     setShowError(false)
+    return ()=>{
+      errorDispatch({type: "SUB_DTMF", payload: false})
+    }
   },[])
   
   useEffect(()=>{

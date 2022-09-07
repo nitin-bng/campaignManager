@@ -452,8 +452,29 @@ const ScheduleCampaign = (props) => {
     }
     return errors;
   };
+
+  const checkDateAndTime = () => {
+    const date = new Date()
+    const startTimeArray = scheduleData1.dailyStartTime.split(':')
+    const endTimeArray = scheduleData1.dailyEndTime.split(':')
+    if(changeDateFormat(date) === scheduleData1.startDate){
+      console.log('same day', date.getHours(), ~~(startTimeArray[0]))
+      if(date.getHours() > ~~(startTimeArray[0]) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() > ~~(startTimeArray[1])) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() === ~~(startTimeArray[1]) && date.getSeconds() > ~~(startTimeArray[2]))){
+       throw Error('Start time has already passed')
+      }
+    }
+    console.log('end time array',endTimeArray)
+  if(endTimeArray[0] < ~~(startTimeArray[0]) || (endTimeArray[0]  === ~~(startTimeArray[0]) && endTimeArray[1]  < ~~(startTimeArray[1])) || (endTimeArray[0]  === ~~(startTimeArray[0]) && endTimeArray[1]  === ~~(startTimeArray[1]) && endTimeArray[2]  < ~~(startTimeArray[2]))){
+   throw Error('End time can not be earlier than before time')
+  }
+}
+
   const handleSubmit = () => {
     debugger;
+
+    try{
+    checkDateAndTime()
+    console.log('ran after error')
     setFormErrors(validate(formValues));
     scheduleData1.userID = localStorage.getItem("userId");
     scheduleData1.country = localStorage.getItem("userCountry");
@@ -489,7 +510,11 @@ const ScheduleCampaign = (props) => {
           console.log(e);
         });
     }
-  };
+  }
+  catch(e){
+    console.log('error occured', e.message)
+  }
+}
   const showFormData = (e) => {
     showForm(true);
   };
@@ -512,6 +537,30 @@ const ScheduleCampaign = (props) => {
     updateForm(false);
     Navigate("/home");
   };
+
+  const changeDateFormat = (date) =>{
+    let result = ''
+    let year = date.getFullYear()
+    let month = date.getMonth()+1
+    let currDate = date.getDate()
+
+    result =  year + '-'
+    if(month > 9){
+      result += month
+    }
+
+    else{
+      result += '0'+ month
+    }
+    result += '-'
+    if(currDate > 9){
+      result += currDate 
+    }
+    else{
+      result += '0'+ currDate 
+    }
+    return result
+  }
 
   const handleDateSelect = (ranges) => {
     console.log(ranges); // native Date object
@@ -1041,89 +1090,102 @@ const ScheduleCampaign = (props) => {
                             onChange={(item) => {
                               console.log("rishabh selection", item);
                               setState([item.selection]);
-                              console.log(item.selection);
+                              console.log('Nitin before function',item.selection.endDate.getMonth());
+
+                               scheduleData["endDate"] = changeDateFormat(item.selection.endDate)
+                               scheduleData["startDate"] = changeDateFormat(item.selection.startDate)
+                               console.log('Nitin after function',scheduleData["startDate"],scheduleData["endDate"] )
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  return result;
+                                });
+
+
                               // console.log(item.selection.endDate)
                               // console.log(item.selection.endDate.getFullYear())
                               // console.log(item.selection.endDate.getMonth())
-                              // console.log(item.selection.endDate.getDate())
-                              // console.log(item.selection.endDate.getFullYear()+ "-"+ item.selection.endDate.getMonth() + "-"+ item.selection.endDate.getDate())
+                              // console.log(item.selection.enddate )
+                              // console.log(item.selection.endDate.getFullYear()+ "-"+ item.selection.endDate.getMonth() + "-"+ item.selection.enddate )
 
-                              if (item.selection.endDate.getDate() <= 9) {
-                                const endDate =
-                                  item.selection.endDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.endDate.getMonth() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.endDate.getDate();
-                                console.log(endDate);
+                              // if (item.selection.enddate  <= 9) {
+                              //   const endDate =
+                              //     item.selection.endDate.getFullYear() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.endDate.getMonth() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.enddate ;
+                              //   console.log(endDate);
 
-                                scheduleData["endDate"] = endDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              } else {
-                                const endDate =
-                                  item.selection.endDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.endDate.getMonth() +
-                                  "-" +
-                                  item.selection.endDate.getDate();
-                                console.log(endDate);
+                              //   scheduleData["endDate"] = endDate;
+                              //   setScheduleData((scheduleData1) => {
+                              //     let result = {
+                              //       ...scheduleData1,
+                              //       ...scheduleData,
+                              //     };
+                              //     return result;
+                              //   });
+                              // } else {
+                              //   const endDate =
+                              //     item.selection.endDate.getFullYear() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.endDate.getMonth() +
+                              //     "-" +
+                              //     item.selection.enddate ;
+                              //   console.log(endDate);
 
-                                scheduleData["endDate"] = endDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              }
+                              //   scheduleData["endDate"] = endDate;
+                              //   setScheduleData((scheduleData1) => {
+                              //     let result = {
+                              //       ...scheduleData1,
+                              //       ...scheduleData,
+                              //     };
+                              //     return result;
+                              //   });
+                              // }
 
-                              if (item.selection.startDate.getDate() <= 9) {
-                                const startDate =
-                                  item.selection.startDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getMonth() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getDate();
-                                console.log(startDate);
-                                scheduleData["startDate"] = startDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              } else {
-                                const startDate =
-                                  item.selection.startDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getMonth() +
-                                  "-" +
-                                  item.selection.startDate.getDate();
-                                console.log(startDate);
-                                scheduleData["startDate"] = startDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              }
-                            }}
+                              // if (item.selection.startdate  <= 9) {
+                              //   const startDate =
+                              //     item.selection.startDate.getFullYear() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.startDate.getMonth() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.startdate ;
+                              //   console.log(startDate);
+                              //   scheduleData["startDate"] = startDate;
+                              //   setScheduleData((scheduleData1) => {
+                              //     let result = {
+                              //       ...scheduleData1,
+                              //       ...scheduleData,
+                              //     };
+                              //     return result;
+                              //   });
+                              // } else {
+                              //   const startDate =
+                              //     item.selection.startDate.getFullYear() +
+                              //     "-" +
+                              //     "0" +
+                              //     item.selection.startDate.getMonth() +
+                              //     "-" +
+                              //     item.selection.startdate ;
+                              //   console.log(startDate);
+                              //   scheduleData["startDate"] = startDate;
+                              //   setScheduleData((scheduleData1) => {
+                              //     let result = {
+                              //       ...scheduleData1,
+                              //       ...scheduleData,
+                              //     };
+                              //     return result;
+                              //   });
+                              // }
+                          }}
                             minDate={todaysDate.startDate}
                             ranges={state}
                           />
@@ -1182,6 +1244,7 @@ const ScheduleCampaign = (props) => {
                             <input
                               type="file"
                               name="file"
+                              accept=".csv"
                               hidden
                               className="form-control"
                               id={`uploadCsvFfile`}

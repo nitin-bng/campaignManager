@@ -42,11 +42,12 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, errorState} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
+console.log('Nitin is checking', errorState, showError)
 
   useEffect(()=>{
     if(props.hideItemStyle === undefined){
@@ -938,7 +939,6 @@ const IfIVRSelected = (props) => {
 
   const setWaitTime = (level, target, dtmf_key) => {
     const val = target.value >= 0 ? target.value :0
-    console.log(" Nitin val ", val);
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
     else if (level === "sub")

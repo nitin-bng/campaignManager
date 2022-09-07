@@ -89,8 +89,6 @@ const CreateFlow = () => {
   //   return result
   // }
 
-  // console.log("Nitin", errorState, showError, audioError);
-
   const handleNext = () => {
     // console.log("flowName", flowName);
     // console.log("channel", channel);
@@ -103,7 +101,6 @@ const CreateFlow = () => {
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
 
     if(checkMandatoryFields()){
-      console.log('Nitin, function ran')
      
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setShowError(false)
@@ -286,7 +283,6 @@ const CreateFlow = () => {
         console.log("activeStep === 3");
       }
     } else {
-      console.log('Nitin, function failed')
       setShowError(true);
     }
         };

@@ -373,7 +373,6 @@ const UserConfig = () => {
             setGetChannel(res.requiredChannel);
             setGetTps(res.totalTps);
             // setDayName(res.days)
-            console.log("nitin", res);
             setBlackOutDays(res.days);
 
             if (res.startTime == null) {

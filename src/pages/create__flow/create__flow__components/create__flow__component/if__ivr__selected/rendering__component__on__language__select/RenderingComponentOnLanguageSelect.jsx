@@ -27,7 +27,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
 
   const saveValues = (e) => {
     let value = e.target.value >=0 ? e.target.value :0
-    console.log('nitin wait time language', value)
     props.setDtmfTime(value);
   };
   // useEffect(() => {
@@ -43,11 +42,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
 
   useEffect(()=>{
     if(parseInt(props.dtmfTime) >=0){
-      console.log('Nitin true',props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: true})
     }
     else{
-      console.log('Nitin false', props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
     }
   },[props.dtmfTime])

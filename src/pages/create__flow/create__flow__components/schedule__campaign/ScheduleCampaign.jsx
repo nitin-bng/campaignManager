@@ -1082,11 +1082,8 @@ const ScheduleCampaign = (props) => {
                             onChange={(item) => {
                               console.log("rishabh selection", item);
                               setState([item.selection]);
-                              console.log('Nitin before function',item.selection.endDate.getMonth());
-
                                scheduleData["endDate"] = getDateInFormat(item.selection.endDate)
                                scheduleData["startDate"] = getDateInFormat(item.selection.startDate)
-                               console.log('Nitin after function',scheduleData["startDate"],scheduleData["endDate"] )
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,

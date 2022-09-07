@@ -47,7 +47,7 @@ export default function VerifyOtp(props) {
 
   const [otpCode, setOtpCode] = useState("");
   const [loader, setLoader] = useState(false);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [response, setResponse] = useState("");
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");

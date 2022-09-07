@@ -45,6 +45,11 @@ const Login = () => {
            .then((res)=>{
             localStorage.setItem("userType", res.userType)
             localStorage.setItem("userId", res.id)
+            
+
+
+
+
             getUserDetails(res.id)
 
             //  console.log(res)
@@ -66,6 +71,7 @@ const Login = () => {
              console.log(res.user.country);
              localStorage.setItem("userCountry", res.user.country)
              localStorage.setItem("operatorName", res.user.operatorName)
+             sessionStorage.setItem("userName", res.user.name)
              Navigate("/home")
 
            })

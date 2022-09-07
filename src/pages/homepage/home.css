@@ -57,6 +57,7 @@
 
 .home__maincontent__card1{
     background: linear-gradient(137deg,#0178bc,rgba(115,103,240,.7));
+    flex-direction: column;
 }
 
 @media only screen and (max-width:600px){

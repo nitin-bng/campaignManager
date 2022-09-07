@@ -15,7 +15,6 @@
     "@mui/material": "^5.9.0",
     "@mui/x-date-pickers": "^5.0.0-beta.1",
     "@mui/x-date-pickers-pro": "^5.0.0-beta.2",
-
     "@syncfusion/ej2-base": "^20.2.46",
     "@syncfusion/ej2-calendars": "^20.2.46",
     "@syncfusion/ej2-data": "^20.2.45",
@@ -34,12 +33,12 @@
     "material-ui-address-input": "^0.4.0",
     "material-ui-phone-number": "^3.0.0",
     "material-ui-pickers-v4": "^3.3.12",
+    "moment": "^2.29.4",
     "multiselect-react-dropdown": "^2.0.25",
     "obj-traverse": "^1.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-chartjs-2": "^4.3.1",
-
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.1",

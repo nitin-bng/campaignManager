@@ -60,7 +60,7 @@ const SubDTMF = (props) => {
 
   const [selectOptionForMainDTMF, setSelectOptionForMainDTMF] =
     React.useState("");
-    const [iseFilled, setIsFilled] = useState(false)
+    const [isFilled, setIsFilled] = useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -834,14 +834,16 @@ const SubDTMF = (props) => {
   },[])
   
   useEffect(()=>{
-    if(iseFilled){
-      errorDispatch({type: "MAIN_DTMF", payload: false})
+    if(isFilled){
+      errorDispatch({type: "SUB_DTMF", payload: false})
     }
-    else
-      if(!traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
-      errorDispatch({type: "MAIN_DTMF", payload: true})
-    }
-  },[iseFilled, traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
+  },[isFilled])
+
+  useEffect(()=>{
+    if(!isFilled &&!traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
+    errorDispatch({type: "SUB_DTMF", payload: true})
+  }
+  },[isFilled, traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
 
   return (
     <>

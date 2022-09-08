@@ -42,10 +42,12 @@ const initialState = {
       code: "C2IVR",
     },
   ],
+  // localStore.ivrCampFlowData.flow.language[0].actions
   ivrCampFlowData: {
     flow: {
       language_local: ["en"],
-      language: [],
+      language: [{actions:[]}],
+      selectedLanguages: [],
       // flow_type: "PARALLEL_CH_FLOW",
       flow_type: "SINGLE_CH_FLOW",
       defaultLanguage: "_E",
@@ -127,7 +129,8 @@ const StateProvider = ({ children }) => {
           ivrCampFlowData: {
             flow: {
               language_local: ["en"],
-              language: [],
+              language: [{actions:[]}],
+              selectedLanguages: [],
               // flow_type: "PARALLEL_CH_FLOW",
               flow_type: "SINGLE_CH_FLOW",
               defaultLanguage: "_E",

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState, useMemo } from "react";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -16,39 +16,96 @@ import { useError } from "../../../../../../store/errorContext";
 import { areAllAudioUploaded } from "../../../../../../services/areAllAudioUploaded";
 import Review from "../../../review/Review";
 const RenderingComponentOnLanguageSelect = (props) => {
+  console.log("props for wait time ", props);
   let globalState = useContext(store);
   const { dispatch } = globalState;
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
-  const {showError, setShowError, errorDispatch} = useError()
-  const [errorStyle, setErrorStyle] = useState(true)
+  const { showError, setShowError, errorDispatch } = useError();
+  const [errorStyle, setErrorStyle] = useState(true);
+  const[normalState, setNormalState] = useState(true)
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
-    let value = e.target.value >=0 ? e.target.value :0
-    props.setDtmfTime(value);
+    // let value = e.target.value >=0 ? e.target.value :0
+
+    debugger;
+    let id = e.target.id.split("-");
+    for (
+      var i = 0;
+      i < localStore.ivrCampFlowData.flow.language[0].actions.length;
+      i++
+    ) {
+      if (
+        id[1] == localStore.ivrCampFlowData.flow.language[0].actions[i].language
+      ) {
+        localStore.ivrCampFlowData.flow.language[0].actions[i].waitTime =
+          e.target.value;
+          console.log("localstore", localStore);
+      }
+
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
   };
   // useEffect(() => {
   //   console.log("dtmfTime", dtmfTime);
   // }, [dtmfTime]);
+  const getLangWaitTime = (lang) => {
+    console.log("waittime=>", lang);
+    console.log(
+      "rishabh test lang array",
+      globalState.state.ivrCampFlowData.flow.language
+    );
+    // if (globalState.state.ivrCampFlowData.flow.language) {
+      for (
+        var i = 0;
+        i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
+        i++
+        ) {
+          console.log('nitin lang', lang, globalState.state.ivrCampFlowData.flow.language[0].actions[i].language )
+          if (
+            lang ==
+            globalState.state.ivrCampFlowData.flow.language[0].actions[i].language
+            ) {
+              console.log('condition met',globalState.state.ivrCampFlowData.flow.language[0])
+              return globalState.state.ivrCampFlowData.flow.language[0].actions[i]
+              .waitTime;
+            }
+          }
+          console.log('condition not met')
+    // }
+  };
+  const waitTime = useMemo(() => {
+    return getLangWaitTime(props.languageCode);
+  }, [normalState]);
+  // const waitTime = 5 
 
-  useEffect(()=>{
-    if(props.hideItemStyle === undefined){
-      errorDispatch({type:'AUDIO', payload: true})
-    }
-    errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
-  },[])
 
-  useEffect(()=>{
-    if(parseInt(props.dtmfTime) >=0){
-      errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: true})
+  useEffect(() => {
+    if (props.hideItemStyle === undefined) {
+      errorDispatch({ type: "AUDIO", payload: true });
     }
-    else{
-      errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
+    errorDispatch({
+      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+      payload: false,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (waitTime) {
+      errorDispatch({
+        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+        payload: true,
+      });
+    } else {
+      errorDispatch({
+        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+        payload: false,
+      });
     }
-  },[props.dtmfTime])
+  }, [waitTime]);
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -154,7 +211,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       } else {
         const targetArray = target.split("_");
         console.log(target, "......", targetArray);
-        if (targetArray[0] + targetArray[1] === "mainaudio") {
+        if (targetArray[0] + targetArray[1] === "mainaudio"){
           const dtmfToSet = targetArray[2] - 1;
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang]
@@ -251,8 +308,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        errorDispatch({type:'AUDIO', payload: false})
-        setErrorStyle(false)
+        errorDispatch({ type: "AUDIO", payload: false });
+        setErrorStyle(false);
         return response;
       })
       .catch((e) => {
@@ -307,7 +364,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
               key={e}
             >
               <span style={{ color: "darkgray" }}>
-                
                 {index + 1} - {e}
               </span>
               <br />
@@ -372,7 +428,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     key={e}
                   >
                     <span style={{ color: "darkgray" }}>
-                      
                       {index + 1} - {e}
                     </span>
                     <br />
@@ -384,7 +439,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         display: "flex",
                         justifyContent: "space-around",
                         // marginTop: "5px",
-                        margin:"auto"
+                        margin: "auto",
                       }}
                     >
                       <BsCheckCircle size={15} className="checkedIcon" />
@@ -421,6 +476,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
+
   return (
     <>
       <div className="rendering__component__on__language__select">
@@ -433,17 +489,28 @@ const RenderingComponentOnLanguageSelect = (props) => {
               autoComplete="off"
             >
               <TextField
-                id="if__IVR__selected"
+                id={"waitTime-" + props.languageCode}
                 type="number"
                 label={"Wait time for " + props.lang + " language"}
                 variant="outlined"
-                value={props.dtmfTime}
-                onChange={saveValues}
+                value={waitTime}
+                onChange={(e) => {
+                  saveValues(e);
+                  setNormalState(prev=>!prev)
+                }}
                 onWheel={(e) => e.target.blur()}
-                disabled= {props.disableEditingWhileCreatingCamp}
+                disabled={props.disableEditingWhileCreatingCamp}
                 required
-                error={showError ? parseInt(props.dtmfTime, 10) >= 0 ? false:true:false}
-              />
+                error={
+                  showError
+                    ? parseInt(waitTime, 10) >= 0
+                      ? false
+                      : true
+                    : false
+                }
+                
+                />
+                {console.log("nitin", waitTime)}
             </Box>
           </div>
           {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}
@@ -451,25 +518,25 @@ const RenderingComponentOnLanguageSelect = (props) => {
             globalState.state.ivrCampFlowData.flow.languageChange.map(
               (lang) => ( */}
 
-          <div
-            style={{  }}
-            className={props.hideItemStyle}
-            hideItem
-          >
+          <div style={{}} className={props.hideItemStyle} hideItem>
             <input
               accept="audio/wav"
-              style={(showError && errorStyle) ? {
-                border: "2px solid red",
-                justifyContent: "center",
-                display: "flex",
-                overflow: "hidden",
-              }:{
-                // border: "2px solid green",
-                justifyContent: "center",
-                display: "flex",
-                overflow: "hidden",
-                // height: "10px",
-              }}
+              style={
+                showError && errorStyle
+                  ? {
+                      border: "2px solid red",
+                      justifyContent: "center",
+                      display: "flex",
+                      overflow: "hidden",
+                    }
+                  : {
+                      // border: "2px solid green",
+                      justifyContent: "center",
+                      display: "flex",
+                      overflow: "hidden",
+                      // height: "10px",
+                    }
+              }
               type="file"
               class="custom-file-input"
               name="lang_audio_file"
@@ -492,7 +559,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
               props.languageCode
             ] !== "" ? (
               <>
-                
                 {/* show all the audio files uploaded */}
                 <div
                   item
@@ -500,15 +566,14 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   id={props.languageCode + "langAudioShow"}
                   style={{
                     border: ".2px solid black",
-                    width:'200px',
+                    width: "200px",
                     fontSize: "10px",
                     wordWrap: "break-word",
                     paddingBottom: "3px",
-                    margin:"auto",
-                    marginBottom:"10px"
+                    margin: "auto",
+                    marginBottom: "10px",
                   }}
                 >
-                  
                   {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
                 </div>
               </>

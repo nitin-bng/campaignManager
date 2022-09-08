@@ -86,6 +86,10 @@ const CreateFlowComponent = (props) => {
   };
 
   useEffect(()=>{
+    if(props.reset === false){
+    dispatch({ type: "EMPTY_DATA" })
+    }
+    errorDispatch({type:"INITIALIZE"})
     errorDispatch({type:'CREATE_FLOW_COMPONENT', payload: false})
   },[])
 

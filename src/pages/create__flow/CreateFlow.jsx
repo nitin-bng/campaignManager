@@ -336,7 +336,7 @@ const CreateFlow = () => {
                   <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
-                        <CreateFlowComponent hideItemStyle={hideItemStyle} />
+                        <CreateFlowComponent reset={false} hideItemStyle={hideItemStyle} />
                       ) : activeStep === 1 ? (
                         <CreateCampaign
                           disableEditingWhileCreatingCamp={true}

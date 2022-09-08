@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import MenuAppBar from "../../components/topbar/MenuAppBar";
 import {
   Chart as ChartJS,
@@ -25,7 +25,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import classNames from "classnames";
+
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { store } from "../../store/store";
+import CreateFlowComponent from "../create__flow/create__flow__components/create__flow__component/CreateFlowComponent";
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -37,6 +41,15 @@ ChartJS.register(
 );
 
 const Home = () => {
+  const globalState = useContext(store);
+  const {
+    dispatch,
+    setCampaignName,
+    campaignName,
+    campaignSchedulePriority,
+    setCampaignSchedulePriority,
+  } = globalState;
+
   const [agencies, setAgencies] = useState(0);
   const [publishers, setPublishers] = useState(0);
   const [advertisers, setAdvertisers] = useState(0);
@@ -55,11 +68,17 @@ const Home = () => {
   const [callFail, setCallFail] = useState([]);
   const [callRetry, setCallRetry] = useState([]);
   const [dataList, setDataList] = useState([]);
+  const [flowData, setFlowData] = useState({});
+  var [channelName, getChannelName] = useState(null);
+  var flowDataFromApi = {};
   const [FlowListData, setFlowListData] = useState([]);
   var rows = [];
   var rows2 = [];
   var rows3 = [];
+  var flowId = "";
+  const [showFlowState, setShowFlowState] = useState(false);
 
+  const [openModal, setOpenModal] = useState(false);
   function createData(campId, campName, campPriority, wfId, serviceName) {
     return { campId, campName, campPriority, wfId, serviceName };
   }
@@ -119,6 +138,7 @@ const Home = () => {
               rows3.push(createData3(params.id, params.wfId, params.flowName));
             });
             setData3(rows3);
+            // setFlowListData(rows3);
           } else if (res.length == 0) {
             setData3([]);
           }
@@ -390,19 +410,39 @@ const Home = () => {
       });
   };
 
-  const getFlowList = () => {
-    console.log("get flow list called");
+  const flowFromApi = (data) => {
     debugger;
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    let localStore = globalState.state;
+    console.log("local store ... ", localStore);
+    localStore.ivrCampFlowData.flow = data;
+    dispatch({ type: "SET_DATA", nState: localStore });
+    console.log("hello hello hello",globalState);
+  };
+
+  const getFlow = async (e, id) => {
+    debugger;
+    localStorage.setItem("wfId", id);
+    flowId = id;
+    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
+    return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
-        debugger;
-        // console.log("get flowList", data);
-        data.unshift({ flowName: "select", id: "select", wfId: "select" });
-        setFlowListData(data);
+        setFlowData(data);
+        getChannelName(data.flow.channel);
+        // if(data.flow.channel != "IVR_SMS"){
+        localStorage.setItem("channelName", data.flow.channel);
+        // }
+        localStorage.setItem("flowName", data.service_Data.name);
+        // history.push({
+        //     pathname: '/campaign/ivr',
+        //     state: { detail: data }
+        // });
+        console.log("dataFrom api call ", data);
+        flowDataFromApi = data.flow;
+
+        console.log("flowDataFromApi", flowDataFromApi);
+        flowFromApi(data.flow);
+        setOpenModal(true);
         return data;
       })
       .catch(function (error) {
@@ -410,6 +450,19 @@ const Home = () => {
         return error;
       });
   };
+
+  const handleModal = () => {
+    setOpenModal(false);
+    // if (response === "successful") {
+    //   navigate("/verifyotp");
+    //   // state: { detail: 'true' }
+    // } else if (response === "unsuccessful") {
+    //   navigate("/");
+    // } else {
+    //   navigate("/forgotpassword");
+    // }
+  };
+
   useEffect(() => {
     getNumberOfAgencies();
     getNumberOfPublishers();
@@ -417,6 +470,13 @@ const Home = () => {
     getNumberOfCampaigns();
     // getcampaignScheduleList();
   }, []);
+
+  const [hideItem, setHideItem] = useState(true);
+  const hideItemStyle = classNames("file__chooser__container", {
+    hideInput: hideItem,
+    showInput: !hideItem,
+  });
+
   return (
     <>
       <div className="home">
@@ -584,7 +644,16 @@ const Home = () => {
                     </TableHead>
                     <TableBody>
                       {tabledata3.map((row) => (
-                        <TableRow key={row.service_id} className="tableRow">
+                        <TableRow
+                          onClick={(e) => {
+                            console.log(row.id);
+                            getFlow(row.id, row.wfId);
+
+                          }}
+                          key={row.id}
+                          value={row.wfId}
+                          className="tableRow"
+                        >
                           {console.log(tabledata3)}
                           <TableCell align="center">{row.id}</TableCell>
                           <TableCell align="center">{row.flowName}</TableCell>
@@ -598,6 +667,41 @@ const Home = () => {
               </div>
             </div>
           </div>
+          {openModal && (
+            <div className="bg-modal" style={{ border: "2px solid red", display:"flex", flexDirection:"column" }}>
+              <div
+                className="modal-content"
+                style={{
+                  border: "2px solid red",
+                  width: "90vw",
+                  height: "90vh",
+                }}
+              >
+                <CreateFlowComponent hideItemStyle={hideItemStyle} disableEditingWhileCreatingCamp={true} />
+    {console.log("hello hello hello",globalState)}
+              </div>
+              <button
+                style={{
+                  padding: ".5rem 1rem",
+                  border: "none",
+                  outline: "none",
+                  backgroundColor: " #1976d2",
+                  color: "white",
+                  textTransform: "uppercase",
+                  textShadow: "1px 1px 2px black",
+                  width: "10%",
+                  // margin: "auto",
+                  marginBottom: "1rem",
+                  transition: "all 0.5s",
+                  fontWeight: "700",
+                }}
+                className="closeBtn"
+                onClick={(e) => handleModal(e)}
+              >
+                Ok
+              </button>
+            </div>
+          )}
 
           {/* camp list */}
           <div

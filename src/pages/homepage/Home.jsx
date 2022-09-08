@@ -136,7 +136,7 @@ const Home = () => {
       });
 
     fetch(
-      `http://34.214.61.86:5000/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -549,9 +549,19 @@ const Home = () => {
 
           {/* scheduleed */}
 
-          <div className="listContainer">
-            <div className="card-body text-center p-0">
+          <div className="listContainer row" style={{
+              border: "2px solid red",
+              width: "70%",
+              margin: "2rem auto",
+              boxSizing: "border-box",
+            }}>
+            <div className="card-body text-center p-0 col-sm-12">
+            <div className="basic__flow__details__heading__container" style={{ padding:"1rem 0"}}>
+              <h1>List of created Campaigns</h1>
+            </div>
               <div className="table-responsive table-striped ctable">
+                <TableContainer component={Paper}>
+
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead className="thead-light">
                     <TableRow>
@@ -573,6 +583,7 @@ const Home = () => {
                     ))}
                   </TableBody>
                 </Table>
+                </TableContainer>
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import {getDateInFormat} from "../../../../services/getDateInFormat"
+import { getDateInFormat } from "../../../../services/getDateInFormat";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -31,7 +31,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import Stack from "@mui/material/Stack";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import {useError} from "../../../../store/errorContext"
+import { useError } from "../../../../store/errorContext";
 
 import DatePicker from "react-multi-date-picker";
 import { store } from "../../../../store/store";
@@ -56,17 +56,17 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 function createData(jobId, jobName, priority, status) {
   return { jobId, jobName, priority, status };
 }
-let localDate = new Date()
+let localDate = new Date();
 
 const ScheduleCampaign = (props) => {
   const Navigate = useNavigate();
-  const {showError} = useError()
-  const [errorMessage, setErrorMessage] = useState('')
+  const { showError } = useError();
+  const [errorMessage, setErrorMessage] = useState("");
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
   };
-  
+
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -75,27 +75,27 @@ const ScheduleCampaign = (props) => {
     },
   ]);
   console.log("todaydate", state[0].startDate);
-  
+
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
     new Date()
-    );
-    const [selectedBlackoutEndDate, handleBlackoutEndDate] = useState(new Date());
-    const [fileName, setfileName] = useState(null);
-    const [scheduleData1, setScheduleData] = useState({});
-    var [form, showForm] = useState(false);
-    var [tabledata, setData] = useState([]);
-    var [update, updateForm] = useState(false);
-    var [success, showSuccess] = useState(false);
-    const [stringInputError, handlestringInputError] = useState(false);
-    const [campaignListData, setCampaignListData] = useState([]);
+  );
+  const [selectedBlackoutEndDate, handleBlackoutEndDate] = useState(new Date());
+  const [fileName, setfileName] = useState(null);
+  const [scheduleData1, setScheduleData] = useState({});
+  var [form, showForm] = useState(false);
+  var [tabledata, setData] = useState([]);
+  var [update, updateForm] = useState(false);
+  var [success, showSuccess] = useState(false);
+  const [stringInputError, handlestringInputError] = useState(false);
+  const [campaignListData, setCampaignListData] = useState([]);
   const classes = useStyles();
   const scheduleData = {};
   const globalState = useContext(store);
   let localStore = globalState.state;
   const languages = globalState.state.languages;
-  
+
   const {
     setCampaignName,
     campaignName,
@@ -128,8 +128,18 @@ const ScheduleCampaign = (props) => {
     Channel: "",
     Country: "",
     Operator: "",
-    dayStartTime: localDate.getHours() + ":" + localDate.getMinutes() + ":" + localDate.getSeconds(),
-    dayEndTime:  localDate.getHours() + ":" + localDate.getMinutes() + ":" + localDate.getSeconds(),
+    dayStartTime:
+      localDate.getHours() +
+      ":" +
+      localDate.getMinutes() +
+      ":" +
+      localDate.getSeconds(),
+    dayEndTime:
+      localDate.getHours() +
+      ":" +
+      localDate.getMinutes() +
+      ":" +
+      localDate.getSeconds(),
     dateRange: "",
     file: "",
   };
@@ -163,12 +173,17 @@ const ScheduleCampaign = (props) => {
     getcampaignScheduleList();
   }, []);
   const getcampaignScheduleList = () => {
-    fetch(`http://34.214.61.86" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `http://34.214.61.86" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem(
+        "userId"
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => {
         res.json().then((res) => {
           if (res.length > 0) {
@@ -194,7 +209,9 @@ const ScheduleCampaign = (props) => {
       });
   };
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`;
+    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+      "userId"
+    )}`;
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -327,14 +344,14 @@ const ScheduleCampaign = (props) => {
         blackoutDay = e.target.value;
         console.log(blackoutDay);
       } else if (e.target.id == "uploadCsvFfile") {
-        
-
         let files = e.target.files;
         var formData = new FormData();
         formData.append("file", files[0]);
         fetch(
           // "http://34.214.61.86" + ":" + "5002" + "/bng/ui/uploadMsisdn",
-          `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem("userId")}&channel=${localStorage.getItem("channelName")}`,
+          `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
+            "userId"
+          )}&channel=${localStorage.getItem("channelName")}`,
           {
             method: "POST",
             body: formData,
@@ -347,7 +364,7 @@ const ScheduleCampaign = (props) => {
                 // newFileName = res.fileName
                 setfileName(res.fileName);
                 scheduleData["fileName"] = res.fileName;
-                scheduleData["reserveBalance"] = res.reserve_balance
+                scheduleData["reserveBalance"] = res.reserve_balance;
                 setScheduleData((scheduleData1) => ({
                   ...scheduleData1,
                   ...scheduleData,
@@ -467,68 +484,85 @@ const ScheduleCampaign = (props) => {
   };
 
   const checkDateAndTime = () => {
-    const date = new Date()
-    const startTimeArray = scheduleData1.dailyStartTime.split(':')
-    const endTimeArray = scheduleData1.dailyEndTime.split(':')
-    if(getDateInFormat(date) === scheduleData1.startDate){
-      console.log('same day', date.getHours(), ~~(startTimeArray[0]))
-      if(date.getHours() > ~~(startTimeArray[0]) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() > ~~(startTimeArray[1])) || (date.getHours() === ~~(startTimeArray[0]) && date.getMinutes() === ~~(startTimeArray[1]) && date.getSeconds() > ~~(startTimeArray[2]))){
-       throw Error('Start time has already passed')
+    const date = new Date();
+    const startTimeArray = scheduleData1.dailyStartTime.split(":");
+    const endTimeArray = scheduleData1.dailyEndTime.split(":");
+    if (getDateInFormat(date) === scheduleData1.startDate) {
+      console.log("same day", date.getHours(), ~~startTimeArray[0]);
+      if (
+        date.getHours() > ~~startTimeArray[0] ||
+        (date.getHours() === ~~startTimeArray[0] &&
+          date.getMinutes() > ~~startTimeArray[1]) ||
+        (date.getHours() === ~~startTimeArray[0] &&
+          date.getMinutes() === ~~startTimeArray[1] &&
+          date.getSeconds() > ~~startTimeArray[2])
+      ) {
+        throw Error("Start time has already passed");
       }
     }
-    console.log('end time array',endTimeArray)
-  if(endTimeArray[0] < ~~(startTimeArray[0]) || (endTimeArray[0]  === ~~(startTimeArray[0]) && endTimeArray[1]  < ~~(startTimeArray[1])) || (endTimeArray[0]  === ~~(startTimeArray[0]) && endTimeArray[1]  === ~~(startTimeArray[1]) && endTimeArray[2]  < ~~(startTimeArray[2]))){
-   throw Error('End time can not be earlier than before time')
-  }
-}
+    console.log("end time array", endTimeArray);
+    if (
+      endTimeArray[0] < ~~startTimeArray[0] ||
+      (endTimeArray[0] === ~~startTimeArray[0] &&
+        endTimeArray[1] < ~~startTimeArray[1]) ||
+      (endTimeArray[0] === ~~startTimeArray[0] &&
+        endTimeArray[1] === ~~startTimeArray[1] &&
+        endTimeArray[2] < ~~startTimeArray[2])
+    ) {
+      throw Error("End time can not be earlier than before time");
+    }
+  };
 
   const handleSubmit = () => {
     debugger;
-    setFormErrors(validate(formValues));
-    scheduleData1.userID = localStorage.getItem("userId");
-    scheduleData1.country = localStorage.getItem("userCountry");
-    scheduleData1.jobName = campaignName;
-    scheduleData1.priority = campaignSchedulePriority;
 
-    console.log(scheduleData1);
-    // scheduleData["fileName"] = fileName
-    if (Object.keys(errors).length == 0 && !stringInputError) {
-      fetch(
-        "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campschedule",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(scheduleData1),
-        }
-      )
-        .then((res) => {
-          // res.json()
-          // .then((res) => {
-          if (res.status == 200) {
-            debugger;
-            localStorage.removeItem("channelName");
-            showSuccess(true);
-            console.log(res);
-          } else if (res.length == 0) {
+    try {
+      checkDateAndTime();
+
+      setFormErrors(validate(formValues));
+      scheduleData1.userID = localStorage.getItem("userId");
+      scheduleData1.country = localStorage.getItem("userCountry");
+      scheduleData1.jobName = campaignName;
+      scheduleData1.priority = campaignSchedulePriority;
+
+      console.log(scheduleData1);
+      // scheduleData["fileName"] = fileName
+
+      if (Object.keys(errors).length == 0 && !stringInputError) {
+        fetch(
+          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campschedule",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(scheduleData1),
           }
-          // })
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+        )
+          .then((res) => {
+            // res.json()
+            // .then((res) => {
+            if (res.status == 200) {
+              debugger;
+              localStorage.removeItem("channelName");
+              showSuccess(true);
+              console.log(res);
+            } else if (res.length == 0) {
+            }
+            // })
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    } catch (e) {
+      if (e.message.includes("split")) {
+        setErrorMessage("Please select Start and End time");
+      } else {
+        setErrorMessage(e.message);
+      }
     }
-  }
-  catch(e){
-    if(e.message.includes('split')){
-      setErrorMessage("Please select Start and End time")
-    }
-    else{
-    setErrorMessage(e.message)
-    }
-  }
-}
+  };
   const showFormData = (e) => {
     showForm(true);
   };
@@ -541,7 +575,7 @@ const ScheduleCampaign = (props) => {
   };
   const deleteFormData = (id) => {};
   const dummyClick = (id) => {
-    debugger
+    debugger;
     const elem = document.getElementById(id);
     elem.click();
   };
@@ -977,11 +1011,10 @@ const ScheduleCampaign = (props) => {
                                 id="dayStartTime"
                                 value={selectedStartDate}
                                 name="dayStartTime"
-                                onChange={(event) =>{
-                                  setErrorMessage('')
-                                  handleChange(event, "dayStartTime")
-                                }
-                                }
+                                onChange={(event) => {
+                                  setErrorMessage("");
+                                  handleChange(event, "dayStartTime");
+                                }}
                                 renderInput={(params) => (
                                   <TextField {...params} />
                                 )}
@@ -1019,11 +1052,10 @@ const ScheduleCampaign = (props) => {
                                 id="dayEndTime"
                                 value={selectedEndDate}
                                 name="dayEndTime"
-                                onChange={(time) =>{
-                                  setErrorMessage('')
-                                  handleChange(time, "dayEndTime")
-                                }
-                                }
+                                onChange={(time) => {
+                                  setErrorMessage("");
+                                  handleChange(time, "dayEndTime");
+                                }}
                                 renderInput={(params) => (
                                   <TextField {...params} />
                                 )}
@@ -1074,72 +1106,20 @@ const ScheduleCampaign = (props) => {
                             onChange={(item) => {
                               console.log("rishabh selection", item);
                               setState([item.selection]);
-                               scheduleData["endDate"] = getDateInFormat(item.selection.endDate)
-                               scheduleData["startDate"] = getDateInFormat(item.selection.startDate)
+                              scheduleData["endDate"] = getDateInFormat(
+                                item.selection.endDate
+                              );
+                              scheduleData["startDate"] = getDateInFormat(
+                                item.selection.startDate
+                              );
 
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              } else {
-                                const endDate =
-                                  item.selection.endDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.endDate.getMonth() +
-                                  "-" +
-                                  item.selection.endDate.getDate();
-                                console.log(endDate);
-
-                                scheduleData["endDate"] = endDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              }
-
-                              if (item.selection.startDate.getDate() <= 9) {
-                                const startDate =
-                                  item.selection.startDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getMonth() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getDate();
-                                console.log(startDate);
-                                scheduleData["startDate"] = startDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              } else {
-                                const startDate =
-                                  item.selection.startDate.getFullYear() +
-                                  "-" +
-                                  "0" +
-                                  item.selection.startDate.getMonth() +
-                                  "-" +
-                                  item.selection.startDate.getDate();
-                                console.log(startDate);
-                                scheduleData["startDate"] = startDate;
-                                setScheduleData((scheduleData1) => {
-                                  let result = {
-                                    ...scheduleData1,
-                                    ...scheduleData,
-                                  };
-                                  return result;
-                                });
-                              }
+                              setScheduleData((scheduleData1) => {
+                                let result = {
+                                  ...scheduleData1,
+                                  ...scheduleData,
+                                };
+                                return result;
+                              });
                             }}
                             minDate={todaysDate.startDate}
                             ranges={state}
@@ -1251,7 +1231,9 @@ const ScheduleCampaign = (props) => {
                         Cancel
                       </button>
                     </div>
-                    {errorMessage && <div style={{color:"Red"}}>{errorMessage}</div>}
+                    {errorMessage && (
+                      <div style={{ color: "Red" }}>{errorMessage}</div>
+                    )}
                   </div>
                 </div>
                 {/* )  */}

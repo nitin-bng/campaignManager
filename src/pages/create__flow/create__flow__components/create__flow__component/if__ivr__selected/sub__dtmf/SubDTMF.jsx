@@ -29,6 +29,7 @@ import { Howl } from "howler";
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
+import { FileUploaderForSubDTMF } from "../../../../../../components/fileUpload/FileUploaderForSubDTMF";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -877,10 +878,6 @@ const SubDTMF = (props) => {
   // },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
 
   useEffect(() => {
-    if (props.hideItemStyle === undefined) {
-      console.log('SubDTMF audio ran')
-      errorDispatch({ type: "AUDIO", payload: true });
-    }
     setShowError(false);
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
@@ -1080,90 +1077,7 @@ const SubDTMF = (props) => {
                     <div className="ghghgh">
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <div className="file__chooser__container"  style={{
-                            width: "200px",
-                            display: "flex",
-                            height: "fit-content",
-                            flexDirection: "column",
-                            // border: "2px solid blue",
-                          }}>
-                            <input
-                              accept="audio/wav"
-                              type="file"
-                              class="custom-file-input"
-                              name="main_audio_file"
-                              style={{
-                                // border: "2px solid green",
-                                display: "flex",
-                                overflow: "hidden",
-                                // height: "10px",
-                              }}
-                              onChange={(event) => {
-                                uploadFiles(
-                                  "level" +
-                                    props.current.level +
-                                    "_" +
-                                    props.current.parent_dtmf +
-                                    "_" +
-                                    props.current.dtmf_key +
-                                    "_" +
-                                    lang,
-                                  event,
-                                  event.currentTarget.files,
-                                  lang
-                                );
-                              }}
-                              required
-                            />
-                            {localStore.ivrCampFlowData.flow.main_audio_file &&
-                            localStore.ivrCampFlowData.flow.main_audio_file[
-                              lang
-                            ] &&
-                            localStore.ivrCampFlowData.flow.main_audio_file[
-                              lang
-                            ] !== "" ? (
-                              <>
-                                <br></br>
-                                {/* show all the audio files uploaded */}
-                                <div
-                                  item
-                                  className="fileNames"
-                                  id={lang + "mainAudioShow"}
-                                >
-                                  {traverseAndModify(
-                                    props.current.id,
-                                    null,
-                                    null,
-                                    null,
-                                    "return"
-                                  ).audio_file[lang] ? (
-                                    <div style={{
-                                      border: ".2px solid black",
-                                      width: "200px",
-                                      fontSize: "10px",
-                                      wordWrap: "break-word",
-                                      marginBottom: "10px",
-                                      paddingBottom: "3px",
-                                    }}>
-                                      <AudioFilesL2
-                                        current={props.current}
-                                        parentDtmf={
-                                          props.current.parent_dtmf - 1
-                                        }
-                                        currDtmf={props.current.dtmf_key - 1}
-                                        lang={lang}
-                                      />
-                                    </div>
-                                  ) : (
-                                    // <div>
-                                    //   Please upload the audio file
-                                    // </div>
-                                    null
-                                  )}
-                                </div>
-                              </>
-                            ) : null}
-                          </div>
+                          <FileUploaderForSubDTMF lang={lang} main_audio_file={localStore.ivrCampFlowData.flow.main_audio_file} current={props.current} uploadFiles={uploadFiles} traverseAndModify={traverseAndModify} AudioFilesL2={AudioFilesL2} hideItemStyle={props.hideItemStyle} />
                         )
                       )}
                     </div>

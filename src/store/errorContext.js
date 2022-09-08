@@ -7,14 +7,14 @@ const initialValue = {
     createCampaign: true,
     mainDtmf: [],
     subDtmf: [],
-    audioError: []
+    audioError: [],
 }
 
 const errorReducer = (state, action) =>{
 let newVal = ''
 switch (action.type) {
     case "INITIALIZE":
-        return {...initialValue}
+        return {...initialValue, audioError: []}
     case "CREATE_FLOW_COMPONENT":
         return {...state, createFlowComponent: action.payload}
     case "RENDERING_COMPONENT_ON_LANGUAGE_SELECT":

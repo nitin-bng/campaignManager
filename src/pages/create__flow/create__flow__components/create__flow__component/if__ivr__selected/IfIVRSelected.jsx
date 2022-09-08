@@ -25,6 +25,7 @@ import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
 import { useError } from "../../../../../store/errorContext";
+import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -42,16 +43,14 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {showError, setShowError, errorDispatch} = useError()
+  const {showError, setShowError, errorDispatch, errorState} = useError()
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
+console.log('Nitin is checking', errorState, showError)
 
   useEffect(()=>{
-    if(props.hideItemStyle === undefined){
-      errorDispatch({type:'AUDIO', payload: true})
-    }
     setShowError(false)
     errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
   },[])
@@ -938,7 +937,6 @@ const IfIVRSelected = (props) => {
 
   const setWaitTime = (level, target, dtmf_key) => {
     const val = target.value >= 0 ? target.value :0
-    console.log(" Nitin val ", val);
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
     else if (level === "sub")
@@ -997,63 +995,7 @@ const IfIVRSelected = (props) => {
             </div>
             <div className="ghghgh" style={{ }}>
               {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-                <div
-                  className="file__chooser__container"
-                  style={{
-                    width: "200px",
-                    display: "flex",
-                    height: "fit-content",
-                    flexDirection: "column",
-                    // border: "2px solid blue",
-                  }}
-                >
-                  <input
-                    style={{
-                      // border: "2px solid green",
-                      display: "flex",
-                      overflow: "hidden",
-                      // height: "10px",
-                    }}
-                    accept="audio/wav"
-                    type="file"
-                    class="custom-file-input"
-                    name="main_audio_file"
-                    onChange={(event) => {
-                      uploadFiles(
-                        "main_audio_file",
-                        event,
-                        event.currentTarget.files,
-                        lang
-                      );
-                    }}
-                    required
-                  />
-                  {localStore.ivrCampFlowData.flow.main_audio_file &&
-                  localStore.ivrCampFlowData.flow.main_audio_file[lang] &&
-                  localStore.ivrCampFlowData.flow.main_audio_file[lang] !==
-                    "" ? (
-                    <>
-                      {/* <br></br> */}
-                      {/* show all the audio files uploaded */}
-                      <div
-                        style={{
-                          border: ".2px solid black",
-                          width: "200px",
-                          fontSize: "10px",
-                          wordWrap: "break-word",
-                          marginBottom:"10px",
-                          paddingBottom:"3px"
-                        }}
-                        item
-                        className="fileNames"
-                        id={lang + "mainAudioShow"}
-                      >
-                        {GetMainAudioFiles(lang, "MainAudioFile")}
-                      </div>
-                      {/* <hr /> */}
-                    </>
-                  ) : null}
-                </div>
+                  <FileUploaderForIVRSelected lang={lang} GetMainAudioFiles={GetMainAudioFiles} localStore={localStore} uploadFiles={uploadFiles} hideItemStyle={props.hideItemStyle} />
 
               ))}
             </div>

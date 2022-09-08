@@ -23,11 +23,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
   const {showError, setShowError, errorDispatch} = useError()
+  const [errorStyle, setErrorStyle] = useState(true)
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
     let value = e.target.value >=0 ? e.target.value :0
-    console.log('nitin wait time language', value)
     props.setDtmfTime(value);
   };
   // useEffect(() => {
@@ -43,11 +43,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
 
   useEffect(()=>{
     if(parseInt(props.dtmfTime) >=0){
-      console.log('Nitin true',props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: true})
     }
     else{
-      console.log('Nitin false', props.dtmfTime)
       errorDispatch({type:'RENDERING_COMPONENT_ON_LANGUAGE_SELECT', payload: false})
     }
   },[props.dtmfTime])
@@ -254,6 +252,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => {
         console.log("got response from file upload....", response);
         errorDispatch({type:'AUDIO', payload: false})
+        setErrorStyle(false)
         return response;
       })
       .catch((e) => {
@@ -459,7 +458,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
           >
             <input
               accept="audio/wav"
-              style={{
+              style={(showError && errorStyle) ? {
+                border: "2px solid red",
+                justifyContent: "center",
+                display: "flex",
+                overflow: "hidden",
+              }:{
                 // border: "2px solid green",
                 justifyContent: "center",
                 display: "flex",

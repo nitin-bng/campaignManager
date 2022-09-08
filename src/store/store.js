@@ -64,6 +64,7 @@ const initialState = {
         ivr: "PLAY",
         sms: "SCHEDULE_SMS",
       },
+      waitTime: '',
       actions: [],
       repeat: {
         value: false,
@@ -148,6 +149,7 @@ const StateProvider = ({ children }) => {
                 sms: "SCHEDULE_SMS",
               },
               actions: [],
+              waitTime:'',
               repeat: {
                 value: false,
                 dtmf: 0,

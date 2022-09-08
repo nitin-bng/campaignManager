@@ -1174,7 +1174,8 @@ const ScheduleCampaign = (props) => {
                         <div className="mb-3 col-4" style={{ display: "grid" }}>
                           {/* <label>Upload Csv Fileimage.png</label> */}
                           <input
-                            type="file"
+                            type="file" 
+                            accept=".csv"
                             name="file"
                             hidden
                             className="form-control"

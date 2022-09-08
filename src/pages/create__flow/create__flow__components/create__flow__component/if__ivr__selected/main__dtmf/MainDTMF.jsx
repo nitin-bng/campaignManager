@@ -29,6 +29,7 @@ import { Howl } from "howler";
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
+import { FileUploaderForMainDTMF } from "../../../../../../components/fileUpload/FileUploaderForMainDTMF";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -632,11 +633,7 @@ const MainDTMF = (props) => {
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
   useEffect(() => {
-    if (props.hideItemStyle === undefined) {
-      errorDispatch({ type: "AUDIO", payload: true });
-    }
     setShowError(false);
-
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
@@ -839,61 +836,7 @@ const MainDTMF = (props) => {
                     >
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <div
-                            className="file__chooser__container"
-                            style={{
-                              width: "200px",
-                              display: "flex",
-                              height: "fit-content",
-                              flexDirection: "column",
-                              // border: "2px solid blue",
-                            }}
-                          >
-                            <input
-                              accept="audio/wav"
-                              type="file"
-                              class="custom-file-input"
-                              name="main_audio_file"
-                              style={{
-                                // border: "2px solid green",
-                                display: "flex",
-                                overflow: "hidden",
-                                // height: "10px",
-                              }}
-                              onChange={(event) => {
-                                uploadFiles(
-                                  props.parentNode +
-                                    "_" +
-                                    props.global.dtmf_key,
-                                  event,
-                                  event.currentTarget.files,
-                                  lang
-                                );
-                              }}
-                              required
-                            />
-                            {globalState.state.ivrCampFlowData.flow.actions[
-                              props.global.dtmf_key - 1
-                            ].audio_file[lang] ? (
-                              // (<div>{globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].audio_file[lang]}</div>)
-                              <div
-                                style={{
-                                  border: ".2px solid black",
-                                  width: "200px",
-                                  fontSize: "10px",
-                                  wordWrap: "break-word",
-                                  marginBottom: "10px",
-                                  paddingBottom: "3px",
-                                }}
-                              >
-                                <AudioFiles
-                                  dtmf={props.global.dtmf_key - 1}
-                                  lang={lang}
-                                />
-                              </div>
-                            ) : // <div>Please upload the audio file</div>
-                            null}
-                          </div>
+                         <FileUploaderForMainDTMF lang={lang} hideItemStyle={props.hideItemStyle} parentNode={props.parentNode} global={props.global} globalState={globalState} uploadFiles={uploadFiles} AudioFiles={AudioFiles} />
                         )
                       )}
                     </div>

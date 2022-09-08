@@ -878,6 +878,7 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
+      console.log('SubDTMF audio ran')
       errorDispatch({ type: "AUDIO", payload: true });
     }
     setShowError(false);

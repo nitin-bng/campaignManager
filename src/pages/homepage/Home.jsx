@@ -68,9 +68,8 @@ const Home = () => {
     return { jobId, jobName, priority, status };
   }
   function createData3(id, wfId, flowName) {
-    return {id, wfId, flowName };
+    return { id, wfId, flowName };
   }
-
 
   const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -107,34 +106,28 @@ const Home = () => {
   useEffect(() => {
     debugger;
 
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+      "userId"
+    )}`;
     fetch(path)
-    .then((res) => {
-      res.json().then((res) => {
-        console.log("rishabh res", res);
-        if (res.length > 0) {
-          rows3 = [];
-          res.map((params) => {
-            rows3.push(
-              createData3(
-                params.id,
-                params.wfId,
-                params.flowName,
-              )
-            );
-          });
-          setData3(rows3);
-        } else if (res.length == 0) {
-          setData3([]);
-        }
-      });
-    })
+      .then((res) => {
+        res.json().then((res) => {
+          console.log("rishabh res", res);
+          if (res.length > 0) {
+            rows3 = [];
+            res.map((params) => {
+              rows3.push(createData3(params.id, params.wfId, params.flowName));
+            });
+            setData3(rows3);
+          } else if (res.length == 0) {
+            setData3([]);
+          }
+        });
+      })
       .catch(function (error) {
         console.log("failed", error);
         return error;
       });
-
-
 
     fetch(
       `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
@@ -397,11 +390,12 @@ const Home = () => {
       });
   };
 
-
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+      "userId"
+    )}`;
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -559,12 +553,12 @@ const Home = () => {
             </div>
           </div>
 
-{/* flow list */}
+          {/* flow list */}
 
-<div
+          <div
             className="row"
             style={{
-              border: "2px solid red",
+              // border: "2px solid red",
               width: "70%",
               margin: "2rem auto",
               boxSizing: "border-box",
@@ -583,7 +577,7 @@ const Home = () => {
                     <TableHead className="thead-light">
                       <TableRow>
                         <TableCell align="center">Id</TableCell>
-                      {console.log(tabledata3)}
+                        {console.log(tabledata3)}
                         <TableCell align="center">Flow Name</TableCell>
                         <TableCell align="center">Work Flow Id</TableCell>
                       </TableRow>
@@ -594,9 +588,7 @@ const Home = () => {
                           {console.log(tabledata3)}
                           <TableCell align="center">{row.id}</TableCell>
                           <TableCell align="center">{row.flowName}</TableCell>
-                          <TableCell align="center">
-                            {row.wfId}
-                          </TableCell>
+                          <TableCell align="center">{row.wfId}</TableCell>
                           {/* <TableCell align="center">{row.wfId}</TableCell> */}
                         </TableRow>
                       ))}
@@ -607,12 +599,11 @@ const Home = () => {
             </div>
           </div>
 
-
           {/* camp list */}
           <div
             className="row"
             style={{
-              border: "2px solid red",
+              // border: "2px solid red",
               width: "70%",
               margin: "2rem auto",
               boxSizing: "border-box",
@@ -660,7 +651,7 @@ const Home = () => {
           <div
             className="listContainer row"
             style={{
-              border: "2px solid red",
+              // border: "2px solid red",
               width: "70%",
               margin: "2rem auto",
               boxSizing: "border-box",

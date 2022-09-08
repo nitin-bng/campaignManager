@@ -520,7 +520,7 @@ const ScheduleCampaign = (props) => {
       checkDateAndTime();
 
       setFormErrors(validate(formValues));
-      scheduleData1.userID = localStorage.getItem("userId");
+      scheduleData1.userId = localStorage.getItem("userId");
       scheduleData1.country = localStorage.getItem("userCountry");
       scheduleData1.jobName = campaignName;
       scheduleData1.priority = campaignSchedulePriority;
@@ -530,7 +530,12 @@ const ScheduleCampaign = (props) => {
 
       if (Object.keys(errors).length == 0 && !stringInputError) {
         fetch(
-          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campschedule",
+          `http://34.214.61.86:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
+            "userId"
+          )}`,
+          // `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+        // "userId"
+      // )}`,
           {
             method: "POST",
             headers: {

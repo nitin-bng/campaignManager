@@ -28,7 +28,7 @@ const CreateFlow = () => {
   const {showError,setShowError, errorState, errorDispatch} = useError()
   const {ifIVRselectedThenLanguage} = useContext(CommonContext)
 
-  const { dispatch } = globalState;
+  const { dispatch, campaignName } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
   var createCampDataToSend = {};
@@ -110,7 +110,7 @@ const CreateFlow = () => {
     dataToSend = {
       service_Data: {
         userid: userId,
-        name: "form.campaign_name",
+        name: campaignName,
         start_date: "getFormattedDate(form.startdateTime)",
         end_date: "getFormattedDate(form.enddateTime)",
         start_time: "getFormattedTime(form.startdateTime)",
@@ -151,7 +151,7 @@ const CreateFlow = () => {
     createCampDataToSend = {
       service_Data: {
         userid: userId,
-        name: "form.campaign_name",
+        name: campaignName,
         start_date: "getFormattedDate(form.startdateTime)",
         end_date: "getFormattedDate(form.enddateTime)",
         start_time: "getFormattedTime(form.startdateTime)",

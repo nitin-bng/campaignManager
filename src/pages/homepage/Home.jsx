@@ -46,6 +46,7 @@ const Home = () => {
   const [totalCamp, setTotalCamp] = useState(0);
   var [tabledata, setData] = useState([]);
   var [tabledata2, setData2] = useState([]);
+  var [tabledata3, setData3] = useState([]);
   const [campaignListData, setCampaignListData] = useState([]);
   const [ivrChannel, setIvrChannel] = useState();
   const [smsChannel, setSmsChannel] = useState();
@@ -54,9 +55,10 @@ const Home = () => {
   const [callFail, setCallFail] = useState([]);
   const [callRetry, setCallRetry] = useState([]);
   const [dataList, setDataList] = useState([]);
-
+  const [FlowListData, setFlowListData] = useState([]);
   var rows = [];
   var rows2 = [];
+  var rows3 = [];
 
   function createData(campId, campName, campPriority, wfId, serviceName) {
     return { campId, campName, campPriority, wfId, serviceName };
@@ -65,6 +67,11 @@ const Home = () => {
   function createData2(jobId, jobName, priority, status) {
     return { jobId, jobName, priority, status };
   }
+  function createData3(id, wfId, flowName) {
+    return {id, wfId, flowName };
+  }
+
+
   const useStyles = makeStyles((theme) => ({
     wrapper: {
       display: "flex",
@@ -99,6 +106,36 @@ const Home = () => {
 
   useEffect(() => {
     debugger;
+
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
+    fetch(path)
+    .then((res) => {
+      res.json().then((res) => {
+        console.log("rishabh res", res);
+        if (res.length > 0) {
+          rows3 = [];
+          res.map((params) => {
+            rows3.push(
+              createData3(
+                params.id,
+                params.wfId,
+                params.flowName,
+              )
+            );
+          });
+          setData3(rows3);
+        } else if (res.length == 0) {
+          setData3([]);
+        }
+      });
+    })
+      .catch(function (error) {
+        console.log("failed", error);
+        return error;
+      });
+
+
+
     fetch(
       `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
         "userId"
@@ -161,7 +198,7 @@ const Home = () => {
               );
             });
             setData2(rows2);
-            console.log("rishabh res", res);
+            // console.log("rishabh res", res);
           } else if (res.length == 0) {
             setData2([]);
           }
@@ -171,8 +208,8 @@ const Home = () => {
         console.log(e);
       });
 
-    console.log("rishabh ran");
-
+    // console.log("rishabh ran");
+    // getFlowList()
     getCampaignList();
     getChannelPercentage();
     // getcampaignScheduleList();
@@ -220,7 +257,7 @@ const Home = () => {
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
-        console.log("get flowList", data);
+        // console.log("get flowList", data);
         // data.unshift({ campName: "select work flow" });
         setCampaignListData(data);
         return data;
@@ -237,7 +274,7 @@ const Home = () => {
     fetch(path)
       .then((response) => response.json())
       .then((data) => {
-        console.log("List of agencies", data.userList);
+        // console.log("List of agencies", data.userList);
         const numberOfAgencies = data.userList.length;
         setAgencies(numberOfAgencies);
         const newElement = {
@@ -257,7 +294,7 @@ const Home = () => {
     fetch(path)
       .then((response) => response.json())
       .then((data) => {
-        console.log("List of publishers", data.userList);
+        // console.log("List of publishers", data.userList);
         const numberOfPublishers = data.userList.length;
         setPublishers(numberOfPublishers);
         const newElement = {
@@ -277,7 +314,7 @@ const Home = () => {
     fetch(path)
       .then((response) => response.json())
       .then((data) => {
-        console.log("List of advertisers", data.userList);
+        // console.log("List of advertisers", data.userList);
         const numberOfAdvertisers = data.userList.length;
         setAdvertisers(numberOfAdvertisers);
         const newElement = {
@@ -292,7 +329,7 @@ const Home = () => {
   };
 
   const getNumberOfCampaigns = async () => {
-    console.log("GET NUMBER OF CAMPAIGNS");
+    // console.log("GET NUMBER OF CAMPAIGNS");
     let runningCamp = 0;
     let pausedCamp = 0;
     const path =
@@ -301,9 +338,9 @@ const Home = () => {
     fetch(path)
       .then((response) => response.json())
       .then((data) => {
-        console.log("DATA", data.status);
+        // console.log("DATA", data.status);
         const campList = data.bundleOptionList;
-        console.log("List of campaigns", campList);
+        // console.log("List of campaigns", campList);
         const totalCamp = campList.length;
         setTotalCamp(totalCamp);
 
@@ -315,7 +352,7 @@ const Home = () => {
         setRunningCamp(runningCamp);
         setPausedCamp(pausedCamp);
         setTotalCamp(totalCamp);
-        console.log("FINAL DATA", dataList);
+        // console.log("FINAL DATA", dataList);
       })
       .catch(() => {
         return <p>Campaigns not found</p>;
@@ -360,6 +397,25 @@ const Home = () => {
       });
   };
 
+
+  const getFlowList = () => {
+    console.log("get flow list called");
+    debugger;
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then(function (data) {
+        debugger;
+        // console.log("get flowList", data);
+        data.unshift({ flowName: "select", id: "select", wfId: "select" });
+        setFlowListData(data);
+        return data;
+      })
+      .catch(function (error) {
+        console.log("failed", error);
+        return error;
+      });
+  };
   useEffect(() => {
     getNumberOfAgencies();
     getNumberOfPublishers();
@@ -503,6 +559,55 @@ const Home = () => {
             </div>
           </div>
 
+{/* flow list */}
+
+<div
+            className="row"
+            style={{
+              border: "2px solid red",
+              width: "70%",
+              margin: "2rem auto",
+              boxSizing: "border-box",
+            }}
+          >
+            <div className="col-sm-12">
+              <div
+                className="basic__flow__details__heading__container"
+                style={{ padding: "1rem 0" }}
+              >
+                <h1>List of created Flows</h1>
+              </div>
+              <div className="table-responsive table-striped ctable">
+                <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead className="thead-light">
+                      <TableRow>
+                        <TableCell align="center">Id</TableCell>
+                      {console.log(tabledata3)}
+                        <TableCell align="center">Flow Name</TableCell>
+                        <TableCell align="center">Work Flow Id</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {tabledata3.map((row) => (
+                        <TableRow key={row.service_id} className="tableRow">
+                          {console.log(tabledata3)}
+                          <TableCell align="center">{row.id}</TableCell>
+                          <TableCell align="center">{row.flowName}</TableCell>
+                          <TableCell align="center">
+                            {row.wfId}
+                          </TableCell>
+                          {/* <TableCell align="center">{row.wfId}</TableCell> */}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </div>
+          </div>
+
+
           {/* camp list */}
           <div
             className="row"
@@ -514,9 +619,12 @@ const Home = () => {
             }}
           >
             <div className="col-sm-12">
-            <div className="basic__flow__details__heading__container" style={{ padding:"1rem 0"}}>
-              <h1>List of created Campaigns</h1>
-            </div>
+              <div
+                className="basic__flow__details__heading__container"
+                style={{ padding: "1rem 0" }}
+              >
+                <h1>List of created Campaigns</h1>
+              </div>
               <div className="table-responsive table-striped ctable">
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
@@ -531,7 +639,7 @@ const Home = () => {
                     <TableBody>
                       {tabledata.map((row) => (
                         <TableRow key={row.service_id} className="tableRow">
-                          {console.log(row)}
+                          {/* {console.log(row)} */}
                           <TableCell align="center">{row.campId}</TableCell>
                           <TableCell align="center">{row.campName}</TableCell>
                           <TableCell align="center">
@@ -549,40 +657,45 @@ const Home = () => {
 
           {/* scheduleed */}
 
-          <div className="listContainer row" style={{
+          <div
+            className="listContainer row"
+            style={{
               border: "2px solid red",
               width: "70%",
               margin: "2rem auto",
               boxSizing: "border-box",
-            }}>
+            }}
+          >
             <div className="card-body text-center p-0 col-sm-12">
-            <div className="basic__flow__details__heading__container" style={{ padding:"1rem 0"}}>
-              <h1>List of created Campaigns</h1>
-            </div>
+              <div
+                className="basic__flow__details__heading__container"
+                style={{ padding: "1rem 0" }}
+              >
+                <h1>List of scheduled Campaigns</h1>
+              </div>
               <div className="table-responsive table-striped ctable">
                 <TableContainer component={Paper}>
-
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead className="thead-light">
-                    <TableRow>
-                      <TableCell> Id</TableCell>
-                      <TableCell align="right">Job Name</TableCell>
-                      <TableCell align="right">Priority</TableCell>
-                      <TableCell align="right">Status</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tabledata2.map((row) => (
-                      <TableRow key={row.service_id} className="tableRow">
-                        {console.log(tabledata2)}
-                        <TableCell align="right">{row.jobId}</TableCell>
-                        <TableCell align="right">{row.jobName}</TableCell>
-                        <TableCell align="right">{row.priority}</TableCell>
-                        <TableCell align="right">{row.status}</TableCell>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead className="thead-light">
+                      <TableRow>
+                        <TableCell align="center"> Id</TableCell>
+                        <TableCell align="center">Job Name</TableCell>
+                        <TableCell align="center">Priority</TableCell>
+                        <TableCell align="center">Status</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {tabledata2.map((row) => (
+                        <TableRow key={row.service_id} className="tableRow">
+                          {/* {console.log(tabledata2)} */}
+                          <TableCell align="center">{row.jobId}</TableCell>
+                          <TableCell align="center">{row.jobName}</TableCell>
+                          <TableCell align="center">{row.priority}</TableCell>
+                          <TableCell align="center">{row.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </TableContainer>
               </div>
             </div>

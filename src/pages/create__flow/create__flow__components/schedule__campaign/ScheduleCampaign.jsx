@@ -163,7 +163,7 @@ const ScheduleCampaign = (props) => {
     getcampaignScheduleList();
   }, []);
   const getcampaignScheduleList = () => {
-    fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/list/campschedule", {
+    fetch(`http://34.214.61.86" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -194,7 +194,7 @@ const ScheduleCampaign = (props) => {
       });
   };
   const getCampaignDataList = () => {
-    const path = "http://34.214.61.86:5000/bng/ui/list/campaign";
+    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`;
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -327,13 +327,19 @@ const ScheduleCampaign = (props) => {
         blackoutDay = e.target.value;
         console.log(blackoutDay);
       } else if (e.target.id == "uploadCsvFfile") {
+        
+
         let files = e.target.files;
         var formData = new FormData();
         formData.append("file", files[0]);
-        fetch("http://34.214.61.86" + ":" + "5000" + "/bng/ui/uploadMsisdn", {
-          method: "POST",
-          body: formData,
-        })
+        fetch(
+          // "http://34.214.61.86" + ":" + "5002" + "/bng/ui/uploadMsisdn",
+          `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem("userId")}&channel=${localStorage.getItem("channelName")}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
           .then((res) => {
             res.json().then((res) => {
               if (res) {
@@ -341,6 +347,7 @@ const ScheduleCampaign = (props) => {
                 // newFileName = res.fileName
                 setfileName(res.fileName);
                 scheduleData["fileName"] = res.fileName;
+                scheduleData["reserveBalance"] = res.reserve_balance
                 setScheduleData((scheduleData1) => ({
                   ...scheduleData1,
                   ...scheduleData,
@@ -477,10 +484,6 @@ const ScheduleCampaign = (props) => {
 
   const handleSubmit = () => {
     debugger;
-
-    try{
-    checkDateAndTime()
-    console.log('ran after error')
     setFormErrors(validate(formValues));
     scheduleData1.userID = localStorage.getItem("userId");
     scheduleData1.country = localStorage.getItem("userCountry");
@@ -491,7 +494,7 @@ const ScheduleCampaign = (props) => {
     // scheduleData["fileName"] = fileName
     if (Object.keys(errors).length == 0 && !stringInputError) {
       fetch(
-        "http://34.214.61.86" + ":" + "5000" + "/bng/ui/create/campschedule",
+        "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campschedule",
         {
           method: "POST",
           headers: {
@@ -557,27 +560,19 @@ const ScheduleCampaign = (props) => {
   return (
     <>
       <div className="schedule__campaign">
-        <div
-          className="schedule__campaign__container"
-          style={{ }}
-        >
-          <div
-            style={{ width: "100%", height: "100%", }}
-          >
+        <div className="schedule__campaign__container" style={{}}>
+          <div style={{ width: "100%", height: "100%" }}>
             {!success ? (
-              <div
-                className="col-sm-12 create__flow__component"
-                style={{  }}
-              >
+              <div className="col-sm-12 create__flow__component" style={{}}>
                 {/* {form || update ? 
                  (  */}
                 <div
                   className="parent-container create__flow__component__container"
-                  style={{ }}
+                  style={{}}
                 >
                   <div
                     className="child-container basic__flow__details__container"
-                    style={{ }}
+                    style={{}}
                   >
                     <div
                       className="basic__flow__details__heading__container"
@@ -1050,15 +1045,12 @@ const ScheduleCampaign = (props) => {
                                 <p>{formErrors.dayEndTime}</p> */}
                         {/* </div> */}
                         <br />
-
-                       
                       </div>
 
                       <div className="right">
                         <div
                           className="dateRangerPickerOfSchedule"
                           style={{
-                            
                             display: "flex",
                             flexDirection: "column",
                             width: "100%",
@@ -1075,7 +1067,7 @@ const ScheduleCampaign = (props) => {
       /> */}
 
                           <DateRange
-                            style={{ }}
+                            style={{}}
                             editableDateInputs={true}
                             moveRangeOnFirstSelection={true}
                             dateDisplayFormat={"MMM d, yyyy"}
@@ -1084,6 +1076,7 @@ const ScheduleCampaign = (props) => {
                               setState([item.selection]);
                                scheduleData["endDate"] = getDateInFormat(item.selection.endDate)
                                scheduleData["startDate"] = getDateInFormat(item.selection.startDate)
+
                                 setScheduleData((scheduleData1) => {
                                   let result = {
                                     ...scheduleData1,
@@ -1091,90 +1084,63 @@ const ScheduleCampaign = (props) => {
                                   };
                                   return result;
                                 });
+                              } else {
+                                const endDate =
+                                  item.selection.endDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.endDate.getMonth() +
+                                  "-" +
+                                  item.selection.endDate.getDate();
+                                console.log(endDate);
 
+                                scheduleData["endDate"] = endDate;
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  return result;
+                                });
+                              }
 
-                              // console.log(item.selection.endDate)
-                              // console.log(item.selection.endDate.getFullYear())
-                              // console.log(item.selection.endDate.getMonth())
-                              // console.log(item.selection.enddate )
-                              // console.log(item.selection.endDate.getFullYear()+ "-"+ item.selection.endDate.getMonth() + "-"+ item.selection.enddate )
-
-                              // if (item.selection.enddate  <= 9) {
-                              //   const endDate =
-                              //     item.selection.endDate.getFullYear() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.endDate.getMonth() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.enddate ;
-                              //   console.log(endDate);
-
-                              //   scheduleData["endDate"] = endDate;
-                              //   setScheduleData((scheduleData1) => {
-                              //     let result = {
-                              //       ...scheduleData1,
-                              //       ...scheduleData,
-                              //     };
-                              //     return result;
-                              //   });
-                              // } else {
-                              //   const endDate =
-                              //     item.selection.endDate.getFullYear() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.endDate.getMonth() +
-                              //     "-" +
-                              //     item.selection.enddate ;
-                              //   console.log(endDate);
-
-                              //   scheduleData["endDate"] = endDate;
-                              //   setScheduleData((scheduleData1) => {
-                              //     let result = {
-                              //       ...scheduleData1,
-                              //       ...scheduleData,
-                              //     };
-                              //     return result;
-                              //   });
-                              // }
-
-                              // if (item.selection.startdate  <= 9) {
-                              //   const startDate =
-                              //     item.selection.startDate.getFullYear() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.startDate.getMonth() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.startdate ;
-                              //   console.log(startDate);
-                              //   scheduleData["startDate"] = startDate;
-                              //   setScheduleData((scheduleData1) => {
-                              //     let result = {
-                              //       ...scheduleData1,
-                              //       ...scheduleData,
-                              //     };
-                              //     return result;
-                              //   });
-                              // } else {
-                              //   const startDate =
-                              //     item.selection.startDate.getFullYear() +
-                              //     "-" +
-                              //     "0" +
-                              //     item.selection.startDate.getMonth() +
-                              //     "-" +
-                              //     item.selection.startdate ;
-                              //   console.log(startDate);
-                              //   scheduleData["startDate"] = startDate;
-                              //   setScheduleData((scheduleData1) => {
-                              //     let result = {
-                              //       ...scheduleData1,
-                              //       ...scheduleData,
-                              //     };
-                              //     return result;
-                              //   });
-                              // }
-                          }}
+                              if (item.selection.startDate.getDate() <= 9) {
+                                const startDate =
+                                  item.selection.startDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getMonth() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getDate();
+                                console.log(startDate);
+                                scheduleData["startDate"] = startDate;
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  return result;
+                                });
+                              } else {
+                                const startDate =
+                                  item.selection.startDate.getFullYear() +
+                                  "-" +
+                                  "0" +
+                                  item.selection.startDate.getMonth() +
+                                  "-" +
+                                  item.selection.startDate.getDate();
+                                console.log(startDate);
+                                scheduleData["startDate"] = startDate;
+                                setScheduleData((scheduleData1) => {
+                                  let result = {
+                                    ...scheduleData1,
+                                    ...scheduleData,
+                                  };
+                                  return result;
+                                });
+                              }
+                            }}
                             minDate={todaysDate.startDate}
                             ranges={state}
                           />
@@ -1188,9 +1154,9 @@ const ScheduleCampaign = (props) => {
                         textAlign: "center",
                         marginBottom: "1rem",
                         marginTop: "1rem",
-                        display:"flex",
-                        justifyContent:"space-between",
-                        width:"90%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "90%",
                         // border:"2px solid green"
                       }}
                     >
@@ -1218,59 +1184,52 @@ const ScheduleCampaign = (props) => {
                         Submit
                       </button>
                       <div
-                          className="scheduleCampButtonsContainer"
-                          style={{
-                            width: "30%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <div
-                            className="mb-3 col-4"
-                            style={{ display: "grid" }}
+                        className="scheduleCampButtonsContainer"
+                        style={{
+                          width: "30%",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <div className="mb-3 col-4" style={{ display: "grid" }}>
+                          {/* <label>Upload Csv Fileimage.png</label> */}
+                          <input
+                            type="file"
+                            name="file"
+                            hidden
+                            className="form-control"
+                            id={`uploadCsvFfile`}
+                            onChange={(e) => handleChange(e, "uploadCsvFfile")}
+                          />
+                          <button
+                            className="uploadFileButton submitJob"
+                            // style={{ height: "45px" }}
+                            type="button"
+                            component="span"
+                            onClick={() => dummyClick(`uploadCsvFfile`)}
+                            // onClick={(e) => handleChange(e, "uploadCsvFfile")}
+                            style={{
+                              padding: ".5rem 1rem",
+                              border: "none",
+                              outline: "none",
+                              backgroundColor: " #1976d2",
+                              color: "white",
+                              textTransform: "uppercase",
+                              textShadow: "1px 1px 2px black",
+                              // width:"10%",
+                              // margin: "auto",
+                              transition: "all 0.5s",
+                              fontWeight: "700",
+                            }}
                           >
-                            {/* <label>Upload Csv Fileimage.png</label> */}
-                            <input
-                              type="file"
-                              name="file"
-                              accept=".csv"
-                              hidden
-                              className="form-control"
-                              id={`uploadCsvFfile`}
-                              onChange={(e) =>
-                                handleChange(e, "uploadCsvFfile")
-                              }
-                              
-                            />
-                            <button
-                              className="uploadFileButton submitJob"
-                              // style={{ height: "45px" }}
-                              type="button"
-                              component="span"
-                              onClick={() => dummyClick(`uploadCsvFfile`)}
-                              style={{
-                                padding: ".5rem 1rem",
-                                border: "none",
-                                outline: "none",
-                                backgroundColor: " #1976d2",
-                                color: "white",
-                                textTransform: "uppercase",
-                                textShadow: "1px 1px 2px black",
-                                // width:"10%",
-                                // margin: "auto",
-                                transition: "all 0.5s",
-                                fontWeight: "700",
-                      
-                              }}
-                            >
-                              <span style={{ fontSize: "14px"}}>
-                                {fileName !== null ? fileName : "Upload File"}
-                              </span>
-                              {/* <PublishIcon style={{ fontSize: "20px" ,border:"2px solid green" }} className="upicon" /> */}
-                            </button>
-                            <p>{formErrors.file}</p>
-                          </div>
+                            <span style={{ fontSize: "14px" }}>
+                              {fileName !== null ? fileName : "Upload File"}
+                            </span>
+                            {/* <PublishIcon style={{ fontSize: "20px" ,border:"2px solid green" }} className="upicon" /> */}
+                          </button>
+                          <p>{formErrors.file}</p>
                         </div>
+                      </div>
                       <button
                         style={{
                           padding: ".5rem 1rem",

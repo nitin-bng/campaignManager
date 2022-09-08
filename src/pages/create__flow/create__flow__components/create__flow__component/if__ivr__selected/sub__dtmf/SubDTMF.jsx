@@ -46,12 +46,11 @@ const numberOfSubDTMF = [
 ];
 
 const SubDTMF = (props) => {
-
   // const { current } = props.current;
 
   var hellohello = [];
   var languageName = [];
-  const {showError, setShowError, errorDispatch} = useError()
+  const { showError, setShowError, errorDispatch } = useError();
   const [expanded, setExpanded] = React.useState(true);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -60,7 +59,7 @@ const SubDTMF = (props) => {
 
   const [selectOptionForMainDTMF, setSelectOptionForMainDTMF] =
     React.useState("");
-    const [isFilled, setIsFilled] = useState(false)
+  const [isFilled, setIsFilled] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -134,7 +133,7 @@ const SubDTMF = (props) => {
         findAndModifyFirst(
           localStoreB,
           "actions",
-          { id: current.id },
+          { id: props.current.id },
           localStoreC
         );
         localStore.ivrCampFlowData.flow = localStoreB;
@@ -187,7 +186,7 @@ const SubDTMF = (props) => {
       console.log("-----------------props------", formData.getAll("file"));
     });
     // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
-    const path = config.server.path + ":" + "5000" + "" + "/bng/ui/uploadFile";
+    const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
 
     // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
     // const path = 'http://35.154.125.150:5080/uploadMultipleFile';
@@ -200,7 +199,7 @@ const SubDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        errorDispatch({type:'AUDIO', payload: false})
+        errorDispatch({ type: "AUDIO", payload: false });
         return response;
       })
       .catch((e) => {
@@ -364,7 +363,7 @@ const SubDTMF = (props) => {
   };
 
   const setDataDynamic = (type, e, current) => {
-    debugger
+    debugger;
     const val = e.target.value;
     let localStore = globalState.state;
     console.log(current, e.target.value, props);
@@ -797,7 +796,59 @@ const SubDTMF = (props) => {
 
   const [bgCounterState, setBgCounterState] = useState(1);
 
+  const AudioFilesL2 = (props) => {
+    console.log("audiofileprops", props);
+    // const Filelist = globalState.state.ivrCampFlowData.flow.actions[props.parentDtmf].actions[props.currDtmf].audio_file[props.lang].split(',').map((e, index) => {
+    const Filelist = traverseAndModify(
+      props.current.id,
+      null,
+      null,
+      null,
+      "return"
+    )
+      .audio_file[props.lang].split(",")
+      .map((e, index) => {
+        return (
+          <span key={e}>
+            <span style={{ color: "darkgray" }}> {index + 1} - </span>
+            {/* {globalState.state.temp.uploads.find(f => e === f.s_name).l_name} */}
+            <span style={{ color: "darkgray" }}>
 
+            {globalState.state.temp.uploads.length > 0
+              ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                    .l_name
+                : e
+              : e}
+            </span>
+
+              <br />
+<div
+              className="playingOptions"
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginTop: "5px",
+              }}
+            >
+            <BsCheckCircle size={15} className="checkedIcon" />
+            <IoIosCloseCircleOutline
+              className="checkedIcon"
+              size={15}
+              style={{ color: "red" }}
+            />
+            <FiPlayCircle
+              className="checkedIcon"
+              size={15}
+              style={{ color: "purple" }}
+            />
+            </div>
+     
+          </span>
+        );
+      });
+    return <span> {Filelist} </span>;
+  };
 
   useEffect(() => {
     var arr = [];
@@ -806,7 +857,6 @@ const SubDTMF = (props) => {
     }
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
-
 
   // useEffect(()=>{
   //   if(props.hideItemStyle === undefined){
@@ -826,33 +876,56 @@ const SubDTMF = (props) => {
   //   }
   // },[traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
 
-  useEffect(()=>{
-    if(props.hideItemStyle === undefined){
-      errorDispatch({type:'AUDIO', payload: true})
+  useEffect(() => {
+    if (props.hideItemStyle === undefined) {
+      errorDispatch({ type: "AUDIO", payload: true });
     }
-    setShowError(false)
-    return ()=>{
-      errorDispatch({type: "SUB_DTMF", payload: false})
-    }
-  },[])
-  
-  useEffect(()=>{
-    if(isFilled){
-      errorDispatch({type: "SUB_DTMF", payload: false})
-    }
-  },[isFilled])
+    setShowError(false);
+    return () => {
+      errorDispatch({ type: "SUB_DTMF", payload: false });
+    };
+  }, []);
 
-  useEffect(()=>{
-    if(!isFilled &&!traverseAndModify(props.current.id,props.current,'waitTime',null,'read')){
-    errorDispatch({type: "SUB_DTMF", payload: true})
-  }
-  },[isFilled, traverseAndModify(props.current.id,props.current,'waitTime',null,'read')])
+  useEffect(() => {
+    if (isFilled) {
+      errorDispatch({ type: "SUB_DTMF", payload: false });
+    }
+  }, [isFilled]);
+
+  useEffect(() => {
+    if (
+      !isFilled &&
+      !traverseAndModify(
+        props.current.id,
+        props.current,
+        "waitTime",
+        null,
+        "read"
+      )
+    ) {
+      errorDispatch({ type: "SUB_DTMF", payload: true });
+    }
+  }, [
+    isFilled,
+    traverseAndModify(
+      props.current.id,
+      props.current,
+      "waitTime",
+      null,
+      "read"
+    ),
+  ]);
 
   return (
     <>
       <div className="subDTMF__subdtmf">
         <div className="sudDTMF__subdtmf__container">
-          <Card style={{ backgroundColor:props.isBgColor?"white":"#f5f5f5", width: props.width }}>
+          <Card
+            style={{
+              backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
+              width: props.width,
+            }}
+          >
             <CardActions disableSpacing>
               <Typography paragraph>SUB DTMF</Typography>
               <ExpandMore
@@ -884,7 +957,7 @@ const SubDTMF = (props) => {
                         id="demo-simple-select"
                         value={props.current.type}
                         label="DTMF__option"
-                        disabled = {props.disableEditingWhileCreatingCamp}
+                        disabled={props.disableEditingWhileCreatingCamp}
                         onChange={(e) => {
                           handleDtmfOptionChange(e);
 
@@ -919,23 +992,42 @@ const SubDTMF = (props) => {
                         id="if__IVR__selected"
                         type="number"
                         label="Main Wait Time"
-                        disabled = {props.disableEditingWhileCreatingCamp}
-
-                        value={traverseAndModify(props.current.id,props.current,'waitTime',null,'read')}
-                        onChange={(e) =>{
-                          setIsFilled(()=>e.target.value !== '')
+                        disabled={props.disableEditingWhileCreatingCamp}
+                        value={traverseAndModify(
+                          props.current.id,
+                          props.current,
+                          "waitTime",
+                          null,
+                          "read"
+                        )}
+                        onChange={(e) => {
+                          setIsFilled(() => e.target.value !== "");
                           traverseAndModify(
                             props.current.id,
                             props.current,
                             "waitTime",
-                            e.target.value >=0 ? e.target.value :0,
+                            e.target.value >= 0 ? e.target.value : 0,
                             "edit"
-                          )
+                          );
                         }}
                         onWheel={(e) => e.target.blur()}
                         variant="outlined"
                         required
-                        error={showError ? parseInt(traverseAndModify(props.current.id,props.current,'waitTime',null,'read')) >=0 ? false:true:false}
+                        error={
+                          showError
+                            ? parseInt(
+                                traverseAndModify(
+                                  props.current.id,
+                                  props.current,
+                                  "waitTime",
+                                  null,
+                                  "read"
+                                )
+                              ) >= 0
+                              ? false
+                              : true
+                            : false
+                        }
                       />
                     </Box>
                   </div>
@@ -948,8 +1040,7 @@ const SubDTMF = (props) => {
                         labelId="demo-simple-select-label"
                         id="demo-select"
                         value={props.current.dtmf_count || null}
-                        disabled = {props.disableEditingWhileCreatingCamp}
-
+                        disabled={props.disableEditingWhileCreatingCamp}
                         // value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || 0 : props.current.dtmf_count}
                         label="DTMF"
                         name="sub_audio_dtmfs_dtmfCount"
@@ -964,7 +1055,7 @@ const SubDTMF = (props) => {
                     </FormControl>
                   </div>
 
-                  <div className={props.hideItemStyle}>
+                  <div className={props.hideItemStyle} style={{ width: "100%" }}>
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -980,20 +1071,32 @@ const SubDTMF = (props) => {
                         hellohello
                       );
                     })}
-                    <div className="ghghg">
+                    <div className="ghghg" style={{ margin:"10px 0"}}>
                       {languageName.map((el) => {
-                        return <span>enter audio file for {el}</span>;
+                        return <Typography style={{fontSize:"12px"}}>enter hello file for {el}</Typography>;
                       })}
                     </div>
                     <div className="ghghgh">
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <div className="file__chooser__container">
+                          <div className="file__chooser__container"  style={{
+                            width: "200px",
+                            display: "flex",
+                            height: "fit-content",
+                            flexDirection: "column",
+                            // border: "2px solid blue",
+                          }}>
                             <input
                               accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"
+                              style={{
+                                // border: "2px solid green",
+                                display: "flex",
+                                overflow: "hidden",
+                                // height: "10px",
+                              }}
                               onChange={(event) => {
                                 uploadFiles(
                                   "level" +
@@ -1026,7 +1129,36 @@ const SubDTMF = (props) => {
                                   className="fileNames"
                                   id={lang + "mainAudioShow"}
                                 >
-                                  {GetMainAudioFiles(lang, "MainAudioFile")}
+                                  {traverseAndModify(
+                                    props.current.id,
+                                    null,
+                                    null,
+                                    null,
+                                    "return"
+                                  ).audio_file[lang] ? (
+                                    <div style={{
+                                      border: ".2px solid black",
+                                      width: "200px",
+                                      fontSize: "10px",
+                                      wordWrap: "break-word",
+                                      marginBottom: "10px",
+                                      paddingBottom: "3px",
+                                    }}>
+                                      <AudioFilesL2
+                                        current={props.current}
+                                        parentDtmf={
+                                          props.current.parent_dtmf - 1
+                                        }
+                                        currDtmf={props.current.dtmf_key - 1}
+                                        lang={lang}
+                                      />
+                                    </div>
+                                  ) : (
+                                    // <div>
+                                    //   Please upload the audio file
+                                    // </div>
+                                    null
+                                  )}
                                 </div>
                               </>
                             ) : null}
@@ -1046,7 +1178,7 @@ const SubDTMF = (props) => {
                       <div style={{}}>
                         <SubDTMF
                           width="100%"
-                          isBgColor = {!props.isBgColor}
+                          isBgColor={!props.isBgColor}
                           data={props}
                           current={e}
                           handleDataChange={props.handleDataChange}
@@ -1058,7 +1190,9 @@ const SubDTMF = (props) => {
                           numberOfSubDTMF={e}
                           dataHandleWithObj={props.dataHandleWithObj}
                           hideItemStyle={props.hideItemStyle}
-                          disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+                          disableEditingWhileCreatingCamp={
+                            props.disableEditingWhileCreatingCamp
+                          }
                         />
                       </div>
                     );

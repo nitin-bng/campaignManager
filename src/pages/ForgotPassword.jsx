@@ -41,7 +41,7 @@ const ForgotPassword = () => {
 
     ProcessNumberFunction(phoneNumber);
 
-    // fetch(config.server.path + config.server.port1 + config.api.getFeature)
+    // fetch(config.server.path + config.server.port2 + config.api.getFeature)
     //   .then((result) => result.json())
     //   .then((res) => {
     //     console.log(res);
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
     //   });
     await axios
       .get(
-        config.server.path + config.server.port1 + config.api.forgotpassword,
+        config.server.path + config.server.port2 + config.api.forgotpassword,
         {
           params: { phoneNumber: phoneNumber },
         }

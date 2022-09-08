@@ -21,7 +21,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
-import PhoneInput from 'react-phone-input-2'
+import PhoneInput from "react-phone-input-2";
 
 import "./authentication.css";
 import { useEffect } from "react";
@@ -29,7 +29,7 @@ import axios from "axios";
 import config from "../ApiConfig/Config";
 
 import { MenuProps, useStyles, options } from "../../src/helpers/Utils";
-import 'react-phone-input-2/lib/style.css'
+import "react-phone-input-2/lib/style.css";
 
 const Signup = () => {
   const [phone, setPhone] = useState("");
@@ -52,7 +52,7 @@ const Signup = () => {
 
   const [countryCode, setCountryCode] = useState("");
   const [countryName, setCountryName] = useState("");
-// console.log(countryCode);
+  // console.log(countryCode);
 
   // let history = useHistory();
   const navigate = useNavigate();
@@ -113,13 +113,13 @@ const Signup = () => {
     data["companyAddress"] = companyAddress;
     data["name"] = data.firstName + " " + data.lastName;
     data["countryCode"] = countryCode;
-    data["country"] = countryName
+    data["country"] = countryName;
     // console.log("data=====>>>", data);
     let uniqueArray = [...new Set(values)];
 
     setLoader(true);
     // setOpenModal(true);
-    fetch(config.server.path + config.server.port1 + config.api.signUp, {
+    fetch(config.server.path + config.server.port3 + config.api.signUp, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data, features: uniqueArray }),
@@ -143,13 +143,10 @@ const Signup = () => {
         setLoader(false);
         // console.log("the error is::", error);
       });
-
   };
 
-
-
   const getFeatures = () => {
-    fetch(config.server.path + config.server.port1 + config.api.getFeature)
+    fetch(config.server.path + config.server.port3 + config.api.getFeature)
       .then((result) => result.json())
       .then((res) => {
         setFeaturesFromAPI(res);
@@ -161,7 +158,7 @@ const Signup = () => {
   };
 
   const getOperator = () => {
-    fetch(config.server.path + config.server.port1 + config.api.setOperator)
+    fetch(config.server.path + config.server.port3 + config.api.setOperator)
       .then((result) => result.json())
       .then((res) => {
         setOperatorsFromAPI(res);
@@ -297,11 +294,10 @@ const Signup = () => {
                   </Box>
                 </div>
                 <div className="ph-no__container">
-
                   <PhoneInput
-                  style={{ width:"100%", height:"100%", outline:"none"}}
+                    style={{ width: "100%", height: "100%", outline: "none" }}
                     id="phonenumber"
-                    country={'in'}
+                    country={"in"}
                     value={phoneNumber}
                     onChange={(value, country) => {
                       // setPhone(e)
@@ -309,13 +305,13 @@ const Signup = () => {
                       setError({ ...error, phoneError: "" });
                       // console.log("values::", value )
                       // console.log("country ====>", country);
-                      setCountryCode(country.countryCode)
-                      setCountryName(country.name)
-
+                      setCountryCode(country.countryCode);
+                      setCountryName(country.name);
                     }}
-                    />
-                    {error.phoneError &&
-                      <p className='validation'>{error.phoneError}</p>}
+                  />
+                  {error.phoneError && (
+                    <p className="validation">{error.phoneError}</p>
+                  )}
                   {error.phoneError && (
                     <p className="validation">{error.phoneError}</p>
                   )}
@@ -475,8 +471,8 @@ const Signup = () => {
             <div className="authentication__links__signup">
               <p className="links">
                 <Link to="/">Already have an account ?</Link>
-                <p>OR</p>
-                <Link to="/home">Use as guest</Link>
+                {/* <p>OR</p>
+                <Link to="/home">Use as guest</Link> */}
               </p>
             </div>
           </div>
@@ -484,7 +480,24 @@ const Signup = () => {
             <div className="bg-modal">
               <div className="modal-content">
                 <h3 className="title">{reason}</h3>
-                <button className="closeBtn" onClick={(e) => handleModal(e)}>
+                <button
+                  style={{
+                    padding: ".5rem 1rem",
+                    border: "none",
+                    outline: "none",
+                    backgroundColor: " #1976d2",
+                    color: "white",
+                    textTransform: "uppercase",
+                    textShadow: "1px 1px 2px black",
+                    width: "10%",
+                    // margin: "auto",
+                    marginBottom: "1rem",
+                    transition: "all 0.5s",
+                    fontWeight: "700",
+                  }}
+                  className="closeBtn"
+                  onClick={(e) => handleModal(e)}
+                >
                   Ok
                 </button>
               </div>

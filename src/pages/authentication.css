@@ -339,3 +339,8 @@ input{
 .flag-dropdown {
     border-right: none !important;
 }
+
+.closeBtn:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}

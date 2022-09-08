@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import Loader from "./Loader";
 // import { useHistory } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./authentication.css";
 const useStyles = makeStyles((theme) => ({
   grid: {
     backgroundColor: "grey",
@@ -51,7 +52,7 @@ export default function VerifyOtp(props) {
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");
 
-  const [otpState, setOtpState] = useState({ otp: '' })
+  const [otpState, setOtpState] = useState({ otp: "" });
   // let history = useHistory();
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,7 +70,7 @@ export default function VerifyOtp(props) {
   const getOtp = () => {
     var phone = localStorage.getItem("phoneNumber");
     fetch(
-      "http://34.214.61.86:8085/user/sendotp?phoneNumber=" + JSON.parse(phone)
+      "http://34.214.61.86:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
     )
       .then((result) => result.json())
       .then((res) => {
@@ -91,7 +92,7 @@ export default function VerifyOtp(props) {
     }
     setLoader(true);
     fetch(
-      "http://34.214.61.86:8085/user/verify?phoneNumber=" +
+      "http://34.214.61.86:8087/user/verify?phoneNumber=" +
         JSON.parse(localStorage.getItem("phoneNumber")) +
         "&otp=" +
         otpState.otp
@@ -133,8 +134,8 @@ export default function VerifyOtp(props) {
   };
 
   const handleOTPChange = (otp) => {
-      setOtpState({otp})
-  }
+    setOtpState({ otp });
+  };
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
@@ -150,8 +151,8 @@ export default function VerifyOtp(props) {
           <Grid item container justify="center">
             <Grid item container alignItems="center" direction="column">
               <Grid item>
-                <Avatar className={classes.avatar}>
-                  <LockOutlinedIcon />
+                <Avatar style={{background:"#1976d2"}} className={classes.avatar}>
+                  <LockOutlinedIcon style={{background:"#1976d2"}}/>
                 </Avatar>
               </Grid>
               <Grid item>
@@ -194,6 +195,10 @@ export default function VerifyOtp(props) {
             </Grid>
             <Grid item>
               <Button
+              style={{backgroundColor: " #1976d2",
+              color: "white",
+              textTransform: "uppercase",
+              textShadow: "1px 1px 2px black",fontWeight: "700",}}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -203,17 +208,50 @@ export default function VerifyOtp(props) {
               >
                 {loader ? <Loader /> : "verify"}
               </Button>
-              <label className="resendOtp" htmlFor="phoneNumber" style={{width:"90%", textTransform:"lowercase",textDecoration:"underline", textAlign:"right", cursor:"pointer", marginBottom:"0px"}} onClick={getOtp}>resend otp</label>
-
+              <label
+                className="resendOtp"
+                htmlFor="phoneNumber"
+                style={{
+                  width: "90%",
+                  textTransform: "lowercase",
+                  textDecoration: "underline",
+                  textAlign: "right",
+                  cursor: "pointer",
+                  marginBottom: "0px",
+                }}
+                onClick={getOtp}
+              >
+                resend otp
+              </label>
             </Grid>
           </Grid>
         </Grid>
       </div>
       {openModal && (
-        <div className="bg-modal">
+        <div
+          className="bg-modal"
+          style={{ position: "fixed", left: "0", top: "0" }}
+        >
           <div className="modal-content">
             <h3>{reason}</h3>
-            <button className="closeBtn" onClick={(e) => handleModal(e)}>
+            <button
+              style={{
+                padding: ".5rem 1rem",
+                border: "none",
+                outline: "none",
+                backgroundColor: " #1976d2",
+                color: "white",
+                textTransform: "uppercase",
+                textShadow: "1px 1px 2px black",
+                width: "10%",
+                // margin: "auto",
+                marginBottom: "1rem",
+                transition: "all 0.5s",
+                fontWeight: "700",
+              }}
+              className="closeBtn"
+              onClick={(e) => handleModal(e)}
+            >
               Ok
             </button>
           </div>

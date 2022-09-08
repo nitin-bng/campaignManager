@@ -43,7 +43,7 @@ const CreateFlow = () => {
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = "http://34.214.61.86:5000/bng/ui/list/flows";
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -196,7 +196,7 @@ const CreateFlow = () => {
         console.log("activeStep === 0");
         fetch(
           config.server.path +
-            config.server.port +
+            config.server.port2 +
             config.api.createFlowWithoutContent,
           {
             method: "POST",
@@ -221,13 +221,14 @@ const CreateFlow = () => {
 
         const getCompleteFlow = (id) => {
           debugger;
-          // const path = 'http//:34.214.61.86:5000/bng/ui/flowjson?wfId=' + id
+          // const path = 'http//:34.214.61.86:5002/bng/ui/flowjson?wfId=' + id
           let localStore = globalState.state;
           fetch(
-            "http://34.214.61.86:5000/bng/ui/flowjson?wfId=" +
+            "http://34.214.61.86:5002/bng/ui/flowjson?wfId=" +
               id +
               "&flowName=" +
-              localStorage.getItem("flowName"),
+              localStorage.getItem("flowName")+
+              "&userId="+localStorage.getItem("userId"),
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -250,7 +251,7 @@ const CreateFlow = () => {
 
 
         const path =
-          "http://34.214.61.86:5000/bng/ui/flow/content?isContent=true&campId=" +
+          "http://34.214.61.86:5002/bng/ui/flow/content?isContent=true&campId=" +
           localStorage.getItem("campId") +
           "&wfId=" +
           localStorage.getItem("wfId");

@@ -275,8 +275,8 @@ const UserConfig = () => {
     event.preventDefault();
 
     scheduleData = {
-      requiredChannel: assignChannel,
-      totalTps: assignTps,
+      assignChannel: assignChannel,
+      assignTps: assignTps,
       msisdnLength: msisdnLength,
       appendCountryCode: appendCountryCode,
       countryCode: countryCode,
@@ -292,7 +292,7 @@ const UserConfig = () => {
     // if (Object.keys(errors).length == 0) {
     fetch(
       config.server.path +
-        config.server.port1 +
+        config.server.port3+
         "/" +
         localStorage.getItem("userType") +
         config.api.createUserConfig +
@@ -345,7 +345,7 @@ const UserConfig = () => {
     fetch(
       "http://34.214.61.86" +
         ":" +
-        "8085/" +
+        "8087/" +
         localStorage.getItem("userType") +
         "/getConfig" +
         "/" +
@@ -374,6 +374,16 @@ const UserConfig = () => {
             setGetTps(res.totalTps);
             // setDayName(res.days)
             setBlackOutDays(res.days);
+            setAssignChannel(res.assignChannel)
+            setAssignTps(res.assignTps)
+            setBlackoutDate(res.date)
+            setValue(res.date)
+            setAppendZero(res.appendZero)
+            setCountryCode(res.countryCode)
+            setAppendCountryCode(res.appendCountryCode)
+            setMsisdnLength(res.msisdnLength)
+            setBlackoutStartHour(res.startTime)
+            setBlackoutEndHour(res.endTime)
 
             if (res.startTime == null) {
               handleStartDateChange(new Date());
@@ -648,6 +658,7 @@ const UserConfig = () => {
                           row
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="row-radio-buttons-group"
+                          value={appendZero}
                         >
                           <FormControlLabel
                             value="true"
@@ -718,6 +729,7 @@ const UserConfig = () => {
                           row
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="row-radio-buttons-group"
+                          value={appendCountryCode}
                         >
                           <FormControlLabel
                             value="true"

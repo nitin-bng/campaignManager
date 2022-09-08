@@ -2,7 +2,9 @@ const config = {
     server: {
         path: 'http://34.214.61.86',
         port: ':5000',
-        port1: ':8085'  // login Api port
+        port2: ':5002',
+        port1: ':8085', // login Api port
+        port3: ':8087',  // login Api port
     },
     api: {
         login: '/login',

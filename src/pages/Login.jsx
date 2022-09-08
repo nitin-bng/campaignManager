@@ -34,7 +34,7 @@ const Login = () => {
 
   const loginUser = (data) => {
     data['type'] = ''
-    fetch(config.server.path + config.server.port1 + config.api.login,{
+    fetch(config.server.path + config.server.port3 + config.api.login,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -45,16 +45,20 @@ const Login = () => {
            .then((res)=>{
             localStorage.setItem("userType", res.userType)
             localStorage.setItem("userId", res.id)
+            
+
+
+
+
             getUserDetails(res.id)
 
             //  console.log(res)
-            Navigate("/home")
            })
     })
   }
 
   const getUserDetails = (id) => {
-    fetch(config.server.path + config.server.port1 + "/" + localStorage.getItem("userType")+ "/" + id,{
+    fetch(config.server.path + config.server.port3 + "/" + localStorage.getItem("userType")+ "/" + id,{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -67,6 +71,8 @@ const Login = () => {
              console.log(res.user.country);
              localStorage.setItem("userCountry", res.user.country)
              localStorage.setItem("operatorName", res.user.operatorName)
+             sessionStorage.setItem("userName", res.user.name)
+             Navigate("/home")
 
            })
     })
@@ -164,8 +170,8 @@ const Login = () => {
               <p className="links">
                 <Link to="/forgotpassword">Forgot Password ?</Link>
                 <Link to="/signup">Do not have an account ?</Link>
-                <p>OR</p>
-                <Link to="/home">Use as guest</Link>
+                {/* <p>OR</p>
+                <Link to="/home">Use as guest</Link> */}
               </p>
             </div>
           </div>

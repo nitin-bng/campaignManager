@@ -49,8 +49,8 @@ const MainDTMF = (props) => {
   var languageName = [];
   const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
-  const {showError,setShowError, errorDispatch} = useError()
-  const [isFilled, setIsFilled] = useState(false)
+  const { showError, setShowError, errorDispatch } = useError();
+  const [isFilled, setIsFilled] = useState(false);
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
@@ -259,7 +259,7 @@ const MainDTMF = (props) => {
       console.log("-----------------props------", formData.getAll("file"));
     });
     // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
-    const path = config.server.path + ":" + "5000" + "" + "/bng/ui/uploadFile";
+    const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
 
     // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
     // const path = 'http://35.154.125.150:5080/uploadMultipleFile';
@@ -272,7 +272,7 @@ const MainDTMF = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        errorDispatch({type:'AUDIO', payload: false})
+        errorDispatch({ type: "AUDIO", payload: false });
         return response;
       })
       .catch((e) => {
@@ -574,48 +574,52 @@ const MainDTMF = (props) => {
     }
   };
 
-
   const AudioFiles = (props) => {
     debugger;
-    console.log('audiofileprops', props);
+    console.log("audiofileprops", props);
     const Filelist = globalState.state.ivrCampFlowData.flow.actions[
-        props.dtmf
+      props.dtmf
     ].audio_file[props.lang]
-        .split(',')
-        .map((e, index) => {
-            return (
-                <span key={e}>
-                    <span style={{ color: 'darkgray' }}>
-                        {' '}
-                        {index + 1} -{' '}
-                    </span>
-                    {globalState.state.temp.uploads.length > 0
-                        ? globalState.state.temp.uploads.find(
-                              (f) => e === f.s_name
-                          )
-                            ? globalState.state.temp.uploads.find(
-                                  (f) => e === f.s_name
-                              ).l_name
-                            : e
-                        : e}
-                    <BsCheckCircle size={15} className="checkedIcon" />
-                    <IoIosCloseCircleOutline
-                        className="checkedIcon"
-                        size={15}
-                        style={{ color: 'red' }}
-                    />
-                    <FiPlayCircle
-                        className="checkedIcon"
-                        size={15}
-                        style={{ color: 'purple' }}
-                    />
-                    <br></br>
-                    <br></br>
-                </span>
-            );
-        });
+      .split(",")
+      .map((e, index) => {
+        return (
+          <span key={e}>
+            <span style={{ color: "darkgray" }}> {index + 1} - </span>
+            <span style={{ color: "darkgray" }}>
+
+            {globalState.state.temp.uploads.length > 0
+              ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                    .l_name
+                : e
+              : e}
+            </span>
+            <br />
+            <div
+              className="playingOptions"
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginTop: "5px",
+              }}
+            >
+              <BsCheckCircle size={15} className="checkedIcon" />
+              <IoIosCloseCircleOutline
+                className="checkedIcon"
+                size={15}
+                style={{ color: "red" }}
+              />
+              <FiPlayCircle
+                className="checkedIcon"
+                size={15}
+                style={{ color: "purple" }}
+              />
+            </div>
+          </span>
+        );
+      });
     return <span> {Filelist} </span>;
-};
+  };
 
   const [arr1, setArr] = useState([]);
   useEffect(() => {
@@ -627,38 +631,41 @@ const MainDTMF = (props) => {
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
-
-  useEffect(()=>{
-    if(props.hideItemStyle === undefined){
-      errorDispatch({type:'AUDIO', payload: true})
+  useEffect(() => {
+    if (props.hideItemStyle === undefined) {
+      errorDispatch({ type: "AUDIO", payload: true });
     }
-    setShowError(false)
+    setShowError(false);
 
-    return ()=>{
-      errorDispatch({type: "MAIN_DTMF", payload: false})
-    }
-  },[])
-  
-  useEffect(()=>{
-    if(isFilled){
-      errorDispatch({type: "MAIN_DTMF", payload: false})
-    }
-  },[isFilled])
+    return () => {
+      errorDispatch({ type: "MAIN_DTMF", payload: false });
+    };
+  }, []);
 
-  useEffect(()=>{
-    if(!isFilled && !globalState.state.ivrCampFlowData.flow.actions[
-      props.global.dtmf_key - 1
-    ].waitTime){
-    errorDispatch({type: "MAIN_DTMF", payload: true})
-  }
-  },[isFilled, globalState.state.ivrCampFlowData.flow.actions[
-    props.global.dtmf_key - 1
-  ].waitTime])
+  useEffect(() => {
+    if (isFilled) {
+      errorDispatch({ type: "MAIN_DTMF", payload: false });
+    }
+  }, [isFilled]);
+
+  useEffect(() => {
+    if (
+      !isFilled &&
+      !globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
+        .waitTime
+    ) {
+      errorDispatch({ type: "MAIN_DTMF", payload: true });
+    }
+  }, [
+    isFilled,
+    globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
+      .waitTime,
+  ]);
 
   return (
     <>
       <div className="main__dtmf">
-      {console.log('data is here',props.data)}
+        {console.log("data is here", props.data)}
         <div className="main__dtmf__container">
           <Card
             style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -687,7 +694,11 @@ const MainDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={globalState.state.ivrCampFlowData.flow.actions[props.data-1].type}
+                        value={
+                          globalState.state.ivrCampFlowData.flow.actions[
+                            props.data - 1
+                          ].type
+                        }
                         label="DTMF__option"
                         onChange={(e) => {
                           handleChange(e);
@@ -731,27 +742,35 @@ const MainDTMF = (props) => {
                             props.global.dtmf_key - 1
                           ].waitTime
                         }
-                        onChange={(e) =>{
-                          setIsFilled(()=>e.target.value !== '')
+                        onChange={(e) => {
+                          setIsFilled(() => e.target.value !== "");
                           props.setWaitTime(
                             "sub",
                             e.target,
                             props.global.dtmf_key
-                          )
+                          );
                         }}
                         onWheel={(e) => e.target.blur()}
                         variant="outlined"
                         required
-                        error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.actions[
-                          props.global.dtmf_key - 1
-                        ].waitTime ) >=0 ? false:true:false}
+                        error={
+                          showError
+                            ? parseInt(
+                                globalState.state.ivrCampFlowData.flow.actions[
+                                  props.global.dtmf_key - 1
+                                ].waitTime
+                              ) >= 0
+                              ? false
+                              : true
+                            : false
+                        }
                       />
                     </Box>
                   </div>
 
                   <div className="select__number__of__subDTMF__from__main__dtmf__container">
                     <FormControl style={{ width: "100%" }}>
-                      {console.log("ggffggff",props)}
+                      {console.log("ggffggff", props)}
                       <InputLabel id="demo-simple-select-label">
                         fyg DTMF
                       </InputLabel>
@@ -764,19 +783,20 @@ const MainDTMF = (props) => {
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.global);
                         }}
-                        disabled= {props.disableEditingWhileCreatingCamp}
+                        disabled={props.disableEditingWhileCreatingCamp}
                       >
                         {numberOfSubDTMF.map((number, index) => {
                           console.log(number);
 
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
-
-                        
                       </Select>
                     </FormControl>
                   </div>
-                  <div className={props.hideItemStyle}>
+                  <div
+                    className={props.hideItemStyle}
+                    style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
+                  >
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -792,25 +812,59 @@ const MainDTMF = (props) => {
                         hellohello
                       );
                     })}
-                    <div className="ghghg">
+                    <div
+                      className="ghghg"
+                      style={{
+                        margin: "10px 0",
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
                       {languageName.map((el) => {
-                        return <span>enter audio file for {el}</span>;
+                        return (
+                          <Typography style={{ fontSize: "12px" }}>
+                            enter hello file for {el}
+                          </Typography>
+                        );
                       })}
                     </div>
-                    <div className="ghghgh">
+                    <div
+                      className="ghghgh"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        width: "100%",
+                        // border:"2px solid red"
+                      }}
+                    >
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <div className="file__chooser__container">
+                          <div
+                            className="file__chooser__container"
+                            style={{
+                              width: "200px",
+                              display: "flex",
+                              height: "fit-content",
+                              flexDirection: "column",
+                              // border: "2px solid blue",
+                            }}
+                          >
                             <input
                               accept="audio/wav"
                               type="file"
                               class="custom-file-input"
                               name="main_audio_file"
+                              style={{
+                                // border: "2px solid green",
+                                display: "flex",
+                                overflow: "hidden",
+                                // height: "10px",
+                              }}
                               onChange={(event) => {
                                 uploadFiles(
                                   props.parentNode +
-                                                    '_' +
-                                                    props.global.dtmf_key,
+                                    "_" +
+                                    props.global.dtmf_key,
                                   event,
                                   event.currentTarget.files,
                                   lang
@@ -818,28 +872,27 @@ const MainDTMF = (props) => {
                               }}
                               required
                             />
-                            {globalState.state
-                                                    .ivrCampFlowData.flow
-                                                    .actions[
-                                                    props.global.dtmf_key - 1
-                                                ].audio_file[lang] ? (
-                                                    // (<div>{globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].audio_file[lang]}</div>)
-                                                    <div>
-                                                        <AudioFiles
-                                                            dtmf={
-                                                                props.global
-                                                                    .dtmf_key -
-                                                                1
-                                                            }
-                                                            lang={lang}
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <div>
-                                                        Please upload the audio
-                                                        file
-                                                    </div>
-                                                )}
+                            {globalState.state.ivrCampFlowData.flow.actions[
+                              props.global.dtmf_key - 1
+                            ].audio_file[lang] ? (
+                              // (<div>{globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1].audio_file[lang]}</div>)
+                              <div
+                                style={{
+                                  border: ".2px solid black",
+                                  width: "200px",
+                                  fontSize: "10px",
+                                  wordWrap: "break-word",
+                                  marginBottom: "10px",
+                                  paddingBottom: "3px",
+                                }}
+                              >
+                                <AudioFiles
+                                  dtmf={props.global.dtmf_key - 1}
+                                  lang={lang}
+                                />
+                              </div>
+                            ) : // <div>Please upload the audio file</div>
+                            null}
                           </div>
                         )
                       )}
@@ -855,7 +908,7 @@ const MainDTMF = (props) => {
                     <SubDTMF
                       data={props}
                       current={e}
-                      isBgColor = {true}
+                      isBgColor={true}
                       handleDataChange={props.handleDataChange}
                       onChange={props.handleChange}
                       uploadFiles={props.uploadFiles}
@@ -864,8 +917,10 @@ const MainDTMF = (props) => {
                       parentNumber={props.dtmfNumber}
                       numberOfSubDTMF={e}
                       dataHandleWithObj={props.dataHandleWithObj}
-                      hideItemStyle = {props.hideItemStyle}
-                      disableEditingWhileCreatingCamp = {props.disableEditingWhileCreatingCamp}
+                      hideItemStyle={props.hideItemStyle}
+                      disableEditingWhileCreatingCamp={
+                        props.disableEditingWhileCreatingCamp
+                      }
                       // disableProperties={disableProperties}
                       // disableChannel={disableChannel}
                     />

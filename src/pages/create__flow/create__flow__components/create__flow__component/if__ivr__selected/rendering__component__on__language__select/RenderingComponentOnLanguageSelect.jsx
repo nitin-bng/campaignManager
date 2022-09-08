@@ -494,6 +494,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 type="number"
                 label={"Wait time for " + props.lang + " language"}
                 variant="outlined"
+                // value={localStore.ivrCampFlowData.flow.language[0].actions?localStore.ivrCampFlowData.flow.language[0].actions.map(item=>item.waitTime):waitTime}
                 value={waitTime}
                 onChange={(e) => {
                   saveValues(e);

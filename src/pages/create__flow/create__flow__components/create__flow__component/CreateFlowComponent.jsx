@@ -264,7 +264,7 @@ const CreateFlowComponent = (props) => {
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
                     multiple
-                    value={ifIVRselectedThenLanguage}
+                    value={localStore.ivrCampFlowData.flow.language[0].actions ? localStore.ivrCampFlowData.flow.language[0].actions.map(item=>item.languageName):ifIVRselectedThenLanguage}
                     onChange={handleLanguageChange}
                     input={<OutlinedInput label="Select language" />}
                     renderValue={(selected) => selected.join(", ")}

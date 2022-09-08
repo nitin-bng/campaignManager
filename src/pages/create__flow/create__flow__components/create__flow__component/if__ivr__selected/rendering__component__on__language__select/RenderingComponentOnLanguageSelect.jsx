@@ -23,6 +23,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
   const {showError, setShowError, errorDispatch} = useError()
+  const [errorStyle, setErrorStyle] = useState(true)
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
@@ -251,6 +252,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => {
         console.log("got response from file upload....", response);
         errorDispatch({type:'AUDIO', payload: false})
+        setErrorStyle(false)
         return response;
       })
       .catch((e) => {
@@ -456,7 +458,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
           >
             <input
               accept="audio/wav"
-              style={{
+              style={(showError && errorStyle) ? {
+                border: "2px solid red",
+                justifyContent: "center",
+                display: "flex",
+                overflow: "hidden",
+              }:{
                 // border: "2px solid green",
                 justifyContent: "center",
                 display: "flex",

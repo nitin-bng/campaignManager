@@ -288,8 +288,8 @@ const CreateFlow = () => {
         };
 
   const handleBack = () => {
+    console.log('Nitin', errorState)
     errorDispatch({type:'INITIALIZE'})
-
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 

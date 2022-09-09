@@ -40,10 +40,21 @@ import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";
 
-import {getDateInFormat, getMultipleDatesInFormat} from '../../services/getDateInFormat'
+import {
+  getDateInFormat,
+  getMultipleDatesInFormat,
+} from "../../services/getDateInFormat";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import Collapse from "@mui/material/Collapse";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+// import InputLabel from "@mui/material/InputLabel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -208,6 +219,30 @@ const formJSON = [
 ];
 
 const UserConfig = () => {
+  const [expanded, setExpanded] = React.useState(false);
+  const [expanded2, setExpanded2] = React.useState(false);
+  const [expanded3, setExpanded3] = React.useState(true);
+  const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  }));
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const handleExpandClick2 = () => {
+    setExpanded2(!expanded2);
+  };
+  const handleExpandClick3 = () => {
+    setExpanded3(!expanded3);
+  };
+
   const [assignChannel, setAssignChannel] = useState("");
   const [assignTps, setAssignTps] = useState("");
   const [msisdnLength, setMsisdnLength] = useState("");
@@ -218,13 +253,9 @@ const UserConfig = () => {
   const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("");
 
   const [blackOutDays, setBlackOutDays] = React.useState([]);
-  const [blackoutStartHour, setBlackoutStartHour] = React.useState(
-    new Date()
-  );
-  const [blackoutEndHour, setBlackoutEndHour] = React.useState(
-    new Date()
-  );
-  const Navigate = useNavigate()
+  const [blackoutStartHour, setBlackoutStartHour] = React.useState(new Date());
+  const [blackoutEndHour, setBlackoutEndHour] = React.useState(new Date());
+  const Navigate = useNavigate();
   const [blackoutDate, setBlackoutDate] = React.useState([]);
   const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
@@ -297,7 +328,7 @@ const UserConfig = () => {
     // if (Object.keys(errors).length == 0) {
     fetch(
       config.server.path +
-        config.server.port3+
+        config.server.port3 +
         "/" +
         localStorage.getItem("userType") +
         config.api.createUserConfig +
@@ -315,8 +346,8 @@ const UserConfig = () => {
           if (res.status == "successful") {
             setCreateUpdate(true);
             // setShowSuccess(true);
-            Navigate('/home')
-            toast("You can create flow now")
+            Navigate("/home");
+            toast("You can create flow now");
             // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);
@@ -381,16 +412,16 @@ const UserConfig = () => {
             setGetTps(res.totalTps);
             // setDayName(res.days)
             setBlackOutDays(res.days);
-            setAssignChannel(res.assignChannel)
-            setAssignTps(res.assignTps)
-            setBlackoutDate(res.date)
-            setValue(res.date)
-            setAppendZero(res.appendZero)
-            setCountryCode(res.countryCode)
-            setAppendCountryCode(res.appendCountryCode)
-            setMsisdnLength(res.msisdnLength)
-            setBlackoutStartHour(res.startTime)
-            setBlackoutEndHour(res.endTime)
+            setAssignChannel(res.assignChannel);
+            setAssignTps(res.assignTps);
+            setBlackoutDate(res.date);
+            setValue(res.date);
+            setAppendZero(res.appendZero);
+            setCountryCode(res.countryCode);
+            setAppendCountryCode(res.appendCountryCode);
+            setMsisdnLength(res.msisdnLength);
+            setBlackoutStartHour(res.startTime);
+            setBlackoutEndHour(res.endTime);
 
             if (res.startTime == null) {
               handleStartDateChange(new Date());
@@ -454,347 +485,511 @@ const UserConfig = () => {
               </div>
 
               {!showSuccess ? (
-                <div className="userconfig__maincontent__form__container">
-                  <div className="userconfig__maincontent__form">
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__blackoutday__dropdown__container">
-                      <FormControl style={{ width: "80%" }}>
-                        <InputLabel
-                          style={{
-                            backgroundColor: "white",
-                            paddingRight: "4px",
-                          }}
-                          id="demo-multiple-checkbox-label"
-                        >
-                          Black out day
-                        </InputLabel>
-                        <Select
-                          labelId="demo-multiple-checkbox-label"
-                          id="demo-multiple-checkbox"
-                          multiple
-                          value={blackOutDays}
-                          onChange={handleChange}
-                          input={<OutlinedInput label="Tag" />}
-                          renderValue={(selected) => selected.join(", ")}
-                          MenuProps={MenuProps}
-                        >
-                          {blackout__days.map((blackout__days) => (
-                            <MenuItem
-                              key={blackout__days}
-                              value={blackout__days}
-                            >
-                              <Checkbox
-                                checked={
-                                  blackOutDays.indexOf(blackout__days) > -1
-                                }
-                              />
-                              <ListItemText primary={blackout__days} />
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <CustomWidthTooltip title={BlackOutDayInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__required__channel__container">
-                      <Box
-                        component="form"
-                        style={{ width: "80%" }}
-                        noValidate
-                        autoComplete="off"
-                      >
-                        <TextField
-                          id="userconfig__required__channel__required"
-                          type="number"
-                          label="Simultaneous outgoing calls "
-                          variant="outlined"
-                          value={assignChannel}
-                          onChange={(e) => {
-                            setAssignChannel(e.target.value);
-                          }}
-                        />
-                      </Box>
-                      <CustomWidthTooltip title={TotalChannelInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__required__tps__container">
-                      <Box
-                        component="form"
-                        style={{ width: "80%" }}
-                        noValidate
-                        autoComplete="off"
-                      >
-                        <TextField
-                          id="userconfig__required__tps__required"
-                          type="number"
-                          label="SMS TPS required"
-                          variant="outlined"
-                          value={assignTps}
-                          onChange={(e) => {
-                            setAssignTps(e.target.value);
-                          }}
-                        />
-                      </Box>
-                      <CustomWidthTooltip title={TotalNumerOfTPSRequiredInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container">
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Stack style={{ width: "80%" }} spacing={3}>
-                          <TimePicker
-                            label="Blackout start hour"
-                            value={blackoutStartHour}
-                            onChange={(e) => {
-                              handleblackoutStartHourChange(e);
-                              var starttime =
-                                e.getHours().toString() +
-                                ":" +
-                                e.getMinutes().toString() +
-                                ":" +
-                                e.getSeconds().toString();
-                              setStartTimeToSendAtBackend(starttime);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </Stack>
-                      </LocalizationProvider>
-
-                      <CustomWidthTooltip title={BlackoutStartHourInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-end-hour__container">
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Stack style={{ width: "80%" }} spacing={3}>
-                          <TimePicker
-                            label="Blackout end hour"
-                            value={blackoutEndHour}
-                            onChange={(e) => {
-                              handleblackoutEndHourChange(e);
-                              var endtime =
-                                e.getHours().toString() +
-                                ":" +
-                                e.getMinutes().toString() +
-                                ":" +
-                                e.getSeconds().toString();
-                              setEndTimeToSendAtBackend(endtime);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </Stack>
-                      </LocalizationProvider>
-                      <CustomWidthTooltip title={BlackoutEndHourInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-                            
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__blackout__date__picker__container">
-                      <DatePicker
-                        value={blackoutDate}
-                        multiple
-                        onChange={(e) => {
-                          e.map((ele, idx) => {
-                            // console.log(ele.day);
-                            // console.log(e);
-                            // console.log(ele.year);
-                            // console.log(ele.month.number);
-                            
-                            blackoutDate[idx] =
-                            getMultipleDatesInFormat(ele)
-                            setBlackoutDate(blackoutDate);
-                            setValue(blackoutDate);
-                          });
-                          // console.log(blackoutDate);
-                          // setValue
+                <>
+                  <div className="userconfig__maincontent__form__container">
+                    <div className="userconfig__maincontent__form">
+                      <Card
+                        style={{
+                          backgroundColor: "#e4e4e4",
+                          padding: ".5rem",
+                          marginTop: "1rem",
+                          // border:"2px solid green",
+                          height: "30%",
                         }}
-                      />
-                      {console.log('nitin date', blackoutDate)}
-                      <CustomWidthTooltip title={BlackoutDateInfo}>
-                        <HelpIcon
-                          className="helpicon"
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__append__zero__container">
-                      <FormControl>
-                        <FormLabel id="demo-row-radio-buttons-group-label">
-                          Append Zero
-                        </FormLabel>
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
-                          value={appendZero}
-                        >
-                          <FormControlLabel
-                            value="true"
-                            control={<Radio />}
-                            label="Yes"
-                            onChange={(e) => {
-                              setAppendZero(e.target.value);
-                              // console.log(e);
-                            }}
-                          />
-                          <FormControlLabel
-                            value="false"
-                            control={<Radio />}
-                            onChange={(e) => {
-                              setAppendZero(e.target.value);
-                              // console.log(e);
-                            }}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                      <CustomWidthTooltip title={TotalChannelInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__country__code__container">
-                      <Box
-                        component="form"
-                        style={{ width: "80%" }}
-                        noValidate
-                        autoComplete="off"
+                        fullWidth
                       >
-                        <TextField
-                          id="userconfig__required__channel__required"
-                          type="number"
-                          label="Country code"
-                          value={countryCode}
-                          onChange={(e) => {
-                            setCountryCode(e.target.value);
-                          }}
-                          variant="outlined"
-                        />
-                      </Box>
-                      <CustomWidthTooltip title={TotalChannelInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
-
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__append__country__code__container">
-                      <FormControl>
-                        <FormLabel id="demo-row-radio-buttons-group-label">
-                          Append Country Code
-                        </FormLabel>
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
-                          value={appendCountryCode}
-                        >
-                          <FormControlLabel
-                            value="true"
-                            control={<Radio />}
-                            label="Yes"
-                            onChange={(e) => {
-                              setAppendCountryCode(e.target.value);
+                        <CardActions disableSpacing>
+                          <Typography paragraph>
+                            <b>Configure your Day, Date, and Time </b>
+                          </Typography>
+                          <ExpandMore
+                            expand={expanded3}
+                            onClick={handleExpandClick3}
+                            aria-expanded={expanded3}
+                            aria-label="show more"
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
                             }}
-                          />
-                          <FormControlLabel
-                            value="false"
-                            control={<Radio />}
-                            onChange={(e) => {
-                              setAppendCountryCode(e.target.value);
+                          >
+                            <ExpandMoreIcon />
+                          </ExpandMore>
+                        </CardActions>
+                        <Collapse in={expanded3} timeout="auto" unmountOnExit>
+                          <CardContent
+                            style={{
+                              padding: "0rem 0rem 1rem 0rem",
+                              height: "100%",
                             }}
-                            label="No"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                      <CustomWidthTooltip title={TotalChannelInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
-                    </div>
+                          >
+                            <div className="section">
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__blackoutday__dropdown__container">
+                                <FormControl style={{ width: "80%" }}>
+                                  <InputLabel
+                                    style={{
+                                      backgroundColor: "#e4e4e4",
+                                      paddingRight: "4px",
+                                    }}
+                                    id="demo-multiple-checkbox-label"
+                                  >
+                                    Black out day
+                                  </InputLabel>
+                                  <Select
+                                    labelId="demo-multiple-checkbox-label"
+                                    id="demo-multiple-checkbox"
+                                    multiple
+                                    value={blackOutDays}
+                                    onChange={handleChange}
+                                    input={<OutlinedInput label="Tag" />}
+                                    renderValue={(selected) =>
+                                      selected.join(", ")
+                                    }
+                                    MenuProps={MenuProps}
+                                  >
+                                    {blackout__days.map((blackout__days) => (
+                                      <MenuItem
+                                        key={blackout__days}
+                                        value={blackout__days}
+                                      >
+                                        <Checkbox
+                                          checked={
+                                            blackOutDays.indexOf(
+                                              blackout__days
+                                            ) > -1
+                                          }
+                                        />
+                                        <ListItemText
+                                          primary={blackout__days}
+                                        />
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                                <CustomWidthTooltip title={BlackOutDayInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
 
-                    <div className="userconfig__maincontent__form__inside__containers userconfig__mobile__number__length__container">
-                      <Box
-                        component="form"
-                        style={{ width: "80%" }}
-                        noValidate
-                        autoComplete="off"
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-start-hour__container">
+                                <LocalizationProvider
+                                  dateAdapter={AdapterDateFns}
+                                >
+                                  <Stack style={{ width: "80%" }} spacing={3}>
+                                    <TimePicker
+                                      label="Blackout start hour"
+                                      value={blackoutStartHour}
+                                      onChange={(e) => {
+                                        handleblackoutStartHourChange(e);
+                                        var starttime =
+                                          e.getHours().toString() +
+                                          ":" +
+                                          e.getMinutes().toString() +
+                                          ":" +
+                                          e.getSeconds().toString();
+                                        setStartTimeToSendAtBackend(starttime);
+                                      }}
+                                      renderInput={(params) => (
+                                        <TextField {...params} />
+                                      )}
+                                    />
+                                  </Stack>
+                                </LocalizationProvider>
+
+                                <CustomWidthTooltip
+                                  title={BlackoutStartHourInfo}
+                                >
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__blackout-end-hour__container">
+                                <LocalizationProvider
+                                  dateAdapter={AdapterDateFns}
+                                >
+                                  <Stack style={{ width: "80%" }} spacing={3}>
+                                    <TimePicker
+                                      label="Blackout end hour"
+                                      value={blackoutEndHour}
+                                      onChange={(e) => {
+                                        handleblackoutEndHourChange(e);
+                                        var endtime =
+                                          e.getHours().toString() +
+                                          ":" +
+                                          e.getMinutes().toString() +
+                                          ":" +
+                                          e.getSeconds().toString();
+                                        setEndTimeToSendAtBackend(endtime);
+                                      }}
+                                      renderInput={(params) => (
+                                        <TextField {...params} />
+                                      )}
+                                    />
+                                  </Stack>
+                                </LocalizationProvider>
+                                <CustomWidthTooltip title={BlackoutEndHourInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div
+                                className="userconfig__maincontent__form__inside__containers userconfig__blackout__date__picker__container"
+                                style={{
+                                  width: "20%",
+                                  position: "relative",
+                                  zIndex: "999",
+                                }}
+                              >
+                                <InputLabel
+                                  style={{
+                                    padding: "0 5px",
+                                    backgroundColor: "#e4e4e4",
+                                    position: "absolute",
+                                    top: "-8px",
+                                    left: "10px",
+                                    zIndex: "1000",
+                                    fontSize: "12px",
+                                    color: "grey",
+                                  }}
+                                >
+                                  Dates
+                                </InputLabel>
+                                <DatePicker
+                                  style={{
+                                    backgroundColor: "#e4e4e4",
+                                    width: "100%",
+                                    height: "100%",
+                                  }}
+                                  value={blackoutDate}
+                                  multiple
+                                  onChange={(e) => {
+                                    e.map((ele, idx) => {
+                                      // console.log(ele.day);
+                                      // console.log(e);
+                                      // console.log(ele.year);
+                                      // console.log(ele.month.number);
+
+                                      blackoutDate[idx] =
+                                        getMultipleDatesInFormat(ele);
+                                      setBlackoutDate(blackoutDate);
+                                      setValue(blackoutDate);
+                                    });
+                                    // console.log(blackoutDate);
+                                    // setValue
+                                  }}
+                                />
+                                {console.log("nitin date", blackoutDate)}
+                                <CustomWidthTooltip title={BlackoutDateInfo}>
+                                  <HelpIcon
+                                    className="helpicon"
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Collapse>
+                      </Card>
+
+                      <Card
+                        style={{
+                          backgroundColor: "#e4e4e4",
+                          padding: ".5rem",
+                          marginTop: "1rem",
+                          // border:"2px solid green",
+                          height: "30%",
+                        }}
+                        fullWidth
                       >
-                        <TextField
-                          id="userconfig__required__channel__required"
-                          type="number"
-                          label="Mobile number length"
-                          variant="outlined"
-                          value={msisdnLength}
-                          onChange={(e) => {
-                            setMsisdnLength(e.target.value);
-                          }}
-                        />
-                      </Box>
-                      <CustomWidthTooltip title={TotalChannelInfo}>
-                        <HelpIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "grey",
-                            fontSize: "1.3rem",
-                          }}
-                        />
-                      </CustomWidthTooltip>
+                        <CardActions disableSpacing>
+                          <Typography paragraph>
+                            <b>Configure your MSISDN details </b>{" "}
+                          </Typography>
+                          <ExpandMore
+                            expand={expanded}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <ExpandMoreIcon />
+                          </ExpandMore>
+                        </CardActions>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                          <CardContent
+                            style={{
+                              padding: "0rem 0rem 1rem 0rem",
+                              height: "100%",
+                            }}
+                          >
+                            <div className="section">
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__append__zero__container">
+                                <FormControl>
+                                  <FormLabel id="demo-row-radio-buttons-group-label">
+                                    Append Zero
+                                  </FormLabel>
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    name="row-radio-buttons-group"
+                                    value={appendZero}
+                                  >
+                                    <FormControlLabel
+                                      value="true"
+                                      control={<Radio />}
+                                      label="Yes"
+                                      onChange={(e) => {
+                                        setAppendZero(e.target.value);
+                                        // console.log(e);
+                                      }}
+                                    />
+                                    <FormControlLabel
+                                      value="false"
+                                      control={<Radio />}
+                                      onChange={(e) => {
+                                        setAppendZero(e.target.value);
+                                        // console.log(e);
+                                      }}
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                </FormControl>
+                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__country__code__container">
+                                <Box
+                                  component="form"
+                                  style={{ width: "80%" }}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <TextField
+                                    id="userconfig__required__channel__required"
+                                    type="number"
+                                    label="Country code"
+                                    value={countryCode}
+                                    onChange={(e) => {
+                                      setCountryCode(e.target.value);
+                                    }}
+                                    variant="outlined"
+                                  />
+                                </Box>
+                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__append__country__code__container">
+                                <FormControl>
+                                  <FormLabel id="demo-row-radio-buttons-group-label">
+                                    Append Country Code
+                                  </FormLabel>
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    name="row-radio-buttons-group"
+                                    value={appendCountryCode}
+                                  >
+                                    <FormControlLabel
+                                      value="true"
+                                      control={<Radio />}
+                                      label="Yes"
+                                      onChange={(e) => {
+                                        setAppendCountryCode(e.target.value);
+                                      }}
+                                    />
+                                    <FormControlLabel
+                                      value="false"
+                                      control={<Radio />}
+                                      onChange={(e) => {
+                                        setAppendCountryCode(e.target.value);
+                                      }}
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                </FormControl>
+                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__mobile__number__length__container">
+                                <Box
+                                  component="form"
+                                  style={{ width: "80%" }}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <TextField
+                                    id="userconfig__required__channel__required"
+                                    type="number"
+                                    label="Mobile number length"
+                                    variant="outlined"
+                                    value={msisdnLength}
+                                    onChange={(e) => {
+                                      setMsisdnLength(e.target.value);
+                                    }}
+                                  />
+                                </Box>
+                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Collapse>
+                      </Card>
+
+                      <Card
+                        style={{
+                          backgroundColor: "#e4e4e4",
+                          padding: ".5rem",
+                          marginTop: "1rem",
+                          marginBottom: "2rem",
+                          // border:"2px solid green",
+                          height: "30%",
+                        }}
+                        fullWidth
+                      >
+                        <CardActions disableSpacing>
+                          <Typography paragraph>
+                            <b>Configure your TPS and channels </b>
+                          </Typography>
+                          <ExpandMore
+                            expand={expanded2}
+                            onClick={handleExpandClick2}
+                            aria-expanded={expanded2}
+                            aria-label="show more"
+                            style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <ExpandMoreIcon />
+                          </ExpandMore>
+                        </CardActions>
+                        <Collapse in={expanded2} timeout="auto" unmountOnExit>
+                          <CardContent
+                            style={{
+                              padding: "0rem 0rem 1rem 0rem",
+                              height: "100%",
+                            }}
+                          >
+                            <div className="section">
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__required__channel__container">
+                                <Box
+                                  component="form"
+                                  style={{ width: "80%" }}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <TextField
+                                    id="userconfig__required__channel__required"
+                                    type="number"
+                                    label="Simultaneous outgoing calls "
+                                    variant="outlined"
+                                    value={assignChannel}
+                                    onChange={(e) => {
+                                      setAssignChannel(e.target.value);
+                                    }}
+                                  />
+                                </Box>
+                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+
+                              <div className="userconfig__maincontent__form__inside__containers userconfig__required__tps__container">
+                                <Box
+                                  component="form"
+                                  style={{ width: "80%" }}
+                                  noValidate
+                                  autoComplete="off"
+                                >
+                                  <TextField
+                                    id="userconfig__required__tps__required"
+                                    type="number"
+                                    label="SMS TPS required"
+                                    variant="outlined"
+                                    value={assignTps}
+                                    onChange={(e) => {
+                                      setAssignTps(e.target.value);
+                                    }}
+                                  />
+                                </Box>
+                                <CustomWidthTooltip
+                                  title={TotalNumerOfTPSRequiredInfo}
+                                >
+                                  <HelpIcon
+                                    style={{
+                                      cursor: "pointer",
+                                      color: "grey",
+                                      fontSize: "1.3rem",
+                                    }}
+                                  />
+                                </CustomWidthTooltip>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Collapse>
+                      </Card>
                     </div>
                   </div>
                   <div className="userconfig__maincontent__form__submit__button__container">
@@ -804,7 +999,7 @@ const UserConfig = () => {
                       </Button>
                     </Stack>
                   </div>
-                </div>
+                </>
               ) : (
                 <div className="successCard">
                   <div className="successIcon">

@@ -495,6 +495,7 @@ const UserConfig = () => {
                           marginTop: "1rem",
                           // border:"2px solid green",
                           // height: "30%",
+                          overflow:"visible"
                         }}
                         fullWidth
                       >
@@ -655,6 +656,7 @@ const UserConfig = () => {
                                   width: "20%",
                                   position: "relative",
                                   zIndex: "999",
+                                  overflow:"visible"
                                 }}
                               >
                                 <InputLabel
@@ -676,6 +678,8 @@ const UserConfig = () => {
                                     backgroundColor: "#e4e4e4",
                                     width: "100%",
                                     height: "100%",
+                                    zIndex:"1001",
+                                    
                                   }}
                                   value={blackoutDate}
                                   multiple

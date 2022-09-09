@@ -85,7 +85,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
-      console.log('Nitin audio from rendering component')
       errorDispatch({ type: "AUDIO", payload: true });
     }
     errorDispatch({

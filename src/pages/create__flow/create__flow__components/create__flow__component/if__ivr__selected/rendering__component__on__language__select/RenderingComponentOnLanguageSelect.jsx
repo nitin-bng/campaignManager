@@ -64,7 +64,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
         i++
         ) {
-          console.log('nitin lang', lang, globalState.state.ivrCampFlowData.flow.language[0].actions[i].language )
           if (
             lang ==
             globalState.state.ivrCampFlowData.flow.language[0].actions[i].language
@@ -511,7 +510,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 }
                 
                 />
-                {console.log("nitin", waitTime)}
             </Box>
           </div>
           {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}

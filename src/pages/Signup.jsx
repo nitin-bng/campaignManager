@@ -131,7 +131,8 @@ const Signup = () => {
           setResponse(result.status);
           setReason(result.reason);
           setLoader(false);
-          setOpenModal(true);
+          // setOpenModal(true);
+          navigate("/verifyotp");
         } else {
           setResponse(result.status);
           setReason(result.reason);

@@ -48,8 +48,6 @@ const IfIVRSelected = (props) => {
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
-console.log('Nitin is checking', errorState, showError)
-
   useEffect(()=>{
     setShowError(false)
     errorDispatch({type: 'IF_IVR_SELECTED', payload: false})

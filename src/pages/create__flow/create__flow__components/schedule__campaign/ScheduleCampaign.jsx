@@ -487,20 +487,20 @@ const ScheduleCampaign = (props) => {
     const date = new Date();
     const startTimeArray = scheduleData1.dailyStartTime.split(":");
     const endTimeArray = scheduleData1.dailyEndTime.split(":");
-    if (getDateInFormat(date) === scheduleData1.startDate) {
-      console.log("same day", date.getHours(), ~~startTimeArray[0]);
-      if (
-        date.getHours() > ~~startTimeArray[0] ||
-        (date.getHours() === ~~startTimeArray[0] &&
-          date.getMinutes() > ~~startTimeArray[1]) ||
-        (date.getHours() === ~~startTimeArray[0] &&
-          date.getMinutes() === ~~startTimeArray[1] &&
-          date.getSeconds() > ~~startTimeArray[2])
-      ) {
-        throw Error("Start time has already passed");
-      }
-    }
-    console.log("end time array", endTimeArray);
+    // if (getDateInFormat(date) === scheduleData1.startDate) {
+    //   console.log("same day", date.getHours(), ~~startTimeArray[0]);
+    //   if (
+    //     date.getHours() > ~~startTimeArray[0] ||
+    //     (date.getHours() === ~~startTimeArray[0] &&
+    //       date.getMinutes() > ~~startTimeArray[1]) ||
+    //     (date.getHours() === ~~startTimeArray[0] &&
+    //       date.getMinutes() === ~~startTimeArray[1] &&
+    //       date.getSeconds() > ~~startTimeArray[2])
+    //   ) {
+    //     throw Error("Start time has already passed");
+    //   }
+    // }
+    // console.log("end time array", endTimeArray);
     if (
       endTimeArray[0] < ~~startTimeArray[0] ||
       (endTimeArray[0] === ~~startTimeArray[0] &&

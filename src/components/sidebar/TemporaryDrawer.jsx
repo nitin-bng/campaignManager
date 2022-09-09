@@ -14,6 +14,7 @@ import { Sidebar__menu__items } from "../../helpers/All__mapping";
 
 
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
@@ -44,19 +45,21 @@ export default function TemporaryDrawer() {
             to={
               text.menu__title === "Create Flow" &&
               !localStorage.getItem("createFlowInMenuBarDisbled")
-                ? ""
+                ? "/user__configuration"
                 : text.route__path
             }
           >
             <ListItem
               key={text.menu__title}
               disablePadding
-              disabled={
-                text.menu__title === "Create Flow" &&
-                !localStorage.getItem("createFlowInMenuBarDisbled")
-                  ? true
-                  : false
-              }
+              onClick={()=>(text.menu__title === "Create Flow" &&
+              !localStorage.getItem("createFlowInMenuBarDisbled")) && toast('You need to set up user config first')}
+              // disabled={
+              //   text.menu__title === "Create Flow" &&
+              //   !localStorage.getItem("createFlowInMenuBarDisbled")
+              //     ? true
+              //     : false
+              // }
             >
               <ListItemButton>
                 <ListItemIcon>

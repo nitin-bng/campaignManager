@@ -416,7 +416,7 @@ const Home = () => {
     console.log("local store ... ", localStore);
     localStore.ivrCampFlowData.flow = data;
     dispatch({ type: "SET_DATA", nState: localStore });
-    console.log("hello hello hello",globalState);
+    console.log("hello hello hello", globalState);
   };
 
   const getFlow = async (e, id) => {
@@ -648,7 +648,6 @@ const Home = () => {
                           onClick={(e) => {
                             console.log(row.id);
                             getFlow(row.id, row.wfId);
-
                           }}
                           key={row.id}
                           value={row.wfId}
@@ -668,17 +667,23 @@ const Home = () => {
             </div>
           </div>
           {openModal && (
-            <div className="bg-modal" style={{ border: "2px solid red", display:"flex", flexDirection:"column" }}>
+            <div
+              className="bg-modal"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
               <div
                 className="modal-content"
                 style={{
-                  border: "2px solid red",
+                  // border: "2px solid red",
                   width: "90vw",
                   height: "90vh",
                 }}
               >
-                <CreateFlowComponent hideItemStyle={hideItemStyle} disableEditingWhileCreatingCamp={true} />
-    {console.log("hello hello hello",globalState)}
+                <CreateFlowComponent
+                  hideItemStyle={hideItemStyle}
+                  disableEditingWhileCreatingCamp={true}
+                />
+                {console.log("hello hello hello", globalState)}
               </div>
               <button
                 style={{
@@ -690,8 +695,8 @@ const Home = () => {
                   textTransform: "uppercase",
                   textShadow: "1px 1px 2px black",
                   width: "10%",
-                  // margin: "auto",
-                  marginBottom: "1rem",
+                  marginTop: "1rem",
+                  marginBottom: ".5rem",
                   transition: "all 0.5s",
                   fontWeight: "700",
                 }}

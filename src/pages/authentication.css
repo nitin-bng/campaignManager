@@ -344,3 +344,8 @@ input{
     cursor: pointer;
     transform: scale(1.2);
 }
+
+.featureKaSelectBoxOnSignup .MuiSelect-select.MuiSelect-select{
+    height: 100% !important;
+    align-items: center !important;
+}

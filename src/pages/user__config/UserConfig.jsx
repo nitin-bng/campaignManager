@@ -40,6 +40,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";
 
+import {getDateInFormat, getMultipleDatesInFormat} from '../../services/getDateInFormat'
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -506,7 +508,7 @@ const UserConfig = () => {
                         <TextField
                           id="userconfig__required__channel__required"
                           type="number"
-                          label="Number of channels required"
+                          label="Simultaneous outgoing calls "
                           variant="outlined"
                           value={assignChannel}
                           onChange={(e) => {
@@ -535,7 +537,7 @@ const UserConfig = () => {
                         <TextField
                           id="userconfig__required__tps__required"
                           type="number"
-                          label="Number of tps required"
+                          label="SMS TPS required"
                           variant="outlined"
                           value={assignTps}
                           onChange={(e) => {
@@ -616,7 +618,7 @@ const UserConfig = () => {
                         />
                       </CustomWidthTooltip>
                     </div>
-
+                            
                     <div className="userconfig__maincontent__form__inside__containers userconfig__blackout__date__picker__container">
                       <DatePicker
                         value={blackoutDate}
@@ -627,8 +629,9 @@ const UserConfig = () => {
                             // console.log(e);
                             // console.log(ele.year);
                             // console.log(ele.month.number);
+                            
                             blackoutDate[idx] =
-                              ele.year + "/" + ele.month.number + "/" + ele.day;
+                            getMultipleDatesInFormat(ele)
                             setBlackoutDate(blackoutDate);
                             setValue(blackoutDate);
                           });
@@ -636,7 +639,7 @@ const UserConfig = () => {
                           // setValue
                         }}
                       />
-
+                      {console.log('nitin date', blackoutDate)}
                       <CustomWidthTooltip title={BlackoutDateInfo}>
                         <HelpIcon
                           className="helpicon"

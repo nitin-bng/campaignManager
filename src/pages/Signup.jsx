@@ -339,18 +339,25 @@ const Signup = () => {
                       })}
                     />
                   </div>
-                  <div className="feature">
-                    <FormControl style={{ width: "100%" }} fullwidth>
+                  <div className="feature" style={{ }}>
+                  
+                    <FormControl style={{ width: "100%",height:"100%",position:"relative"}} fullwidth>
+                    <InputLabel id="demo-simple-select-label" style={{ fontSize:"15px", position:"absolute", top:"-32px", left:"10px", backgroundColor:"white", zIndex:"1000", padding:"0 5px"}}>
+                        Features
+                      </InputLabel>
                       <Select
                         labelId="demo-multiple-checkbox-label"
+                        // label="Feature"
                         id="demo-multiple-checkbox"
                         multiple
                         value={newFeatures}
                         name="features"
                         onChange={handlePersonChange}
-                        input={<OutlinedInput label="Tag" />}
+                        input={<OutlinedInput  style={{ width: "100%",height:"100%", zIndex:"999"}} label="Feature"/>}
                         renderValue={(selected) => selected.join(", ")}
                         MenuProps={MenuProps}
+                        className="featureKaSelectBoxOnSignup"
+                        // variant="outlined"
                       >
                         {latestfeatures.map((features) => (
                           <MenuItem

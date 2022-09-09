@@ -1301,19 +1301,20 @@ const ScheduleCampaign = (props) => {
                 }  */}
               </div>
             ) : (
-              <div className="successCard">
-                <div className="successIcon">
-                  <i className="checkmark">✓</i>
-                </div>
-                <h1>Success</h1>
-                <button
-                  type="submit"
-                  className="btn btn-primary submitJob"
-                  onClick={(e) => handleConfirm(e)}
-                >
-                  Finish!!
-                </button>
-              </div>
+              null
+              // <div className="successCard">
+              //   <div className="successIcon">
+              //     <i className="checkmark">✓</i>
+              //   </div>
+              //   <h1>Success</h1>
+              //   <button
+              //     type="submit"
+              //     className="btn btn-primary submitJob"
+              //     onClick={(e) => handleConfirm(e)}
+              //   >
+              //     Finish!!
+              //   </button>
+              // </div>
             )}
           </div>
         </div>

@@ -488,7 +488,7 @@ const CreateFlow = () => {
                                         className={classes.table}
                                         aria-label="simple table"
                                       >
-                                        <TableHead className="thead-light">
+                                        <TableHead className="thead-light" style={{backgroundColor:"lightgray", borderBottom:"2px solid black"}}>
                                           <TableRow>
                                             <TableCell align="center">
                                               S. No.

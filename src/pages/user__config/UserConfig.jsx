@@ -494,7 +494,7 @@ const UserConfig = () => {
                           padding: ".5rem",
                           marginTop: "1rem",
                           // border:"2px solid green",
-                          height: "30%",
+                          // height: "30%",
                         }}
                         fullWidth
                       >
@@ -718,7 +718,7 @@ const UserConfig = () => {
                           padding: ".5rem",
                           marginTop: "1rem",
                           // border:"2px solid green",
-                          height: "30%",
+                          // height: "30%",
                         }}
                         fullWidth
                       >
@@ -898,7 +898,7 @@ const UserConfig = () => {
                           marginTop: "1rem",
                           marginBottom: "2rem",
                           // border:"2px solid green",
-                          height: "30%",
+                          // height: "30%",
                         }}
                         fullWidth
                       >

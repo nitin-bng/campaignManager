@@ -550,7 +550,8 @@ const ScheduleCampaign = (props) => {
             if (res.status == 200) {
               debugger;
               localStorage.removeItem("channelName");
-              showSuccess(true);
+              // showSuccess(true);
+              
               console.log(res);
             } else if (res.length == 0) {
             }
@@ -586,7 +587,7 @@ const ScheduleCampaign = (props) => {
   };
   const handleConfirm = () => {
     // getcampaignScheduleList();
-    showSuccess(false);
+    // showSuccess(false);
     showForm(false);
     updateForm(false);
     Navigate("/home");
@@ -601,7 +602,7 @@ const ScheduleCampaign = (props) => {
       <div className="schedule__campaign">
         <div className="schedule__campaign__container" style={{}}>
           <div style={{ width: "100%", height: "100%" }}>
-            {!success ? (
+            {/* {!success ? ( */}
               <div className="col-sm-12 create__flow__component" style={{}}>
                 {/* {form || update ? 
                  (  */}
@@ -1300,22 +1301,22 @@ const ScheduleCampaign = (props) => {
                 ) 
                 }  */}
               </div>
-            ) : (
-              null
-              // <div className="successCard">
+            {/* ) : ( */}
+              {/* null */}
+              {/* // <div className="successCard">
               //   <div className="successIcon">
               //     <i className="checkmark">✓</i>
               //   </div>
               //   <h1>Success</h1>
-              //   <button
-              //     type="submit"
+              //   <button */}
+              {/* //     type="submit"
               //     className="btn btn-primary submitJob"
               //     onClick={(e) => handleConfirm(e)}
               //   >
               //     Finish!!
               //   </button>
               // </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

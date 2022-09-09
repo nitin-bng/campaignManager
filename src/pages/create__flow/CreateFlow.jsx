@@ -27,10 +27,12 @@ import Paper from "@material-ui/core/Paper";
 // import MainDTMF from "./create__flow__components/create__flow__component/if__ivr__selected/main__dtmf/MainDTMF";
 import classNames from "classnames";
 import { useError } from "../../store/errorContext";
+import { useNavigate } from "react-router-dom";
 
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
+  const navigate = useNavigate()
   let globalState = useContext(store);
   const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -329,6 +331,7 @@ const CreateFlow = () => {
         console.log("activeStep === 2");
       } else if (activeStep === 3) {
         console.log("activeStep === 3");
+        navigate("/home");
       }
     } else {
       setShowError(true);
@@ -449,7 +452,7 @@ const CreateFlow = () => {
                   })}
                 </Stepper>
 
-                {activeStep === steps.length ? (
+                {/* {activeStep === steps.length ? (
                   <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1 }}>
                       All steps completed - you&apos;re finished
@@ -459,7 +462,7 @@ const CreateFlow = () => {
                       <Button onClick={handleReset}>Reset</Button>
                     </Box>
                   </React.Fragment>
-                ) : (
+                ) : ( */}
                   <>
                     <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                       {activeStep === 0 ? (
@@ -675,14 +678,14 @@ const CreateFlow = () => {
                         pt: 2,
                       }}
                     >
-                      <Button
+                      {/* <Button
                         color="inherit"
                         disabled={activeStep === 0}
                         onClick={handleBack}
                         sx={{ mr: 1 }}
                       >
                         Back
-                      </Button>
+                      </Button> */}
                       <Box sx={{ flex: "1 1 auto" }} />
 
                       <Button onClick={handleNext} disabled={showFlowTable}>
@@ -690,7 +693,7 @@ const CreateFlow = () => {
                       </Button>
                     </Box>
                   </>
-                )}
+                {/* )} */}
               </Box>
             </div>
           </div>

@@ -110,7 +110,7 @@ const Review = () => {
   useEffect(() => {
     getCampaignDataList();
     getcampaignScheduleList();
-  }, [campCreateData,campScheduleData]);
+  }, [campCreateData]);
 
 
 

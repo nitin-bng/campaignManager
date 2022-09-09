@@ -272,7 +272,6 @@ const MainDTMF = (props) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log("got response from file upload....", response);
         errorDispatch({ type: "AUDIO", payload: false });
         return response;
       })

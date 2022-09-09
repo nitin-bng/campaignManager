@@ -90,7 +90,9 @@ const CreateFlowComponent = (props) => {
     dispatch({ type: "EMPTY_DATA" })
     setIfIVRselectedThenLanguage([])
     }
+    if(props.hideItemStyle !== undefined){
     errorDispatch({type:"INITIALIZE"})
+    }
     errorDispatch({type:'CREATE_FLOW_COMPONENT', payload: false})
   },[])
 

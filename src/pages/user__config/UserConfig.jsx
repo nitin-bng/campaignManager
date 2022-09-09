@@ -311,7 +311,8 @@ const UserConfig = () => {
         res.json().then((res) => {
           if (res.status == "successful") {
             setCreateUpdate(true);
-            setShowSuccess(true);
+            // setShowSuccess(true);
+            // toast("You can create flow now")
             // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);

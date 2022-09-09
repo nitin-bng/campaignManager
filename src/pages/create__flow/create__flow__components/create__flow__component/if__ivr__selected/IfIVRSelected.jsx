@@ -18,6 +18,7 @@ import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
 
 import config from "../../../../../ApiConfig/Config";
 import Typography from "@mui/material/Typography";
+import ReactAudioPlayer from 'react-audio-player';
 
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -338,7 +339,7 @@ const IfIVRSelected = (props) => {
                   marginTop: "5px",
                 }}
               >
-                <BsCheckCircle size={15} className="checkedIcon" />
+                {/* <BsCheckCircle size={15} className="checkedIcon" />
                 <IoIosCloseCircleOutline
                   className="checkedIcon"
                   size={15}
@@ -360,7 +361,13 @@ const IfIVRSelected = (props) => {
                   id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
                   onClick={() => playPauseAudio(e)}
                   style={{ cursor: "pointer" }}
-                />
+                /> */}
+
+<ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
+              />
               </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
@@ -388,7 +395,7 @@ const IfIVRSelected = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
                     {e}
-                    <BsCheckCircle size={15} className="checkedIcon" />
+                    {/* <BsCheckCircle size={15} className="checkedIcon" />
                     <IoIosCloseCircleOutline
                       className="checkedIcon"
                       size={15}
@@ -419,7 +426,12 @@ const IfIVRSelected = (props) => {
                       }
                       onClick={() => playPauseAudio(e)}
                       style={{ cursor: "pointer" }}
-                    />
+                    /> */}
+                    <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
+              />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}

@@ -9,6 +9,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
+import ReactAudioPlayer from 'react-audio-player';
 
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
@@ -376,7 +377,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   marginTop: "5px",
                 }}
               >
-                <BsCheckCircle size={15} className="checkedIcon" />
+                {/* <BsCheckCircle size={15} className="checkedIcon" />
                 <IoIosCloseCircleOutline
                   className="checkedIcon"
                   size={15}
@@ -398,7 +399,13 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
                   onClick={() => playPauseAudio(e)}
                   style={{ cursor: "pointer" }}
-                />
+                /> */}
+                {/* <ReactAudioPlayer
+                src='./1.mp3'
+                autoPlay
+                controls
+              /> */}
+              <audio src="1.mp3" controls type="audio/mpeg"/>
               </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
@@ -441,7 +448,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         margin: "auto",
                       }}
                     >
-                      <BsCheckCircle size={15} className="checkedIcon" />
+                      {/* <BsCheckCircle size={15} className="checkedIcon" />
                       <IoIosCloseCircleOutline
                         className="checkedIcon"
                         size={15}
@@ -463,7 +470,13 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
                         onClick={() => playPauseAudio(e)}
                         style={{ cursor: "pointer" }}
-                      />
+                      /> */}
+                      {/* <ReactAudioPlayer
+                src='1.mp3'
+                autoPlay
+                controls
+              /> */}
+              <audio src="1.mp3" controls type="audio/mpeg"/>
                     </div>
                     {/* <span className="m-t-10"> </span> */}
                   </span>

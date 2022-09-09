@@ -26,6 +26,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
+import ReactAudioPlayer from 'react-audio-player';
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
@@ -154,7 +155,7 @@ const MainDTMF = (props) => {
             if (
               localStore.ivrCampFlowData.flow &&
               localStore.ivrCampFlowData.flow.language[0].actions[i].lang_file[
-                "ivr"
+              "ivr"
               ] !== ""
             ) {
               oldStateFiles =
@@ -181,18 +182,18 @@ const MainDTMF = (props) => {
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang]
               ? localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[
-                  lang
-                ] +
-                "," +
-                uploadedFiles.response
+              lang
+              ] +
+              "," +
+              uploadedFiles.response
               : uploadedFiles.response;
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][lang]
               ? localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][
-                  lang
-                ] +
-                "," +
-                uploadedFiles.response
+              lang
+              ] +
+              "," +
+              uploadedFiles.response
               : uploadedFiles.response;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] === "level2") {
@@ -205,12 +206,12 @@ const MainDTMF = (props) => {
           ].audio_file[lang] = localStore.ivrCampFlowData.flow.actions[
             parent_dtmf - 1
           ].actions[current_dtmf - 1].audio_file[lang]
-            ? localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
+              ? localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
                 current_dtmf - 1
               ].audio_file[lang] +
               "," +
               uploadedFiles[0].key
-            : uploadedFiles[0].key;
+              : uploadedFiles[0].key;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] === "level3") {
           const gparent = targetArray[1];
@@ -223,12 +224,12 @@ const MainDTMF = (props) => {
           ].actions[current_dtmf - 1].audio_file[lang] = localStore
             .ivrCampFlowData.flow.actions[gparent].actions[parent_dtmf - 1]
             .actions[current_dtmf - 1].audio_file[lang]
-            ? localStore.ivrCampFlowData.flow.actions[gparent].actions[
+              ? localStore.ivrCampFlowData.flow.actions[gparent].actions[
                 parent_dtmf - 1
               ].actions[current_dtmf - 1].audio_file[lang] +
               "," +
               uploadedFiles[0].key
-            : uploadedFiles[0].key;
+              : uploadedFiles[0].key;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] + targetArray[1] === "repeataudio") {
           const current_dtmf = targetArray[2];
@@ -325,7 +326,7 @@ const MainDTMF = (props) => {
               <span style={{ color: "darkgray" }}> {index + 1} - </span>
               {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
               {e}
-              <BsCheckCircle size={15} className="checkedIcon" />
+              {/* <BsCheckCircle size={15} className="checkedIcon" />
               <IoIosCloseCircleOutline
                 className="checkedIcon"
                 size={15}
@@ -341,12 +342,18 @@ const MainDTMF = (props) => {
                   cursor: "pointer",
                 }}
               />
+            
               <FiPauseCircle
                 size={15}
                 className="checkedIcon"
                 id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
                 onClick={() => playPauseAudio(e)}
                 style={{ cursor: "pointer" }}
+              /> */}
+              <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
               />
 
               {/* <span className="m-t-10"> </span> */}
@@ -375,7 +382,7 @@ const MainDTMF = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
                     {e}
-                    <BsCheckCircle size={15} className="checkedIcon" />
+                    {/* <BsCheckCircle size={15} className="checkedIcon" />
                     <IoIosCloseCircleOutline
                       className="checkedIcon"
                       size={15}
@@ -406,7 +413,12 @@ const MainDTMF = (props) => {
                       }
                       onClick={() => playPauseAudio(e)}
                       style={{ cursor: "pointer" }}
-                    />
+                    /> */}
+                    <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
+              />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}
@@ -587,12 +599,12 @@ const MainDTMF = (props) => {
             <span style={{ color: "darkgray" }}> {index + 1} - </span>
             <span style={{ color: "darkgray" }}>
 
-            {globalState.state.temp.uploads.length > 0
-              ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+              {globalState.state.temp.uploads.length > 0
                 ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                  ? globalState.state.temp.uploads.find((f) => e === f.s_name)
                     .l_name
-                : e
-              : e}
+                  : e
+                : e}
             </span>
             <br />
             <div
@@ -603,7 +615,7 @@ const MainDTMF = (props) => {
                 marginTop: "5px",
               }}
             >
-              <BsCheckCircle size={15} className="checkedIcon" />
+              {/* <BsCheckCircle size={15} className="checkedIcon" />
               <IoIosCloseCircleOutline
                 className="checkedIcon"
                 size={15}
@@ -613,6 +625,11 @@ const MainDTMF = (props) => {
                 className="checkedIcon"
                 size={15}
                 style={{ color: "purple" }}
+              /> */}
+              <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
               />
             </div>
           </span>
@@ -752,10 +769,10 @@ const MainDTMF = (props) => {
                         error={
                           showError
                             ? parseInt(
-                                globalState.state.ivrCampFlowData.flow.actions[
-                                  props.global.dtmf_key - 1
-                                ].waitTime
-                              ) >= 0
+                              globalState.state.ivrCampFlowData.flow.actions[
+                                props.global.dtmf_key - 1
+                              ].waitTime
+                            ) >= 0
                               ? false
                               : true
                             : false
@@ -789,6 +806,7 @@ const MainDTMF = (props) => {
                       </Select>
                     </FormControl>
                   </div>
+                  
                   <div
                     className={props.hideItemStyle}
                     style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
@@ -835,7 +853,7 @@ const MainDTMF = (props) => {
                     >
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                         <FileUploaderForMainDTMF lang={lang} hideItemStyle={props.hideItemStyle} parentNode={props.parentNode} global={props.global} globalState={globalState} uploadFiles={uploadFiles} AudioFiles={AudioFiles} />
+                          <FileUploaderForMainDTMF lang={lang} hideItemStyle={props.hideItemStyle} parentNode={props.parentNode} global={props.global} globalState={globalState} uploadFiles={uploadFiles} AudioFiles={AudioFiles} />
                         )
                       )}
                     </div>
@@ -863,8 +881,8 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp={
                         props.disableEditingWhileCreatingCamp
                       }
-                      // disableProperties={disableProperties}
-                      // disableChannel={disableChannel}
+                    // disableProperties={disableProperties}
+                    // disableChannel={disableChannel}
                     />
                   );
                 })}

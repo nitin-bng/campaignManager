@@ -30,6 +30,8 @@ import config from "../ApiConfig/Config";
 
 import { MenuProps, useStyles, options } from "../../src/helpers/Utils";
 import "react-phone-input-2/lib/style.css";
+import {toast} from "react-toastify"
+import { ToastContainer } from "react-bootstrap";
 
 const Signup = () => {
   const [phone, setPhone] = useState("");

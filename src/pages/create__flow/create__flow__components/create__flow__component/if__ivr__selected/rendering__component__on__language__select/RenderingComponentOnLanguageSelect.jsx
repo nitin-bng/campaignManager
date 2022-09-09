@@ -400,12 +400,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   onClick={() => playPauseAudio(e)}
                   style={{ cursor: "pointer" }}
                 /> */}
-                {/* <ReactAudioPlayer
-                src='./1.mp3'
-                autoPlay
+                <ReactAudioPlayer
+                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                // autoPlay
                 controls
-              /> */}
-              <audio src="1.mp3" controls type="audio/mpeg"/>
+              />
+              {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
               </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
@@ -471,12 +471,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         onClick={() => playPauseAudio(e)}
                         style={{ cursor: "pointer" }}
                       /> */}
-                      {/* <ReactAudioPlayer
-                src='1.mp3'
-                autoPlay
+                      <ReactAudioPlayer
+                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                // autoPlay
                 controls
-              /> */}
-              <audio src="1.mp3" controls type="audio/mpeg"/>
+              />
+              {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
                     </div>
                     {/* <span className="m-t-10"> </span> */}
                   </span>

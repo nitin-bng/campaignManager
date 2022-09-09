@@ -24,7 +24,7 @@ import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
 import { ErrorSharp } from "@material-ui/icons";
 import './createCampaign.css'
-const priorityArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const priorityArray = ["1(Least Prior)", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
@@ -356,7 +356,7 @@ const CreateCampaign = (props) => {
               >
                 {/* {console.log(channel)} */}
                 <MenuItem id="campPriority" value={1}>
-                  1
+                  1 (Least)
                 </MenuItem>
                 <MenuItem id="campPriority" value={2}>
                   2
@@ -368,7 +368,7 @@ const CreateCampaign = (props) => {
                   4
                 </MenuItem>
                 <MenuItem id="campPriority" value="5">
-                  5
+                  5 (Medium)
                 </MenuItem>
                 <MenuItem id="campPriority" value="6">
                   6
@@ -383,7 +383,7 @@ const CreateCampaign = (props) => {
                   9
                 </MenuItem>
                 <MenuItem id="campPriority" value="10">
-                  10
+                  10 (High)
                 </MenuItem>
               </Select>
             </FormControl>

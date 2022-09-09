@@ -351,8 +351,8 @@ const MainDTMF = (props) => {
                 style={{ cursor: "pointer" }}
               /> */}
               <ReactAudioPlayer
-                src={e}
-                autoPlay
+                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                // autoPlay
                 controls
               />
 
@@ -415,8 +415,8 @@ const MainDTMF = (props) => {
                       style={{ cursor: "pointer" }}
                     /> */}
                     <ReactAudioPlayer
-                src={e}
-                autoPlay
+                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                // autoPlay
                 controls
               />
                     <br></br>
@@ -627,8 +627,8 @@ const MainDTMF = (props) => {
                 style={{ color: "purple" }}
               /> */}
               <ReactAudioPlayer
-                src={e}
-                autoPlay
+                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                // autoPlay
                 controls
               />
             </div>

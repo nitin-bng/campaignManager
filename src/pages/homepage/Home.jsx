@@ -26,6 +26,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import classNames from "classnames";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { store } from "../../store/store";
@@ -83,8 +86,26 @@ const Home = () => {
     return { campId, campName, campPriority, wfId, serviceName };
   }
 
-  function createData2(jobId, jobName, priority, status) {
-    return { jobId, jobName, priority, status };
+  function createData2(
+    jobId,
+    jobName,
+    startDate,
+    endDate,
+    dailyStartTime,
+    dailyEndTime,
+    priority,
+    status
+  ) {
+    return {
+      jobId,
+      jobName,
+      startDate,
+      endDate,
+      dailyStartTime,
+      dailyEndTime,
+      priority,
+      status,
+    };
   }
   function createData3(id, wfId, flowName) {
     return { id, wfId, flowName };
@@ -205,6 +226,10 @@ const Home = () => {
                 createData2(
                   params.jobId,
                   params.jobName,
+                  params.startDate.slice(0, 10),
+                  params.endDate.slice(0, 10),
+                  params.dailyStartTime,
+                  params.dailyEndTime,
                   params.priority,
                   params.status
                 )
@@ -243,28 +268,7 @@ const Home = () => {
         return error;
       });
   };
-  const getCallPercentage = (campName) => {
-    debugger;
-    const path =
-      "http://34.214.61.86:5000/bng/ui/job/status/count?campName=" +
-      campName +
-      "&days=6";
-    fetch(path)
-      .then((response) => response.json())
-      .then(function (data) {
-        data.map((e) => {
-          setCallSuccess(callSuccess.push(e.success));
-          setCallFail(callFail.push(e.fail));
-          setCallRetry(callRetry.push(e.retry));
-        });
-        console.log(callSuccess, callFail, callRetry);
-        return data;
-      })
-      .catch(function (error) {
-        console.log("failed", error);
-        return error;
-      });
-  };
+
   const getCampaignList = () => {
     const path = "http://34.214.61.86:5000/bng/ui/list/campaign";
     fetch(path)
@@ -372,44 +376,6 @@ const Home = () => {
       });
   };
 
-  const getcampaignScheduleList = () => {
-    debugger;
-    fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
-        "userId"
-      )}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        res.json().then((res) => {
-          if (res.length > 0) {
-            rows2 = [];
-            res.map((params) => {
-              rows2.push(
-                createData2(
-                  params.jobId,
-                  params.jobName,
-                  params.priority,
-                  params.status
-                )
-              );
-            });
-            setData2(rows2);
-          } else if (res.length == 0) {
-            setData2([]);
-          }
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const flowFromApi = (data) => {
     debugger;
     let localStore = globalState.state;
@@ -417,50 +383,6 @@ const Home = () => {
     localStore.ivrCampFlowData.flow = data;
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log("hello hello hello", globalState);
-  };
-
-  const getFlow = async (e, id) => {
-    debugger;
-    localStorage.setItem("wfId", id);
-    flowId = id;
-    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
-    return await fetch(path)
-      .then((response) => response.json())
-      .then(function (data) {
-        setFlowData(data);
-        getChannelName(data.flow.channel);
-        // if(data.flow.channel != "IVR_SMS"){
-        localStorage.setItem("channelName", data.flow.channel);
-        // }
-        localStorage.setItem("flowName", data.service_Data.name);
-        // history.push({
-        //     pathname: '/campaign/ivr',
-        //     state: { detail: data }
-        // });
-        console.log("dataFrom api call ", data);
-        flowDataFromApi = data.flow;
-
-        console.log("flowDataFromApi", flowDataFromApi);
-        flowFromApi(data.flow);
-        setOpenModal(true);
-        return data;
-      })
-      .catch(function (error) {
-        console.log("failed", error);
-        return error;
-      });
-  };
-
-  const handleModal = () => {
-    setOpenModal(false);
-    // if (response === "successful") {
-    //   navigate("/verifyotp");
-    //   // state: { detail: 'true' }
-    // } else if (response === "unsuccessful") {
-    //   navigate("/");
-    // } else {
-    //   navigate("/forgotpassword");
-    // }
   };
 
   useEffect(() => {
@@ -489,7 +411,7 @@ const Home = () => {
           <div className="home__maincontent__container">
             <div className="home__maincontent">
               <div className="home__maincontent__card__container">
-                <div className="home__maincontent__card home__maincontent__card1">
+                {/* <div className="home__maincontent__card home__maincontent__card1">
                   <p
                     style={{
                       fontSize: "1.7rem",
@@ -506,16 +428,33 @@ const Home = () => {
                     {" "}
                     Welcome to Campaign Manager
                   </p>
-                </div>
-                <div className="home__maincontent__card home__maincontent__card2">
+                </div> */}
+                <div
+                  className="home__maincontent__card home__maincontent__card2"
+                  style={{ height: "40vh", margin: "1rem" }}
+                >
                   <Doughnut
                     width={"30%"}
                     options={{ maintainAspectRatio: false }}
                     data={DoughnutChartData}
                   />
                 </div>
-                <div className="home__maincontent__card home__maincontent__card3">
+                <div
+                  className="home__maincontent__card home__maincontent__card4"
+                  style={{ height: "40vh", margin: "1rem" }}
+                >
+                  <Doughnut
+                    width={"30%"}
+                    options={{ maintainAspectRatio: false }}
+                    data={DoughnutChartData2}
+                  />
+                </div>
+                <div
+                  className="home__maincontent__card home__maincontent__card3"
+                  style={{ width: "96%", margin: "1rem" }}
+                >
                   <Line
+                    height={"80%"}
                     data={{
                       labels: [
                         new Date().getDate() -
@@ -544,6 +483,31 @@ const Home = () => {
                           new Date().getFullYear(),
                         new Date().getDate() -
                           1 +
+                          "-" +
+                          new Date().getMonth() +
+                          "-" +
+                          new Date().getFullYear(),
+                        new Date().getDate() +
+                          "-" +
+                          new Date().getMonth() +
+                          "-" +
+                          new Date().getFullYear(),
+                        new Date().getDate() +
+                          "-" +
+                          new Date().getMonth() +
+                          "-" +
+                          new Date().getFullYear(),
+                        new Date().getDate() +
+                          "-" +
+                          new Date().getMonth() +
+                          "-" +
+                          new Date().getFullYear(),
+                        new Date().getDate() +
+                          "-" +
+                          new Date().getMonth() +
+                          "-" +
+                          new Date().getFullYear(),
+                        new Date().getDate() +
                           "-" +
                           new Date().getMonth() +
                           "-" +
@@ -602,20 +566,13 @@ const Home = () => {
                     }}
                   />
                 </div>
-                <div className="home__maincontent__card home__maincontent__card4">
-                  <Doughnut
-                    width={"30%"}
-                    options={{ maintainAspectRatio: false }}
-                    data={DoughnutChartData2}
-                  />
-                </div>
               </div>
             </div>
           </div>
 
           {/* flow list */}
 
-          <div
+          {/* <div
             className="row"
             style={{
               // border: "2px solid red",
@@ -657,7 +614,6 @@ const Home = () => {
                           <TableCell align="center">{row.id}</TableCell>
                           <TableCell align="center">{row.flowName}</TableCell>
                           <TableCell align="center">{row.wfId}</TableCell>
-                          {/* <TableCell align="center">{row.wfId}</TableCell> */}
                         </TableRow>
                       ))}
                     </TableBody>
@@ -706,10 +662,10 @@ const Home = () => {
                 Ok
               </button>
             </div>
-          )}
+          )} */}
 
           {/* camp list */}
-          <div
+          {/* <div
             className="row"
             style={{
               // border: "2px solid red",
@@ -739,7 +695,6 @@ const Home = () => {
                     <TableBody>
                       {tabledata.map((row) => (
                         <TableRow key={row.service_id} className="tableRow">
-                          {/* {console.log(row)} */}
                           <TableCell align="center">{row.campId}</TableCell>
                           <TableCell align="center">{row.campName}</TableCell>
                           <TableCell align="center">
@@ -753,7 +708,7 @@ const Home = () => {
                 </TableContainer>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* scheduleed */}
 
@@ -761,7 +716,7 @@ const Home = () => {
             className="listContainer row"
             style={{
               // border: "2px solid red",
-              width: "70%",
+              width: "91%",
               margin: "2rem auto",
               boxSizing: "border-box",
             }}
@@ -778,20 +733,59 @@ const Home = () => {
                   <Table className={classes.table} aria-label="simple table">
                     <TableHead className="thead-light">
                       <TableRow>
-                        <TableCell align="center"> Id</TableCell>
-                        <TableCell align="center">Job Name</TableCell>
+                        <TableCell align="center">S. No.</TableCell>
+                        <TableCell align="center">Camp Name</TableCell>
+                        <TableCell align="center">Start Date</TableCell>
+                        <TableCell align="center">End Date</TableCell>
+                        <TableCell align="center">Start Time</TableCell>
+                        <TableCell align="center">End Time</TableCell>
                         <TableCell align="center">Priority</TableCell>
                         <TableCell align="center">Status</TableCell>
+                        <TableCell align="center">Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {tabledata2.map((row) => (
                         <TableRow key={row.service_id} className="tableRow">
-                          {/* {console.log(tabledata2)} */}
+                          {console.log(tabledata2)}
                           <TableCell align="center">{row.jobId}</TableCell>
                           <TableCell align="center">{row.jobName}</TableCell>
+                          <TableCell align="center">{row.startDate}</TableCell>
+                          <TableCell align="center">{row.endDate}</TableCell>
+                          <TableCell align="center">
+                            {row.dailyStartTime}
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.dailyEndTime}
+                          </TableCell>
                           <TableCell align="center">{row.priority}</TableCell>
                           <TableCell align="center">{row.status}</TableCell>
+                          <TableCell align="center">
+                            <FormGroup style={{}}>
+                              {row.status == "SCHEDULED" ? (
+                                <>
+                                  <FormGroup>
+                                    <FormControlLabel
+                                      disabled
+                                      control={<Switch />}
+                                      label="Disabled"
+                                      labelPlacement="bottom"
+                                    />
+                                  </FormGroup>
+                                </>
+                              ) : (
+                                <>
+                                  <FormGroup>
+                                    <FormControlLabel
+                                      control={<Switch defaultChecked />}
+                                      label="Label"
+                                      labelPlacement="bottom"
+                                    />
+                                  </FormGroup>
+                                </>
+                              )}
+                            </FormGroup>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

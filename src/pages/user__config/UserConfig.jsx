@@ -219,10 +219,10 @@ const UserConfig = () => {
 
   const [blackOutDays, setBlackOutDays] = React.useState([]);
   const [blackoutStartHour, setBlackoutStartHour] = React.useState(
-    new Date("2014-08-18T21:11:54")
+    new Date()
   );
   const [blackoutEndHour, setBlackoutEndHour] = React.useState(
-    new Date("2014-08-18T21:11:54")
+    new Date()
   );
   const Navigate = useNavigate()
   const [blackoutDate, setBlackoutDate] = React.useState([]);

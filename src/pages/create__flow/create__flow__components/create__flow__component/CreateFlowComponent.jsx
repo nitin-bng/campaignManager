@@ -194,6 +194,11 @@ const CreateFlowComponent = (props) => {
     <>
       <div className="create__flow__component">
         <div className="create__flow__component__container">
+
+
+
+
+          
           <div className="basic__flow__details__container">
             <div className="basic__flow__details__heading__container">
               <h1>Basic Flow Details</h1>

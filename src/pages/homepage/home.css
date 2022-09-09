@@ -1,9 +1,10 @@
 .home{
     /* border: 2px solid red; */
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
     background-color: rgba(211, 211, 211, 0.603);
     overflow: scroll;
+    padding-bottom: 3rem;
 }
 
 .home__container{

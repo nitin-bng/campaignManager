@@ -26,6 +26,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
+import ReactAudioPlayer from 'react-audio-player';
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
@@ -254,7 +255,7 @@ const SubDTMF = (props) => {
               <span style={{ color: "darkgray" }}> {index + 1} - </span>
               {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
               {e}
-              <BsCheckCircle size={15} className="checkedIcon" />
+              {/* <BsCheckCircle size={15} className="checkedIcon" />
               <IoIosCloseCircleOutline
                 className="checkedIcon"
                 size={15}
@@ -276,6 +277,11 @@ const SubDTMF = (props) => {
                 id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
                 onClick={() => playPauseAudio(e)}
                 style={{ cursor: "pointer" }}
+              /> */}
+              <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
               />
 
               {/* <span className="m-t-10"> </span> */}
@@ -304,7 +310,7 @@ const SubDTMF = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
                     {e}
-                    <BsCheckCircle size={15} className="checkedIcon" />
+                    {/* <BsCheckCircle size={15} className="checkedIcon" />
                     <IoIosCloseCircleOutline
                       className="checkedIcon"
                       size={15}
@@ -335,7 +341,12 @@ const SubDTMF = (props) => {
                       }
                       onClick={() => playPauseAudio(e)}
                       style={{ cursor: "pointer" }}
-                    />
+                    /> */}
+                    <ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
+              />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}
@@ -832,7 +843,7 @@ const SubDTMF = (props) => {
                 marginTop: "5px",
               }}
             >
-            <BsCheckCircle size={15} className="checkedIcon" />
+            {/* <BsCheckCircle size={15} className="checkedIcon" />
             <IoIosCloseCircleOutline
               className="checkedIcon"
               size={15}
@@ -842,7 +853,12 @@ const SubDTMF = (props) => {
               className="checkedIcon"
               size={15}
               style={{ color: "purple" }}
-            />
+            /> */}
+<ReactAudioPlayer
+                src={e}
+                autoPlay
+                controls
+              />
             </div>
      
           </span>

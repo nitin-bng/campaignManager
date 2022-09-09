@@ -9,6 +9,8 @@ import { CommonProvider } from "./helpers/CommonContext";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
     <>
       <div className="app">
         <CommonProvider>
+          <ToastContainer />
           <div className="app__container">
             <Routes>
               <Route path="/" element={<Login />} />

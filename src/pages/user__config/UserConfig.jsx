@@ -41,6 +41,8 @@ import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";
 
 import {getDateInFormat, getMultipleDatesInFormat} from '../../services/getDateInFormat'
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -222,6 +224,7 @@ const UserConfig = () => {
   const [blackoutEndHour, setBlackoutEndHour] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
+  const Navigate = useNavigate()
   const [blackoutDate, setBlackoutDate] = React.useState([]);
   const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
@@ -312,7 +315,8 @@ const UserConfig = () => {
           if (res.status == "successful") {
             setCreateUpdate(true);
             // setShowSuccess(true);
-            // toast("You can create flow now")
+            Navigate('/home')
+            toast("You can create flow now")
             // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);

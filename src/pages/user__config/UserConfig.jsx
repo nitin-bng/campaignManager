@@ -328,15 +328,21 @@ const UserConfig = () => {
     // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
-    if(false){
-
+    if(!blackOutDays.length){
+      setConfigError('Please Enter Blackout days')
+    }
+    else if(!startTimeToSendAtBackend){
+      console.log('nitin',startTimeToSendAtBackend)
+      setConfigError('Please Enter Start time')
+    }
+    else if(!endTimeToSendAtBackend){
+      setConfigError('Please Enter End time')
     }
     else if(!countryCode){
       setConfigError('Please Enter Country Code')
     }
     else if(!msisdnLength){
       setConfigError('Please Enter Mobile Number length')
-
     }
     else{fetch(
       config.server.path +
@@ -433,6 +439,21 @@ const UserConfig = () => {
             setMsisdnLength(res.msisdnLength);
             setBlackoutStartHour(res.startTime);
             setBlackoutEndHour(res.endTime);
+          //   let starttime =
+          //   res.startTime.getHours().toString() +
+          //   ":" +
+          //   res.startTime.getMinutes().toString() +
+          //   ":" +
+          //  res.startTime.getSeconds().toString();
+          //   console.log('nitin again', starttime)
+          //   setStartTimeToSendAtBackend(res.startTime)
+          //   let endtime =
+          //   res.endtime.getHours().toString() +
+          //   ":" +
+          //   res.endTime.getMinutes().toString() +
+          //   ":" +
+          //  res.endTime.getSeconds().toString();
+            // setEndTimeToSendAtBackend(res.endTime)
 
             if (res.startTime == null) {
               handleStartDateChange(new Date());
@@ -446,7 +467,7 @@ const UserConfig = () => {
             }
             // setGetDate(res.date)
             setValues(formatedData);
-            setgetEndHour(res.endTime);
+            setgetEndHour.catchour(res.endTime);
             scheduleData = {
               days: res.days,
               requiredChannel: res.requiredChannel,
@@ -710,7 +731,6 @@ const UserConfig = () => {
                                     // setValue
                                   }}
                                 />
-                                {console.log("nitin date", blackoutDate)}
                                 <CustomWidthTooltip title={BlackoutDateInfo}>
                                   <HelpIcon
                                     className="helpicon"

@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 
 
 import config from "../ApiConfig/Config";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const Navigate = useNavigate()
@@ -52,7 +53,9 @@ const Login = () => {
 
             getUserDetails(res.id)
 
-            //  console.log(res)
+            if(res.status === 'unsuccessful'){
+              toast("Wrong credentials!")
+            }
            })
     })
   }

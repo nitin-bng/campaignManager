@@ -26,7 +26,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from "react-audio-player";
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
@@ -279,7 +279,7 @@ const SubDTMF = (props) => {
                 style={{ cursor: "pointer" }}
               /> */}
               <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                src={`http://34.214.61.86/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />
@@ -343,10 +343,10 @@ const SubDTMF = (props) => {
                       style={{ cursor: "pointer" }}
                     /> */}
                     <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
+                      src={`http://34.214.61.86/cm_data/audio/${e}`}
+                      // autoPlay
+                      controls
+                    />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}
@@ -825,17 +825,16 @@ const SubDTMF = (props) => {
             <span style={{ color: "darkgray" }}> {index + 1} - </span>
             {/* {globalState.state.temp.uploads.find(f => e === f.s_name).l_name} */}
             <span style={{ color: "darkgray" }}>
-
-            {globalState.state.temp.uploads.length > 0
-              ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+              {globalState.state.temp.uploads.length > 0
                 ? globalState.state.temp.uploads.find((f) => e === f.s_name)
-                    .l_name
-                : e
-              : e}
+                  ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                      .l_name
+                  : e
+                : e}
             </span>
 
-              <br />
-<div
+            <br />
+            <div
               className="playingOptions"
               style={{
                 display: "flex",
@@ -843,7 +842,7 @@ const SubDTMF = (props) => {
                 marginTop: "5px",
               }}
             >
-            {/* <BsCheckCircle size={15} className="checkedIcon" />
+              {/* <BsCheckCircle size={15} className="checkedIcon" />
             <IoIosCloseCircleOutline
               className="checkedIcon"
               size={15}
@@ -854,13 +853,12 @@ const SubDTMF = (props) => {
               size={15}
               style={{ color: "purple" }}
             /> */}
-<ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+              <ReactAudioPlayer
+                src={`http://34.214.61.86/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />
             </div>
-     
           </span>
         );
       });
@@ -1069,7 +1067,10 @@ const SubDTMF = (props) => {
                     </FormControl>
                   </div>
 
-                  <div className={props.hideItemStyle} style={{ width: "100%" }}>
+                  <div
+                    className={props.hideItemStyle}
+                    style={{ width: "100%" }}
+                  >
                     {localStore.ivrCampFlowData.flow.language.map((hello) => {
                       console.log(
                         "localStore.ivrCampFlowData.flow.language ===>",
@@ -1085,15 +1086,29 @@ const SubDTMF = (props) => {
                         hellohello
                       );
                     })}
-                    <div className="ghghg" style={{ margin:"10px 0"}}>
+                    <div className="ghghg" style={{ margin: "10px 0" }}>
                       {languageName.map((el) => {
-                        return <Typography style={{fontSize:"12px"}}>enter hello file for {el}</Typography>;
+                        return (
+                          <Typography style={{ fontSize: "12px" }}>
+                            enter hello file for {el}
+                          </Typography>
+                        );
                       })}
                     </div>
                     <div className="ghghgh">
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <FileUploaderForSubDTMF lang={lang} main_audio_file={localStore.ivrCampFlowData.flow.main_audio_file} current={props.current} uploadFiles={uploadFiles} traverseAndModify={traverseAndModify} AudioFilesL2={AudioFilesL2} hideItemStyle={props.hideItemStyle} />
+                          <FileUploaderForSubDTMF
+                            lang={lang}
+                            main_audio_file={
+                              localStore.ivrCampFlowData.flow.main_audio_file
+                            }
+                            current={props.current}
+                            uploadFiles={uploadFiles}
+                            traverseAndModify={traverseAndModify}
+                            AudioFilesL2={AudioFilesL2}
+                            hideItemStyle={props.hideItemStyle}
+                          />
                         )
                       )}
                     </div>

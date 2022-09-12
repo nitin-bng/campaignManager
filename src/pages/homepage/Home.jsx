@@ -29,7 +29,12 @@ import classNames from "classnames";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { store } from "../../store/store";
 import CreateFlowComponent from "../create__flow/create__flow__components/create__flow__component/CreateFlowComponent";
@@ -42,6 +47,28 @@ ChartJS.register(
   PointElement,
   LineElement
 );
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+var names = [];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 const Home = () => {
   const globalState = useContext(store);
@@ -385,11 +412,32 @@ const Home = () => {
     console.log("hello hello hello", globalState);
   };
 
+  const dashBoardDataFromApi = async () => {
+    const path = `http://34.214.61.86:5002/bng/ui/dashboard/${localStorage.getItem(
+      "userId"
+    )}`;
+    fetch(path)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("dashBoardDataFromApi", data);
+        data.campName.map((ele)=>{
+          return(
+            names.push(ele)
+
+          )
+        })
+      })
+      .catch(() => {
+        return <p>dashboard data not available</p>;
+      });
+  };
+
   useEffect(() => {
     getNumberOfAgencies();
     getNumberOfPublishers();
     getNumberOfAdvertisers();
     getNumberOfCampaigns();
+    dashBoardDataFromApi();
     // getcampaignScheduleList();
   }, []);
 
@@ -398,6 +446,19 @@ const Home = () => {
     hideInput: hideItem,
     showInput: !hideItem,
   });
+
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
   return (
     <>
@@ -411,28 +472,39 @@ const Home = () => {
           <div className="home__maincontent__container">
             <div className="home__maincontent">
               <div className="home__maincontent__card__container">
-                {/* <div className="home__maincontent__card home__maincontent__card1">
-                  <p
-                    style={{
-                      fontSize: "1.7rem",
-                      fontWeight: "700",
-                      textTransform: "capitalize",
-                      color: "white",
-                      textShadow: "1px 1px 2px black",
-                    }}
-                  >
-                    Hi, {sessionStorage.getItem("userName")}
-                  </p>
-                  <br />
-                  <p style={{ fontWeight: "700" }}>
-                    {" "}
-                    Welcome to Campaign Manager
-                  </p>
-                </div> */}
                 <div
                   className="home__maincontent__card home__maincontent__card2"
-                  style={{ height: "40vh", margin: "1rem" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    // height: "40vh",
+                    margin: "1rem",
+                    padding: "1rem",
+                    border: "2px solid green",
+                  }}
                 >
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      // multiple
+                      value={personName}
+                      onChange={handleChange}
+                      input={<OutlinedInput label="Name" />}
+                      MenuProps={MenuProps}
+                    >
+                      {names.map((name) => (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          style={getStyles(name, personName, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <Doughnut
                     width={"30%"}
                     options={{ maintainAspectRatio: false }}
@@ -441,8 +513,35 @@ const Home = () => {
                 </div>
                 <div
                   className="home__maincontent__card home__maincontent__card4"
-                  style={{ height: "40vh", margin: "1rem" }}
+                  style={{ display: "flex",
+                  flexDirection: "column",
+                  // height: "40vh",
+                  margin: "1rem",
+                  padding: "1rem",
+                  border: "2px solid green",}}
                 >
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      // multiple
+                      value={personName}
+                      onChange={handleChange}
+                      input={<OutlinedInput label="Name" />}
+                      MenuProps={MenuProps}
+                    >
+                      {names.map((name) => (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          style={getStyles(name, personName, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <Doughnut
                     width={"30%"}
                     options={{ maintainAspectRatio: false }}
@@ -731,7 +830,13 @@ const Home = () => {
               <div className="table-responsive table-striped ctable">
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
-                    <TableHead className="thead-light" style={{backgroundColor:"lightgray", borderBottom:"2px solid black"}}>
+                    <TableHead
+                      className="thead-light"
+                      style={{
+                        backgroundColor: "lightgray",
+                        borderBottom: "2px solid black",
+                      }}
+                    >
                       <TableRow>
                         <TableCell align="center">S. No.</TableCell>
                         <TableCell align="center">Camp Name</TableCell>

@@ -18,7 +18,7 @@ import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
 
 import config from "../../../../../ApiConfig/Config";
 import Typography from "@mui/material/Typography";
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from "react-audio-player";
 
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -44,25 +44,29 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const {showError, setShowError, errorDispatch, errorState} = useError()
+  const { showError, setShowError, errorDispatch, errorState } = useError();
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
 
-  useEffect(()=>{
-    setShowError(false)
-    errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
-  },[])
-  
-  useEffect(()=>{
-    if(parseInt(globalState.state.ivrCampFlowData.flow.waitTime) >=0 && parseInt(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount) >=0){
-      errorDispatch({type: 'IF_IVR_SELECTED', payload: true})
+  useEffect(() => {
+    setShowError(false);
+    errorDispatch({ type: "IF_IVR_SELECTED", payload: false });
+  }, []);
+
+  useEffect(() => {
+    if (
+      parseInt(globalState.state.ivrCampFlowData.flow.waitTime) >= 0 &&
+      parseInt(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount) >= 0
+    ) {
+      errorDispatch({ type: "IF_IVR_SELECTED", payload: true });
+    } else {
+      errorDispatch({ type: "IF_IVR_SELECTED", payload: false });
     }
-    else{
-      errorDispatch({type: 'IF_IVR_SELECTED', payload: false})
-      
-    }
-  },[globalState.state.ivrCampFlowData.flow.waitTime, globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount])
+  }, [
+    globalState.state.ivrCampFlowData.flow.waitTime,
+    globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount,
+  ]);
 
   const handleDataInput = (e, type) => {
     if (type === "mainAudioWaitTime") {
@@ -271,7 +275,7 @@ const IfIVRSelected = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log("got response from file upload....", response);
-        errorDispatch({type:'AUDIO', payload: false})
+        errorDispatch({ type: "AUDIO", payload: false });
         return response;
       })
       .catch((e) => {
@@ -363,11 +367,11 @@ const IfIVRSelected = (props) => {
                   style={{ cursor: "pointer" }}
                 /> */}
 
-<ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
+                <ReactAudioPlayer
+                  src={`http://34.214.61.86/cm_data/audio/${e}`}
+                  // autoPlay
+                  controls
+                />
               </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
@@ -428,10 +432,10 @@ const IfIVRSelected = (props) => {
                       style={{ cursor: "pointer" }}
                     /> */}
                     <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
+                  src={`http://34.214.61.86/cm_data/audio/${e}`}
+                  // autoPlay
+                      controls
+                    />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}
@@ -946,7 +950,7 @@ const IfIVRSelected = (props) => {
   };
 
   const setWaitTime = (level, target, dtmf_key) => {
-    const val = target.value >= 0 ? target.value :0
+    const val = target.value >= 0 ? target.value : 0;
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
     else if (level === "sub")
@@ -980,7 +984,7 @@ const IfIVRSelected = (props) => {
         <div className="if__ivr__selected__container">
           <hr className="hr" />
           <div
-            style={{boxShadow:"2px 2px 3px grey"}}
+            style={{ boxShadow: "2px 2px 3px grey" }}
             className={props.hideItemStyle}
           >
             {localStore.ivrCampFlowData.flow.language.map((hello) => {
@@ -998,15 +1002,24 @@ const IfIVRSelected = (props) => {
                 hellohello
               );
             })}
-            <div className="ghghg" style={{ margin:"10px 0"}}>
+            <div className="ghghg" style={{ margin: "10px 0" }}>
               {languageName.map((el) => {
-                return <Typography style={{fontSize:"12px"}}>enter hello file for {el}</Typography>;
+                return (
+                  <Typography style={{ fontSize: "12px" }}>
+                    enter hello file for {el}
+                  </Typography>
+                );
               })}
             </div>
-            <div className="ghghgh" style={{ }}>
+            <div className="ghghgh" style={{}}>
               {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-                  <FileUploaderForIVRSelected lang={lang} GetMainAudioFiles={GetMainAudioFiles} localStore={localStore} uploadFiles={uploadFiles} hideItemStyle={props.hideItemStyle} />
-
+                <FileUploaderForIVRSelected
+                  lang={lang}
+                  GetMainAudioFiles={GetMainAudioFiles}
+                  localStore={localStore}
+                  uploadFiles={uploadFiles}
+                  hideItemStyle={props.hideItemStyle}
+                />
               ))}
             </div>
           </div>
@@ -1041,13 +1054,33 @@ const IfIVRSelected = (props) => {
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
                   required
-                  error={showError ? parseInt(globalState.state.ivrCampFlowData.flow.waitTime, 10) >=0 ? false : true :false}
+                  error={
+                    showError
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow.waitTime,
+                          10
+                        ) >= 0
+                        ? false
+                        : true
+                      : false
+                  }
                 />
               </Box>
             </div>
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-simple-select-label" required error={showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  required
+                  error={
+                    showError
+                      ? globalState.state.ivrCampFlowData.flow
+                          .main_audio_dtmfCount
+                        ? false
+                        : true
+                      : false
+                  }
+                >
                   {" "}
                   hello DTMF
                 </InputLabel>
@@ -1068,7 +1101,14 @@ const IfIVRSelected = (props) => {
                   name="main_audio_dtmfCount"
                   disabled={props.disableEditingWhileCreatingCamp}
                   required
-                  error={showError ? globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ? false : true :false}
+                  error={
+                    showError
+                      ? globalState.state.ivrCampFlowData.flow
+                          .main_audio_dtmfCount
+                        ? false
+                        : true
+                      : false
+                  }
                 >
                   {numberOfDTMF.map((number, index) => {
                     return (
@@ -1112,7 +1152,7 @@ const IfIVRSelected = (props) => {
                   // disableProperties={disableProperties}
                   // resetFileArray={resetFileArray}
                   // disableChannel={disableChannel}
-                  />
+                />
               );
             })}
           </div>

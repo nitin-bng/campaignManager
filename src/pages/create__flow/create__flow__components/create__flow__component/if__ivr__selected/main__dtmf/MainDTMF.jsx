@@ -26,7 +26,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from "react-audio-player";
 
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
@@ -155,7 +155,7 @@ const MainDTMF = (props) => {
             if (
               localStore.ivrCampFlowData.flow &&
               localStore.ivrCampFlowData.flow.language[0].actions[i].lang_file[
-              "ivr"
+                "ivr"
               ] !== ""
             ) {
               oldStateFiles =
@@ -182,18 +182,18 @@ const MainDTMF = (props) => {
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang]
               ? localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[
-              lang
-              ] +
-              "," +
-              uploadedFiles.response
+                  lang
+                ] +
+                "," +
+                uploadedFiles.response
               : uploadedFiles.response;
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][lang]
               ? localStore.ivrCampFlowData.flow.actions[dtmfToSet].file["ivr"][
-              lang
-              ] +
-              "," +
-              uploadedFiles.response
+                  lang
+                ] +
+                "," +
+                uploadedFiles.response
               : uploadedFiles.response;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] === "level2") {
@@ -206,12 +206,12 @@ const MainDTMF = (props) => {
           ].audio_file[lang] = localStore.ivrCampFlowData.flow.actions[
             parent_dtmf - 1
           ].actions[current_dtmf - 1].audio_file[lang]
-              ? localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
+            ? localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
                 current_dtmf - 1
               ].audio_file[lang] +
               "," +
               uploadedFiles[0].key
-              : uploadedFiles[0].key;
+            : uploadedFiles[0].key;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] === "level3") {
           const gparent = targetArray[1];
@@ -224,12 +224,12 @@ const MainDTMF = (props) => {
           ].actions[current_dtmf - 1].audio_file[lang] = localStore
             .ivrCampFlowData.flow.actions[gparent].actions[parent_dtmf - 1]
             .actions[current_dtmf - 1].audio_file[lang]
-              ? localStore.ivrCampFlowData.flow.actions[gparent].actions[
+            ? localStore.ivrCampFlowData.flow.actions[gparent].actions[
                 parent_dtmf - 1
               ].actions[current_dtmf - 1].audio_file[lang] +
               "," +
               uploadedFiles[0].key
-              : uploadedFiles[0].key;
+            : uploadedFiles[0].key;
           dispatch({ type: "SET_DATA", nState: localStore });
         } else if (targetArray[0] + targetArray[1] === "repeataudio") {
           const current_dtmf = targetArray[2];
@@ -351,7 +351,7 @@ const MainDTMF = (props) => {
                 style={{ cursor: "pointer" }}
               /> */}
               <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                src={`http://34.214.61.86/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />
@@ -415,10 +415,10 @@ const MainDTMF = (props) => {
                       style={{ cursor: "pointer" }}
                     /> */}
                     <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
+                      src={`http://34.214.61.86/cm_data/audio/${e}`}
+                      // autoPlay
+                      controls
+                    />
                     <br></br>
                     <br></br>
                     {/* <span className="m-t-10"> </span> */}
@@ -598,11 +598,10 @@ const MainDTMF = (props) => {
           <span key={e}>
             <span style={{ color: "darkgray" }}> {index + 1} - </span>
             <span style={{ color: "darkgray" }}>
-
               {globalState.state.temp.uploads.length > 0
                 ? globalState.state.temp.uploads.find((f) => e === f.s_name)
                   ? globalState.state.temp.uploads.find((f) => e === f.s_name)
-                    .l_name
+                      .l_name
                   : e
                 : e}
             </span>
@@ -627,7 +626,7 @@ const MainDTMF = (props) => {
                 style={{ color: "purple" }}
               /> */}
               <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
+                src={`http://34.214.61.86/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />
@@ -769,10 +768,10 @@ const MainDTMF = (props) => {
                         error={
                           showError
                             ? parseInt(
-                              globalState.state.ivrCampFlowData.flow.actions[
-                                props.global.dtmf_key - 1
-                              ].waitTime
-                            ) >= 0
+                                globalState.state.ivrCampFlowData.flow.actions[
+                                  props.global.dtmf_key - 1
+                                ].waitTime
+                              ) >= 0
                               ? false
                               : true
                             : false
@@ -806,7 +805,7 @@ const MainDTMF = (props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  
+
                   <div
                     className={props.hideItemStyle}
                     style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
@@ -853,7 +852,15 @@ const MainDTMF = (props) => {
                     >
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
-                          <FileUploaderForMainDTMF lang={lang} hideItemStyle={props.hideItemStyle} parentNode={props.parentNode} global={props.global} globalState={globalState} uploadFiles={uploadFiles} AudioFiles={AudioFiles} />
+                          <FileUploaderForMainDTMF
+                            lang={lang}
+                            hideItemStyle={props.hideItemStyle}
+                            parentNode={props.parentNode}
+                            global={props.global}
+                            globalState={globalState}
+                            uploadFiles={uploadFiles}
+                            AudioFiles={AudioFiles}
+                          />
                         )
                       )}
                     </div>
@@ -881,8 +888,8 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp={
                         props.disableEditingWhileCreatingCamp
                       }
-                    // disableProperties={disableProperties}
-                    // disableChannel={disableChannel}
+                      // disableProperties={disableProperties}
+                      // disableChannel={disableChannel}
                     />
                   );
                 })}

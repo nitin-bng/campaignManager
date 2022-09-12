@@ -32,7 +32,7 @@ export const DoughnutChartData = {
   datasets: [
     {
       label: "# of Votes",
-      data: [20, 40, 30, 10, 20],
+      data: [20, 40, 30, 10],
       backgroundColor: [
         "rgb(255, 99, 132)",
         "rgb(54, 162, 235)",
@@ -42,6 +42,7 @@ export const DoughnutChartData = {
         // 'rgb(255, 159, 64)',
       ],
       borderWidth: 0,
+    
     },
   ],
 };

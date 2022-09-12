@@ -73,3 +73,11 @@
         margin: 1rem;
     }
 }
+ .home__maincontent__card2 canvas{
+    height: 400px !important;
+    width: 500px !important;
+ }
+ .home__maincontent__card4 canvas{
+    height: 400px !important;
+    width: 500px !important;
+ }

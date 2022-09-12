@@ -9,7 +9,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
 import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from "react-audio-player";
 
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
@@ -26,7 +26,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
   const { showError, setShowError, errorDispatch } = useError();
   const [errorStyle, setErrorStyle] = useState(true);
-  const[normalState, setNormalState] = useState(true)
+  const [normalState, setNormalState] = useState(true);
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
@@ -44,7 +44,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       ) {
         localStore.ivrCampFlowData.flow.language[0].actions[i].waitTime =
           e.target.value;
-          console.log("localstore", localStore);
+        console.log("localstore", localStore);
       }
 
       dispatch({ type: "SET_DATA", nState: localStore });
@@ -60,28 +60,30 @@ const RenderingComponentOnLanguageSelect = (props) => {
       globalState.state.ivrCampFlowData.flow.language
     );
     // if (globalState.state.ivrCampFlowData.flow.language) {
-      for (
-        var i = 0;
-        i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
-        i++
-        ) {
-          if (
-            lang ==
-            globalState.state.ivrCampFlowData.flow.language[0].actions[i].language
-            ) {
-              console.log('condition met',globalState.state.ivrCampFlowData.flow.language[0])
-              return globalState.state.ivrCampFlowData.flow.language[0].actions[i]
-              .waitTime;
-            }
-          }
-          console.log('condition not met')
+    for (
+      var i = 0;
+      i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
+      i++
+    ) {
+      if (
+        lang ==
+        globalState.state.ivrCampFlowData.flow.language[0].actions[i].language
+      ) {
+        console.log(
+          "condition met",
+          globalState.state.ivrCampFlowData.flow.language[0]
+        );
+        return globalState.state.ivrCampFlowData.flow.language[0].actions[i]
+          .waitTime;
+      }
+    }
+    console.log("condition not met");
     // }
   };
   const waitTime = useMemo(() => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
-  // const waitTime = 5 
-
+  // const waitTime = 5
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
@@ -211,7 +213,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       } else {
         const targetArray = target.split("_");
         console.log(target, "......", targetArray);
-        if (targetArray[0] + targetArray[1] === "mainaudio"){
+        if (targetArray[0] + targetArray[1] === "mainaudio") {
           const dtmfToSet = targetArray[2] - 1;
           localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang] =
             localStore.ivrCampFlowData.flow.actions[dtmfToSet].audio_file[lang]
@@ -401,11 +403,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   style={{ cursor: "pointer" }}
                 /> */}
                 <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
-              {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
+                  src={`http://34.214.61.86/cm_data/audio/${e}`}
+                  // autoPlay
+                  controls
+                />
+                {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
               </div>
               {/* <span className="m-t-10"> </span> */}
             </span>
@@ -472,11 +474,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         style={{ cursor: "pointer" }}
                       /> */}
                       <ReactAudioPlayer
-                src="http://34.214.61.86/zp-engine/data/filename2021_08_11_06_10_4400-8.wav"
-                // autoPlay
-                controls
-              />
-              {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
+                        src={`http://34.214.61.86/cm_data/audio/${e}`}
+                        // autoPlay
+                        controls
+                      />
+                      {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
                     </div>
                     {/* <span className="m-t-10"> </span> */}
                   </span>
@@ -487,7 +489,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
     }
     return <span> {Filelist} </span>;
   };
-
 
   return (
     <>
@@ -509,7 +510,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 value={waitTime}
                 onChange={(e) => {
                   saveValues(e);
-                  setNormalState(prev=>!prev)
+                  setNormalState((prev) => !prev);
                 }}
                 onWheel={(e) => e.target.blur()}
                 disabled={props.disableEditingWhileCreatingCamp}
@@ -521,8 +522,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       : true
                     : false
                 }
-                
-                />
+              />
             </Box>
           </div>
           {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}

@@ -152,7 +152,8 @@ const CreateFlow = () => {
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
-
+    console.log('dtmf count', globalState.state.ivrCampFlowData.flow
+    .main_audio_dtmfCount)
     if (checkMandatoryFields()) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setShowError(false);

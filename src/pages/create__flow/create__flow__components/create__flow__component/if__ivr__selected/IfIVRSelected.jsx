@@ -1074,8 +1074,8 @@ const IfIVRSelected = (props) => {
                   required
                   error={
                     showError
-                      ? globalState.state.ivrCampFlowData.flow
-                          .main_audio_dtmfCount
+                      ? parseInt(globalState.state.ivrCampFlowData.flow
+                          .main_audio_dtmfCount,10) >=0
                         ? false
                         : true
                       : false
@@ -1089,7 +1089,7 @@ const IfIVRSelected = (props) => {
                   id="demo-simple-select"
                   value={
                     globalState.state.ivrCampFlowData.flow
-                      .main_audio_dtmfCount || null
+                      .main_audio_dtmfCount
                   }
                   label="DTMF"
                   // onChange={handleChange}
@@ -1097,14 +1097,14 @@ const IfIVRSelected = (props) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);
                     console.log("here");
-                  }}
+                  }}  
                   name="main_audio_dtmfCount"
                   disabled={props.disableEditingWhileCreatingCamp}
                   required
                   error={
                     showError
-                      ? globalState.state.ivrCampFlowData.flow
-                          .main_audio_dtmfCount
+                      ? parseInt(globalState.state.ivrCampFlowData.flow
+                          .main_audio_dtmfCount, 10) >=0
                         ? false
                         : true
                       : false

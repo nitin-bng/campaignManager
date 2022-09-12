@@ -42,6 +42,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { useNavigate } from "react-router-dom";
 import "../create__campaign/createCampaign.css";
 import { CircularProgress } from "@material-ui/core";
+import { toast } from "react-toastify";
 var rows = [];
 const useStyles = makeStyles({
   table: {
@@ -151,6 +152,11 @@ const ScheduleCampaign = (props) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   var errors;
+
+  useEffect(()=>
+    props.setDisableNext(true)
+  ,[])
+
   useEffect(() => {
     debugger;
     if (localStorage.getItem("operatorName")) {
@@ -560,6 +566,8 @@ const ScheduleCampaign = (props) => {
             } else if (res.length == 0) {
             }
             // })
+            props.setDisableNext(false)
+            toast('Now you can go to next page')
           })
           .catch((e) => {
             console.log(e);

@@ -265,6 +265,7 @@ const UserConfig = () => {
   const [status, setStatus] = useState("");
   const [scheduleData1, setScheduleData] = useState({});
   const [elements, setElements] = useState(null);
+  const [configError, setConfigError] = useState('')
 
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
@@ -306,6 +307,7 @@ const UserConfig = () => {
 
   const userConfigSubmit = (event) => {
     localStorage.setItem("createFlowInMenuBarDisbled", true);
+    setConfigError('')
 
     // console.log("blackoutDate", blackoutDate);
     event.preventDefault();
@@ -326,7 +328,17 @@ const UserConfig = () => {
     // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
-    fetch(
+    if(false){
+
+    }
+    else if(!countryCode){
+      setConfigError('Please Enter Country Code')
+    }
+    else if(!msisdnLength){
+      setConfigError('Please Enter Mobile Number length')
+
+    }
+    else{fetch(
       config.server.path +
         config.server.port3 +
         "/" +
@@ -358,8 +370,7 @@ const UserConfig = () => {
       })
       .catch((e) => {
         // console.log(e);
-      });
-    // }
+      })}
   };
 
   const handleConfirm = () => {
@@ -1003,6 +1014,7 @@ const UserConfig = () => {
                       </Button>
                     </Stack>
                   </div>
+                  <div style={{color:"red", display: "flex", justifyContent:"center"}}>{configError}</div>
                 </>
               ) : (
                 <div className="successCard">

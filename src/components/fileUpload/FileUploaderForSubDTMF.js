@@ -1,9 +1,11 @@
+import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useError } from "../../store/errorContext";
 
 const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, traverseAndModify, AudioFilesL2, hideItemStyle}) =>{
     const [isError, setIsError] = useState(true)
     const {errorDispatch, showError} = useError()
+    const [showLoader, setShowLoader] = useState(false)
 
 
     useEffect(()=>{
@@ -38,8 +40,9 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
             overflow: "hidden",
             // height: "10px",
           }}
-          onChange={(event) => {
-            uploadFiles(
+          onChange={async(event) => {
+            setShowLoader(true)
+            await uploadFiles(
               "level" +
                 current.level +
                 "_" +
@@ -50,9 +53,10 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
                 lang,
               event,
               event.currentTarget.files,
-              lang
+              lang,
             );
             setIsError(false)
+            setShowLoader(false)
           }}
           required
         />
@@ -104,6 +108,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
             </div>
           </>
         ) : null}
+        {showLoader && <CircularProgress />}
       </div>)
 }
 

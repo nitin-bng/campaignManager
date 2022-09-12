@@ -43,7 +43,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const numberOfSubDTMF = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
 const MainDTMF = (props) => {
@@ -664,16 +664,16 @@ const MainDTMF = (props) => {
     if (
       !isFilled &&
       !globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
-        .waitTime
-    ) {
-      errorDispatch({ type: "MAIN_DTMF", payload: true });
-    }
-  }, [
-    isFilled,
-    globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
+      .waitTime
+      ) {
+        errorDispatch({ type: "MAIN_DTMF", payload: true });
+      }
+    }, [
+      isFilled,
+      globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
       .waitTime,
-  ]);
-
+    ]);
+    
   return (
     <>
       <div className="main__dtmf">
@@ -783,19 +783,33 @@ const MainDTMF = (props) => {
                   <div className="select__number__of__subDTMF__from__main__dtmf__container">
                     <FormControl style={{ width: "100%" }}>
                       {console.log("ggffggff", props)}
-                      <InputLabel id="demo-simple-select-label">
+                      <InputLabel id="demo-simple-select-label" required error={
+                          showError
+                            ? parseInt(props.global.dtmf_count,10) >=0
+                              ? false
+                              : true
+                            : false
+                        }>
                         fyg DTMF
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={props.global.dtmf_count || null}
+                        value={props.global.dtmf_count}
                         label="DTMF"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.global);
                         }}
                         disabled={props.disableEditingWhileCreatingCamp}
+                        required
+                        error={
+                          showError
+                            ? parseInt(props.global.dtmf_count,10) >=0
+                              ? false
+                              : true
+                            : false
+                        }
                       >
                         {numberOfSubDTMF.map((number, index) => {
                           console.log(number);

@@ -79,6 +79,7 @@ const CreateFlow = () => {
   });
   const [FlowListData, setFlowListData] = useState([]);
   const [showFlowTable, setShowFlowTable] = useState(true);
+  const [disableNext, setDisableNext] = useState(false)
   const [flowData, setFlowData] = useState({});
   // const [flowDataFromAPI, setFlowData] = useState({});
 
@@ -152,7 +153,8 @@ const CreateFlow = () => {
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
-
+    console.log('dtmf count', globalState.state.ivrCampFlowData.flow
+    .main_audio_dtmfCount)
     if (checkMandatoryFields()) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setShowError(false);
@@ -655,11 +657,13 @@ const CreateFlow = () => {
                           FlowListData={FlowListData}
                           setFlowListData={setFlowListData}
                           hideItemStyle={hideItemStyle}
+                          setDisableNext={setDisableNext}
                         />
                       ) : activeStep === 2 ? (
                         <ScheduleCampaign
                           disableEditingWhileCreatingCamp={true}
                           hideItemStyle={hideItemStyle}
+                          setDisableNext={setDisableNext}
                         />
                       ) : activeStep === 3 ? (
                         <Review />
@@ -688,7 +692,7 @@ const CreateFlow = () => {
                       </Button> */}
                       <Box sx={{ flex: "1 1 auto" }} />
 
-                      <Button onClick={handleNext} disabled={showFlowTable}>
+                      <Button onClick={handleNext} disabled={disableNext||showFlowTable}>
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
                     </Box>

@@ -41,6 +41,8 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { useNavigate } from "react-router-dom";
 import "../create__campaign/createCampaign.css";
+import { CircularProgress } from "@material-ui/core";
+import { toast } from "react-toastify";
 var rows = [];
 const useStyles = makeStyles({
   table: {
@@ -62,6 +64,7 @@ const ScheduleCampaign = (props) => {
   const Navigate = useNavigate();
   const { showError } = useError();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showLoader, setShowLoader] = useState(false)
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
@@ -149,6 +152,11 @@ const ScheduleCampaign = (props) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   var errors;
+
+  useEffect(()=>
+    props.setDisableNext(true)
+  ,[])
+
   useEffect(() => {
     debugger;
     if (localStorage.getItem("operatorName")) {
@@ -344,6 +352,7 @@ const ScheduleCampaign = (props) => {
         blackoutDay = e.target.value;
         console.log(blackoutDay);
       } else if (e.target.id == "uploadCsvFfile") {
+        setShowLoader(true)
         let files = e.target.files;
         var formData = new FormData();
         formData.append("file", files[0]);
@@ -351,8 +360,8 @@ const ScheduleCampaign = (props) => {
           // "http://34.214.61.86" + ":" + "5002" + "/bng/ui/uploadMsisdn",
           `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
             "userId"
-          )}&channel=${localStorage.getItem("channelName")}`,
-          {
+            )}&channel=${localStorage.getItem("channelName")}`,
+            {
             method: "POST",
             body: formData,
           }
@@ -372,6 +381,7 @@ const ScheduleCampaign = (props) => {
               } else if (res.length == 0) {
               }
             });
+            setShowLoader(false)
           })
           .catch((e) => {
             console.log(e);
@@ -556,6 +566,8 @@ const ScheduleCampaign = (props) => {
             } else if (res.length == 0) {
             }
             // })
+            props.setDisableNext(false)
+            toast('Now you can go to next page')
           })
           .catch((e) => {
             console.log(e);
@@ -1240,7 +1252,8 @@ const ScheduleCampaign = (props) => {
                     </div>
                     {errorMessage && (
                       <div style={{ color: "Red" }}>{errorMessage}</div>
-                    )}
+                      )}
+                    {showLoader && <CircularProgress />}
                   </div>
                 </div>
                 {/* )  */}

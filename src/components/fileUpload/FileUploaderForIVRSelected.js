@@ -1,9 +1,11 @@
+import { CircularProgress } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useError } from "../../store/errorContext";
 
 const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudioFiles, hideItemStyle}) =>{
     const {errorDispatch, showError} = useError()
     const [isError, setIsError] = useState(true)
+    const [showLoader, setShowLoader] = useState(false)
 
     useEffect(()=>{
         if(hideItemStyle === undefined){
@@ -35,14 +37,16 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
           type="file"
           class="custom-file-input"
           name="main_audio_file"
-          onChange={(event) => {
-            uploadFiles(
+          onChange={async(event) => {
+            setShowLoader(true)
+            await uploadFiles(
               "main_audio_file",
               event,
               event.currentTarget.files,
               lang,
             );
             setIsError(false)
+            setShowLoader(false)
           }}
           required
         />
@@ -71,6 +75,7 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
             {/* <hr /> */}
           </>
         ) : null}
+        {showLoader && <CircularProgress />}
       </div>)
 }
 

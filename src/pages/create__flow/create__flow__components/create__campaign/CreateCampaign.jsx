@@ -67,6 +67,7 @@ const CreateCampaign = (props) => {
     debugger;
     // setData([]);
     // props.getFlowList();
+    props.setDisableNext(true)
   }, []);
 
   useEffect(() => {
@@ -281,6 +282,7 @@ const CreateCampaign = (props) => {
     } else {
       setShowError(true);
     }
+    props.setDisableNext(false)
   };
 
   const flowFromApi = (data) => {

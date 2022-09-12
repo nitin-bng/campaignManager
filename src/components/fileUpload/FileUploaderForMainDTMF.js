@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useError } from "../../store/errorContext";
 
@@ -5,6 +6,7 @@ import { useError } from "../../store/errorContext";
 const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globalState, uploadFiles, AudioFiles}) =>{
     const [isError, setIsError] = useState(true)
     const {errorDispatch, showError} = useError()
+    const [showLoader, setShowLoader] = useState(false)
 
 
     useEffect(()=>{
@@ -41,16 +43,18 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
             overflow: "hidden",
             // height: "10px",
           }}
-          onChange={(event) => {
-            uploadFiles(
+          onChange={async(event) => {
+            setShowLoader(true)
+            await uploadFiles(
               parentNode +
                 "_" +
                 global.dtmf_key,
               event,
               event.currentTarget.files,
-              lang
+              lang,
             );
             setIsError(false)
+            setShowLoader(false)
           }}
           required
         />
@@ -75,6 +79,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
           </div>
         ) : // <div>Please upload the audio file</div>
         null}
+        {showLoader && <CircularProgress />}
       </div>)
 }
 

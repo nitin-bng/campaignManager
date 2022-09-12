@@ -16,6 +16,7 @@ import { store } from "../../../../../../store/store";
 import { useError } from "../../../../../../store/errorContext";
 import { areAllAudioUploaded } from "../../../../../../services/areAllAudioUploaded";
 import Review from "../../../review/Review";
+import { CircularProgress } from "@mui/material";
 const RenderingComponentOnLanguageSelect = (props) => {
   console.log("props for wait time ", props);
   let globalState = useContext(store);
@@ -25,8 +26,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
   console.log("language props ====>", props);
   const { dtmfTime, setDtmfTime } = useContext(CommonContext);
   const { showError, setShowError, errorDispatch } = useError();
-  const [errorStyle, setErrorStyle] = useState(true);
+  const [isError, setIsError] = useState(true);
   const [normalState, setNormalState] = useState(true);
+  const [showLoader, setShowLoader] = useState(false)
   // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
@@ -311,7 +313,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .then((response) => {
         console.log("got response from file upload....", response);
         errorDispatch({ type: "AUDIO", payload: false });
-        setErrorStyle(false);
         return response;
       })
       .catch((e) => {
@@ -534,7 +535,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
             <input
               accept="audio/wav"
               style={
-                showError && errorStyle
+                showError && isError
                   ? {
                       border: "2px solid red",
                       justifyContent: "center",
@@ -552,13 +553,16 @@ const RenderingComponentOnLanguageSelect = (props) => {
               type="file"
               class="custom-file-input"
               name="lang_audio_file"
-              onChange={(event) => {
-                uploadFiles(
+              onChange={async(event) => {
+                setShowLoader(true)
+                await uploadFiles(
                   "lang_audio_file",
                   event,
                   event.currentTarget.files,
-                  props.languageCode
+                  props.languageCode,
                 );
+                setIsError(false)
+                setShowLoader(false)
               }}
               id={props.languageCode + "-Lang"}
               required
@@ -590,6 +594,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 </div>
               </>
             ) : null}
+            {showLoader && <CircularProgress />}
           </div>
           {/* )
             )} */}

@@ -430,7 +430,7 @@ const UserConfig = () => {
             setBlackOutDays(res.days);
             setAssignChannel(res.assignChannel);
             setAssignTps(res.assignTps);
-            setBlackoutDate(res.date);
+            setBlackoutDate(res.date.map(item=>item.slice(0,10)));
             setValue(res.date);
             setAppendZero(res.appendZero);
             setCountryCode(res.countryCode);

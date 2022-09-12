@@ -674,7 +674,6 @@ const MainDTMF = (props) => {
       .waitTime,
     ]);
     
-    console.log('nitin main dtmf', props.global.dtmf_count)
   return (
     <>
       <div className="main__dtmf">

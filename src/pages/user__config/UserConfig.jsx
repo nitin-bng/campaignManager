@@ -332,7 +332,6 @@ const UserConfig = () => {
       setConfigError('Please Enter Blackout days')
     }
     else if(!startTimeToSendAtBackend){
-      console.log('nitin',startTimeToSendAtBackend)
       setConfigError('Please Enter Start time')
     }
     else if(!endTimeToSendAtBackend){
@@ -445,7 +444,6 @@ const UserConfig = () => {
           //   res.startTime.getMinutes().toString() +
           //   ":" +
           //  res.startTime.getSeconds().toString();
-          //   console.log('nitin again', starttime)
           //   setStartTimeToSendAtBackend(res.startTime)
           //   let endtime =
           //   res.endtime.getHours().toString() +

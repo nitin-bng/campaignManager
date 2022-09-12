@@ -44,7 +44,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const numberOfSubDTMF = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
 const SubDTMF = (props) => {
@@ -1045,13 +1045,13 @@ const SubDTMF = (props) => {
                   </div>
                   <div className="select__number__of__subDTMF__from__subdtmf__container">
                     <FormControl style={{ width: "100%" }}>
-                      <InputLabel id="demo-simple-select-label">
+                      <InputLabel id="demo-simple-select-label" required>
                         sub dtmf
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-select"
-                        value={props.current.dtmf_count || null}
+                        value={props.current.dtmf_count}
                         disabled={props.disableEditingWhileCreatingCamp}
                         // value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || 0 : props.current.dtmf_count}
                         label="DTMF"
@@ -1059,6 +1059,7 @@ const SubDTMF = (props) => {
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.current);
                         }}
+                        required
                       >
                         {numberOfSubDTMF.map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;

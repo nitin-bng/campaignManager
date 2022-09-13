@@ -37,20 +37,20 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      res.json().then((res) => {
-        localStorage.setItem("userType", res.userType);
-        localStorage.setItem("userId", res.id);
-
-        getUserDetails(res.id);
-
-        if (res.status === "unsuccessful") {
-          toast("Wrong credentials!");
-        }
-      });
-    });
-  };
+      
+      body: JSON.stringify(data)
+    }).then((res)=>{
+        res.json()
+           .then((res)=>{
+            localStorage.setItem("userType", res.userType)
+            localStorage.setItem("userId", res.id)
+            getUserDetails(res.id)
+            if(res.status === 'unsuccessful'){
+              toast(res.reason)
+            }
+           })
+    })
+  }
 
   const getUserDetails = (id) => {
     fetch(

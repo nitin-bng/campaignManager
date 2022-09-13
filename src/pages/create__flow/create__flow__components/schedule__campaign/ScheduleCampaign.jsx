@@ -79,8 +79,8 @@ const ScheduleCampaign = (props) => {
   ]);
   console.log("todaydate", state[0].startDate);
 
-  const [selectedStartDate, handleStartDateChange] = useState(new Date());
-  const [selectedEndDate, handleEndDateChange] = useState(new Date());
+  const [selectedStartDate, handleStartDateChange] = useState('');
+  const [selectedEndDate, handleEndDateChange] = useState('');
   const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
     new Date()
   );

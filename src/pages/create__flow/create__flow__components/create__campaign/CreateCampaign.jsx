@@ -577,7 +577,7 @@ const CreateCampaign = (props) => {
           style={{padding:".5rem 1rem",
           border:"none" ,
           outline: "none",
-          backgroundColor:" #1976d2",
+          backgroundColor:" #374151",
           color: "white",
           textTransform:"uppercase",
           textShadow: "1px 1px 2px black",

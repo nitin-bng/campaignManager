@@ -14,14 +14,11 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import "./authentication.css";
 import { useForm } from "react-hook-form";
 
-
-
 import config from "../ApiConfig/Config";
 import { toast } from "react-toastify";
-
+// import style from 'styled-component'
 const Login = () => {
-  const Navigate = useNavigate()
-
+  const Navigate = useNavigate();
 
   const {
     register,
@@ -30,16 +27,17 @@ const Login = () => {
   } = useForm();
   const onSubmit = (data) => {
     // console.log(data.email);
-    loginUser(data)
+    loginUser(data);
   };
 
   const loginUser = (data) => {
-    data['type'] = ''
-    fetch(config.server.path + config.server.port3 + config.api.login,{
-      method: 'POST',
+    data["type"] = "";
+    fetch(config.server.path + config.server.port3 + config.api.login, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
+      
       body: JSON.stringify(data)
     }).then((res)=>{
         res.json()
@@ -55,26 +53,31 @@ const Login = () => {
   }
 
   const getUserDetails = (id) => {
-    fetch(config.server.path + config.server.port3 + "/" + localStorage.getItem("userType")+ "/" + id,{
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).then((res)=>{
-        res.json()
-           .then((res)=>{
-             console.log(res)
-             console.log(res.user)
-             console.log(res.user.country);
-             localStorage.setItem("userCountry", res.user.country)
-             localStorage.setItem("operatorName", res.user.operatorName)
-             sessionStorage.setItem("userName", res.user.name)
-             Navigate("/campmngr/home")
-
-           })
-    })
-  }
-
+    fetch(
+      config.server.path +
+        config.server.port3 +
+        "/" +
+        localStorage.getItem("userType") +
+        "/" +
+        id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      res.json().then((res) => {
+        console.log(res);
+        console.log(res.user);
+        console.log(res.user.country);
+        localStorage.setItem("userCountry", res.user.country);
+        localStorage.setItem("operatorName", res.user.operatorName);
+        sessionStorage.setItem("userName", res.user.name);
+        Navigate("/campmngr/home");
+      });
+    });
+  };
 
   return (
     <>

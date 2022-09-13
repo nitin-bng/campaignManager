@@ -58,3 +58,6 @@
     /* border: 2px solid red; */
 }
 
+.stepper span svg circle{
+  color: #374151;
+}

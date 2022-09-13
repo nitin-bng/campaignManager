@@ -63,7 +63,6 @@ const initialState = {
       actionType: {
         ivr: "PLAY",
         sms: "SCHEDULE_SMS",
-        ussd:"HITURL_USSD"
       },
       waitTime: '',
       actions: [],
@@ -148,7 +147,6 @@ const StateProvider = ({ children }) => {
               actionType: {
                 ivr: "PLAY",
                 sms: "SCHEDULE_SMS",
-                ussd:"HITURL_USSD"
               },
               actions: [],
               waitTime:'',

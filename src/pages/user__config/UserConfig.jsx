@@ -44,6 +44,7 @@ import {
   getDateInFormat,
   getMultipleDatesInFormat,
 } from "../../services/getDateInFormat";
+import {changeTimeFormatForFrontend, changeTimeFormatForBackend} from "../../services/getTimeInFormat"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Collapse from "@mui/material/Collapse";
@@ -253,8 +254,8 @@ const UserConfig = () => {
   const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("");
 
   const [blackOutDays, setBlackOutDays] = React.useState([]);
-  const [blackoutStartHour, setBlackoutStartHour] = React.useState(new Date());
-  const [blackoutEndHour, setBlackoutEndHour] = React.useState(new Date());
+  const [blackoutStartHour, setBlackoutStartHour] = React.useState('');
+  const [blackoutEndHour, setBlackoutEndHour] = React.useState('');
   const Navigate = useNavigate();
   const [blackoutDate, setBlackoutDate] = React.useState(new Set());
   const [value, setValue] = useState([]);
@@ -325,6 +326,8 @@ const UserConfig = () => {
       endTime: endTimeToSendAtBackend,
     };
 
+    const startTimeArray = startTimeToSendAtBackend.split(":");
+    const endTimeArray = endTimeToSendAtBackend.split(":");
     // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
@@ -336,6 +339,16 @@ const UserConfig = () => {
     }
     else if(!endTimeToSendAtBackend){
       setConfigError('Please Enter End time')
+    }
+    else if(
+        endTimeArray[0] < ~~startTimeArray[0] ||
+        (endTimeArray[0] === ~~startTimeArray[0] &&
+          endTimeArray[1] < ~~startTimeArray[1]) ||
+        (endTimeArray[0] === ~~startTimeArray[0] &&
+          endTimeArray[1] === ~~startTimeArray[1] &&
+          endTimeArray[2] < ~~startTimeArray[2])){
+        setConfigError("End time can not be earlier than before time");
+      
     }
     else if(!blackoutDate[0]){
       setConfigError('Please enter dates')
@@ -439,9 +452,10 @@ const UserConfig = () => {
             setCountryCode(res.countryCode);
             setAppendCountryCode(res.appendCountryCode);
             setMsisdnLength(res.msisdnLength);
-            setBlackoutStartHour(res.startTime);
-            setBlackoutEndHour(res.endTime);
-            console.log('Nitin received data from backend', res.startTime, res.endTime)
+            setBlackoutStartHour(changeTimeFormatForFrontend(res.startTime));
+            setBlackoutEndHour(changeTimeFormatForFrontend(res.endTime));
+            setStartTimeToSendAtBackend(res.startTime)
+            setEndTimeToSendAtBackend(res.endTime)
           //   let starttime =
           //   res.startTime.getHours().toString() +
           //   ":" +
@@ -622,14 +636,8 @@ const UserConfig = () => {
                                       label="Blackout start hour"
                                       value={blackoutStartHour}
                                       onChange={(e) => {
-                                        handleblackoutStartHourChange(e);
-                                        var starttime =
-                                          e.getHours().toString() +
-                                          ":" +
-                                          e.getMinutes().toString() +
-                                          ":" +
-                                          e.getSeconds().toString();
-                                        setStartTimeToSendAtBackend(starttime);
+                                        handleblackoutStartHourChange(e);                                          
+                                        setStartTimeToSendAtBackend(changeTimeFormatForBackend(e));
                                       }}
                                       renderInput={(params) => (
                                         <TextField {...params} />
@@ -661,13 +669,7 @@ const UserConfig = () => {
                                       value={blackoutEndHour}
                                       onChange={(e) => {
                                         handleblackoutEndHourChange(e);
-                                        var endtime =
-                                          e.getHours().toString() +
-                                          ":" +
-                                          e.getMinutes().toString() +
-                                          ":" +
-                                          e.getSeconds().toString();
-                                        setEndTimeToSendAtBackend(endtime);
+                                        setEndTimeToSendAtBackend(changeTimeFormatForBackend(e));
                                       }}
                                       renderInput={(params) => (
                                         <TextField {...params} />

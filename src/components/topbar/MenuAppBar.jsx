@@ -30,7 +30,7 @@ export default function MenuAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor:"#374151"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -46,6 +46,7 @@ export default function MenuAppBar() {
               fontWeight: "900",
               fontSize: "1.5rem",
               textShadow: "2px 2px 3px black",
+              color:"white"
             }}
             variant="h6"
             component="div"
@@ -64,7 +65,7 @@ export default function MenuAppBar() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <AccountCircle style={{color:"white"}}/>
               </IconButton>
               <Menu
                 id="menu-appbar"

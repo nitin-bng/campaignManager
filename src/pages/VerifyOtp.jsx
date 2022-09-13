@@ -151,8 +151,8 @@ export default function VerifyOtp(props) {
           <Grid item container justify="center">
             <Grid item container alignItems="center" direction="column">
               <Grid item>
-                <Avatar style={{background:"#1976d2"}} className={classes.avatar}>
-                  <LockOutlinedIcon style={{background:"#1976d2"}}/>
+                <Avatar style={{background:"#374151"}} className={classes.avatar}>
+                  <LockOutlinedIcon style={{background:"#374151"}}/>
                 </Avatar>
               </Grid>
               <Grid item>
@@ -195,7 +195,7 @@ export default function VerifyOtp(props) {
             </Grid>
             <Grid item>
               <Button
-              style={{backgroundColor: " #1976d2",
+              style={{backgroundColor: " #374151",
               color: "white",
               textTransform: "uppercase",
               textShadow: "1px 1px 2px black",fontWeight: "700",}}
@@ -239,7 +239,7 @@ export default function VerifyOtp(props) {
                 padding: ".5rem 1rem",
                 border: "none",
                 outline: "none",
-                backgroundColor: " #1976d2",
+                backgroundColor: " #374151",
                 color: "white",
                 textTransform: "uppercase",
                 textShadow: "1px 1px 2px black",

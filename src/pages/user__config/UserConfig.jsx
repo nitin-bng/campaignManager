@@ -256,7 +256,7 @@ const UserConfig = () => {
   const [blackoutStartHour, setBlackoutStartHour] = React.useState(new Date());
   const [blackoutEndHour, setBlackoutEndHour] = React.useState(new Date());
   const Navigate = useNavigate();
-  const [blackoutDate, setBlackoutDate] = React.useState([]);
+  const [blackoutDate, setBlackoutDate] = React.useState(new Set());
   const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -336,6 +336,9 @@ const UserConfig = () => {
     }
     else if(!endTimeToSendAtBackend){
       setConfigError('Please Enter End time')
+    }
+    else if(!blackoutDate[0]){
+      setConfigError('Please enter dates')
     }
     else if(!countryCode){
       setConfigError('Please Enter Country Code')
@@ -438,6 +441,7 @@ const UserConfig = () => {
             setMsisdnLength(res.msisdnLength);
             setBlackoutStartHour(res.startTime);
             setBlackoutEndHour(res.endTime);
+            console.log('Nitin received data from backend', res.startTime, res.endTime)
           //   let starttime =
           //   res.startTime.getHours().toString() +
           //   ":" +
@@ -611,6 +615,8 @@ const UserConfig = () => {
                                 <LocalizationProvider
                                   dateAdapter={AdapterDateFns}
                                 >
+                                  {console.log('Nitin data in value porp', blackoutStartHour)}
+                                  {console.log('Nitin data being sent to backend', startTimeToSendAtBackend)}
                                   <Stack style={{ width: "80%" }} spacing={3}>
                                     <TimePicker
                                       label="Blackout start hour"
@@ -714,17 +720,17 @@ const UserConfig = () => {
                                   value={blackoutDate}
                                   multiple
                                   onChange={(e) => {
+                                    let newDate = new Set()
                                     e.map((ele, idx) => {
                                       // console.log(ele.day);
                                       // console.log(e);
                                       // console.log(ele.year);
                                       // console.log(ele.month.number);
-
-                                      blackoutDate[idx] =
-                                        getMultipleDatesInFormat(ele);
-                                      setBlackoutDate(blackoutDate);
-                                      setValue(blackoutDate);
+                                      newDate.add(getMultipleDatesInFormat(ele))
+                                      // setValue(blackoutDate);
                                     });
+                                    console.log('date after', newDate)
+                                    setBlackoutDate([...newDate]);
                                     // console.log(blackoutDate);
                                     // setValue
                                   }}

@@ -46,15 +46,9 @@ const Login = () => {
            .then((res)=>{
             localStorage.setItem("userType", res.userType)
             localStorage.setItem("userId", res.id)
-            
-
-
-
-
             getUserDetails(res.id)
-
             if(res.status === 'unsuccessful'){
-              toast("Wrong credentials!")
+              toast(res.reason)
             }
            })
     })

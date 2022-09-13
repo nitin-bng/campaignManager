@@ -478,8 +478,32 @@ const CreateFlow = () => {
                                   width: "90%",
                                   margin: "2rem auto",
                                   boxSizing: "border-box",
+                                  display:"flex",
+                                  flexDirection:"column",
+                                  // alignItems:"flex-end"
                                 }}
                               >
+                                <button
+                                  style={{
+                                    padding: ".5rem 1rem",
+                                    border: "none",
+                                    outline: "none",
+                                    backgroundColor: " #374151",
+                                    color: "white",
+                                    textTransform: "uppercase",
+                                    textShadow: "1px 1px 2px black",
+                                    width: "20%",
+                                    margin: "1rem 0",
+                                    // marginBottom: ".5rem",
+                                    transition: "all 0.5s",
+                                    fontWeight: "700",
+                                    alignSelf:"flex-end"
+                                  }}
+                                  className="closeBtn"
+                                  onClick={() => setShowFlowTable(false)}
+                                >
+                                  Create New Flow
+                                </button>
                                 <div className="col-sm-12">
                                   <div
                                     className="basic__flow__details__heading__container"
@@ -570,26 +594,7 @@ const CreateFlow = () => {
                                     </TableContainer>
                                   </div>
                                 </div>
-                                <button
-                                  style={{
-                                    padding: ".5rem 1rem",
-                                    border: "none",
-                                    outline: "none",
-                                    backgroundColor: " #374151",
-                                    color: "white",
-                                    textTransform: "uppercase",
-                                    textShadow: "1px 1px 2px black",
-                                    width: "20%",
-                                    margin: "1rem 40%",
-                                    // marginBottom: ".5rem",
-                                    transition: "all 0.5s",
-                                    fontWeight: "700",
-                                  }}
-                                  className="closeBtn"
-                                  onClick={() => setShowFlowTable(false)}
-                                >
-                                  Create New Flow
-                                </button>
+                                
                               </div>
                               {openModal && (
                                 <div

@@ -36,6 +36,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import CancelIcon from "@material-ui/icons/Cancel";
+import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { store } from "../../store/store";
 import CreateFlowComponent from "../create__flow/create__flow__components/create__flow__component/CreateFlowComponent";
 ChartJS.register(
@@ -420,12 +424,9 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("dashBoardDataFromApi", data);
-        data.campName.map((ele)=>{
-          return(
-            names.push(ele)
-
-          )
-        })
+        data.campName.map((ele) => {
+          return names.push(ele);
+        });
       })
       .catch(() => {
         return <p>dashboard data not available</p>;
@@ -513,12 +514,14 @@ const Home = () => {
                 </div>
                 <div
                   className="home__maincontent__card home__maincontent__card4"
-                  style={{ display: "flex",
-                  flexDirection: "column",
-                  // height: "40vh",
-                  margin: "1rem",
-                  padding: "1rem",
-                  border: "2px solid green",}}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    // height: "40vh",
+                    margin: "1rem",
+                    padding: "1rem",
+                    border: "2px solid green",
+                  }}
                 >
                   <FormControl sx={{ m: 1, width: 300 }}>
                     <InputLabel id="demo-multiple-name-label">Name</InputLabel>
@@ -866,29 +869,24 @@ const Home = () => {
                           <TableCell align="center">{row.priority}</TableCell>
                           <TableCell align="center">{row.status}</TableCell>
                           <TableCell align="center">
-                            <FormGroup style={{}}>
+                            <FormGroup style={{display:"flex", justifyContent:"center", alignItems:"center" }}>
                               {row.status == "SCHEDULED" ? (
                                 <>
-                                  <FormGroup>
-                                    <FormControlLabel
-                                      disabled
-                                      control={<Switch />}
-                                      label="Disabled"
-                                      labelPlacement="bottom"
-                                    />
-                                  </FormGroup>
+                                  <CancelIcon />
                                 </>
-                              ) : (
+                              ) : row.status == "RUNNING" ? (
                                 <>
-                                  <FormGroup>
-                                    <FormControlLabel
-                                      control={<Switch defaultChecked />}
-                                      label="Label"
-                                      labelPlacement="bottom"
-                                    />
-                                  </FormGroup>
+                                  <PauseCircleFilledIcon />
                                 </>
-                              )}
+                              ) : row.status == "STOPPED" ? (
+                                <>
+                                  <PlayCircleFilledIcon />
+                                </>
+                              ) : row.status == "EXPIRED" ? (
+                                <>
+                                  <DeleteIcon />
+                                </>
+                              ) : null}
                             </FormGroup>
                           </TableCell>
                         </TableRow>

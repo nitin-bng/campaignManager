@@ -1027,7 +1027,7 @@ const UserConfig = () => {
                   </div>
                   <div className="userconfig__maincontent__form__submit__button__container">
                     <Stack spacing={2} direction="row">
-                      <Button onClick={userConfigSubmit} variant="contained">
+                      <Button onClick={userConfigSubmit} variant="contained" style={{ backgroundColor:"#374151", textShadow:"2px 2px 2px black"}}>
                         {createUpdate ? "Update" : "Submit"}
                       </Button>
                     </Stack>

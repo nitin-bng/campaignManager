@@ -843,6 +843,7 @@ const UserConfig = () => {
                                     onChange={(e) => {
                                       setCountryCode(e.target.value);
                                     }}
+                                    onWheel={(e) => e.target.blur()}
                                     variant="outlined"
                                   />
                                 </Box>
@@ -913,6 +914,7 @@ const UserConfig = () => {
                                     onChange={(e) => {
                                       setMsisdnLength(e.target.value);
                                     }}
+                                    onWheel={(e) => e.target.blur()}
                                   />
                                 </Box>
                                 <CustomWidthTooltip title={TotalChannelInfo}>
@@ -982,6 +984,7 @@ const UserConfig = () => {
                                     onChange={(e) => {
                                       setAssignChannel(e.target.value);
                                     }}
+                                    onWheel={(e) => e.target.blur()}
                                   />
                                 </Box>
                                 <CustomWidthTooltip title={TotalChannelInfo}>
@@ -1011,6 +1014,7 @@ const UserConfig = () => {
                                     onChange={(e) => {
                                       setAssignTps(e.target.value);
                                     }}
+                                    onWheel={(e) => e.target.blur()}
                                   />
                                 </Box>
                                 <CustomWidthTooltip

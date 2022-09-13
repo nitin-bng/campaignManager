@@ -113,7 +113,7 @@ const ForgotPassword = () => {
 
             <div className="terms__and__button__container">
               <div className="create__account__button button">
-                <Link to="/verifyotp">
+                <Link to="/campmngr/verifyotp">
                   <Button
                     variant="contained"
                     color="primary"
@@ -129,7 +129,7 @@ const ForgotPassword = () => {
 
             <div className="authentication__links__signup">
               <p className="links">
-                <Link to="/">Already have an account ?</Link>
+                <Link to="/campmngr">Already have an account ?</Link>
               </p>
             </div>
           </div>

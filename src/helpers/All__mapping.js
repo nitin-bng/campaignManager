@@ -3,15 +3,15 @@
 export const Sidebar__menu__items = [
   {
     menu__title: "Home",
-    route__path: "/home",
+    route__path: "/campmngr/home",
   },
   {
     menu__title: "Create Flow",
-    route__path: "/create__flow",
+    route__path: "/campmngr/create__flow",
   },
   {
     menu__title: "User Config",
-    route__path: "/user__configuration",
+    route__path: "/campmngr/user__configuration",
   },
 ];
 

@@ -123,13 +123,13 @@ export default function VerifyOtp(props) {
       //     pathname: '/',
       //     state: { detail: 'true' }
       // });
-      navigate("/");
+      navigate("/campmngr");
     } else {
       // history.push({
       //     pathname: '/otp',
       //     state: { detail: 'true' }
       // });
-      navigate("/verifyotp");
+      navigate("/campmngr/verifyotp");
     }
   };
 

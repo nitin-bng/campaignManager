@@ -602,7 +602,7 @@ const ScheduleCampaign = (props) => {
     // showSuccess(false);
     showForm(false);
     updateForm(false);
-    Navigate("/home");
+    Navigate("/campmngr/home");
   };
 
   const handleDateSelect = (ranges) => {

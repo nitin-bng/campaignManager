@@ -45,7 +45,7 @@ export default function TemporaryDrawer() {
             to={
               text.menu__title === "Create Flow" &&
               !localStorage.getItem("createFlowInMenuBarDisbled")
-                ? "/user__configuration"
+                ? "/campmngr/user__configuration"
                 : text.route__path
             }
           >

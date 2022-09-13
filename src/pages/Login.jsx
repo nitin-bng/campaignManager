@@ -75,7 +75,7 @@ const Login = () => {
              localStorage.setItem("userCountry", res.user.country)
              localStorage.setItem("operatorName", res.user.operatorName)
              sessionStorage.setItem("userName", res.user.name)
-             Navigate("/home")
+             Navigate("/campmngr/home")
 
            })
     })
@@ -171,8 +171,8 @@ const Login = () => {
 
             <div className="authentication__links">
               <p className="links">
-                <Link to="/forgotpassword">Forgot Password ?</Link>
-                <Link to="/signup">Do not have an account ?</Link>
+                <Link to="/campmngr/forgotpassword">Forgot Password ?</Link>
+                <Link to="/campmngr/signup">Do not have an account ?</Link>
                 {/* <p>OR</p>
                 <Link to="/home">Use as guest</Link> */}
               </p>

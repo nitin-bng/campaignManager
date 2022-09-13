@@ -363,7 +363,7 @@ const UserConfig = () => {
           if (res.status == "successful") {
             setCreateUpdate(true);
             // setShowSuccess(true);
-            Navigate("/home");
+            Navigate("/campmngr/home");
             toast("You can create flow now");
             // console.log(res);
           } else if (res.status == "unsuccessful") {

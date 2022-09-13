@@ -333,7 +333,7 @@ const CreateFlow = () => {
         console.log("activeStep === 2");
       } else if (activeStep === 3) {
         console.log("activeStep === 3");
-        navigate("/home");
+        navigate("/campmngr/home");
       }
     } else {
       setShowError(true);

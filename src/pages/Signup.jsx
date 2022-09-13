@@ -134,7 +134,7 @@ const Signup = () => {
           setReason(result.reason);
           setLoader(false);
           // setOpenModal(true);
-          navigate("/verifyotp");
+          navigate("/campmngr/verifyotp");
         } else {
           setResponse(result.status);
           setReason(result.reason);
@@ -177,12 +177,12 @@ const Signup = () => {
   const handleModal = () => {
     setOpenModal(false);
     if (response === "successful") {
-      navigate("/verifyotp");
+      navigate("/campmngr/verifyotp");
       // state: { detail: 'true' }
     } else if (response === "unsuccessful") {
-      navigate("/");
+      navigate("/campmngr");
     } else {
-      navigate("/forgotpassword");
+      navigate("/campmngr/forgotpassword");
     }
   };
   return (
@@ -480,7 +480,7 @@ const Signup = () => {
 
             <div className="authentication__links__signup">
               <p className="links">
-                <Link to="/">Already have an account ?</Link>
+                <Link to="/campmngr">Already have an account ?</Link>
                 {/* <p>OR</p>
                 <Link to="/home">Use as guest</Link> */}
               </p>

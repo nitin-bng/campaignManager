@@ -21,13 +21,13 @@ const App = () => {
           <ToastContainer />
           <div className="app__container">
             <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
-              <Route path="/verifyotp" element={<VerifyOtp />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/create__flow" element={<CreateFlow />} />
-              <Route path="/user__configuration" element={<UserConfig />} />
+              <Route path="/campmngr" element={<Login />} />
+              <Route path="/campmngr/signup" element={<Signup />} />
+              <Route path="/campmngr/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/campmngr/verifyotp" element={<VerifyOtp />} />
+              <Route path="/campmngr/home" element={<Home />} />
+              <Route path="/campmngr/create__flow" element={<CreateFlow />} />
+              <Route path="/campmngr/user__configuration" element={<UserConfig />} />
             </Routes>
           </div>
         </CommonProvider>

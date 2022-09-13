@@ -52,6 +52,8 @@ const IfIVRSelected = (props) => {
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "IF_IVR_SELECTED", payload: false });
+
+    return ()=> errorDispatch({ type: "IF_IVR_SELECTED", payload: true });
   }, []);
 
   useEffect(() => {

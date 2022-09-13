@@ -1,6 +1,3 @@
-
-
-
 *{
   margin: 0;
   padding: 0;
@@ -26,8 +23,6 @@ code {
     monospace;
 }
 
-
-
 .MuiInputLabel-outlined{
   color: #374151 !important;
   border-color: #374151 !important;
@@ -35,4 +30,12 @@ code {
 }
 
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
+*{
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
 

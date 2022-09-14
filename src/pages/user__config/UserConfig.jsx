@@ -326,8 +326,8 @@ const UserConfig = () => {
       endTime: endTimeToSendAtBackend,
     };
 
-    const startTimeArray = startTimeToSendAtBackend.split(":");
-    const endTimeArray = endTimeToSendAtBackend.split(":");
+    const startTimeArray = startTimeToSendAtBackend ? startTimeToSendAtBackend.split(":") : []
+    const endTimeArray = endTimeToSendAtBackend ? endTimeToSendAtBackend.split(":") : []
     // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
@@ -358,6 +358,12 @@ const UserConfig = () => {
     }
     else if(!msisdnLength){
       setConfigError('Please Enter Mobile Number length')
+    }
+    else if (assignChannel === ''){
+      setConfigError('Please Enter Simultaneous outgoing calls')
+    }
+    else if (assignTps === ''){
+      setConfigError('Please Enter SMS TPS required')
     }
     else{fetch(
       config.server.path +

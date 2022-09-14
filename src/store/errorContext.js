@@ -4,6 +4,7 @@ const initialValue = {
     createFlowComponent: true,
     rederingComponentOnLanguageSelect: true,
     ifIvrSelected: true,
+    ifUssdSelected: true,
     createCampaign: true,
     mainDtmf: [],
     subDtmf: [],
@@ -21,6 +22,8 @@ switch (action.type) {
         return {...state, rederingComponentOnLanguageSelect: action.payload}
     case "IF_IVR_SELECTED":
         return {...state, ifIvrSelected: action.payload}
+    case "IF_USSD_SELECTED":
+        return {...state, ifUssdSelected: action.payload}
     case "MAIN_DTMF":
          newVal = state.mainDtmf
         if(action.payload){

@@ -559,7 +559,7 @@ const Review = () => {
                         id="outlined-basic"
                         // label="Start Date"
                         variant="outlined"
-                        // value={campScheduleData.startDate.slice(0,10)}
+                        value={campScheduleData.startDate}
                     />
                   </div>
                   <div
@@ -585,7 +585,7 @@ const Review = () => {
                         id="outlined-basic"
                         // label="End Date"
                         variant="outlined"
-                        // value={campScheduleData.endDate.slice(0,10)}
+                        value={campScheduleData.endDate}
                     />
                   </div>
                   <div

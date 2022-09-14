@@ -23,6 +23,7 @@ import classNames from "classnames";
 
 import "./createFlowComponent.css";
 import { useError } from "../../../../store/errorContext";
+import { IfUssdSelected } from "./if_ussd_selected/if_ussd_selected";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -98,12 +99,16 @@ const CreateFlowComponent = (props) => {
 
   useEffect(() => {
     if (
-      localStore.ivrCampFlowData.flow.channel.length &&
       ifIVRselectedThenLanguage.length &&
-      localStore.ivrCampFlowData.flow.flowName
+      localStore.ivrCampFlowData.flow.flowName && localStore.ivrCampFlowData.flow.channel === 'IVR'
     ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
-    } else {
+    } 
+    else if(localStore.ivrCampFlowData.flow.channel === 'USSD' && localStore.ivrCampFlowData.flow.flowName){
+      errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
+
+    }
+    else {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
     }
   }, [
@@ -276,12 +281,12 @@ const CreateFlowComponent = (props) => {
             </div>
           </div>
           <div className="call__flow__details__container">
-            <div className="call__flow__details__heading__container">
-              <h1>Call Flow Details</h1>
-            </div>
 
             <div className="call__flow__details">
-              {channel === "IVR" ? (
+              {channel === "IVR" ? (<>
+                  <div className="call__flow__details__heading__container">
+                    <h1>Call Flow Details</h1>
+                  </div>
                 <div className="call__flow__details__languages__dropdown__container">
                   <FormControl style={{ width: "50%" }}>
                     <InputLabel
@@ -339,6 +344,7 @@ const CreateFlowComponent = (props) => {
                     </Select>
                   </FormControl>
                 </div>
+                </>
               ) : (
                 <></>
               )}
@@ -454,6 +460,9 @@ const CreateFlowComponent = (props) => {
               ) : (
                 ""
               )}
+              {channel === "USSD" ? (
+                <IfUssdSelected hideItemStyle={props.hideItemStyle} />
+              ): <></>}
             </div>
           </div>
         </div>

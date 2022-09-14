@@ -279,6 +279,7 @@ const CreateCampaign = (props) => {
                 // showSuccess(true)
                 console.log(res);
                 setShowFlowState(true)
+                props.setDisableNext(false)
 
               } else if (res.length == 0) {
               }
@@ -291,7 +292,7 @@ const CreateCampaign = (props) => {
     } else {
       setShowError(true);
     }
-    props.setDisableNext(false)
+
   };
 
   const flowFromApi = (data) => {

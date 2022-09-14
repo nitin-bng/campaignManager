@@ -169,7 +169,8 @@ const ScheduleCampaign = (props) => {
     if (
       localStorage.getItem("channelName") &&
       (localStorage.getItem("channelName") == "IVR" ||
-        localStorage.getItem("channelName") == "SMS")
+        localStorage.getItem("channelName") == "SMS") ||
+        localStorage.getItem("channelName") == "USSD"
     ) {
       scheduleData["channel"] = localStorage.getItem("channelName");
       setScheduleData((scheduleData1) => ({

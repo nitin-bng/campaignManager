@@ -896,6 +896,7 @@ const ScheduleCampaign = (props) => {
                               <MenuItem value={"IVR"}>IVR</MenuItem>
                               <MenuItem value={"SMS"}>SMS</MenuItem>
                               <MenuItem value={"IVR_SMS"}>IVR/SMS</MenuItem>
+                              <MenuItem value={"USSD"}>USSD</MenuItem>
                             </Select>
                           </FormControl>
                         </div>

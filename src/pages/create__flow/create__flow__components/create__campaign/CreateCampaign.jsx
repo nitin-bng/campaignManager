@@ -28,6 +28,7 @@ const priorityArray = ["1(Least Prior)", "2", "3", "4", "5", "6", "7", "8", "9",
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
+  const localStore = globalState.state.ivrCampFlowData
   var [update, updateForm] = useState(false);
   const { dispatch, setCampaignName, campaignName ,campaignSchedulePriority, setCampaignSchedulePriority} = globalState;
   const initialValues = {
@@ -37,6 +38,7 @@ const CreateCampaign = (props) => {
     campaign_type: "",
     cli_ivr: "",
     cli_sms: "",
+    cli_ussd: ""
   };
   const {
     flowName,
@@ -81,7 +83,7 @@ const CreateCampaign = (props) => {
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues.cli_ivr
+      formValues['cli_'+localStore.flow.channel.toLowerCase()]
     ) {
       errorDispatch({ type: "CREATE_CAMPAIGN", payload: true });
     } else {
@@ -92,7 +94,7 @@ const CreateCampaign = (props) => {
     campaignSchedulePriority,
     formValues.wfId,
     formValues.campaign_type,
-    formValues.cli_ivr,
+    formValues['cli_'+localStore.flow.channel.toLowerCase()],
   ]);
 
   const getFlow = async (id) => {
@@ -170,6 +172,13 @@ const CreateCampaign = (props) => {
         ...scheduleData1,
         ...scheduleData,
       }));
+    } else if (e.target.id == "cli_ussd") {
+      // validateData('cli_ussd', e);
+      scheduleData["cli_ussd"] = e.target.value;
+      setScheduleData((scheduleData1) => ({
+        ...scheduleData1,
+        ...scheduleData,
+      }));
     } else if (e.target.value == "incoming" || e.target.value == "outgoing") {
       scheduleData["campaign_type"] = e.target.value;
       setScheduleData((scheduleData1) => ({
@@ -210,7 +219,7 @@ const CreateCampaign = (props) => {
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues.cli_ivr
+      formValues['cli_'+localStore.flow.channel.toLowerCase()]
     ) {
       setShowError(false);
       e.preventDefault();
@@ -560,15 +569,15 @@ const CreateCampaign = (props) => {
                 label={"cli"}
                 variant="outlined"
                 className="form-control"
-                id="cli_ivr"
+                id={'cli_'+localStore.flow.channel.toLowerCase()}
                 aria-describedby="emailHelp"
                 placeholder={"enter cli for ivr"}
-                name="cli_ivr"
-                value={formValues.cli_ivr}
-                onChange={(event) => handleChange(event, "cli_ivr")}
+                name={'cli_'+localStore.flow.channel.toLowerCase()}
+                value={formValues['cli_'+localStore.flow.channel.toLowerCase()]}
+                onChange={(event) => handleChange(event, 'cli_'+localStore.flow.channel.toLowerCase())}
                 onWheel={(e) => e.target.blur()}
                 required
-                error={showError ? (formValues.cli_ivr ? false : true) : false}
+                error={showError ? (formValues['cli_'+localStore.flow.channel.toLowerCase()] ? false : true) : false}
               />
             </Box>
           </div>

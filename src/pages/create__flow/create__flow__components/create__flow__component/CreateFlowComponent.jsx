@@ -342,7 +342,9 @@ const CreateFlowComponent = (props) => {
               ) : (
                 <></>
               )}
-              <div className="hello">
+
+              {
+                ifIVRselectedThenLanguage.length > 1 ? <div className="hello">
                 {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
                 channel === "IVR" ? (
                   <RenderingComponentOnLanguageSelect
@@ -433,7 +435,9 @@ const CreateFlowComponent = (props) => {
                 ) : (
                   ""
                 )}
-              </div>
+              </div> : <></>
+              }
+              
 
               {channel === "IVR" ? (
                 <IfIVRSelected

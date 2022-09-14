@@ -519,7 +519,7 @@ const ScheduleCampaign = (props) => {
         endTimeArray[1] === ~~startTimeArray[1] &&
         endTimeArray[2] < ~~startTimeArray[2])
     ) {
-      throw Error("End time can not be earlier than before time");
+      throw Error("End time can not be earlier than Start time");
     }
   };
 

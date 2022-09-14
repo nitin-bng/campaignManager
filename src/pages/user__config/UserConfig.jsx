@@ -257,7 +257,7 @@ const UserConfig = () => {
   const [blackoutStartHour, setBlackoutStartHour] = React.useState('');
   const [blackoutEndHour, setBlackoutEndHour] = React.useState('');
   const Navigate = useNavigate();
-  const [blackoutDate, setBlackoutDate] = React.useState(new Set());
+  const [blackoutDate, setBlackoutDate] = React.useState([]);
   const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -295,7 +295,7 @@ const UserConfig = () => {
     } = event;
     setBlackOutDays(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
+      value ? typeof value === "string" ? value.split(",") : value : []
     );
   };
 
@@ -331,28 +331,28 @@ const UserConfig = () => {
     // console.log("schedule Data ", scheduleData);
     // setFormErrors(validate(formValues));
     // if (Object.keys(errors).length == 0) {
-    if(!blackOutDays.length){
-      setConfigError('Please Enter Blackout days')
+    // if(!blackOutDays.length){
+    //   setConfigError('Please Enter Blackout days')
+    // }
+    
+    if((startTimeToSendAtBackend || endTimeToSendAtBackend) && !(startTimeToSendAtBackend && endTimeToSendAtBackend)){
+      if(!startTimeToSendAtBackend){
+        setConfigError('Please Enter Start time')
+      }
+      else if(!endTimeToSendAtBackend){
+        setConfigError('Please Enter End time')
+      }
     }
-    else if(!startTimeToSendAtBackend){
-      setConfigError('Please Enter Start time')
-    }
-    else if(!endTimeToSendAtBackend){
-      setConfigError('Please Enter End time')
-    }
-    else if(
-        endTimeArray[0] < ~~startTimeArray[0] ||
-        (endTimeArray[0] === ~~startTimeArray[0] &&
-          endTimeArray[1] < ~~startTimeArray[1]) ||
-        (endTimeArray[0] === ~~startTimeArray[0] &&
-          endTimeArray[1] === ~~startTimeArray[1] &&
-          endTimeArray[2] < ~~startTimeArray[2])){
-        setConfigError("End time can not be earlier than before time");
+    // else if(
+    //     endTimeArray[0] < ~~startTimeArray[0] ||
+    //     (endTimeArray[0] === ~~startTimeArray[0] &&
+    //       endTimeArray[1] < ~~startTimeArray[1]) ||
+    //     (endTimeArray[0] === ~~startTimeArray[0] &&
+    //       endTimeArray[1] === ~~startTimeArray[1] &&
+    //       endTimeArray[2] < ~~startTimeArray[2])){
+    //     setConfigError("End time can not be earlier than before time");
       
-    }
-    else if(!blackoutDate[0]){
-      setConfigError('Please enter dates')
-    }
+    // }
     else if(!countryCode){
       setConfigError('Please Enter Country Code')
     }
@@ -515,7 +515,6 @@ const UserConfig = () => {
         console.log(e);
       });
   }, []);
-  console.log("blackout days from PI", blackOutDays);
 
   return (
     <>

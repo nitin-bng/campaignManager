@@ -235,6 +235,7 @@ const CreateCampaign = (props) => {
   };
 
   const handleSubmit = (e) => {
+    scheduleData1["campaign_type"] = formValues.campaign_type ? formValues.campaign_type : "Outgoing"
     if (
       campaignName &&
       campaignSchedulePriority &&
@@ -257,6 +258,8 @@ const CreateCampaign = (props) => {
             body: JSON.stringify({
               ...scheduleData1,
               userId: localStorage.getItem("userId"),
+              campName: campaignName,
+              campPriority: campaignSchedulePriority,
             }),
           }
         )

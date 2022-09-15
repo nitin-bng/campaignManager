@@ -42,10 +42,12 @@ const Login = () => {
     }).then((res)=>{
         res.json()
            .then((res)=>{
-            localStorage.setItem("userType", res.userType)
-            localStorage.setItem("userId", res.id)
-            getUserDetails(res.id)
-            if(res.status === 'unsuccessful'){
+            if(res.status === 'successful'){
+              localStorage.setItem("userType", res.userType)
+              localStorage.setItem("userId", res.id)
+              getUserDetails(res.id)
+            }
+            else if(res.status === 'unsuccessful'){
               toast(res.reason)
             }
            })
@@ -68,9 +70,7 @@ const Login = () => {
       }
     ).then((res) => {
       res.json().then((res) => {
-        console.log(res);
-        console.log(res.user);
-        console.log(res.user.country);
+        console.log('nitin user details', res);
         localStorage.setItem("userCountry", res.user.country);
         localStorage.setItem("operatorName", res.user.operatorName);
         sessionStorage.setItem("userName", res.user.name);

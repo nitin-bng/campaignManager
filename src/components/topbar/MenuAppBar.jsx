@@ -10,11 +10,13 @@ import Menu from "@mui/material/Menu";
 import TemporaryDrawer from "../sidebar/TemporaryDrawer";
 
 import './menuAppBar.css'
+import { useNavigate } from "react-router-dom";
 
 export default function MenuAppBar() {
   var auth = true;
   // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const Navigate = useNavigate()
 
   // const handleChange = (event) => {
   // setAuth(event.target.checked);
@@ -27,6 +29,11 @@ export default function MenuAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () =>{
+    localStorage.clear()
+    Navigate('/campmngr')
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -84,6 +91,7 @@ export default function MenuAppBar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           )}

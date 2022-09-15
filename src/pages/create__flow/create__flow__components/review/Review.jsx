@@ -95,8 +95,7 @@ const Review = () => {
             res.map((element)=>{
                 console.log("elementelement", element.jobName);
                 if(campCreateData.campName==element.jobName){
-      
-                    setCampScheduleData(element)
+                    setCampScheduleData({...element, endDate: element.endDate.slice(0,10)})
                 }
             })
           }
@@ -111,8 +110,6 @@ const Review = () => {
     getCampaignDataList();
     getcampaignScheduleList();
   }, [campCreateData]);
-
-
 
   let languages = [];
   languages.push(
@@ -559,7 +556,7 @@ const Review = () => {
                         id="outlined-basic"
                         // label="Start Date"
                         variant="outlined"
-                        // value={campScheduleData.startDate.slice(0,10)}
+                        value={campScheduleData.startDate}
                     />
                   </div>
                   <div
@@ -585,7 +582,7 @@ const Review = () => {
                         id="outlined-basic"
                         // label="End Date"
                         variant="outlined"
-                        // value={campScheduleData.endDate.slice(0,10)}
+                        value={campScheduleData.endDate}
                     />
                   </div>
                   <div

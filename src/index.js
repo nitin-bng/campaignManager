@@ -4,9 +4,9 @@ import "./index.css";
 import { HashRouter } from 'react-router-dom';
 import { StateProvider } from "../src/store/store";
 import App from "./App";
-
 import { BrowserRouter } from "react-router-dom";
 import { ErrorProvider } from "./store/errorContext";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>

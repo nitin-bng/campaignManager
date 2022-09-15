@@ -70,7 +70,6 @@ const Login = () => {
       }
     ).then((res) => {
       res.json().then((res) => {
-        console.log('nitin user details', res);
         localStorage.setItem("userCountry", res.user.country);
         localStorage.setItem("operatorName", res.user.operatorName);
         sessionStorage.setItem("userName", res.user.name);
@@ -141,7 +140,7 @@ const Login = () => {
             </div>
 
             <div className="terms__and__button__container">
-              <div className="terms__checkbox">
+              {/* <div className="terms__checkbox">
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -152,7 +151,7 @@ const Login = () => {
                   }
                   label="Remember me"
                 />
-              </div>
+              </div> */}
               <div className="create__account__button button">
                 <Button
                   variant="contained"

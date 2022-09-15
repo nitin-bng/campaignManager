@@ -93,6 +93,9 @@ const CreateCampaign = (props) => {
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
+    if(localStorage.getItem("channelName") == "USSD"){
+      setFormValues(prev=>{return {...prev,campaign_type: 'Outgoing'}})
+    }
   }, []);
 
   useEffect(() => {
@@ -423,6 +426,7 @@ const CreateCampaign = (props) => {
               </Select>
             </FormControl>
           </div>
+          {console.log('Nitin', formValues.campaign_type)}
 
           <div className="create__campaign__workflow__name">
             <FormControl fullWidth>

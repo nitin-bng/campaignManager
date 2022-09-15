@@ -12,7 +12,6 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Sidebar__menu__items } from "../../helpers/All__mapping";
 
-
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -38,6 +37,7 @@ export default function TemporaryDrawer() {
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
+      style={{ backgroundColor: "#374151", height: "100%" }}
     >
       <List>
         {Sidebar__menu__items.map((text, index) => (
@@ -52,20 +52,26 @@ export default function TemporaryDrawer() {
             <ListItem
               key={text.menu__title}
               disablePadding
-              onClick={()=>(text.menu__title === "Create Flow" &&
-              !localStorage.getItem("createFlowInMenuBarDisbled")) && toast('You need to set up user config first')}
-              // disabled={
-              //   text.menu__title === "Create Flow" &&
-              //   !localStorage.getItem("createFlowInMenuBarDisbled")
-              //     ? true
-              //     : false
-              // }
+              onClick={() =>
+                text.menu__title === "Create Flow" &&
+                !localStorage.getItem("createFlowInMenuBarDisbled") &&
+                toast("You need to set up user config first")
+              }
             >
               <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <ListItemIcon style={{ color: "white", fontWeight: "700" }}>
+                  {text.icon}
                 </ListItemIcon>
-                <ListItemText primary={text.menu__title} />
+                <ListItemText
+                  // primary={text.menu__title}
+                  style={{
+                    color: "white",
+                    fontWeight: "900",
+                    textShadow: "1px 1px 2px black",
+                  }}
+                >
+                  {text.menu__title}
+                  </ListItemText>
               </ListItemButton>
             </ListItem>
           </Link>

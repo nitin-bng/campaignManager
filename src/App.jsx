@@ -14,11 +14,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import RequireAuth from "./components/auth/requireAuth";
 import RequireNoAuth from "./components/auth/requireNoAuth";
 
+import { ThemeProvider } from '@material-ui/core/styles';
+import Theme from '../src/components/Theme'
 
 const App = () => {
   return (
     <>
       <div className="app">
+      <ThemeProvider theme={Theme}>
         <CommonProvider>
           <ToastContainer />
           <div className="app__container">
@@ -33,6 +36,7 @@ const App = () => {
             </Routes>
           </div>
         </CommonProvider>
+        </ThemeProvider>
       </div>
     </>
   );

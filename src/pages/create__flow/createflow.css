@@ -59,5 +59,23 @@
 }
 
 .stepper span svg circle{
+  color: #3741514e;
+}
+
+.stepper span svg text{
+  fill: #374151;
+  font-weight: 700;
+}
+
+.stepper .Mui-completed span svg{
   color: #374151;
+}
+
+.NextButton:disabled{
+display: none;
+}
+
+.NextButton:hover{
+  transform: scale(1.1) !important;
+  cursor: pointer !important;
 }

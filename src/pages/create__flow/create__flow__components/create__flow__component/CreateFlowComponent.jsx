@@ -462,6 +462,7 @@ const CreateFlowComponent = (props) => {
               )}
               {channel === "USSD" ? (
                 <IfUssdSelected hideItemStyle={props.hideItemStyle} />
+                // <IfUssdSelected hideItemStyle={false} />
               ): <></>}
             </div>
           </div>

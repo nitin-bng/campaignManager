@@ -11,6 +11,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import RequireAuth from "./components/auth/requireAuth";
+import RequireNoAuth from "./components/auth/requireNoAuth";
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import Theme from '../src/components/Theme'
@@ -24,13 +26,13 @@ const App = () => {
           <ToastContainer />
           <div className="app__container">
             <Routes>
-              <Route path="/campmngr" element={<Login />} />
-              <Route path="/campmngr/signup" element={<Signup />} />
-              <Route path="/campmngr/forgotpassword" element={<ForgotPassword />} />
-              <Route path="/campmngr/verifyotp" element={<VerifyOtp />} />
-              <Route path="/campmngr/home" element={<Home />} />
-              <Route path="/campmngr/create__flow" element={<CreateFlow />} />
-              <Route path="/campmngr/user__configuration" element={<UserConfig />} />
+              <Route path="/campmngr" element={<RequireNoAuth><Login /></RequireNoAuth>} />
+              <Route path="/campmngr/signup" element={<RequireNoAuth><Signup /></RequireNoAuth>} />
+              <Route path="/campmngr/forgotpassword" element={<RequireNoAuth><ForgotPassword /></RequireNoAuth>} />
+              <Route path="/campmngr/verifyotp" element={<RequireNoAuth><VerifyOtp /></RequireNoAuth>} />
+              <Route path="/campmngr/home" element={<RequireAuth><Home /></RequireAuth>} />
+              <Route path="/campmngr/create__flow" element={<RequireAuth><CreateFlow /></RequireAuth>} />
+              <Route path="/campmngr/user__configuration" element={<RequireAuth><UserConfig /></RequireAuth>} />
             </Routes>
           </div>
         </CommonProvider>

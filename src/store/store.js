@@ -59,7 +59,7 @@ const initialState = {
       main_file: {
         ivr: {},
         sms: {},
-        ussd: ''
+        ussd: {}
       },
       actionType: {
         ivr: "PLAY",
@@ -145,7 +145,7 @@ const StateProvider = ({ children }) => {
               main_file: {
                 ivr: {},
                 sms: {},
-                ussd:''
+                ussd:{}
               },
               actionType: {
                 ivr: "PLAY",

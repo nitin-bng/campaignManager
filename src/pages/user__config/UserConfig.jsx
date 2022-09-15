@@ -634,8 +634,6 @@ const UserConfig = () => {
                                 <LocalizationProvider
                                   dateAdapter={AdapterDateFns}
                                 >
-                                  {console.log('Nitin data in value porp', blackoutStartHour)}
-                                  {console.log('Nitin data being sent to backend', startTimeToSendAtBackend)}
                                   <Stack style={{ width: "80%" }} spacing={3}>
                                     <TimePicker
                                       label="Blackout start hour"

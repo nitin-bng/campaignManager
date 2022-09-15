@@ -95,8 +95,7 @@ const Review = () => {
             res.map((element)=>{
                 console.log("elementelement", element.jobName);
                 if(campCreateData.campName==element.jobName){
-      
-                    setCampScheduleData(element)
+                    setCampScheduleData({...element, endDate: element.endDate.slice(0,10)})
                 }
             })
           }
@@ -111,8 +110,6 @@ const Review = () => {
     getCampaignDataList();
     getcampaignScheduleList();
   }, [campCreateData]);
-
-
 
   let languages = [];
   languages.push(

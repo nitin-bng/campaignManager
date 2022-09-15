@@ -23,7 +23,6 @@ const changeTimeFormatForFrontend = time =>{
         let currPosition = 0
 
         for(let i=0; i<date.length; i++){
-            console.log('nitin function loop', date[i], result)
             result += date[i]
             if(date[i] === ':'){
                 result = result.replaceAt(i-2, [time[currPosition]])

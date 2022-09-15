@@ -70,6 +70,9 @@ const Login = () => {
       }
     ).then((res) => {
       res.json().then((res) => {
+        if(res.userConfigurations.assignChannel >= 1){
+          localStorage.setItem("createFlowInMenuBarDisbled", true);
+        }
         localStorage.setItem("userCountry", res.user.country);
         localStorage.setItem("operatorName", res.user.operatorName);
         sessionStorage.setItem("userName", res.user.name);

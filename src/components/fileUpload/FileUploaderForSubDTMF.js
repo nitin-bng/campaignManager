@@ -12,6 +12,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         if (hideItemStyle === undefined) {
             errorDispatch({ type: "AUDIO", payload: true });
         }
+        return () => errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
 

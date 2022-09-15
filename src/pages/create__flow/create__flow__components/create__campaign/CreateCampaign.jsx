@@ -24,6 +24,7 @@ import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
 import { ErrorSharp } from "@material-ui/icons";
 import "./createCampaign.css";
+import { toast } from "react-toastify";
 const priorityArray = [
   "1(Least Prior)",
   "2",
@@ -42,6 +43,7 @@ const CreateCampaign = (props) => {
   const localStore = globalState.state.ivrCampFlowData;
   const [campType, setCampType] = useState("Outgoing")
   var [update, updateForm] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false)
   const {
     dispatch,
     setCampaignName,
@@ -296,7 +298,7 @@ const CreateCampaign = (props) => {
         )
           .then((res) => {
             res.json().then((res) => {
-              if (res) {
+              if (res.status === 'successful') {
                 localStorage.setItem("campId", res.campId);
                 // history.push({
                 //   pathname: "/Campaigns/createFlow",
@@ -306,7 +308,9 @@ const CreateCampaign = (props) => {
                 console.log(res);
                 setShowFlowState(true);
                 props.setDisableNext(false);
-              } else if (res.length == 0) {
+                setIsDisabled(true)
+              } else if (res.status === 'unsuccessful') {
+                toast(res.reason)
               }
             });
           })
@@ -426,7 +430,6 @@ const CreateCampaign = (props) => {
               </Select>
             </FormControl>
           </div>
-          {console.log('Nitin', formValues.campaign_type)}
 
           <div className="create__campaign__workflow__name">
             <FormControl fullWidth>
@@ -759,6 +762,7 @@ const CreateCampaign = (props) => {
             handleSubmit(e);
           }}
           className="submitJob"
+          disabled={isDisabled}
         >
           Submit
         </button>

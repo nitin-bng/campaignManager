@@ -95,6 +95,10 @@ const RenderingComponentOnLanguageSelect = (props) => {
       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
       payload: false,
     });
+    return () => errorDispatch({
+      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+      payload: true,
+    });
   }, []);
 
   useEffect(() => {

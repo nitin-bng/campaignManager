@@ -10,10 +10,12 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
     useEffect(()=>{
         if(hideItemStyle === undefined){
             errorDispatch({type:'AUDIO', payload: true})
-        }
+          }
+          return () =>  errorDispatch({type:'AUDIO', payload: false})
     },[])
 
-    return (                <div
+    return (
+      <div
         className="file__chooser__container"
         style={{
           width: "200px",

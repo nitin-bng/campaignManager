@@ -6,7 +6,6 @@ const Theme = createMuiTheme({
             fontWeight: 'bold',
             // fontSize: '20px',
             // color: 'purple',
-            width: '70vw',
         }
     }
 }

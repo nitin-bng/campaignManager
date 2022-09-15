@@ -36,7 +36,17 @@ const IfUssdSelected = ({ hideItemStyle }) => {
   };
 
   return (
-    <div className={hideItemStyle} hideItem style={{width:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}>
+    <div
+      className={hideItemStyle}
+      hideItem
+      style={{
+        width: "100%",
+        // marginLeft:"10%"
+        // display: "flex",
+        // justifyContent: "center",
+        // alignItems: "center",
+      }}
+    >
       <TextField
         id="outlined-multiline-static"
         label="Type Your Message here"
@@ -52,8 +62,8 @@ const IfUssdSelected = ({ hideItemStyle }) => {
               : true
             : false
         }
+        style={{ marginLeft:"5%", width:"90%"}}
       />
-
     </div>
   );
 };

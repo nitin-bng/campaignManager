@@ -23,22 +23,40 @@ import CreateFlowComponent from "../create__flow__component/CreateFlowComponent"
 import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
 import { ErrorSharp } from "@material-ui/icons";
-import './createCampaign.css'
-const priorityArray = ["1(Least Prior)", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+import "./createCampaign.css";
+const priorityArray = [
+  "1(Least Prior)",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+];
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
-  const localStore = globalState.state.ivrCampFlowData
+  const localStore = globalState.state.ivrCampFlowData;
+  const [campType, setCampType] = useState("Outgoing")
   var [update, updateForm] = useState(false);
-  const { dispatch, setCampaignName, campaignName ,campaignSchedulePriority, setCampaignSchedulePriority} = globalState;
+  const {
+    dispatch,
+    setCampaignName,
+    campaignName,
+    campaignSchedulePriority,
+    setCampaignSchedulePriority,
+  } = globalState;
   const initialValues = {
-    campPriority: {campaignSchedulePriority},
+    campPriority: { campaignSchedulePriority },
     wfId: "",
     start_date: "",
     campaign_type: "",
     cli_ivr: "",
     cli_sms: "",
-    cli_ussd: ""
+    cli_ussd: "",
   };
   const {
     flowName,
@@ -52,7 +70,7 @@ const CreateCampaign = (props) => {
   var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
   const { showError, setShowError, errorState, errorDispatch } = useError();
-  const [showFlowState, setShowFlowState] = useState(false)
+  const [showFlowState, setShowFlowState] = useState(false);
   var flowId = "";
 
   var scheduleData = {};
@@ -69,7 +87,7 @@ const CreateCampaign = (props) => {
     debugger;
     // setData([]);
     // props.getFlowList();
-    props.setDisableNext(true)
+    props.setDisableNext(true);
   }, []);
 
   useEffect(() => {
@@ -83,7 +101,7 @@ const CreateCampaign = (props) => {
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues['cli_'+localStore.flow.channel.toLowerCase()]
+      formValues["cli_" + localStore.flow.channel.toLowerCase()]
     ) {
       errorDispatch({ type: "CREATE_CAMPAIGN", payload: true });
     } else {
@@ -94,7 +112,7 @@ const CreateCampaign = (props) => {
     campaignSchedulePriority,
     formValues.wfId,
     formValues.campaign_type,
-    formValues['cli_'+localStore.flow.channel.toLowerCase()],
+    formValues["cli_" + localStore.flow.channel.toLowerCase()],
   ]);
 
   const getFlow = async (id) => {
@@ -131,7 +149,10 @@ const CreateCampaign = (props) => {
   const handleChange = (e, catagory) => {
     debugger;
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: !isNaN(value)? value >=0 ? value : 0:value });
+    setFormValues({
+      ...formValues,
+      [name]: !isNaN(value) ? (value >= 0 ? value : 0) : value,
+    });
     if (e.target.id == "campName") {
       // validateData('campName', e);
       scheduleData["campName"] = e.target.value;
@@ -219,7 +240,7 @@ const CreateCampaign = (props) => {
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues['cli_'+localStore.flow.channel.toLowerCase()]
+      formValues["cli_" + localStore.flow.channel.toLowerCase()]
     ) {
       setShowError(false);
       e.preventDefault();
@@ -263,8 +284,7 @@ const CreateCampaign = (props) => {
               ...scheduleData1,
               userId: localStorage.getItem("userId"),
               campName: campaignName,
-              campPriority : campaignSchedulePriority,
-
+              campPriority: campaignSchedulePriority,
             }),
           }
         )
@@ -278,9 +298,8 @@ const CreateCampaign = (props) => {
                 // });
                 // showSuccess(true)
                 console.log(res);
-                setShowFlowState(true)
-                props.setDisableNext(false)
-
+                setShowFlowState(true);
+                props.setDisableNext(false);
               } else if (res.length == 0) {
               }
             });
@@ -292,7 +311,6 @@ const CreateCampaign = (props) => {
     } else {
       setShowError(true);
     }
-
   };
 
   const flowFromApi = (data) => {
@@ -315,8 +333,8 @@ const CreateCampaign = (props) => {
         style={{ boxShadow: "2px 2px 2px grey" }}
       >
         <div className="basic__flow__details__heading__container">
-              <h1>Create Campaign</h1>
-            </div>
+          <h1>Create Campaign</h1>
+        </div>
         <div className="create__campaign__container" style={{ height: "30vh" }}>
           <div className="campaign__name">
             <Box
@@ -360,10 +378,12 @@ const CreateCampaign = (props) => {
                 aria-label="Default select example"
                 name="campPriority"
                 value={campaignSchedulePriority}
-                onChange={(event) => setCampaignSchedulePriority(event.target.value)}
+                onChange={(event) =>
+                  setCampaignSchedulePriority(event.target.value)
+                }
                 required
                 error={
-                  showError ? (campaignSchedulePriority? false : true) : false
+                  showError ? (campaignSchedulePriority ? false : true) : false
                 }
               >
                 {/* {console.log(channel)} */}
@@ -455,41 +475,49 @@ const CreateCampaign = (props) => {
               </select>
             </Box> */}
           </div>
-          <div
-            className="create__campaign__campaign__type__radio__button"
-            style={{
-              // border: "2px solid blue",
-              height: "50px",
-            }}
-          >
-            <FormControl
+          {localStorage.getItem("channelName") == "USSD" ? (
+            <div
+              className="create__campaign__campaign__type__radio__button"
               style={{
-                border: "1px solid grey",
-                borderRadius: "5px",
-                display: "flex",
-                height: "100%",
-                position: "relative",
+                // border: "2px solid blue",
+                height: "50px",
               }}
+              disabled
+
             >
-              <FormLabel
-                id="demo-row-radio-buttons-group-label"
+              <FormControl
+              disabled
                 style={{
-                  position: "absolute",
-                  top: "-13px",
-                  left: "7px",
-                  padding: "0 4px",
-                  backgroundColor: "white",
-                  fontSize: "15px",
+                  border: "1px solid grey",
+                  borderRadius: "5px",
+                  display: "flex",
+                  height: "100%",
+                  position: "relative",
                 }}
-                required
-                error={
-                  showError ? (formValues.campaign_type ? false : true) : false
-                }
               >
-                Campaign Type
-              </FormLabel>
-              <RadioGroup row>
-                {/* <div
+                <FormLabel
+                  id="demo-row-radio-buttons-group-label"
+                  style={{
+                    position: "absolute",
+                    top: "-13px",
+                    left: "7px",
+                    padding: "0 4px",
+                    backgroundColor: "white",
+                    fontSize: "15px",
+                  }}
+                  required
+                  error={
+                    showError
+                      ? formValues.campaign_type
+                        ? false
+                        : true
+                      : false
+                  }
+                >
+                  Campaign Type
+                </FormLabel>
+                <RadioGroup row>
+                  {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -539,24 +567,133 @@ const CreateCampaign = (props) => {
                   />
                 </div>
               </div> */}
-                <FormControlLabel
-                  name="campaign_type"
-                  value="incoming"
-                  control={<Radio />}
-                  label="Incoming"
-                  onChange={(e) => handleChange(e, "incoming")}
-                  style={{marginLeft:"5px"}}
-                />
-                <FormControlLabel
-                  name="campaign_type"
-                  value="outgoing"
-                  control={<Radio />}
-                  label="Outgoing"
-                  onChange={(e) => handleChange(e, "outgoing")}
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
+                  <FormControlLabel
+                    name="campaign_type"
+                    value="incoming"
+                    control={<Radio />}
+                    label="Incoming"
+                    onChange={(e) => handleChange(e, "incoming")}
+                    style={{ marginLeft: "5px" }}
+                  />
+                  <FormControlLabel
+                  checked
+                    name="campaign_type"
+                    value="outgoing"
+                    control={<Radio />}
+                    label="Outgoing"
+                    onChange={(e) => handleChange(e, "outgoing")}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          ) : (
+            <div
+              className="create__campaign__campaign__type__radio__button"
+              style={{
+                // border: "2px solid blue",
+                height: "50px",
+              }}
+            >
+              <FormControl
+                style={{
+                  border: "1px solid grey",
+                  borderRadius: "5px",
+                  display: "flex",
+                  height: "100%",
+                  position: "relative",
+                }}
+              >
+                <FormLabel
+                  id="demo-row-radio-buttons-group-label"
+                  style={{
+                    position: "absolute",
+                    top: "-13px",
+                    left: "7px",
+                    padding: "0 4px",
+                    backgroundColor: "white",
+                    fontSize: "15px",
+                  }}
+                  required
+                  error={
+                    showError
+                      ? formValues.campaign_type
+                        ? false
+                        : true
+                      : false
+                  }
+                >
+                  Campaign Type
+                </FormLabel>
+                <RadioGroup row>
+                  {/* <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "6px",
+                  padding: "5px",
+                  boxSizing: "border-box",
+                  // border: "2px solid green",
+                }}
+              >
+                <div
+                  style={{
+                    // border: "2px solid red",
+                    display: "flex",
+                    width: "40%",
+                  }}
+                >
+                  <label htmlFor="incoming" className="campaignInputCheckbox">Incoming</label>
+                  <input
+                    type="radio"
+                    id="incoming"
+                    name="campaign_type"
+                    value="incoming"
+                    onChange={(e) => handleChange(e, "incoming")}
+                    style={{
+                      marginLeft: "10px",
+                      // border: "2px solid red",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    // border: "2px solid red",
+                    display: "flex",
+                    width: "40%",
+                  }}
+                >
+                  <label htmlFor="outgoing" className="campaignInputCheckbox">Outgoing</label>
+                  <input
+                    type="radio"
+                    id="outgoing"
+                    name="campaign_type"
+                    value="outgoing"
+                    onChange={(e) => handleChange(e, "outgoing")}
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  />
+                </div>
+              </div> */}
+                  <FormControlLabel
+                    name="campaign_type"
+                    value="incoming"
+                    control={<Radio />}
+                    label="Incoming"
+                    onChange={(e) => handleChange(e, "incoming")}
+                    style={{ marginLeft: "5px" }}
+                  />
+                  <FormControlLabel
+                    name="campaign_type"
+                    value="outgoing"
+                    control={<Radio />}
+                    label="Outgoing"
+                    onChange={(e) => handleChange(e, "outgoing")}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          )}
 
           <div className="cli__container">
             <Box
@@ -570,33 +707,47 @@ const CreateCampaign = (props) => {
                 label={"cli"}
                 variant="outlined"
                 className="form-control"
-                id={'cli_'+localStore.flow.channel.toLowerCase()}
+                id={"cli_" + localStore.flow.channel.toLowerCase()}
                 aria-describedby="emailHelp"
                 placeholder={"enter cli for ivr"}
-                name={'cli_'+localStore.flow.channel.toLowerCase()}
-                value={formValues['cli_'+localStore.flow.channel.toLowerCase()]}
-                onChange={(event) => handleChange(event, 'cli_'+localStore.flow.channel.toLowerCase())}
+                name={"cli_" + localStore.flow.channel.toLowerCase()}
+                value={
+                  formValues["cli_" + localStore.flow.channel.toLowerCase()]
+                }
+                onChange={(event) =>
+                  handleChange(
+                    event,
+                    "cli_" + localStore.flow.channel.toLowerCase()
+                  )
+                }
                 onWheel={(e) => e.target.blur()}
                 required
-                error={showError ? (formValues['cli_'+localStore.flow.channel.toLowerCase()] ? false : true) : false}
+                error={
+                  showError
+                    ? formValues["cli_" + localStore.flow.channel.toLowerCase()]
+                      ? false
+                      : true
+                    : false
+                }
               />
             </Box>
           </div>
         </div>
         <button
-          style={{padding:".5rem 1rem",
-          border:"none" ,
-          outline: "none",
-          backgroundColor:" #374151",
-          color: "white",
-          textTransform:"uppercase",
-          textShadow: "1px 1px 2px black",
-          width:"10%",
-          margin:"auto",
-          marginBottom:"1rem",
-          transition:"all 0.5s",
-          fontWeight:"700"
-        }}
+          style={{
+            padding: ".5rem 1rem",
+            border: "none",
+            outline: "none",
+            backgroundColor: " #374151",
+            color: "white",
+            textTransform: "uppercase",
+            textShadow: "1px 1px 2px black",
+            width: "10%",
+            margin: "auto",
+            marginBottom: "1rem",
+            transition: "all 0.5s",
+            fontWeight: "700",
+          }}
           onClick={(e) => {
             handleSubmit(e);
           }}
@@ -604,13 +755,11 @@ const CreateCampaign = (props) => {
         >
           Submit
         </button>
-        {
-          showFlowState ?  <div style={{ paddingBottom: "2rem" }}>
-          <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
-        </div>
-        : null
-        }
-       
+        {showFlowState ? (
+          <div style={{ paddingBottom: "2rem" }}>
+            <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
+          </div>
+        ) : null}
       </div>
     </>
   );

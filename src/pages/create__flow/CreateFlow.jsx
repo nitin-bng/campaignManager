@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   let globalState = useContext(store);
   const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -79,7 +79,7 @@ const CreateFlow = () => {
   });
   const [FlowListData, setFlowListData] = useState([]);
   const [showFlowTable, setShowFlowTable] = useState(true);
-  const [disableNext, setDisableNext] = useState(false)
+  const [disableNext, setDisableNext] = useState(false);
   const [flowData, setFlowData] = useState({});
   // const [flowDataFromAPI, setFlowData] = useState({});
 
@@ -90,7 +90,13 @@ const CreateFlow = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   var rows3 = [];
   var flowId = "";
-  function createData3(id,wfId ,flowName, channelSupported, languageSupported ) {
+  function createData3(
+    id,
+    wfId,
+    flowName,
+    channelSupported,
+    languageSupported
+  ) {
     return { id, wfId, flowName, channelSupported, languageSupported };
   }
   const getFlowList = () => {
@@ -153,8 +159,10 @@ const CreateFlow = () => {
     // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
     // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
     // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
-    console.log('dtmf count', globalState.state.ivrCampFlowData.flow
-    .main_audio_dtmfCount)
+    console.log(
+      "dtmf count",
+      globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
+    );
     if (checkMandatoryFields()) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setShowError(false);
@@ -413,8 +421,18 @@ const CreateFlow = () => {
             res.map((params) => {
               console.log("params", JSON.parse(params.json));
               console.log("params", params);
-              const parsedJSON = JSON.parse(params.json)
-              rows3.push(createData3(params.id, params.wfId, params.flowName, parsedJSON.flow.channel, parsedJSON.flow.language[0].actions.map((item)=>item.languageName) ));
+              const parsedJSON = JSON.parse(params.json);
+              rows3.push(
+                createData3(
+                  params.id,
+                  params.wfId,
+                  params.flowName,
+                  parsedJSON.flow.channel,
+                  parsedJSON.flow.language[0].actions.map(
+                    (item) => item.languageName
+                  )
+                )
+              );
             });
             setData3(rows3);
             // setFlowListData(rows3);
@@ -442,7 +460,7 @@ const CreateFlow = () => {
             <div className="create__flow__maincontent">
               <Box
                 className="create__flow__maincontent__box"
-                sx={{ width: "100%", height: "93%", overflow: "scroll" }}
+                sx={{ width: "100%", height: "100%", overflow: "scroll" }}
               >
                 <Stepper className="stepper" activeStep={activeStep}>
                   {steps.map((label, index) => {
@@ -465,24 +483,171 @@ const CreateFlow = () => {
                     </Box>
                   </React.Fragment>
                 ) : ( */}
-                  <>
-                    <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
-                      {activeStep === 0 ? (
-                        <>
-                          {showFlowTable ? (
-                            <>
-                              <div
-                                className="row"
+                <>
+                  <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
+                    {activeStep === 0 ? (
+                      <>
+                        {showFlowTable ? (
+                          <>
+                            <div
+                              className="row"
+                              style={{
+                                // border: "2px solid red",
+                                width: "90%",
+                                margin: "2rem auto",
+                                boxSizing: "border-box",
+                                display: "flex",
+                                flexDirection: "column",
+                                // alignItems:"flex-end"
+                              }}
+                            >
+                              <button
                                 style={{
-                                  // border: "2px solid red",
-                                  width: "90%",
-                                  margin: "2rem auto",
-                                  boxSizing: "border-box",
-                                  display:"flex",
-                                  flexDirection:"column",
-                                  // alignItems:"flex-end"
+                                  padding: ".5rem 1rem",
+                                  border: "none",
+                                  outline: "none",
+                                  backgroundColor: " #374151",
+                                  color: "white",
+                                  textTransform: "uppercase",
+                                  textShadow: "1px 1px 2px black",
+                                  width: "20%",
+                                  margin: "1rem 0",
+                                  // marginBottom: ".5rem",
+                                  transition: "all 0.5s",
+                                  fontWeight: "700",
+                                  alignSelf: "flex-end",
+                                }}
+                                className="closeBtn"
+                                onClick={() => setShowFlowTable(false)}
+                              >
+                                Create New Flow
+                              </button>
+                              <div className="col-sm-12">
+                                <div
+                                  className="basic__flow__details__heading__container"
+                                  style={{ padding: "1rem 0" }}
+                                >
+                                  <h1>List of created Flows</h1>
+                                </div>
+                                <div className="table-responsive table-striped ctable">
+                                  <TableContainer component={Paper}>
+                                    <Table
+                                      className={classes.table}
+                                      aria-label="simple table"
+                                    >
+                                      <TableHead
+                                        className="thead-light"
+                                        style={{
+                                          backgroundColor: "lightgray",
+                                          borderBottom: "2px solid black",
+                                        }}
+                                      >
+                                        <TableRow>
+                                          <TableCell align="center">
+                                            S. No.
+                                          </TableCell>
+                                          {console.log(tabledata3)}
+                                          <TableCell align="center">
+                                            Flow Name
+                                          </TableCell>
+                                          <TableCell align="center">
+                                            Channel Supported
+                                          </TableCell>
+                                          <TableCell align="center">
+                                            Language supported
+                                          </TableCell>
+                                          <TableCell align="center">
+                                            Preview flow
+                                          </TableCell>
+                                        </TableRow>
+                                      </TableHead>
+                                      <TableBody>
+                                        {tabledata3.map((row) => (
+                                          <TableRow
+                                            key={row.id}
+                                            value={row.wfId}
+                                            className="tableRow"
+                                          >
+                                            <TableCell align="center">
+                                              {row.id}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                              {row.flowName}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                              {row.channelSupported}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                              {row.languageSupported.map(
+                                                (ele) => {
+                                                  return (
+                                                    <span> &nbsp;{ele},</span>
+                                                  );
+                                                }
+                                              )}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                              <button
+                                                style={{
+                                                  padding: ".5rem 1rem",
+                                                  border: "none",
+                                                  outline: "none",
+                                                  backgroundColor: " #374151",
+                                                  color: "white",
+                                                  textTransform: "uppercase",
+                                                  textShadow:
+                                                    "1px 1px 2px black",
+                                                  // width: "10%",
+                                                  // marginTop: "1rem",
+                                                  // marginBottom: ".5rem",
+                                                  transition: "all 0.5s",
+                                                  fontWeight: "700",
+                                                }}
+                                                className="closeBtn"
+                                                onClick={() => {
+                                                  getFlow(row.id, row.wfId);
+                                                }}
+                                              >
+                                                Preview
+                                              </button>
+                                            </TableCell>
+                                            {/* <TableCell align="center">{row.wfId}</TableCell> */}
+                                          </TableRow>
+                                        ))}
+                                      </TableBody>
+                                    </Table>
+                                  </TableContainer>
+                                </div>
+                              </div>
+                            </div>
+                            {openModal && (
+                              <div
+                                className="bg-modal"
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  position: "fixed",
+                                  left: "0",
+                                  top: "0",
                                 }}
                               >
+                                <div
+                                  className="modal-content"
+                                  style={{
+                                    // border: "2px solid red",
+                                    width: "90vw",
+                                    height: "90vh",
+                                  }}
+                                >
+                                  <CreateFlowComponent
+                                    hideItemStyle={hideItemStyle}
+                                    disableEditingWhileCreatingCamp={true}
+                                  />
+                                  {console.log(
+                                    "hello hello hello",
+                                    globalState
+                                  )}
+                                </div>
                                 <button
                                   style={{
                                     padding: ".5rem 1rem",
@@ -492,202 +657,61 @@ const CreateFlow = () => {
                                     color: "white",
                                     textTransform: "uppercase",
                                     textShadow: "1px 1px 2px black",
-                                    width: "20%",
-                                    margin: "1rem 0",
-                                    // marginBottom: ".5rem",
+                                    width: "10%",
+                                    marginTop: "1rem",
+                                    marginBottom: ".5rem",
                                     transition: "all 0.5s",
                                     fontWeight: "700",
-                                    alignSelf:"flex-end"
                                   }}
                                   className="closeBtn"
-                                  onClick={() => setShowFlowTable(false)}
+                                  onClick={(e) => handleModal(e)}
                                 >
-                                  Create New Flow
+                                  Ok
                                 </button>
-                                <div className="col-sm-12">
-                                  <div
-                                    className="basic__flow__details__heading__container"
-                                    style={{ padding: "1rem 0" }}
-                                  >
-                                    <h1>List of created Flows</h1>
-                                  </div>
-                                  <div className="table-responsive table-striped ctable">
-                                    <TableContainer component={Paper}>
-                                      <Table
-                                        className={classes.table}
-                                        aria-label="simple table"
-                                      >
-                                        <TableHead className="thead-light" style={{backgroundColor:"lightgray", borderBottom:"2px solid black"}}>
-                                          <TableRow>
-                                            <TableCell align="center">
-                                              S. No.
-                                            </TableCell>
-                                            {console.log(tabledata3)}
-                                            <TableCell align="center">
-                                              Flow Name
-                                            </TableCell>
-                                            <TableCell align="center">
-                                              Channel Supported
-                                            </TableCell>
-                                            <TableCell align="center">
-                                              Language supported
-                                            </TableCell>
-                                            <TableCell align="center">
-                                              Preview flow
-                                            </TableCell>
-                                          </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                          {tabledata3.map((row) => (
-                                            <TableRow
-                                            
-                                              key={row.id}
-                                              value={row.wfId}
-                                              className="tableRow"
-                                            >
-                                              <TableCell align="center">
-                                                {row.id}
-                                              </TableCell>
-                                              <TableCell align="center">
-                                                {row.flowName}
-                                              </TableCell>
-                                              <TableCell align="center">
-                                                {row.channelSupported}
-                                              </TableCell>
-                                              <TableCell align="center">
-                                                {row.languageSupported.map((ele)=>{
-                                                  return(
-                                                  <span> &nbsp;{ele},</span>
-                                                  )
-                                                })}
-                                              </TableCell>
-                                              <TableCell align="center">
-                                                <button
-                                                  style={{
-                                                    padding: ".5rem 1rem",
-                                                    border: "none",
-                                                    outline: "none",
-                                                    backgroundColor: " #374151",
-                                                    color: "white",
-                                                    textTransform: "uppercase",
-                                                    textShadow:
-                                                      "1px 1px 2px black",
-                                                    // width: "10%",
-                                                    // marginTop: "1rem",
-                                                    // marginBottom: ".5rem",
-                                                    transition: "all 0.5s",
-                                                    fontWeight: "700",
-                                                  }}
-                                                  className="closeBtn"
-                                                  onClick={()=>{
-                                                    getFlow(row.id, row.wfId);
-                                                  }}
-                                                >
-                                                  Preview
-                                                </button>
-                                              </TableCell>
-                                              {/* <TableCell align="center">{row.wfId}</TableCell> */}
-                                            </TableRow>
-                                          ))}
-                                        </TableBody>
-                                      </Table>
-                                    </TableContainer>
-                                  </div>
-                                </div>
-                                
                               </div>
-                              {openModal && (
-                                <div
-                                  className="bg-modal"
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    position:"fixed",
-                                    left:"0",
-                                    top:"0"
-                                    
-                                  }}
-                                >
-                                  <div
-                                    className="modal-content"
-                                    style={{
-                                      // border: "2px solid red",
-                                      width: "90vw",
-                                      height: "90vh",
-                                    }}
-                                  >
-                                    <CreateFlowComponent
-                                      hideItemStyle={hideItemStyle}
-                                      disableEditingWhileCreatingCamp={true}
-                                    />
-                                    {console.log(
-                                      "hello hello hello",
-                                      globalState
-                                    )}
-                                  </div>
-                                  <button
-                                    style={{
-                                      padding: ".5rem 1rem",
-                                      border: "none",
-                                      outline: "none",
-                                      backgroundColor: " #374151",
-                                      color: "white",
-                                      textTransform: "uppercase",
-                                      textShadow: "1px 1px 2px black",
-                                      width: "10%",
-                                      marginTop: "1rem",
-                                      marginBottom: ".5rem",
-                                      transition: "all 0.5s",
-                                      fontWeight: "700",
-                                    }}
-                                    className="closeBtn"
-                                    onClick={(e) => handleModal(e)}
-                                  >
-                                    Ok
-                                  </button>
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <CreateFlowComponent
-                              reset={false}
-                              hideItemStyle={hideItemStyle}
-                            />
-                          )}
-                        </>
-                      ) : activeStep === 1 ? (
-                        <CreateCampaign
-                          disableEditingWhileCreatingCamp={true}
-                          getFlowList={getFlowList}
-                          FlowListData={FlowListData}
-                          setFlowListData={setFlowListData}
-                          hideItemStyle={hideItemStyle}
-                          setDisableNext={setDisableNext}
-                        />
-                      ) : activeStep === 2 ? (
-                        <ScheduleCampaign
-                          disableEditingWhileCreatingCamp={true}
-                          hideItemStyle={hideItemStyle}
-                          setDisableNext={setDisableNext}
-                        />
-                      ) : activeStep === 3 ? (
-                        <Review />
-                      ) : (
-                        ""
-                      )}
-                    </Typography>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        position: "fixed",
-                        width: "90%",
-                        backgroundColor: "white",
-                        flexDirection: "row",
-                        pt: 2,
-                      }}
-                    >
-                      {/* <Button
+                            )}
+                          </>
+                        ) : (
+                          <CreateFlowComponent
+                            reset={false}
+                            hideItemStyle={hideItemStyle}
+                          />
+                        )}
+                      </>
+                    ) : activeStep === 1 ? (
+                      <CreateCampaign
+                        disableEditingWhileCreatingCamp={true}
+                        getFlowList={getFlowList}
+                        FlowListData={FlowListData}
+                        setFlowListData={setFlowListData}
+                        hideItemStyle={hideItemStyle}
+                        setDisableNext={setDisableNext}
+                      />
+                    ) : activeStep === 2 ? (
+                      <ScheduleCampaign
+                        disableEditingWhileCreatingCamp={true}
+                        hideItemStyle={hideItemStyle}
+                        setDisableNext={setDisableNext}
+                      />
+                    ) : activeStep === 3 ? (
+                      <Review />
+                    ) : (
+                      ""
+                    )}
+                  </Typography>
+{/* 
+                  <Box
+                    sx={{
+                      display: "flex",
+                      position: "fixed",
+                      width: "90%",
+                      backgroundColor: "white",
+                      flexDirection: "row",
+                      pt: 2,
+                    }}
+                    style={{border:"2px solid red"}}
+                  > */}
+                    {/* <Button
                         color="inherit"
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -695,13 +719,27 @@ const CreateFlow = () => {
                       >
                         Back
                       </Button> */}
-                      <Box sx={{ flex: "1 1 auto" }} />
-
-                      <Button onClick={handleNext} disabled={disableNext||showFlowTable}>
-                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                      </Button>
-                    </Box>
-                  </>
+                    <Button
+                      className="NextButton"
+                      onClick={handleNext}
+                      disabled={disableNext || showFlowTable}
+                      style={{
+                        position:"fixed",
+                        bottom:"40px",
+                        right:"80px",
+                        backgroundColor: "#374151",
+                        padding: "0.5rem 1rem",
+                        color: "white",
+                        marginRight: ".5rem",
+                        fontWeight:"700",
+                        textShadow:"2px 2px 2px black",
+                        transition:"all .5s"
+                      }}
+                    >
+                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                    </Button>
+                  {/* </Box> */}
+                </>
                 {/* )} */}
               </Box>
             </div>

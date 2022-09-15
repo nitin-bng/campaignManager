@@ -12,11 +12,14 @@ import VerifyOtp from "./pages/VerifyOtp";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { ThemeProvider } from '@material-ui/core/styles';
+import Theme from '../src/components/Theme'
 
 const App = () => {
   return (
     <>
       <div className="app">
+      <ThemeProvider theme={Theme}>
         <CommonProvider>
           <ToastContainer />
           <div className="app__container">
@@ -31,6 +34,7 @@ const App = () => {
             </Routes>
           </div>
         </CommonProvider>
+        </ThemeProvider>
       </div>
     </>
   );

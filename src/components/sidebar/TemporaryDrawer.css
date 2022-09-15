@@ -1,0 +1,7 @@
+.sidebarListItem:active{
+    background-color: #0f1e3b !important;
+}
+
+.activeNav{
+    background-color: #0f1e3b !important;
+}

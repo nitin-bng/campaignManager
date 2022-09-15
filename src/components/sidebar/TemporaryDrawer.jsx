@@ -11,15 +11,18 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Sidebar__menu__items } from "../../helpers/All__mapping";
-
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import "./TemporaryDrawer.css";
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
     left: false,
   });
 
+  const [activeNavItem, setActiveNaavItem] = React.useState("Home");
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -31,6 +34,22 @@ export default function TemporaryDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} placement="right" />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "#0f1e3b",
+      color: "white",
+      boxShadow: theme.shadows[1],
+      fontSize: 15,
+      width: "100px",
+      height: "50px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  }));
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -41,40 +60,57 @@ export default function TemporaryDrawer() {
     >
       <List>
         {Sidebar__menu__items.map((text, index) => (
-          <Link
-            to={
-              text.menu__title === "Create Flow" &&
-              !localStorage.getItem("createFlowInMenuBarDisbled")
-                ? "/campmngr/user__configuration"
-                : text.route__path
-            }
-          >
-            <ListItem
-              key={text.menu__title}
-              disablePadding
-              onClick={() =>
+          <LightTooltip title={text.menu__title}>
+            <Link
+              className={`sidebarListItem ${
+                activeNavItem === text.menu__title ? "activeNav" : ""
+              }}`}
+              to={
                 text.menu__title === "Create Flow" &&
-                !localStorage.getItem("createFlowInMenuBarDisbled") &&
-                toast("You need to set up user config first")
+                !localStorage.getItem("createFlowInMenuBarDisbled")
+                  ? "/campmngr/user__configuration"
+                  : text.route__path
               }
+              onClick={()=>{
+                setActiveNaavItem(text.menu__title);
+
+              }}
             >
-              <ListItemButton>
-                <ListItemIcon style={{ color: "white", fontWeight: "700" }}>
-                  {text.icon}
-                </ListItemIcon>
-                <ListItemText
-                  // primary={text.menu__title}
-                  style={{
-                    color: "white",
-                    fontWeight: "900",
-                    textShadow: "1px 1px 2px black",
-                  }}
-                >
-                  {text.menu__title}
+              {console.log("activenav", activeNavItem)}
+              <ListItem
+                className={`sidebarListItem ${
+                  activeNavItem === text.menu__title ? "activeNav" : ""
+                }}`}
+                key={text.menu__title}
+                disablePadding
+                onClick={() => {
+                  text.menu__title === "Create Flow" &&
+                    !localStorage.getItem("createFlowInMenuBarDisbled") &&
+                    toast("You need to set up user config first");
+                setActiveNaavItem(text.menu__title);
+
+                }}
+              >
+                {console.log("activenav", activeNavItem)}
+
+                <ListItemButton>
+                  <ListItemIcon style={{ color: "white", fontWeight: "700" }}>
+                    {text.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    // primary={text.menu__title}
+                    style={{
+                      color: "white",
+                      fontWeight: "900",
+                      textShadow: "1px 1px 2px black",
+                    }}
+                  >
+                    {text.menu__title}
                   </ListItemText>
-              </ListItemButton>
-            </ListItem>
-          </Link>
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          </LightTooltip>
         ))}
       </List>
     </Box>

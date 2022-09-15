@@ -20,20 +20,20 @@ const IfUssdSelected = ({hideItemStyle}) =>{
       useEffect(() => {
         if(hideItemStyle === undefined){
             if (
-            localStore.ivrCampFlowData.flow.main_file.ussd
+            localStore.ivrCampFlowData.flow.main_file.ussd._E
         ) {
           errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
         } else {
           errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
         }}
       }, [
-        localStore.ivrCampFlowData.flow.main_file.ussd
+        localStore.ivrCampFlowData.flow.main_file.ussd._E
       ]);
 
 
     const handleUSSD = (msg) => {
         localStore.ivrCampFlowData.flow['type'] = "HITURL_USSD"
-        localStore.ivrCampFlowData.flow.main_file.ussd = msg
+        localStore.ivrCampFlowData.flow.main_file.ussd['_E'] = msg
         localStore.ivrCampFlowData.flow["main_audio_file"] = msg
         dispatch({ type: "SET_MAIN_AUDIO_FILE", nState: localStore });
     }
@@ -41,9 +41,9 @@ const IfUssdSelected = ({hideItemStyle}) =>{
     return (
         <div className={hideItemStyle} hideItem>
             <TextField 
-            value={localStore.ivrCampFlowData.flow.main_file.ussd} 
+            value={localStore.ivrCampFlowData.flow.main_file.ussd._E} 
             onChange={(e)=>handleUSSD(e.target.value)}
-            error={showError ? localStore.ivrCampFlowData.flow.main_file.ussd ? false : true : false}
+            error={showError ? localStore.ivrCampFlowData.flow.main_file.ussd._E ? false : true : false}
             >This is message</TextField>
         </div>
     )

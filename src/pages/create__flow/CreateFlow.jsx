@@ -66,7 +66,7 @@ const CreateFlow = () => {
   }));
   const classes = useStyles();
   const { showError, setShowError, errorState, errorDispatch } = useError();
-  const { ifIVRselectedThenLanguage } = useContext(CommonContext);
+  const { ifIVRselectedThenLanguage, setChannel } = useContext(CommonContext);
   var [tabledata3, setData3] = useState([]);
   const { dispatch, campaignName } = globalState;
   let localStore = globalState.state;
@@ -390,6 +390,10 @@ const CreateFlow = () => {
         console.log("flowDataFromApi", flowDataFromApi);
         flowFromApi(data.flow);
         setOpenModal(true);
+        setChannel(flowDataFromApi.channel);
+        localStore.ivrCampFlowData.flow.channel = flowDataFromApi.channel;
+        localStorage.setItem("channelName", flowDataFromApi.channel);
+        dispatch({ type: "SET_DATA", nState: localStore });
         return data;
       })
       .catch(function (error) {

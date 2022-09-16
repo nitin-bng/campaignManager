@@ -100,8 +100,6 @@ const CreateCampaign = (props) => {
     }
   },[value])
 
-  console.log('Nitin', formValues, scheduleData1)
-
   const saveValues = (e) => {
     setCreateCampCli(e.target.value);
   };
@@ -111,6 +109,8 @@ const CreateCampaign = (props) => {
     // setData([]);
     // props.getFlowList();
     props.setDisableNext(true);
+    setCampaignName('')
+    setCampaignSchedulePriority()
   }, []);
 
   useEffect(() => {

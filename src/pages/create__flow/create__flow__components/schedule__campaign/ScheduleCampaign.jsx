@@ -382,7 +382,7 @@ const ScheduleCampaign = (props) => {
                 }));
               } else if (res.status === 'unsuccessful') {
                 setShowLoader(false)
-                setErrorMessage("User config and the numbers in the file do not match");
+                setErrorMessage(res.reason);
               }
             });
             setShowLoader(false)

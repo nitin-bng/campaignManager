@@ -112,6 +112,8 @@ const CreateFlow = () => {
         console.log("get flowList", data);
         data.unshift({ flowName: "select", id: "select", wfId: "select" });
         setFlowListData(data);
+        setShowFlowTable(false)
+        errorDispatch({ type: "INITIALIZE" });
         return data;
       })
       .catch(function (error) {

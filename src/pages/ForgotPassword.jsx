@@ -87,12 +87,12 @@ const ForgotPassword = () => {
  
                 <Box
                   component="form"
-                  style={{ width: "100%"}}
+                  style={{ width: "100%", display:"flex", justifyContent:"center"}}
                   noValidate
                   autoComplete="off"
                   >
                    <PhoneInput
-                  style={{ width:"100%", height:"100%", outline:"none"}}
+                  style={{ width:"80%", height:"3rem", outline:"none"}}
                     id="phonenumber"
                     country={'in'}
                     value={phoneNumber}

@@ -1003,7 +1003,7 @@ const SubDTMF = (props) => {
                       <TextField
                         id="if__IVR__selected"
                         type="number"
-                        label="Main Wait Time"
+                        label="Wait Time for DTMF input"
                         disabled={props.disableEditingWhileCreatingCamp}
                         value={traverseAndModify(
                           props.current.id,
@@ -1046,7 +1046,7 @@ const SubDTMF = (props) => {
                   <div className="select__number__of__subDTMF__from__subdtmf__container">
                     <FormControl style={{ width: "100%" }}>
                       <InputLabel id="demo-simple-select-label" required>
-                        sub dtmf
+                      Number of options for this selection
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
@@ -1054,7 +1054,7 @@ const SubDTMF = (props) => {
                         value={props.current.dtmf_count}
                         disabled={props.disableEditingWhileCreatingCamp}
                         // value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount || 0 : props.current.dtmf_count}
-                        label="DTMF"
+                        label="Number of options for this selection"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.current);
@@ -1091,7 +1091,7 @@ const SubDTMF = (props) => {
                       {languageName.map((el) => {
                         return (
                           <Typography style={{ fontSize: "12px" }}>
-                            enter hello file for {el}
+                            Welcome prompt audio file for {el}
                           </Typography>
                         );
                       })}

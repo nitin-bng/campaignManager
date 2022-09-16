@@ -39,3 +39,6 @@ code {
   scrollbar-width: none; 
 }
 
+.MuiTextField-root{
+  width: 100% !important;
+}

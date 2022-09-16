@@ -747,7 +747,7 @@ const MainDTMF = (props) => {
                           props.disableEditingWhileCreatingCamp
                         }
                         type="number"
-                        label="Main Wait iolkljk Time"
+                        label="Wait Time for DTMF input"
                         name={"waitTime_" + props.global.dtmf_key}
                         value={
                           globalState.state.ivrCampFlowData.flow.actions[
@@ -790,13 +790,13 @@ const MainDTMF = (props) => {
                               : true
                             : false
                         }>
-                        fyg DTMF
+                        Number of options for this selection
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={props.global.dtmf_count}
-                        label="DTMF"
+                        label="Number of options for this selection"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.global);
@@ -850,7 +850,7 @@ const MainDTMF = (props) => {
                       {languageName.map((el) => {
                         return (
                           <Typography style={{ fontSize: "12px" }}>
-                            enter hello file for {el}
+                            Welcome prompt audio file for {el}
                           </Typography>
                         );
                       })}

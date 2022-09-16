@@ -1008,7 +1008,7 @@ const IfIVRSelected = (props) => {
               {languageName.map((el) => {
                 return (
                   <Typography style={{ fontSize: "12px" }}>
-                    enter hello file for {el}
+                    Welcome prompt audio file for {el}
                   </Typography>
                 );
               })}
@@ -1083,8 +1083,8 @@ const IfIVRSelected = (props) => {
                       : false
                   }
                 >
-                  {" "}
-                  hello DTMF
+                
+                  Number of options in IVR flow
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -1093,7 +1093,7 @@ const IfIVRSelected = (props) => {
                     globalState.state.ivrCampFlowData.flow
                       .main_audio_dtmfCount
                   }
-                  label="DTMF"
+                  label="Number of options in IVR flow"
                   // onChange={handleChange}
                   onChange={(e) => {
                     detectLevel(e, "main_audio");

@@ -43,11 +43,8 @@ const IfUssdSelected = ({hideItemStyle}) =>{
       className={hideItemStyle}
       hideItem
       style={{
-        width: "100%",
-        // marginLeft:"10%"
-        // display: "flex",
-        // justifyContent: "center",
-        // alignItems: "center",
+
+        padding:"3rem"
       }}
     >
       <TextField
@@ -65,7 +62,7 @@ const IfUssdSelected = ({hideItemStyle}) =>{
               : true
             : false
         }
-        style={{ marginLeft:"5%", width:"90%"}}
+        style={{ width:"90%"}}
       />
     </div>
   );

@@ -15,6 +15,8 @@ import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import { store } from "../../../../store/store";
 const Review = () => {
+  const [api, setApi] = useState(false);
+
   const globalState = useContext(store);
   let localStore = globalState.state;
   const [expanded, setExpanded] = React.useState(true);
@@ -90,7 +92,8 @@ const Review = () => {
       .then((res) => {
         res.json().then((res) => {
           console.log("res", res);
-          console.log("campCreateDatacampCreateDatacampCreateData", campCreateData.campName);
+          
+          console.log("campCreateDatacampCreateDatacampCreateData", campCreateData);
           {
             res.map((element)=>{
                 console.log("elementelement", element.jobName);
@@ -110,7 +113,13 @@ const Review = () => {
   useEffect(() => {
     getCampaignDataList();
     getcampaignScheduleList();
-  });
+  },[api]);
+
+  useEffect(()=>{
+    setInterval(() => {
+      setApi((prev)=> !prev)
+    }, 10000);
+  },[])
 
   let languages = [];
   languages.push(

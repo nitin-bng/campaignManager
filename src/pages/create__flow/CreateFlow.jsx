@@ -648,15 +648,25 @@ const CreateFlow = () => {
                                     globalState
                                   )}
                                 </div>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    // border: "2px solid red",
+                                    width: "100%",
+                                    alignItems:"center",
+                                    justifyContent:"space-around"
+                                  }}
+                                >
+
                                 <button
                                   style={{
                                     padding: ".5rem 1rem",
                                     border: "none",
                                     outline: "none",
-                                    backgroundColor: " #374151",
-                                    color: "white",
+                                    backgroundColor: "white",
+                                    color: "#374151",
                                     textTransform: "uppercase",
-                                    textShadow: "1px 1px 2px black",
+                                    textShadow: "1px 1px 1px black",
                                     width: "10%",
                                     marginTop: "1rem",
                                     marginBottom: ".5rem",
@@ -666,8 +676,31 @@ const CreateFlow = () => {
                                   className="closeBtn"
                                   onClick={(e) => handleModal(e)}
                                 >
-                                  Ok
+                                  Select other flow
                                 </button>
+
+                                <button
+                                  style={{
+                                    padding: ".5rem 1rem",
+                                    border: "none",
+                                    outline: "none",
+                                    backgroundColor: "white",
+                                    color: "#374151",
+                                    textTransform: "uppercase",
+                                    textShadow: "1px 1px 1px black",
+                                    width: "10%",
+                                    marginTop: "1rem",
+                                    marginBottom: ".5rem",
+                                    transition: "all 0.5s",
+                                    fontWeight: "700",
+                                  }}
+                                  className="closeBtn"
+                                  onClick={(e) => handleModal(e)}
+                                >
+                                  Select This Flow
+                                </button>
+
+                                </div>
                               </div>
                             )}
                           </>
@@ -699,7 +732,7 @@ const CreateFlow = () => {
                       ""
                     )}
                   </Typography>
-{/* 
+                  {/* 
                   <Box
                     sx={{
                       display: "flex",
@@ -711,7 +744,7 @@ const CreateFlow = () => {
                     }}
                     style={{border:"2px solid red"}}
                   > */}
-                    {/* <Button
+                  {/* <Button
                         color="inherit"
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -719,25 +752,25 @@ const CreateFlow = () => {
                       >
                         Back
                       </Button> */}
-                    <Button
-                      className="NextButton"
-                      onClick={handleNext}
-                      disabled={disableNext || showFlowTable}
-                      style={{
-                        position:"fixed",
-                        bottom:"40px",
-                        right:"80px",
-                        backgroundColor: "#374151",
-                        padding: "0.5rem 1rem",
-                        color: "white",
-                        marginRight: ".5rem",
-                        fontWeight:"700",
-                        textShadow:"2px 2px 2px black",
-                        transition:"all .5s"
-                      }}
-                    >
-                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                    </Button>
+                  <Button
+                    className="NextButton"
+                    onClick={handleNext}
+                    disabled={disableNext || showFlowTable}
+                    style={{
+                      position: "fixed",
+                      bottom: "40px",
+                      right: "80px",
+                      backgroundColor: "#374151",
+                      padding: "0.5rem 1rem",
+                      color: "white",
+                      marginRight: ".5rem",
+                      fontWeight: "700",
+                      textShadow: "2px 2px 2px black",
+                      transition: "all .5s",
+                    }}
+                  >
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  </Button>
                   {/* </Box> */}
                 </>
                 {/* )} */}

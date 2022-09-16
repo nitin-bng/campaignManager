@@ -338,12 +338,12 @@ const ScheduleCampaign = (props) => {
           }));
         }
       } else if (e.target.id == "selectBlackoutDate") {
-        scheduleData["startBlackoutDate"] = e.target.value[0];
+        scheduleData["startBlackoutDate"] = e.target.value[0]+"T00:00:00.000Z";
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
           ...scheduleData,
         }));
-        scheduleData["endBlackoutDate"] = e.target.value[1];
+        scheduleData["endBlackoutDate"] = e.target.value[1]+"T00:00:00.000Z";
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
           ...scheduleData,
@@ -1132,10 +1132,10 @@ const ScheduleCampaign = (props) => {
                               setState([item.selection]);
                               scheduleData["endDate"] = getDateInFormat(
                                 item.selection.endDate
-                              );
+                              )+"T00:00:00.000Z";
                               scheduleData["startDate"] = getDateInFormat(
                                 item.selection.startDate
-                              );
+                              )+"T00:00:00.000Z";
 
                               setScheduleData((scheduleData1) => {
                                 let result = {

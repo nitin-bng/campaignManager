@@ -516,9 +516,9 @@ const ScheduleCampaign = (props) => {
     // }
     // console.log("end time array", endTimeArray);
     if (
-      endTimeArray[0] <= ~~startTimeArray[0] ||
-      (endTimeArray[0] === ~~startTimeArray[0] &&
-        endTimeArray[1] <= ~~startTimeArray[1])
+      ~~endTimeArray[0] < ~~startTimeArray[0] ||
+      (~~endTimeArray[0] == ~~startTimeArray[0] &&
+        ~~endTimeArray[1] <= ~~startTimeArray[1])
     ) {
       throw Error("End time can not be earlier or same than Start time");
     }

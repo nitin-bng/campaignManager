@@ -110,7 +110,7 @@ const Review = () => {
   useEffect(() => {
     getCampaignDataList();
     getcampaignScheduleList();
-  }, [campCreateData]);
+  });
 
   let languages = [];
   languages.push(

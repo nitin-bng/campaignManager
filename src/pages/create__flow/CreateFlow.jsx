@@ -695,7 +695,11 @@ const CreateFlow = () => {
                                     fontWeight: "700",
                                   }}
                                   className="closeBtn"
-                                  onClick={(e) => handleModal(e)}
+                                  onClick={(e) =>{
+                                    navigate('/campmngr/create__flow')
+                                    setActiveStep(1)
+                                    getFlowList()
+                                  }}
                                 >
                                   Select This Flow
                                 </button>

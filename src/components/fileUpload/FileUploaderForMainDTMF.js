@@ -13,6 +13,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
         if (hideItemStyle === undefined) {
             errorDispatch({ type: "AUDIO", payload: true });
         }
+        return () => errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
 

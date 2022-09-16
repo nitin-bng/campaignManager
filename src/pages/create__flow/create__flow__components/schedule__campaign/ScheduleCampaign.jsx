@@ -65,6 +65,7 @@ const ScheduleCampaign = (props) => {
   const { showError } = useError();
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
@@ -369,7 +370,7 @@ const ScheduleCampaign = (props) => {
         )
           .then((res) => {
             res.json().then((res) => {
-              if (res) {
+              if (res.status === 'successful') {
                 // localStorage.setItem("selctedFile", res.fileName)
                 // newFileName = res.fileName
                 setfileName(res.fileName);
@@ -379,7 +380,9 @@ const ScheduleCampaign = (props) => {
                   ...scheduleData1,
                   ...scheduleData,
                 }));
-              } else if (res.length == 0) {
+              } else if (res.status === 'unsuccessful') {
+                setShowLoader(false)
+                setErrorMessage("User config and the numbers in the file do not match");
               }
             });
             setShowLoader(false)
@@ -569,6 +572,7 @@ const ScheduleCampaign = (props) => {
             // })
             props.setDisableNext(false)
             toast('Now you can go to next page')
+            setIsDisabled(true)
           })
           .catch((e) => {
             console.log(e);
@@ -1180,6 +1184,7 @@ const ScheduleCampaign = (props) => {
                           transition: "all 0.5s",
                           fontWeight: "700",
                         }}
+                        disabled={isDisabled}
                       >
                         Submit
                       </button>

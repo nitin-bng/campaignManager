@@ -311,6 +311,7 @@ const Signup = () => {
                       setCountryCode(country.countryCode);
                       setCountryName(country.name);
                     }}
+                    required
                   />
                   {error.phoneError && (
                     <p className="validation">{error.phoneError}</p>

@@ -254,8 +254,8 @@ const UserConfig = () => {
   const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("");
 
   const [blackOutDays, setBlackOutDays] = React.useState([]);
-  const [blackoutStartHour, setBlackoutStartHour] = React.useState('');
-  const [blackoutEndHour, setBlackoutEndHour] = React.useState('');
+  const [blackoutStartHour, setBlackoutStartHour] = React.useState('00:00:00');
+  const [blackoutEndHour, setBlackoutEndHour] = React.useState('00:00:00');
   const Navigate = useNavigate();
   const [blackoutDate, setBlackoutDate] = React.useState([]);
   const [value, setValue] = useState([]);
@@ -1073,7 +1073,7 @@ const UserConfig = () => {
             >
               <div
                 className="modal-content"
-                style={{ width: "25%", height: "22%" }}
+                style={{ width: "50%", height: "50%" }}
               >
                 <h3 className="title" style={{ fontSize: "13px" }}>
                   {reason}

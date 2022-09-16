@@ -1,5 +1,6 @@
-import { createMuiTheme} from '@material-ui/core/styles';
-const Theme = createMuiTheme({
+// import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles'
+const Theme = createTheme({
  overrides: {
     MuiOutlinedInput: {
         multiline: {

@@ -200,7 +200,9 @@ const Home = () => {
         console.log("failed", error);
         return error;
       });
-
+{console.log(`http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+  "userId"
+)}`)}
     fetch(
       `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
         "userId"
@@ -257,8 +259,8 @@ const Home = () => {
                 createData2(
                   params.jobId,
                   params.jobName,
-                  params.startDate.slice(0, 10),
-                  params.endDate.slice(0, 10),
+                  params.startDate?.slice(0, 10),
+                  params.endDate?.slice(0, 10),
                   params.dailyStartTime,
                   params.dailyEndTime,
                   params.priority,
@@ -279,14 +281,14 @@ const Home = () => {
 
     // console.log("rishabh ran");
     // getFlowList()
-    getCampaignList();
+    // getCampaignList();
     getChannelPercentage();
     // getcampaignScheduleList();
   }, []);
 
   const getChannelPercentage = () => {
     debugger;
-    const path = "http://34.214.61.86:5000/bng/ui/job/channel/percent";
+    const path = "http://34.214.61.86:5002/bng/ui/job/channel/percent";
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -297,113 +299,6 @@ const Home = () => {
       .catch(function (error) {
         console.log("failed", error);
         return error;
-      });
-  };
-
-  const getCampaignList = () => {
-    const path = "http://34.214.61.86:5000/bng/ui/list/campaign";
-    fetch(path)
-      .then((response) => response.json())
-      .then(function (data) {
-        // console.log("get flowList", data);
-        // data.unshift({ campName: "select work flow" });
-        setCampaignListData(data);
-        return data;
-      })
-      .catch(function (error) {
-        console.log("failed", error);
-        return error;
-      });
-  };
-
-  const getNumberOfAgencies = async () => {
-    const path =
-      "Configs.server.path + ':' + Configs.server.port + '' + Configs.api.getUserList + '?user_type=agency'";
-    fetch(path)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log("List of agencies", data.userList);
-        const numberOfAgencies = data.userList.length;
-        setAgencies(numberOfAgencies);
-        const newElement = {
-          title: "Number of Agencies",
-          value: numberOfAgencies,
-        };
-        setDataList((oldArray) => [...oldArray, newElement]);
-      })
-      .catch(() => {
-        return <p>Agencies not found</p>;
-      });
-  };
-
-  const getNumberOfPublishers = async () => {
-    const path =
-      " Configs.server.path + ':' + Configs.server.port + '' + Configs.api.getUserList + '?user_type=publisher'";
-    fetch(path)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log("List of publishers", data.userList);
-        const numberOfPublishers = data.userList.length;
-        setPublishers(numberOfPublishers);
-        const newElement = {
-          title: "Number of Publishers",
-          value: numberOfPublishers,
-        };
-        setDataList((oldArray) => [...oldArray, newElement]);
-      })
-      .catch(() => {
-        return <p>Publishers not found</p>;
-      });
-  };
-
-  const getNumberOfAdvertisers = async () => {
-    const path =
-      "Configs.server.path + ':' + Configs.server.port + '' + Configs.api.getUserList + '?user_type=advertiser'";
-    fetch(path)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log("List of advertisers", data.userList);
-        const numberOfAdvertisers = data.userList.length;
-        setAdvertisers(numberOfAdvertisers);
-        const newElement = {
-          title: "Number of Advertisers",
-          value: numberOfAdvertisers,
-        };
-        setDataList((oldArray) => [...oldArray, newElement]);
-      })
-      .catch(() => {
-        return <p>Advertisers not found</p>;
-      });
-  };
-
-  const getNumberOfCampaigns = async () => {
-    // console.log("GET NUMBER OF CAMPAIGNS");
-    let runningCamp = 0;
-    let pausedCamp = 0;
-    const path =
-      " Configs.server.path + ':' + Configs.server.port + '' + Configs.api.getCampaignList" +
-      "?camptype=all";
-    fetch(path)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log("DATA", data.status);
-        const campList = data.bundleOptionList;
-        // console.log("List of campaigns", campList);
-        const totalCamp = campList.length;
-        setTotalCamp(totalCamp);
-
-        campList.forEach((item) => {
-          if (item.status.toLowerCase() == "running") runningCamp++;
-          else if (item.status.toLowerCase() == "paused") pausedCamp++;
-        });
-
-        setRunningCamp(runningCamp);
-        setPausedCamp(pausedCamp);
-        setTotalCamp(totalCamp);
-        // console.log("FINAL DATA", dataList);
-      })
-      .catch(() => {
-        return <p>Campaigns not found</p>;
       });
   };
 
@@ -434,12 +329,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getNumberOfAgencies();
-    getNumberOfPublishers();
-    getNumberOfAdvertisers();
-    getNumberOfCampaigns();
     dashBoardDataFromApi();
-    // getcampaignScheduleList();
   }, []);
 
   const [hideItem, setHideItem] = useState(true);

@@ -118,7 +118,7 @@ const Review = () => {
   useEffect(()=>{
     setInterval(() => {
       setApi((prev)=> !prev)
-    }, 10000);
+    }, 1000);
   },[])
 
   let languages = [];

@@ -1068,7 +1068,9 @@ const UserConfig = () => {
           </div>
 
           {openModal && (
-            <div className="bg-modal" style={{ marginLeft: "-17%" }}>
+            <div className="bg-modal"           
+            style={{ position: "fixed", left: "0", top: "0" }}
+            >
               <div
                 className="modal-content"
                 style={{ width: "25%", height: "22%" }}
@@ -1078,7 +1080,20 @@ const UserConfig = () => {
                 </h3>
                 <button
                   className="closeBtn"
-                  style={{ width: "20%" }}
+                  style={{
+                    padding: ".5rem 1rem",
+                    border: "none",
+                    outline: "none",
+                    backgroundColor: " #374151",
+                    color: "white",
+                    textTransform: "uppercase",
+                    textShadow: "1px 1px 2px black",
+                    width: "10%",
+                    // margin: "auto",
+                    marginBottom: "1rem",
+                    transition: "all 0.5s",
+                    fontWeight: "700",
+                  }}
                   onClick={(e) => handleModal(e)}
                 >
                   Okay

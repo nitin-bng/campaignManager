@@ -455,7 +455,7 @@ const Signup = () => {
             </div>
 
             <div className="terms__and__button__container__signup">
-              <div className="terms__checkbox">
+              {/* <div className="terms__checkbox">
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -466,7 +466,7 @@ const Signup = () => {
                   }
                   label="I agree terms and conditions"
                 />
-              </div>
+              </div> */}
               <div className="create__account__button button">
                 <Button
                   variant="contained"

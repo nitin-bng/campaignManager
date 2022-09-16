@@ -137,9 +137,22 @@ export default function VerifyOtp(props) {
     setOtpState({ otp });
   };
   return (
-    <Container component="main" maxWidth="sm">
+    <Container
+      component="main"
+      maxWidth="sm"
+      style={{
+        // border: "2px solid red",
+        width: "100vw",
+        height: "100vh",
+        // background: "red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding:"0"
+      }}
+    >
       <CssBaseline />
-      <div className={classes.paper}>
+      <div style={{border: "2px solid black"}}>
         <Grid
           container
           style={{ backgroundColor: "white" }}
@@ -151,8 +164,11 @@ export default function VerifyOtp(props) {
           <Grid item container justify="center">
             <Grid item container alignItems="center" direction="column">
               <Grid item>
-                <Avatar style={{background:"#374151"}} className={classes.avatar}>
-                  <LockOutlinedIcon style={{background:"#374151"}}/>
+                <Avatar
+                  style={{ background: "#374151" }}
+                  className={classes.avatar}
+                >
+                  <LockOutlinedIcon style={{ background: "#374151" }} />
                 </Avatar>
               </Grid>
               <Grid item>
@@ -193,14 +209,20 @@ export default function VerifyOtp(props) {
                 separator={<span>-</span>}
               />
             </Grid>
-            <Grid item>
+            <Grid item >
               <Button
-              style={{backgroundColor: " #374151",
-              color: "white",
-              textTransform: "uppercase",
-              textShadow: "1px 1px 2px black",fontWeight: "700",}}
+                style={{
+                  backgroundColor: " #374151",
+                  color: "white",
+                  width:"7rem",
+                  textTransform: "uppercase",
+                  textShadow: "1px 1px 2px black",
+                  fontWeight: "700",
+                  marginTop:"1rem",
+                  // margin:"auto"
+                }}
                 type="submit"
-                fullWidth
+                // fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -208,21 +230,28 @@ export default function VerifyOtp(props) {
               >
                 {loader ? <Loader /> : "verify"}
               </Button>
-              <label
-                className="resendOtp"
-                htmlFor="phoneNumber"
+              <br />
+              <Button
+                
                 style={{
-                  width: "90%",
-                  textTransform: "lowercase",
-                  textDecoration: "underline",
-                  textAlign: "right",
-                  cursor: "pointer",
-                  marginBottom: "0px",
+                  backgroundColor: " #374151",
+                  color: "white",
+                  width:"10rem",
+                  textTransform: "uppercase",
+                  textShadow: "1px 1px 2px black",
+                  fontWeight: "700",
+                  marginTop:"1rem",
+                  // margin:"auto"
                 }}
+                type="submit"
+                // fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
                 onClick={getOtp}
               >
                 resend otp
-              </label>
+              </Button>
             </Grid>
           </Grid>
         </Grid>

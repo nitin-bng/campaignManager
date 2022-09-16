@@ -22,6 +22,7 @@ import axios from "axios";
 import config from "../ApiConfig/Config";
 import { ProcessNumberFunction } from "../helpers/Utils";
 import PhoneInput from 'react-phone-input-2'
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   // const [phone, setPhone] = useState("");
@@ -35,7 +36,7 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     data["phone"] = phoneNumber;
     // console.log(data);
 
@@ -50,7 +51,8 @@ const ForgotPassword = () => {
     //   .catch((error) => {
     //     console.log("the error is::", error);
     //   });
-    await axios
+    console.log("func ran");
+     axios
       .get(
         config.server.path + config.server.port3 + config.api.forgotpassword,
         {
@@ -58,9 +60,13 @@ const ForgotPassword = () => {
         }
       )
       .then((response) => {
+        toast(response.data.reason)
+        console.log("response", response);
         return response;
       })
       .catch((error) => {
+        toast(error.response.data.reason)
+        console.log("error", error);
         return error;
       });
   };

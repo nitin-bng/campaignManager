@@ -25,6 +25,8 @@ import { useError } from "../../../../store/errorContext";
 import { ErrorSharp } from "@material-ui/icons";
 import "./createCampaign.css";
 import { toast } from "react-toastify";
+import { SliderValueLabel } from "@mui/material";
+import { useMemo } from "react";
 const priorityArray = [
   "1(Least Prior)",
   "2",
@@ -80,6 +82,25 @@ const CreateCampaign = (props) => {
   const handlePriorityChange = (event) => {
     setSelectPriority(event.target.value);
   };
+
+  const localWfId = localStorage.getItem('wfId')
+  const value = useMemo(()=>props.FlowListData.filter(item=>item.wfId === localWfId)[0],[props.FlowListData, localWfId])
+
+  useEffect(()=>{
+    if(value){
+      setFormValues({
+      ...formValues,
+      "wfId": !isNaN(value.wfId) ? (value.wfId >= 0 ? value.wfId : 0) : value.wfId,
+    });
+    scheduleData["wfId"] = value.flowName;
+      setScheduleData((scheduleData1) => ({
+        ...scheduleData1,
+        ...scheduleData,
+      }))
+    }
+  },[value])
+
+  console.log('Nitin', formValues, scheduleData1)
 
   const saveValues = (e) => {
     setCreateCampCli(e.target.value);
@@ -138,15 +159,12 @@ const CreateCampaign = (props) => {
         //     pathname: '/campaign/ivr',
         //     state: { detail: data }
         // });
-        console.log("dataFrom api call ", data);
         flowDataFromApi = data.flow;
 
-        console.log("flowDataFromApi", flowDataFromApi);
         flowFromApi(data.flow);
         return data;
       })
       .catch(function (error) {
-        console.log("failed", error);
         return error;
       });
   };
@@ -235,7 +253,6 @@ const CreateCampaign = (props) => {
           ...scheduleData,
         }));
       }
-      console.log(scheduleData1);
     }
   };
 
@@ -250,8 +267,6 @@ const CreateCampaign = (props) => {
     ) {
       setShowError(false);
       e.preventDefault();
-      console.log(scheduleData1);
-
       if (update) {
         fetch(
           "http://34.214.61.86" + ":" + "5002" + "/bng/ui/update/campaign",
@@ -272,7 +287,6 @@ const CreateCampaign = (props) => {
             res.json().then((res) => {
               if (res) {
                 // showSuccess(true);
-                console.log(res);
               } else if (res.length == 0) {
               }
             });
@@ -305,7 +319,6 @@ const CreateCampaign = (props) => {
                 //   state: { detail: flowData },
                 // });
                 // showSuccess(true)
-                console.log(res);
                 setShowFlowState(true);
                 props.setDisableNext(false);
                 setIsDisabled(true)
@@ -326,10 +339,8 @@ const CreateCampaign = (props) => {
   const flowFromApi = (data) => {
     debugger;
     let localStore = globalState.state;
-    console.log("local store ... ", localStore);
     localStore.ivrCampFlowData.flow = data;
     dispatch({ type: "SET_DATA", nState: localStore });
-    console.log(globalState);
   };
 
   // useEffect(()=>{
@@ -396,7 +407,6 @@ const CreateCampaign = (props) => {
                   showError ? (campaignSchedulePriority ? false : true) : false
                 }
               >
-                {/* {console.log(channel)} */}
                 <MenuItem id="campPriority" value={1}>
                   1 (Least)
                 </MenuItem>
@@ -433,32 +443,32 @@ const CreateCampaign = (props) => {
 
           <div className="create__campaign__workflow__name">
             <FormControl fullWidth>
-              <InputLabel
+              <Box
                 id="demo-simple-select-label"
                 required
                 error={showError ? (formValues.wfId ? false : true) : false}
               >
-                Work flow name{" "}
-              </InputLabel>
-              <Select
+              </Box>
+              <TextField
                 labelId="demo-simple-select-label"
                 id="demo-simple-select wfId"
-                label="Select Channel"
+                label="Work flow Name"
                 className="campaignId form-select"
                 aria-label="Default select example"
                 name="wfId"
-                value={formValues.wfId}
-                onChange={(event) => handleChange(event, "wfId")}
-                required
-                error={showError ? (formValues.wfId ? false : true) : false}
+                value={value?.flowName ? value.flowName : ''}
+                // onChange={(event) => handleChange(event, "wfId")}
+                // required
+                // error={showError ? (formValues.wfId ? false : true) : false}
+                disabled={true}
               >
-                {props.FlowListData &&
+                {/* {props.FlowListData &&
                   props.FlowListData.map((e) => (
                     <MenuItem key={e.id} value={e.wfId}>
                       {e.flowName}
                     </MenuItem>
-                  ))}
-              </Select>
+                  ))} */}
+              </TextField>
             </FormControl>
 
             {/* <Box
@@ -713,13 +723,13 @@ const CreateCampaign = (props) => {
               autoComplete="off"
             >
               <TextField
-                type="number"
+                type="input"
                 label={"cli"}
                 variant="outlined"
                 className="form-control"
                 id={"cli_" + localStore.flow.channel.toLowerCase()}
                 aria-describedby="emailHelp"
-                placeholder={"enter cli for ivr"}
+                placeholder={"Enter Cli"}
                 name={"cli_" + localStore.flow.channel.toLowerCase()}
                 value={
                   formValues["cli_" + localStore.flow.channel.toLowerCase()]

@@ -92,7 +92,7 @@ const CreateCampaign = (props) => {
       ...formValues,
       "wfId": !isNaN(value.wfId) ? (value.wfId >= 0 ? value.wfId : 0) : value.wfId,
     });
-    scheduleData["wfId"] = value.flowName;
+    scheduleData["wfId"] = value.wfId;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,

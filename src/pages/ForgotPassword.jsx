@@ -52,7 +52,7 @@ const ForgotPassword = () => {
     //   });
     await axios
       .get(
-        config.server.path + config.server.port2 + config.api.forgotpassword,
+        config.server.path + config.server.port3 + config.api.forgotpassword,
         {
           params: { phoneNumber: phoneNumber },
         }

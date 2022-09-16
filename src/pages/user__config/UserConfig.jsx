@@ -554,7 +554,7 @@ const UserConfig = () => {
                       >
                         <CardActions disableSpacing>
                           <Typography paragraph>
-                            <b>Configure your Day, Date, and Time </b>
+                            <b>Blackout period configurations </b>
                           </Typography>
                           <ExpandMore
                             expand={expanded3}
@@ -768,7 +768,7 @@ const UserConfig = () => {
                       >
                         <CardActions disableSpacing>
                           <Typography paragraph>
-                            <b>Configure your MSISDN details </b>{" "}
+                            <b>Configure your mobile number details </b>{" "}
                           </Typography>
                           <ExpandMore
                             expand={expanded}
@@ -794,7 +794,7 @@ const UserConfig = () => {
                               <div className="userconfig__maincontent__form__inside__containers userconfig__append__zero__container">
                                 <FormControl>
                                   <FormLabel id="demo-row-radio-buttons-group-label">
-                                    Append Zero
+                                    Mobile number with leading zero
                                   </FormLabel>
                                   <RadioGroup
                                     row
@@ -866,7 +866,7 @@ const UserConfig = () => {
                               <div className="userconfig__maincontent__form__inside__containers userconfig__append__country__code__container">
                                 <FormControl>
                                   <FormLabel id="demo-row-radio-buttons-group-label">
-                                    Append Country Code
+                                    Mobile number Country code
                                   </FormLabel>
                                   <RadioGroup
                                     row

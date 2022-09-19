@@ -8,7 +8,7 @@ const RequireAuth = ({ children }) => {
 			{res  ? (
 				children
 			 ) : (
-				<Navigate to="/campmngr/" replace={true} />
+				<Navigate to="/campaign-manager/" replace={true} />
 			)} 
 		</>
 	);

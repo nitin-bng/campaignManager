@@ -32,7 +32,7 @@ export default function MenuAppBar() {
 
   const handleLogout = () =>{
     localStorage.clear()
-    Navigate('/campmngr')
+    Navigate('/campaign-manager/')
   }
 
   return (

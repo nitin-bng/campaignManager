@@ -177,7 +177,7 @@ const Home = () => {
   useEffect(() => {
     debugger;
 
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -200,11 +200,11 @@ const Home = () => {
         console.log("failed", error);
         return error;
       });
-{console.log(`http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+{console.log(`http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
   "userId"
 )}`)}
     fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+      `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -240,7 +240,7 @@ const Home = () => {
       });
 
     fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -288,7 +288,7 @@ const Home = () => {
 
   const getChannelPercentage = () => {
     debugger;
-    const path = "http://34.214.61.86:5002/bng/ui/job/channel/percent";
+    const path = "http://41.217.203.246:5002/bng/ui/job/channel/percent";
     fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -312,7 +312,7 @@ const Home = () => {
   };
 
   const dashBoardDataFromApi = async () => {
-    const path = `http://34.214.61.86:5002/bng/ui/dashboard/${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/dashboard/${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)

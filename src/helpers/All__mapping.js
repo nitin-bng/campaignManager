@@ -6,17 +6,17 @@ export const Sidebar__menu__items = [
   {
     icon: <HomeIcon/>,
     menu__title: "Home",
-    route__path: "/campmngr/home",
+    route__path: "/campaign-manager/home",
   },
   {
     icon: <AccountTreeIcon/>,
     menu__title: "Create Flow",
-    route__path: "/campmngr/create__flow",
+    route__path: "/campaign-manager/create__flow",
   },
   {
     icon: <SettingsSuggestIcon/>,
     menu__title: "User Config",
-    route__path: "/campmngr/user__configuration",
+    route__path: "/campaign-manager/user__configuration",
   },
 ];
 

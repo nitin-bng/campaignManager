@@ -68,7 +68,7 @@ export default function TemporaryDrawer() {
               to={
                 text.menu__title === "Create Flow" &&
                 !localStorage.getItem("createFlowInMenuBarDisbled")
-                  ? "/campmngr/user__configuration"
+                  ? "/campaign-manager/user__configuration"
                   : text.route__path
               }
               onClick={()=>{

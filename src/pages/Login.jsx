@@ -76,7 +76,7 @@ const Login = () => {
         localStorage.setItem("userCountry", res.user.country);
         localStorage.setItem("operatorName", res.user.operatorName);
         sessionStorage.setItem("userName", res.user.name);
-        Navigate("/campmngr/home");
+        Navigate("/campaign-manager/home");
       });
     });
   };
@@ -170,8 +170,8 @@ const Login = () => {
 
             <div className="authentication__links">
               <p className="links">
-                <Link to="/campmngr/forgotpassword">Forgot Password ?</Link>
-                <Link to="/campmngr/signup">Do not have an account ?</Link>
+                <Link to="/campaign-manager/forgotpassword">Forgot Password ?</Link>
+                <Link to="/campaign-manager/signup">Do not have an account ?</Link>
                 {/* <p>OR</p>
                 <Link to="/home">Use as guest</Link> */}
               </p>

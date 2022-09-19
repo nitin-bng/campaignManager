@@ -49,7 +49,7 @@ const Review = () => {
   };
 
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -63,6 +63,7 @@ const Review = () => {
           console.log("===========>", element);
           console.log("===========>", element.wfId);
           if (localStorage.getItem("wfId") == element.wfId) {
+
             setCampCreateData(element);
           } else {
             console.log("than than gopal");
@@ -79,7 +80,7 @@ const Review = () => {
 
   const getcampaignScheduleList = () => {
     fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -94,7 +95,7 @@ const Review = () => {
           console.log("campCreateDatacampCreateDatacampCreateData", campCreateData);
           {
             res.map((element)=>{
-                console.log("elementelement", element.jobName);
+                console.log("elementelement", element.jobName, campCreateData.campName);
                 if(campCreateData.campName==element.jobName){
                     setCampScheduleData({...element, endDate: element.endDate.slice(0,10)})
                     setCampScheduleData({...element, startDate: element.endDate.slice(0,10)})

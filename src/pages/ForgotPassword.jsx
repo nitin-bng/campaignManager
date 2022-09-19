@@ -119,7 +119,7 @@ const ForgotPassword = () => {
 
             <div className="terms__and__button__container">
               <div className="create__account__button button">
-                <Link to="/campmngr/verifyotp">
+                <Link to="/campaign-manager/verifyotp">
                   <Button
                     variant="contained"
                     color="primary"
@@ -135,7 +135,7 @@ const ForgotPassword = () => {
 
             <div className="authentication__links__signup">
               <p className="links">
-                <Link to="/campmngr">Already have an account ?</Link>
+                <Link to="/campaign-manager/">Already have an account ?</Link>
               </p>
             </div>
           </div>

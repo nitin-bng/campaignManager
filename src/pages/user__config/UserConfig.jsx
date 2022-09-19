@@ -384,7 +384,7 @@ const UserConfig = () => {
           if (res.status == "successful") {
             setCreateUpdate(true);
             // setShowSuccess(true);
-            Navigate("/campmngr/home");
+            Navigate("/campaign-manager/home");
             toast("You can create flow now");
             localStorage.setItem("createFlowInMenuBarDisbled", true);
             // console.log(res);
@@ -419,7 +419,7 @@ const UserConfig = () => {
     setElements(formJSON[0]);
     console.log(formJSON);
     fetch(
-      "http://34.214.61.86" +
+      "http://41.217.203.246" +
         ":" +
         "8087/" +
         localStorage.getItem("userType") +

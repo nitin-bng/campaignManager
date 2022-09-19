@@ -307,7 +307,6 @@ const UserConfig = () => {
   };
 
   const userConfigSubmit = (event) => {
-    localStorage.setItem("createFlowInMenuBarDisbled", true);
     setConfigError('')
 
     // console.log("blackoutDate", blackoutDate);
@@ -359,10 +358,10 @@ const UserConfig = () => {
     else if(!msisdnLength){
       setConfigError('Please Enter Mobile Number length')
     }
-    else if (assignChannel === ''){
+    else if (assignChannel === '' || assignChannel === 0){
       setConfigError('Please Enter Simultaneous outgoing calls')
     }
-    else if (assignTps === ''){
+    else if (assignTps === '' || assignTps === 0){
       setConfigError('Please Enter SMS TPS required')
     }
     else{fetch(
@@ -387,6 +386,7 @@ const UserConfig = () => {
             // setShowSuccess(true);
             Navigate("/campaign-manager/home");
             toast("You can create flow now");
+            localStorage.setItem("createFlowInMenuBarDisbled", true);
             // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);
@@ -987,7 +987,7 @@ const UserConfig = () => {
                                     variant="outlined"
                                     value={assignChannel}
                                     onChange={(e) => {
-                                      setAssignChannel(e.target.value);
+                                       setAssignChannel((e.target.value >= 1 || e.target.value === '') ? e.target.value : 1)
                                     }}
                                     onWheel={(e) => e.target.blur()}
                                   />
@@ -1017,7 +1017,7 @@ const UserConfig = () => {
                                     variant="outlined"
                                     value={assignTps}
                                     onChange={(e) => {
-                                      setAssignTps(e.target.value);
+                                     setAssignTps((e.target.value >= 1 || e.target.value === '') ? e.target.value : 1)
                                     }}
                                     onWheel={(e) => e.target.blur()}
                                   />

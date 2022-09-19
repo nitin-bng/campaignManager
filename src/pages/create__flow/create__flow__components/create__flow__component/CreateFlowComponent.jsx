@@ -88,15 +88,12 @@ const CreateFlowComponent = (props) => {
 
   useEffect(() => {
     if (props.reset === false) {
-      console.log('nitin create flow empty ran')
       dispatch({ type: "EMPTY_DATA" });
       setIfIVRselectedThenLanguage([]);
     }
     if (props.hideItemStyle !== undefined) {
-      console.log('nitin create flow initialize ran')
       errorDispatch({ type: "INITIALIZE" });
     }
-    console.log('nitin create flow false ran')
     errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
     
     return () => errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
@@ -107,16 +104,13 @@ const CreateFlowComponent = (props) => {
       ifIVRselectedThenLanguage.length &&
       localStore.ivrCampFlowData.flow.flowName && localStore.ivrCampFlowData.flow.channel === 'IVR'
       ) {
-      console.log('nitin create flow true ivr ran')
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
     } 
     else if(localStore.ivrCampFlowData.flow.channel === 'USSD' && localStore.ivrCampFlowData.flow.flowName){
-      console.log('nitin create flow true ussd ran')
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
       
     }
     else {
-      console.log('nitin create flow false 2nd useeffect ran', localStore.ivrCampFlowData.flow.channel, ifIVRselectedThenLanguage.length, localStore.ivrCampFlowData.flow.flowName)
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
     }
   }, [

@@ -351,6 +351,24 @@ const Home = () => {
     );
   };
 
+  const handelActionChange = (action, id) =>{
+    console.log("action",action);
+    fetch(
+      `http://34.214.61.86:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
+    )
+      .then((result) => result.json())
+      .then((res) => {
+        if (res.status === "successful") {
+          console.log("Response is::", res);
+        } else {
+          console.log("nai chala");
+        }
+      })
+      .catch((error) => {
+        console.log("the error is::", error);
+      });
+  }
+
   return (
     <>
       <div className="home">
@@ -762,19 +780,19 @@ const Home = () => {
                             <FormGroup style={{display:"flex", justifyContent:"center", alignItems:"center" }}>
                               {row.status == "SCHEDULED" ? (
                                 <>
-                                  <CancelIcon />
+                                  <CancelIcon onClick={(e)=>{handelActionChange("SCHEDULED", row.jobId)}} />
                                 </>
                               ) : row.status == "RUNNING" ? (
                                 <>
-                                  <PauseCircleFilledIcon />
+                                  <PauseCircleFilledIcon onClick={(e)=>{handelActionChange("RUNNING", row.jobId)}} />
                                 </>
                               ) : row.status == "STOPPED" ? (
                                 <>
-                                  <PlayCircleFilledIcon />
+                                  <PlayCircleFilledIcon onClick={(e)=>{handelActionChange("STOPPED", row.jobId)}} />
                                 </>
                               ) : row.status == "EXPIRED" ? (
                                 <>
-                                  <DeleteIcon />
+                                  <DeleteIcon onClick={(e)=>{handelActionChange("EXPIRED", row.jobId)}} />
                                 </>
                               ) : null}
                             </FormGroup>

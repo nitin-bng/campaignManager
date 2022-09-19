@@ -91,8 +91,6 @@ const Review = () => {
     )
       .then((res) => {
         res.json().then((res) => {
-          console.log("res", res);
-          
           console.log("campCreateDatacampCreateDatacampCreateData", campCreateData);
           {
             res.map((element)=>{
@@ -116,10 +114,10 @@ const Review = () => {
   },[api]);
 
   useEffect(()=>{
-    setInterval(() => {
+    if(!campCreateData.campName && !campScheduleData.jobName){
       setApi((prev)=> !prev)
-    }, 1000);
-  },[])
+    }
+  },[api])
 
   let languages = [];
   languages.push(

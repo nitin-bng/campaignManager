@@ -526,7 +526,7 @@ const ScheduleCampaign = (props) => {
 
   const handleSubmit = () => {
     debugger;
-
+    if(scheduleData1.startDate && scheduleData1.endDate){
     try {
       checkDateAndTime();
 
@@ -581,6 +581,9 @@ const ScheduleCampaign = (props) => {
       } else {
         setErrorMessage(e.message);
       }
+    }}
+    else{
+      setErrorMessage("Please select dates")
     }
   };
   const showFormData = (e) => {
@@ -1125,7 +1128,7 @@ const ScheduleCampaign = (props) => {
                             moveRangeOnFirstSelection={true}
                             dateDisplayFormat={"MMM d, yyyy"}
                             onChange={(item) => {
-                              console.log("rishabh selection", item);
+                              setErrorMessage('')
                               setState([item.selection]);
                               scheduleData["endDate"] = getDateInFormat(
                                 item.selection.endDate

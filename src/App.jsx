@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Routes, Route } from "react-router-dom";
+// import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Home from "./pages/homepage/Home";
 import CreateFlow from "./pages/create__flow/CreateFlow";
@@ -19,26 +20,27 @@ import Theme from '../src/components/Theme'
 
 const App = () => {
   return (
-    <>
+    <Router>
       <div className="app">
-      <ThemeProvider theme={Theme}>
-        <CommonProvider>
+      {/* <ThemeProvider theme={Theme}>
+        <CommonProvider> */}
           <ToastContainer />
           <div className="app__container">
+            {/* <h1>hello guyssssss</h1> */}
             <Routes>
-              <Route path="/campmngr" element={<RequireNoAuth><Login /></RequireNoAuth>} />
-              <Route path="/campmngr/signup" element={<RequireNoAuth><Signup /></RequireNoAuth>} />
-              <Route path="/campmngr/forgotpassword" element={<RequireNoAuth><ForgotPassword /></RequireNoAuth>} />
-              <Route path="/campmngr/verifyotp" element={<RequireNoAuth><VerifyOtp /></RequireNoAuth>} />
-              <Route path="/campmngr/home" element={<RequireAuth><Home /></RequireAuth>} />
-              <Route path="/campmngr/create__flow" element={<RequireAuth><CreateFlow /></RequireAuth>} />
-              <Route path="/campmngr/user__configuration" element={<RequireAuth><UserConfig /></RequireAuth>} />
+              <Route path="/campaign-manager/" element={<RequireNoAuth><Login /></RequireNoAuth>} />
+              <Route path="/campaign-manager/signup" element={<RequireNoAuth><Signup /></RequireNoAuth>} />
+              <Route path="/campaign-manager/forgotpassword" element={<RequireNoAuth><ForgotPassword /></RequireNoAuth>} />
+              <Route path="/campaign-manager/verifyotp" element={<RequireNoAuth><VerifyOtp /></RequireNoAuth>} />
+              <Route path="/campaign-manager/home" element={<RequireAuth><Home /></RequireAuth>} />
+              <Route path="/campaign-manager/create__flow" element={<RequireAuth><CreateFlow /></RequireAuth>} />
+              <Route path="/campaign-manager/user__configuration" element={<RequireAuth><UserConfig /></RequireAuth>} />
             </Routes>
           </div>
-        </CommonProvider>
-        </ThemeProvider>
+        {/* </CommonProvider>
+        </ThemeProvider> */}
       </div>
-    </>
+    </Router>
   );
 };
 

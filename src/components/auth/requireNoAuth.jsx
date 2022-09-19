@@ -9,7 +9,7 @@ const RequireNoAuth = ({ children }) => {
 		<>
 			{res ? (
 				<Navigate
-					to={"/campmngr/home"}
+					to={"/campaign-manager/home"}
 					replace={true}
 				/>
 			) : (

@@ -102,7 +102,7 @@ const CreateFlow = () => {
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -282,10 +282,10 @@ const CreateFlow = () => {
 
         const getCompleteFlow = (id) => {
           debugger;
-          // const path = 'http//:34.214.61.86:5002/bng/ui/flowjson?wfId=' + id
+          // const path = 'http//:41.217.203.246:5002/bng/ui/flowjson?wfId=' + id
           let localStore = globalState.state;
           fetch(
-            "http://34.214.61.86:5002/bng/ui/flowjson?wfId=" +
+            "http://41.217.203.246:5002/bng/ui/flowjson?wfId=" +
               id +
               "&flowName=" +
               localStorage.getItem("flowName") +
@@ -312,7 +312,7 @@ const CreateFlow = () => {
         console.log("activeStep === 1");
 
         const path =
-          "http://34.214.61.86:5002/bng/ui/flow/content?isContent=true&campId=" +
+          "http://41.217.203.246:5002/bng/ui/flow/content?isContent=true&campId=" +
           localStorage.getItem("campId") +
           "&wfId=" +
           localStorage.getItem("wfId");
@@ -343,7 +343,7 @@ const CreateFlow = () => {
         console.log("activeStep === 2");
       } else if (activeStep === 3) {
         console.log("activeStep === 3");
-        navigate("/campmngr/home");
+        navigate("/campaign-manager/home");
       }
     } else {
       setShowError(true);
@@ -372,7 +372,7 @@ const CreateFlow = () => {
     debugger;
     localStorage.setItem("wfId", id);
     flowId = id;
-    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
+    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -415,7 +415,7 @@ const CreateFlow = () => {
     // }
   };
   useEffect(() => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -702,7 +702,7 @@ const CreateFlow = () => {
                                   }}
                                   className="closeBtn"
                                   onClick={(e) =>{
-                                    navigate('/campmngr/create__flow')
+                                    navigate('/campaign-manager/create__flow')
                                     setActiveStep(1)
                                     getFlowList()
                                   }}

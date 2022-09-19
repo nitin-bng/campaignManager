@@ -183,7 +183,7 @@ const ScheduleCampaign = (props) => {
   }, []);
   const getcampaignScheduleList = () => {
     fetch(
-      `http://34.214.61.86" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://41.217.203.246" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -218,7 +218,7 @@ const ScheduleCampaign = (props) => {
       });
   };
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -359,8 +359,8 @@ const ScheduleCampaign = (props) => {
         var formData = new FormData();
         formData.append("file", files[0]);
         fetch(
-          // "http://34.214.61.86" + ":" + "5002" + "/bng/ui/uploadMsisdn",
-          `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
+          // "http://41.217.203.246" + ":" + "5002" + "/bng/ui/uploadMsisdn",
+          `http://41.217.203.246:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
             "userId"
           )}&channel=${localStorage.getItem("channelName")}`,
           {
@@ -541,10 +541,10 @@ const ScheduleCampaign = (props) => {
 
       if (Object.keys(errors).length == 0 && !stringInputError) {
         fetch(
-          `http://34.214.61.86:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
+          `http://41.217.203.246:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
             "userId"
           )}`,
-          // `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+          // `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
           // "userId"
           // )}`,
           {
@@ -605,7 +605,7 @@ const ScheduleCampaign = (props) => {
     // showSuccess(false);
     showForm(false);
     updateForm(false);
-    Navigate("/campmngr/home");
+    Navigate("/campaign-manager/home");
   };
 
   const handleDateSelect = (ranges) => {

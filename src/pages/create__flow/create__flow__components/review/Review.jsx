@@ -49,7 +49,7 @@ const Review = () => {
   };
 
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -80,7 +80,7 @@ const Review = () => {
 
   const getcampaignScheduleList = () => {
     fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {

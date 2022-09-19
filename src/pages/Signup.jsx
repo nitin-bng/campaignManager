@@ -134,7 +134,7 @@ const Signup = () => {
           setReason(result.reason);
           setLoader(false);
           // setOpenModal(true);
-          navigate("/campmngr/verifyotp");
+          navigate("/campaign-manager/verifyotp");
         } else {
           setResponse(result.status);
           setReason(result.reason);
@@ -177,12 +177,12 @@ const Signup = () => {
   const handleModal = () => {
     setOpenModal(false);
     if (response === "successful") {
-      navigate("/campmngr/verifyotp");
+      navigate("/campaign-manager/verifyotp");
       // state: { detail: 'true' }
     } else if (response === "unsuccessful") {
-      navigate("/campmngr");
+      navigate("/campaign-manager/");
     } else {
-      navigate("/campmngr/forgotpassword");
+      navigate("/campaign-manager/forgotpassword");
     }
   };
   return (
@@ -481,7 +481,7 @@ const Signup = () => {
 
             <div className="authentication__links__signup">
               <p className="links">
-                <Link to="/campmngr">Already have an account ?</Link>
+                <Link to="/campaign-manager/">Already have an account ?</Link>
                 {/* <p>OR</p>
                 <Link to="/home">Use as guest</Link> */}
               </p>

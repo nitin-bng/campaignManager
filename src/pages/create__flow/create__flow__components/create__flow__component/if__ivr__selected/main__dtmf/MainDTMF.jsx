@@ -351,7 +351,7 @@ const MainDTMF = (props) => {
                 style={{ cursor: "pointer" }}
               /> */}
               <ReactAudioPlayer
-                src={`http://34.214.61.86/cm_data/audio/${e}`}
+                src={`http://41.217.203.246/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />
@@ -415,7 +415,7 @@ const MainDTMF = (props) => {
                       style={{ cursor: "pointer" }}
                     /> */}
                     <ReactAudioPlayer
-                      src={`http://34.214.61.86/cm_data/audio/${e}`}
+                      src={`http://41.217.203.246/cm_data/audio/${e}`}
                       // autoPlay
                       controls
                     />
@@ -626,7 +626,7 @@ const MainDTMF = (props) => {
                 style={{ color: "purple" }}
               /> */}
               <ReactAudioPlayer
-                src={`http://34.214.61.86/cm_data/audio/${e}`}
+                src={`http://41.217.203.246/cm_data/audio/${e}`}
                 // autoPlay
                 controls
               />

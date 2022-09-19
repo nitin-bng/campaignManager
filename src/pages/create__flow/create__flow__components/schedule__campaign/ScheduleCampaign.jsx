@@ -517,7 +517,7 @@ const ScheduleCampaign = (props) => {
     // console.log("end time array", endTimeArray);
     if (
       ~~endTimeArray[0] < ~~startTimeArray[0] ||
-      (~~endTimeArray[0] == ~~startTimeArray[0] &&
+      (~~endTimeArray[0] === ~~startTimeArray[0] &&
         ~~endTimeArray[1] <= ~~startTimeArray[1])
     ) {
       throw Error("End time can not be earlier or same than Start time");
@@ -526,7 +526,7 @@ const ScheduleCampaign = (props) => {
 
   const handleSubmit = () => {
     debugger;
-
+    if(scheduleData1.startDate && scheduleData1.endDate){
     try {
       checkDateAndTime();
 
@@ -582,6 +582,9 @@ const ScheduleCampaign = (props) => {
       } else {
         setErrorMessage(e.message);
       }
+    }}
+    else{
+      setErrorMessage("Please select dates")
     }
   };
   const showFormData = (e) => {
@@ -1143,20 +1146,20 @@ const ScheduleCampaign = (props) => {
         onChange={(e)=> handleDateSelect(e)}
       /> */}
 
-                        <DateRange
-                          style={{}}
-                          editableDateInputs={true}
-                          moveRangeOnFirstSelection={true}
-                          dateDisplayFormat={"MMM d, yyyy"}
-                          onChange={(item) => {
-                            console.log("rishabh selection", item);
-                            setState([item.selection]);
-                            scheduleData["endDate"] =
-                              getDateInFormat(item.selection.endDate) +
-                              "T00:00:00.000Z";
-                            scheduleData["startDate"] =
-                              getDateInFormat(item.selection.startDate) +
-                              "T00:00:00.000Z";
+                          <DateRange
+                            style={{}}
+                            editableDateInputs={true}
+                            moveRangeOnFirstSelection={true}
+                            dateDisplayFormat={"MMM d, yyyy"}
+                            onChange={(item) => {
+                              setErrorMessage('')
+                              setState([item.selection]);
+                              scheduleData["endDate"] = getDateInFormat(
+                                item.selection.endDate
+                              )+"T00:00:00.000Z";
+                              scheduleData["startDate"] = getDateInFormat(
+                                item.selection.startDate
+                              )+"T00:00:00.000Z";
 
                             setScheduleData((scheduleData1) => {
                               let result = {

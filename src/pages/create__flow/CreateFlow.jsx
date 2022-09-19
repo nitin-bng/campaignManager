@@ -735,6 +735,7 @@ const CreateFlow = () => {
                         disableEditingWhileCreatingCamp={true}
                         hideItemStyle={hideItemStyle}
                         setDisableNext={setDisableNext}
+                        handleNext = {handleNext}
                       />
                     ) : activeStep === 3 ? (
                       <Review />

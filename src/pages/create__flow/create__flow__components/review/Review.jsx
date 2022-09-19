@@ -63,6 +63,7 @@ const Review = () => {
           console.log("===========>", element);
           console.log("===========>", element.wfId);
           if (localStorage.getItem("wfId") == element.wfId) {
+
             setCampCreateData(element);
           } else {
             console.log("than than gopal");
@@ -96,7 +97,7 @@ const Review = () => {
           console.log("campCreateDatacampCreateDatacampCreateData", campCreateData);
           {
             res.map((element)=>{
-                console.log("elementelement", element.jobName);
+                console.log("elementelement", element.jobName, campCreateData.campName);
                 if(campCreateData.campName==element.jobName){
                     setCampScheduleData({...element, endDate: element.endDate.slice(0,10)})
                     setCampScheduleData({...element, startDate: element.endDate.slice(0,10)})

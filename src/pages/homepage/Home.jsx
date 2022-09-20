@@ -38,6 +38,7 @@ import Select from "@mui/material/Select";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import CancelIcon from "@material-ui/icons/Cancel";
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
+import DoneIcon from '@mui/icons-material/Done';
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { store } from "../../store/store";
@@ -780,21 +781,27 @@ const Home = () => {
                           <TableCell align="center">{row.status}</TableCell>
                           <TableCell align="center">
                             <FormGroup style={{display:"flex", justifyContent:"center", alignItems:"center" }}>
+
+                              {/* SCHEDULED, RUNNING, PAUSE, EXPIRED, STOPPED, COMPLETE,CANCELED */}
                               {row.status == "SCHEDULED" ? (
                                 <>
-                                  <CancelIcon onClick={(e)=>{handelActionChange("STOPPED", row.jobId)}} />
+                                  <CancelIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
                                 </>
                               ) : row.status == "RUNNING" ? (
                                 <>
-                                  <PauseCircleFilledIcon onClick={(e)=>{handelActionChange("RUNNING", row.jobId)}} />
+                                  <PauseCircleFilledIcon onClick={(e)=>{handelActionChange("PAUSE", row.jobId)}} />
                                 </>
-                              ) : row.status == "STOPPED" ? (
+                              ) : row.status == "PAUSE" ? (
                                 <>
                                   <PlayCircleFilledIcon onClick={(e)=>{handelActionChange("RUNNING", row.jobId)}} />
                                 </>
                               ) : row.status == "EXPIRED" ? (
                                 <>
-                                  <DeleteIcon onClick={(e)=>{handelActionChange("EXPIRED", row.jobId)}} />
+                                  <CancelIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
+                                </>
+                              ) : row.status == "COMPLETE" ? (
+                                <>
+                                  <DoneIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
                                 </>
                               ) : null}
                             </FormGroup>

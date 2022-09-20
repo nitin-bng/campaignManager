@@ -352,9 +352,11 @@ const Home = () => {
   };
 
   const handelActionChange = (action, id) =>{
-    console.log("action",action);
+  
+    console.log("action",action, id);
+
     fetch(
-      `http://34.214.61.86:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
+      `http://41.217.203.246:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
     )
       .then((result) => result.json())
       .then((res) => {
@@ -780,7 +782,7 @@ const Home = () => {
                             <FormGroup style={{display:"flex", justifyContent:"center", alignItems:"center" }}>
                               {row.status == "SCHEDULED" ? (
                                 <>
-                                  <CancelIcon onClick={(e)=>{handelActionChange("SCHEDULED", row.jobId)}} />
+                                  <CancelIcon onClick={(e)=>{handelActionChange("STOPPED", row.jobId)}} />
                                 </>
                               ) : row.status == "RUNNING" ? (
                                 <>
@@ -788,7 +790,7 @@ const Home = () => {
                                 </>
                               ) : row.status == "STOPPED" ? (
                                 <>
-                                  <PlayCircleFilledIcon onClick={(e)=>{handelActionChange("STOPPED", row.jobId)}} />
+                                  <PlayCircleFilledIcon onClick={(e)=>{handelActionChange("RUNNING", row.jobId)}} />
                                 </>
                               ) : row.status == "EXPIRED" ? (
                                 <>

@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import Box from "@mui/material/Box";
-// import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import PersonIcon from "@material-ui/icons/Person";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
@@ -25,9 +24,7 @@ import PhoneInput from 'react-phone-input-2'
 import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
-  // const [phone, setPhone] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [countryCode, setCountryCode] = useState("");
   const [countryName, setCountryName] = useState("");
   const {
@@ -38,19 +35,7 @@ const ForgotPassword = () => {
 
   const onSubmit = (data) => {
     data["phone"] = phoneNumber;
-    // console.log(data);
-
     ProcessNumberFunction(phoneNumber);
-
-    // fetch(config.server.path + config.server.port2 + config.api.getFeature)
-    //   .then((result) => result.json())
-    //   .then((res) => {
-    //     console.log(res);
-    //     // console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     console.log("the error is::", error);
-    //   });
     console.log("func ran");
      axios
       .get(
@@ -70,11 +55,6 @@ const ForgotPassword = () => {
         return error;
       });
   };
-
-  // const handlePhnChange = (e) => {
-  //   setPhone(e.target.value);
-  //   // console.log(e.target.value);
-  // };
 
   return (
     <>
@@ -103,11 +83,7 @@ const ForgotPassword = () => {
                     country={'in'}
                     value={phoneNumber}
                     onChange={(value, country) => {
-                      // setPhone(e)
                       setPhoneNumber(value);
-                      // setError({ ...error, phoneError: "" });
-                      // console.log("values::", value )
-                      // console.log("country ====>", country);
                       setCountryCode(country.countryCode)
                       setCountryName(country.name)
 

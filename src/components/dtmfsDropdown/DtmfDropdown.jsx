@@ -19,19 +19,12 @@ import { store } from '../../store/store';
         setnumberOfMainDTMFWhenIVRIsSelected,
       ] = React.useState("");
 
-
-
       const detectLevel = (e, target, current) => {
-
-
-        debugger;
         handleIVRSelectedChange(e);
-    
-        // console.log('dtmfs--- options', props, e, target, current)
+        
         if (target === "main_audio") {
           handleDataChange(e);
-        } else if (target === "sub_audio_dtmfs") {
-          // props.setDataDynamic(props.dtmfFor, e, current);
+        } else if (target === "sub_audio_dtmfs") {        
         } else {
           let oldNumOfCards = 0;
           const newNumOfCards = e.target.value;
@@ -39,19 +32,6 @@ import { store } from '../../store/store';
           if (current && current.dtmf_count) {
             oldNumOfCards = current.dtmf_count;
           }
-    
-          // console.log(
-          //   "globalState.state.ivrCampFlowData.flow ",
-          //   localStore.ivrCampFlowData.flow,
-          //   "CURRENT.... ",
-          //   current
-          // );
-          // console.log(
-          //   "OLD NUMBER OF CARDS.... ",
-          //   oldNumOfCards,
-          //   "NEW NUMBER OF CARDS.... ",
-          //   newNumOfCards
-          // );
     
           if (newNumOfCards >= oldNumOfCards) {
             debugger;
@@ -61,12 +41,7 @@ import { store } from '../../store/store';
             });
     
             genArray(newNumOfCards - oldNumOfCards).map((e) => {
-              e = oldNumOfCards + e;
-              // console.log(
-              //   "%c......PUSH.....",
-              //   "background: 'pink'; 'font-size: 1.5rem",
-              //   e
-              // );
+              e = oldNumOfCards + e;          
               localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.push({
                 dtmf_key: e,
                 parent_dtmf: current.dtmf_key,
@@ -156,12 +131,10 @@ import { store } from '../../store/store';
               localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.pop();
           }
     
-          // // dispatch('SET_DTMF_SUB', data)
+          
           localStore.ivrCampFlowData.flow.actions[current.id - 1].dtmf_count =
             newNumOfCards;
           dispatch({ type: "SET_DATA", nState: localStore });
-    
-          //TO-DO : Write using SET_DTMF_SUB
         }
       };
     
@@ -173,7 +146,7 @@ import { store } from '../../store/store';
           localStore.ivrCampFlowData.flow[key] = e.target.value;
           dispatch({ type: "SET_DTMF_MAIN", nState: localStore });
         }
-        // console.log(localStore);
+        
       };
       const handleIVRSelectedChange = (event) => {
         setnumberOfMainDTMFWhenIVRIsSelected(event.target.value);
@@ -205,11 +178,11 @@ import { store } from '../../store/store';
         onChange={(e) => {
 
           detectLevel(e, "main_audio", props.current);
-          // console.log(e.target);
+          
         }}
       >
         {numberOfSubDTMF.map((number, index) => {
-          // console.log(number);
+          
 
           return <MenuItem value={number}>{number}</MenuItem>;
         })}

@@ -16,7 +16,6 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import HelpIcon from "@mui/icons-material/Help";
 
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import MenuAppBar from "../../components/topbar/MenuAppBar";
 import Radio from "@mui/material/Radio";
@@ -27,21 +26,13 @@ import FormLabel from "@mui/material/FormLabel";
 import "./userconfig.css";
 import { blackout__days } from "../../helpers/All__mapping";
 import { useState } from "react";
-import { addDays } from "date-fns";
 import moment from "moment";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
-
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
-import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
-
 import DatePicker from "react-multi-date-picker";
 import config from "../../ApiConfig/Config";
-
 import {
-  getDateInFormat,
   getMultipleDatesInFormat,
 } from "../../services/getDateInFormat";
 import {changeTimeFormatForFrontend, changeTimeFormatForBackend} from "../../services/getTimeInFormat"
@@ -53,10 +44,9 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-// import InputLabel from "@mui/material/InputLabel";
 const ITEM_HEIGHT = 48;
+
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
@@ -250,32 +240,18 @@ const UserConfig = () => {
   const [appendCountryCode, setAppendCountryCode] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [appendZero, setAppendZero] = useState("");
-  const [startTimeToSendAtBackend, setStartTimeToSendAtBackend] = useState("00:00:00");
-  const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("00:00:00");
-
+  const [startTimeToSendAtBackend, setStartTimeToSendAtBackend] = useState("");
+  const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("");
   const [blackOutDays, setBlackOutDays] = React.useState([]);
   const [blackoutStartHour, setBlackoutStartHour] = React.useState('00:00:00');
   const [blackoutEndHour, setBlackoutEndHour] = React.useState('00:00:00');
   const Navigate = useNavigate();
   const [blackoutDate, setBlackoutDate] = React.useState([]);
-  const [value, setValue] = useState([]);
   const [createUpdate, setCreateUpdate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [reason, setReason] = useState("");
-  const [status, setStatus] = useState("");
-  const [scheduleData1, setScheduleData] = useState({});
-  const [elements, setElements] = useState(null);
   const [configError, setConfigError] = useState('')
-
-  const [selectedStartDate, handleStartDateChange] = useState(new Date());
-  const [selectedEndDate, handleEndDateChange] = useState(new Date());
-
-  const [getChannel, setGetChannel] = useState();
-  const [getTps, setGetTps] = useState();
-  const [dayName, setDayName] = useState([]);
-  const [values, setValues] = useState([]);
-  const [getEndHour, setgetEndHour] = useState();
   const initialValues = {
     requiredChannel: "",
     days: "",
@@ -294,7 +270,6 @@ const UserConfig = () => {
       target: { value },
     } = event;
     setBlackOutDays(
-      // On autofill we get a stringified value.
       value ? typeof value === "string" ? value.split(",") : value : []
     );
   };
@@ -308,8 +283,6 @@ const UserConfig = () => {
 
   const userConfigSubmit = (event) => {
     setConfigError('')
-
-    // console.log("blackoutDate", blackoutDate);
     event.preventDefault();
 
     scheduleData = {
@@ -324,15 +297,6 @@ const UserConfig = () => {
       startTime: startTimeToSendAtBackend || "00:00:00",
       endTime: endTimeToSendAtBackend || "00:00:00",
     };
-
-    const startTimeArray = startTimeToSendAtBackend ? startTimeToSendAtBackend.split(":") : []
-    const endTimeArray = endTimeToSendAtBackend ? endTimeToSendAtBackend.split(":") : []
-    // console.log("schedule Data ", scheduleData);
-    // setFormErrors(validate(formValues));
-    // if (Object.keys(errors).length == 0) {
-    // if(!blackOutDays.length){
-    //   setConfigError('Please Enter Blackout days')
-    // }
     
     if((startTimeToSendAtBackend || endTimeToSendAtBackend) && !(startTimeToSendAtBackend && endTimeToSendAtBackend)){
       if(!startTimeToSendAtBackend){
@@ -342,16 +306,6 @@ const UserConfig = () => {
         setConfigError('Please Enter End time')
       }
     }
-    // else if(
-    //     endTimeArray[0] < ~~startTimeArray[0] ||
-    //     (endTimeArray[0] === ~~startTimeArray[0] &&
-    //       endTimeArray[1] < ~~startTimeArray[1]) ||
-    //     (endTimeArray[0] === ~~startTimeArray[0] &&
-    //       endTimeArray[1] === ~~startTimeArray[1] &&
-    //       endTimeArray[2] < ~~startTimeArray[2])){
-    //     setConfigError("End time can not be earlier than before time");
-      
-    // }
     else if(!countryCode){
       setConfigError('Please Enter Country Code')
     }
@@ -383,20 +337,16 @@ const UserConfig = () => {
         res.json().then((res) => {
           if (res.status == "successful") {
             setCreateUpdate(true);
-            // setShowSuccess(true);
             Navigate("/campaign-manager/home");
             toast("You can create flow now");
             localStorage.setItem("createFlowInMenuBarDisbled", true);
-            // console.log(res);
           } else if (res.status == "unsuccessful") {
             setReason(res.reason);
-            setStatus(res.status);
             setOpenModal(true);
           }
         });
       })
       .catch((e) => {
-        // console.log(e);
       })}
   };
 
@@ -405,18 +355,9 @@ const UserConfig = () => {
   };
   const handleModal = () => {
     setOpenModal(false);
-    if (
-      status === "unsuccessful" &&
-      reason === "Only Required channel = 9 and Required TPS = 9 are available."
-    ) {
-      // history.push({
-      //     pathname: '/Configuration/User',
-      //     state: { detail: 'true' }
-      // });
-    }
   };
+
   useEffect(() => {
-    setElements(formJSON[0]);
     console.log(formJSON);
     fetch(
       "http://34.214.61.86" +
@@ -441,19 +382,14 @@ const UserConfig = () => {
           if (res.status === "successful" && res.requiredChannel != 0) {
             debugger;
             for (var i = 0; i < res.date.length; i++) {
-              //    var key = res.data[i].split("T")
               dateData.push(res.date[i].split("T")[0]);
               formatedData.push(moment(res.date[i].split("T")[0]).toString());
             }
             setCreateUpdate(true);
-            setGetChannel(res.requiredChannel);
-            setGetTps(res.totalTps);
-            // setDayName(res.days)
             setBlackOutDays(res.days);
             setAssignChannel(res.assignChannel);
             setAssignTps(res.assignTps);
             setBlackoutDate(res.date.map(item=>item.slice(0,10)));
-            setValue(res.date);
             setAppendZero(res.appendZero);
             setCountryCode(res.countryCode);
             setAppendCountryCode(res.appendCountryCode);
@@ -462,34 +398,6 @@ const UserConfig = () => {
             setBlackoutEndHour(changeTimeFormatForFrontend(res.endTime));
             setStartTimeToSendAtBackend(res.startTime)
             setEndTimeToSendAtBackend(res.endTime)
-          //   let starttime =
-          //   res.startTime.getHours().toString() +
-          //   ":" +
-          //   res.startTime.getMinutes().toString() +
-          //   ":" +
-          //  res.startTime.getSeconds().toString();
-          //   setStartTimeToSendAtBackend(res.startTime)
-          //   let endtime =
-          //   res.endtime.getHours().toString() +
-          //   ":" +
-          //   res.endTime.getMinutes().toString() +
-          //   ":" +
-          //  res.endTime.getSeconds().toString();
-            // setEndTimeToSendAtBackend(res.endTime)
-
-            if (res.startTime == null) {
-              handleStartDateChange(new Date());
-            } else {
-              handleStartDateChange(res.startTime);
-            }
-            if (res.endTime == null) {
-              handleEndDateChange(new Date());
-            } else {
-              handleEndDateChange(res.endTime);
-            }
-            // setGetDate(res.date)
-            setValues(formatedData);
-            setgetEndHour.catchour(res.endTime);
             scheduleData = {
               days: res.days,
               requiredChannel: res.requiredChannel,
@@ -507,13 +415,6 @@ const UserConfig = () => {
               startTime: moment(res.startTime).format("HH:MM:SS"),
               endTime: moment(res.endTime).format("HH:MM:SS"),
             });
-
-            setScheduleData((scheduleData1) => ({
-              ...scheduleData1,
-              ...scheduleData,
-            }));
-          } else if (res.length == 0) {
-            // showError(true)
           }
         });
       })
@@ -546,8 +447,6 @@ const UserConfig = () => {
                           backgroundColor: "#e4e4e4",
                           padding: ".5rem",
                           marginTop: "1rem",
-                          // border:"2px solid green",
-                          // height: "30%",
                           overflow:"visible"
                         }}
                         fullWidth
@@ -727,17 +626,10 @@ const UserConfig = () => {
                                   onChange={(e) => {
                                     let newDate = new Set()
                                     e.map((ele, idx) => {
-                                      // console.log(ele.day);
-                                      // console.log(e);
-                                      // console.log(ele.year);
-                                      // console.log(ele.month.number);
                                       newDate.add(getMultipleDatesInFormat(ele))
-                                      // setValue(blackoutDate);
                                     });
                                     console.log('date after', newDate)
                                     setBlackoutDate([...newDate]);
-                                    // console.log(blackoutDate);
-                                    // setValue
                                   }}
                                 />
                                 <CustomWidthTooltip title={BlackoutDateInfo}>
@@ -761,8 +653,6 @@ const UserConfig = () => {
                           backgroundColor: "#e4e4e4",
                           padding: ".5rem",
                           marginTop: "1rem",
-                          // border:"2px solid green",
-                          // height: "30%",
                         }}
                         fullWidth
                       >
@@ -808,7 +698,6 @@ const UserConfig = () => {
                                       label="Yes"
                                       onChange={(e) => {
                                         setAppendZero(e.target.value);
-                                        // console.log(e);
                                       }}
                                     />
                                     <FormControlLabel
@@ -816,7 +705,6 @@ const UserConfig = () => {
                                       control={<Radio />}
                                       onChange={(e) => {
                                         setAppendZero(e.target.value);
-                                        // console.log(e);
                                       }}
                                       label="No"
                                     />
@@ -943,8 +831,6 @@ const UserConfig = () => {
                           padding: ".5rem",
                           marginTop: "1rem",
                           marginBottom: "2rem",
-                          // border:"2px solid green",
-                          // height: "30%",
                         }}
                         fullWidth
                       >
@@ -1089,7 +975,6 @@ const UserConfig = () => {
                     textTransform: "uppercase",
                     textShadow: "1px 1px 2px black",
                     width: "10%",
-                    // margin: "auto",
                     marginBottom: "1rem",
                     transition: "all 0.5s",
                     fontWeight: "700",

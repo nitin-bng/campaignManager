@@ -1,11 +1,8 @@
 
 import { makeStyles } from "@material-ui/core/styles";
 export const ProcessNumberFunction = (val) =>{
-    // console.log(typeof(val));
     const phoneNumberSplittingArr = val.split(" ")
-    // console.log(val.split(" "))
-    const countryCode = phoneNumberSplittingArr[0]
-    // console.log(countryCode);
+    const countryCode = phoneNumberSplittingArr[0] 
 }
 
 

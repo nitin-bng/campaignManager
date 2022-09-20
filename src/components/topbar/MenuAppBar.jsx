@@ -14,13 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function MenuAppBar() {
   var auth = true;
-  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const Navigate = useNavigate()
-
-  // const handleChange = (event) => {
-  // setAuth(event.target.checked);
-  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

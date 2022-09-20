@@ -19,12 +19,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import SubDTMF from "../sub__dtmf/SubDTMF";
 import { store } from "../../../../../../store/store";
-import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
-
-import { BsCheckCircle } from "react-icons/bs";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
-import { FiPauseCircle } from "react-icons/fi";
 import { Howl } from "howler";
 import ReactAudioPlayer from "react-audio-player";
 
@@ -49,7 +43,6 @@ const numberOfSubDTMF = [
 const MainDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
-  const [disableInputTag, setDisableInputTag] = useState(true);
   const [expanded, setExpanded] = React.useState(true);
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
@@ -59,15 +52,8 @@ const MainDTMF = (props) => {
     setnumberOfMainDTMFWhenIVRIsSelected,
   ] = React.useState("");
 
-  const [selectOptionForMainDTMF, setSelectOptionForMainDTMF] =
-    React.useState("");
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
-  };
-
-  const handleChange = (event) => {
-    setSelectOptionForMainDTMF(event.target.value);
   };
 
   const handleIVRSelectedChange = (event) => {
@@ -85,15 +71,12 @@ const MainDTMF = (props) => {
       "lang",
       lang
     );
-    // return
     try {
       const uploadedFiles = await uploadMultipleFiles(files);
       console.log("%c ==FILES UPLOADED==", "background:yellow", uploadedFiles);
       let localStore = globalState.state;
       const localFileName = uploadedFiles.response;
       const serverFileName = uploadedFiles.key;
-
-      //set origional and server name mapping in temp
       localStore.temp.uploads.push({
         l_name: localFileName,
         s_name: serverFileName,
@@ -103,7 +86,6 @@ const MainDTMF = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -113,7 +95,6 @@ const MainDTMF = (props) => {
         }
 
         console.log("oldState", oldStateFiles);
-        // dict[lang] = oldStateFiles + uploadedFiles[0].key;
         dict[lang] = oldStateFiles + uploadedFiles.response;
         localStore.ivrCampFlowData.flow[key] = {
           ...localStore.ivrCampFlowData.flow[key],
@@ -128,7 +109,6 @@ const MainDTMF = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -169,7 +149,6 @@ const MainDTMF = (props) => {
         }
         dispatch({ type: "SET_DATA", nState: localStore });
       } else if (target === "repeat_audio_file") {
-        // const key = e.target.name;
         const dict = {};
         dict[lang] = uploadedFiles[0].key;
         localStore.ivrCampFlowData.flow.repeat.audio_file = dict;
@@ -199,8 +178,6 @@ const MainDTMF = (props) => {
         } else if (targetArray[0] === "level2") {
           const parent_dtmf = targetArray[1];
           const current_dtmf = targetArray[2];
-          // console.log("this is level 2 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
             current_dtmf - 1
           ].audio_file[lang] = localStore.ivrCampFlowData.flow.actions[
@@ -217,8 +194,6 @@ const MainDTMF = (props) => {
           const gparent = targetArray[1];
           const parent_dtmf = targetArray[2];
           const current_dtmf = targetArray[3];
-          // console.log("this is level 3 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[gparent].actions[
             parent_dtmf - 1
           ].actions[current_dtmf - 1].audio_file[lang] = localStore
@@ -260,14 +235,9 @@ const MainDTMF = (props) => {
       formData.append("file", e);
       console.log("-----------------props------", formData.getAll("file"));
     });
-    // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
     const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
-
-    // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
-    // const path = 'http://35.154.125.150:5080/uploadMultipleFile';
     console.log("Path is", path);
     return await fetch(path, {
-      // fetch('http://172.16.10.212:/api/bng/zbp/uploadMultipleFile',{
       method: "POST",
       body: formData,
     })
@@ -281,18 +251,9 @@ const MainDTMF = (props) => {
       });
   }
 
-  const playPauseAudio = (src) => {
-    debugger;
-    AudioClips(src);
-  };
-
   function AudioClips() {
     debugger;
-    // const [isPlaying, setIsPlaying] = useState(false);
     let isPlaying = false;
-
-    // const soundPlay = () => {
-    //     debugger;
     const sound = new Howl({
       src: globalState.state.ivrCampFlowData.flow.main_audio_file,
       html5: true,
@@ -305,138 +266,12 @@ const MainDTMF = (props) => {
       sound.play();
       isPlaying = true;
     }
-    //  }
-    // function playPause () {
-
-    //  }
   }
-
-  const GetMainAudioFiles = (lang, type) => {
-    debugger;
-    let id = lang.split("-");
-    if (type == "MainAudioFile") {
-      console.log("getMainAudio", type);
-      var Filelist = globalState.state.ivrCampFlowData.flow.main_audio_file[
-        id[0]
-      ]
-        .split(",")
-        .map((e, index) => {
-          return (
-            <span key={e}>
-              <span style={{ color: "darkgray" }}> {index + 1} - </span>
-              {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-              {e}
-              {/* <BsCheckCircle size={15} className="checkedIcon" />
-              <IoIosCloseCircleOutline
-                className="checkedIcon"
-                size={15}
-                style={{ color: "red", cursor: "pointer" }}
-              />
-              <FiPlayCircle
-                className="checkedIcon"
-                size={15}
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
-                style={{
-                  color: "purple",
-                  cursor: "pointer",
-                }}
-              />
-            
-              <FiPauseCircle
-                size={15}
-                className="checkedIcon"
-                id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                onClick={() => playPauseAudio(e)}
-                style={{ cursor: "pointer" }}
-              /> */}
-              <ReactAudioPlayer
-                src={`http://34.214.61.86/cm_data/audio/${e}`}
-                // autoPlay
-                controls
-              />
-
-              {/* <span className="m-t-10"> </span> */}
-            </span>
-          );
-        });
-    } else if (type == "LangAudioFile") {
-      console.log("getMainAudio", type);
-      for (
-        var i = 0;
-        i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
-        i++
-      ) {
-        if (
-          id[0] ==
-          globalState.state.ivrCampFlowData.flow.language[0].actions[i].language
-        ) {
-          var Filelist =
-            globalState.state.ivrCampFlowData.flow.language[0].actions[
-              i
-            ].lang_file["ivr"]
-              .split(",")
-              .map((e, index) => {
-                return (
-                  <span key={e}>
-                    <span style={{ color: "darkgray" }}> {index + 1} - </span>
-                    {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-                    {e}
-                    {/* <BsCheckCircle size={15} className="checkedIcon" />
-                    <IoIosCloseCircleOutline
-                      className="checkedIcon"
-                      size={15}
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <FiPlayCircle
-                      className="checkedIcon"
-                      size={15}
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{
-                        color: "purple",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <FiPauseCircle
-                      size={15}
-                      className="checkedIcon"
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{ cursor: "pointer" }}
-                    /> */}
-                    <ReactAudioPlayer
-                      src={`http://34.214.61.86/cm_data/audio/${e}`}
-                      // autoPlay
-                      controls
-                    />
-                    <br></br>
-                    <br></br>
-                    {/* <span className="m-t-10"> </span> */}
-                  </span>
-                );
-              });
-        }
-      }
-    }
-
-    return <span> {Filelist} </span>;
-  };
 
   const globalState = useContext(store);
   let localStore = globalState.state;
   const { disableChannel } = props;
   console.log("dtmfs options", props);
-  // const { fileuploadclick } = props;
 
   const { dispatch } = globalState;
 
@@ -576,13 +411,9 @@ const MainDTMF = (props) => {
         for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
           localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.pop();
       }
-
-      // // dispatch('SET_DTMF_SUB', data)
       localStore.ivrCampFlowData.flow.actions[current.id - 1].dtmf_count =
         newNumOfCards;
       dispatch({ type: "SET_DATA", nState: localStore });
-
-      //TO-DO : Write using SET_DTMF_SUB
     }
   };
 
@@ -614,20 +445,8 @@ const MainDTMF = (props) => {
                 marginTop: "5px",
               }}
             >
-              {/* <BsCheckCircle size={15} className="checkedIcon" />
-              <IoIosCloseCircleOutline
-                className="checkedIcon"
-                size={15}
-                style={{ color: "red" }}
-              />
-              <FiPlayCircle
-                className="checkedIcon"
-                size={15}
-                style={{ color: "purple" }}
-              /> */}
               <ReactAudioPlayer
                 src={`http://34.214.61.86/cm_data/audio/${e}`}
-                // autoPlay
                 controls
               />
             </div>
@@ -713,7 +532,6 @@ const MainDTMF = (props) => {
                         }
                         label="DTMF__option"
                         onChange={(e) => {
-                          handleChange(e);
                           props.dataHandleWithObj(
                             e,
                             props.global || props.current
@@ -737,12 +555,9 @@ const MainDTMF = (props) => {
                       autoComplete="off"
                     >
                       <TextField
-                        // id="if__IVR__selected"
                         id={"waitTime_" + props.global.dtmf_key}
                         disabled={
-                          // disableProperties &&
                           disableChannel == "SMS" ||
-                          // !disableProperties &&
                           disableChannel == "SMS" ||
                           props.disableEditingWhileCreatingCamp
                         }
@@ -861,7 +676,6 @@ const MainDTMF = (props) => {
                         display: "flex",
                         justifyContent: "space-evenly",
                         width: "100%",
-                        // border:"2px solid red"
                       }}
                     >
                       {localStore.ivrCampFlowData.flow.languageChange.map(
@@ -882,8 +696,6 @@ const MainDTMF = (props) => {
                 </div>
               </CardContent>
               <div className="rendering__subdtmf__container">
-                {/* {arr1.length > 0 &&
-                  arr1.map((el, ind) => { */}
                 {props.global.actions.map((e, index) => {
                   return (
                     <SubDTMF
@@ -891,7 +703,6 @@ const MainDTMF = (props) => {
                       current={e}
                       isBgColor={true}
                       handleDataChange={props.handleDataChange}
-                      onChange={props.handleChange}
                       uploadFiles={props.uploadFiles}
                       setWaitTime={props.setWaitTime}
                       setDataDynamic={props.setDataDynamic}
@@ -902,8 +713,6 @@ const MainDTMF = (props) => {
                       disableEditingWhileCreatingCamp={
                         props.disableEditingWhileCreatingCamp
                       }
-                      // disableProperties={disableProperties}
-                      // disableChannel={disableChannel}
                     />
                   );
                 })}

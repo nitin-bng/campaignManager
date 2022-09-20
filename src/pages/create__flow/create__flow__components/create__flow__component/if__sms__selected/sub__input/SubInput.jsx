@@ -79,8 +79,7 @@ const SubInput = (props) => {
                 aria-expanded={expanded}
                 aria-label="show more"
                 style={{
-                  // width: "75%",
-                  // border:"2px solid red",
+
                   borderRadius: "0",
                   display: "flex",
                   justifyContent: "flex-end",

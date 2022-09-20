@@ -31,32 +31,21 @@ import config from "../ApiConfig/Config";
 import { MenuProps, useStyles, options } from "../../src/helpers/Utils";
 import "react-phone-input-2/lib/style.css";
 import {toast} from "react-toastify"
-// import { ToastContainer } from "react-bootstrap";
 
 const Signup = () => {
-  const [phone, setPhone] = useState("");
   const [companyAddress, setCompanyAddress] = useState("");
   const [operatorsFromAPI, setOperatorsFromAPI] = useState([]);
   const [operator, setOperator] = useState("");
-  const [operatorId, setOperatorId] = useState([]);
-  const [feature, setFeature] = useState([]);
-  const [featuresFromAPI, setFeaturesFromAPI] = useState([]);
-  const subfeatureInCategory = [];
-  var arrayOfKeysOfFeatures = [];
   const [loader, setLoader] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [newFeatures, setNewFeatures] = useState([]);
   const [values, setValues] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [response, setResponse] = useState("");
   const [reason, setReason] = useState("");
-
   const [countryCode, setCountryCode] = useState("");
   const [countryName, setCountryName] = useState("");
-  // console.log(countryCode);
 
-  // let history = useHistory();
   const navigate = useNavigate();
   const [error, setError] = useState({
     nameError: "",
@@ -73,7 +62,7 @@ const Signup = () => {
     { pId: 3, id: 7, subFeature: "SMS(Incoming)" },
     { pId: 3, id: 8, subFeature: "SMS(Outgoing)" },
   ];
-  // var hashmap = new Map();
+
   const handlePersonChange = (event) => {
     debugger;
     setError({ ...error, featuresError: "" });
@@ -85,7 +74,6 @@ const Signup = () => {
       var key = latestfeatures[i].subFeature;
       for (var j = 0; j < value.length; j++) {
         if (key == value[j]) {
-          // console.log(true);
           data.push(latestfeatures[i].id);
           data.push(latestfeatures[i].pId);
         }
@@ -94,17 +82,14 @@ const Signup = () => {
     setValues(data);
     setNewFeatures(typeof value === "string" ? value.split(",") : value);
   };
-  // console.log(hashmap);
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // const featuresWithSubfeatuersObj = [];
 
   useEffect(() => {
-    getFeatures();
     getOperator();
   }, []);
 
@@ -116,11 +101,9 @@ const Signup = () => {
     data["name"] = data.firstName + " " + data.lastName;
     data["countryCode"] = countryCode;
     data["country"] = countryName;
-    // console.log("data=====>>>", data);
     let uniqueArray = [...new Set(values)];
 
     setLoader(true);
-    // setOpenModal(true);
     fetch(config.server.path + config.server.port3 + config.api.signUp, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -132,8 +115,7 @@ const Signup = () => {
           localStorage.setItem("phoneNumber", JSON.stringify(phoneNumber));
           setResponse(result.status);
           setReason(result.reason);
-          setLoader(false);
-          // setOpenModal(true);
+          setLoader(false);;
           navigate("/campaign-manager/verifyotp");
         } else {
           setResponse(result.status);
@@ -142,21 +124,8 @@ const Signup = () => {
           setOpenModal(true);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setLoader(false);
-        // console.log("the error is::", error);
-      });
-  };
-
-  const getFeatures = () => {
-    fetch(config.server.path + config.server.port3 + config.api.getFeature)
-      .then((result) => result.json())
-      .then((res) => {
-        setFeaturesFromAPI(res);
-        // console.log(res);
-      })
-      .catch((error) => {
-        // console.log("the error is::", error);
       });
   };
 
@@ -164,13 +133,9 @@ const Signup = () => {
     fetch(config.server.path + config.server.port3 + config.api.setOperator)
       .then((result) => result.json())
       .then((res) => {
-        setOperatorsFromAPI(res);
-        // console.log(res);
-        // console.log(operatorsFromAPI);
-        // console.log(res.dispalyName);
+        setOperatorsFromAPI(res);;
       })
       .catch((error) => {
-        // console.log("the error is::", error);
       });
   };
 
@@ -178,7 +143,6 @@ const Signup = () => {
     setOpenModal(false);
     if (response === "successful") {
       navigate("/campaign-manager/verifyotp");
-      // state: { detail: 'true' }
     } else if (response === "unsuccessful") {
       navigate("/campaign-manager/");
     } else {
@@ -279,11 +243,6 @@ const Signup = () => {
                         value={operator}
                         label="Operator"
                         onChange={(e) => {
-                          operatorsFromAPI.forEach((val) => {
-                            setOperatorId(val.id);
-                            // console.log(val);
-                            // console.log(operatorId);
-                          });
                           setOperator(e.target.value);
                         }}
                       >
@@ -303,11 +262,8 @@ const Signup = () => {
                     country={"in"}
                     value={phoneNumber}
                     onChange={(value, country) => {
-                      // setPhone(e)
                       setPhoneNumber(value);
                       setError({ ...error, phoneError: "" });
-                      // console.log("values::", value )
-                      // console.log("country ====>", country);
                       setCountryCode(country.countryCode);
                       setCountryName(country.name);
                     }}
@@ -351,7 +307,6 @@ const Signup = () => {
                       </InputLabel>
                       <Select
                         labelId="demo-multiple-checkbox-label"
-                        // label="Feature"
                         id="demo-multiple-checkbox"
                         multiple
                         value={newFeatures}
@@ -361,7 +316,6 @@ const Signup = () => {
                         renderValue={(selected) => selected.join(", ")}
                         MenuProps={MenuProps}
                         className="featureKaSelectBoxOnSignup"
-                        // variant="outlined"
                       >
                         {latestfeatures.map((features) => (
                           <MenuItem
@@ -455,18 +409,6 @@ const Signup = () => {
             </div>
 
             <div className="terms__and__button__container__signup">
-              {/* <div className="terms__checkbox">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<CheckBoxOutlineBlankIcon />}
-                      checkboxicon={<CheckBoxIcon />}
-                      name="checkedI"
-                    />
-                  }
-                  label="I agree terms and conditions"
-                />
-              </div> */}
               <div className="create__account__button button">
                 <Button
                   variant="contained"
@@ -482,8 +424,6 @@ const Signup = () => {
             <div className="authentication__links__signup">
               <p className="links">
                 <Link to="/campaign-manager/">Already have an account ?</Link>
-                {/* <p>OR</p>
-                <Link to="/home">Use as guest</Link> */}
               </p>
             </div>
           </div>
@@ -501,7 +441,6 @@ const Signup = () => {
                     textTransform: "uppercase",
                     textShadow: "1px 1px 2px black",
                     width: "10%",
-                    // margin: "auto",
                     marginBottom: "1rem",
                     transition: "all 0.5s",
                     fontWeight: "700",

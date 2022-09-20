@@ -250,8 +250,8 @@ const UserConfig = () => {
   const [appendCountryCode, setAppendCountryCode] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [appendZero, setAppendZero] = useState("");
-  const [startTimeToSendAtBackend, setStartTimeToSendAtBackend] = useState("");
-  const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("");
+  const [startTimeToSendAtBackend, setStartTimeToSendAtBackend] = useState("00:00:00");
+  const [endTimeToSendAtBackend, setEndTimeToSendAtBackend] = useState("00:00:00");
 
   const [blackOutDays, setBlackOutDays] = React.useState([]);
   const [blackoutStartHour, setBlackoutStartHour] = React.useState('00:00:00');
@@ -281,8 +281,8 @@ const UserConfig = () => {
     days: "",
     totalTps: "",
     date: "",
-    startTime: "",
-    endTime: "",
+    startTime: "00:00:00",
+    endTime: "00:00:00",
   };
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -321,8 +321,8 @@ const UserConfig = () => {
       appendZero: appendZero,
       days: blackOutDays,
       date: blackoutDate,
-      startTime: startTimeToSendAtBackend,
-      endTime: endTimeToSendAtBackend,
+      startTime: startTimeToSendAtBackend || "00:00:00",
+      endTime: endTimeToSendAtBackend || "00:00:00",
     };
 
     const startTimeArray = startTimeToSendAtBackend ? startTimeToSendAtBackend.split(":") : []

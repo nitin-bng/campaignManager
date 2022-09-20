@@ -38,7 +38,7 @@ import Select from "@mui/material/Select";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import CancelIcon from "@material-ui/icons/Cancel";
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
-import DoneIcon from '@mui/icons-material/Done';
+import DoneIcon from "@mui/icons-material/Done";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { store } from "../../store/store";
@@ -201,9 +201,16 @@ const Home = () => {
         console.log("failed", error);
         return error;
       });
-{console.log(`http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
-  "userId"
-)}`)}
+    {
+      console.log(
+        `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+          "userId"
+        )}`
+      );
+    }
+
+
+
     fetch(
       `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
         "userId"
@@ -240,52 +247,57 @@ const Home = () => {
         console.log(e);
       });
 
-    fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
-        "userId"
-      )}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        res.json().then((res) => {
-          if (res.length > 0) {
-            rows2 = [];
-            res.map((params) => {
-              rows2.push(
-                createData2(
-                  params.jobId,
-                  params.jobName,
-                  params.startDate?.slice(0, 10),
-                  params.endDate?.slice(0, 10),
-                  params.dailyStartTime,
-                  params.dailyEndTime,
-                  params.priority,
-                  params.status
-                )
-              );
-            });
-            setData2(rows2);
-            // console.log("rishabh res", res);
-          } else if (res.length == 0) {
-            setData2([]);
-          }
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+
 
     // console.log("rishabh ran");
     // getFlowList()
     // getCampaignList();
     getChannelPercentage();
-    // getcampaignScheduleList();
+    getcampaignScheduleList();
   }, []);
+
+const getcampaignScheduleList = () =>{
+  fetch(
+    `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      "userId"
+    )}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((res) => {
+      res.json().then((res) => {
+        if (res.length > 0) {
+          rows2 = [];
+          res.map((params) => {
+            rows2.push(
+              createData2(
+                params.jobId,
+                params.jobName,
+                params.startDate?.slice(0, 10),
+                params.endDate?.slice(0, 10),
+                params.dailyStartTime,
+                params.dailyEndTime,
+                params.priority,
+                params.status
+              )
+            );
+          });
+          setData2(rows2);
+          // console.log("rishabh res", res);
+        } else if (res.length == 0) {
+          setData2([]);
+        }
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}
+
 
   const getChannelPercentage = () => {
     debugger;
@@ -352,9 +364,8 @@ const Home = () => {
     );
   };
 
-  const handelActionChange = (action, id) =>{
-  
-    console.log("action",action, id);
+  const handelActionChange = (action, id) => {
+    console.log("action", action, id);
 
     fetch(
       `http://34.214.61.86:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
@@ -370,7 +381,11 @@ const Home = () => {
       .catch((error) => {
         console.log("the error is::", error);
       });
-  }
+
+
+
+      getcampaignScheduleList();
+  };
 
   return (
     <>
@@ -780,28 +795,55 @@ const Home = () => {
                           <TableCell align="center">{row.priority}</TableCell>
                           <TableCell align="center">{row.status}</TableCell>
                           <TableCell align="center">
-                            <FormGroup style={{display:"flex", justifyContent:"center", alignItems:"center" }}>
-
+                            <FormGroup
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
                               {/* SCHEDULED, RUNNING, PAUSE, EXPIRED, STOPPED, COMPLETE,CANCELED */}
                               {row.status == "SCHEDULED" ? (
                                 <>
-                                  <CancelIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
+                                  <CancelIcon
+                                    onClick={(e) => {
+                                      handelActionChange("CANCELED", row.jobId);
+                                    }}
+                                  />
                                 </>
                               ) : row.status == "RUNNING" ? (
                                 <>
-                                  <PauseCircleFilledIcon onClick={(e)=>{handelActionChange("PAUSE", row.jobId)}} />
+                                  <PauseCircleFilledIcon
+                                    onClick={(e) => {
+                                      handelActionChange("PAUSE", row.jobId);
+                                    }}
+                                  />
                                 </>
                               ) : row.status == "PAUSE" ? (
                                 <>
-                                  <PlayCircleFilledIcon onClick={(e)=>{handelActionChange("RUNNING", row.jobId)}} />
+                                  <PlayCircleFilledIcon
+                                    onClick={(e) => {
+                                      handelActionChange("RUNNING", row.jobId);
+                                    }}
+                                  />
                                 </>
                               ) : row.status == "EXPIRED" ? (
                                 <>
-                                  <CancelIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
+                                  <CancelIcon
+                                    onClick={(e) => {
+                                      handelActionChange("CANCELED", row.jobId);
+                                    }}
+                                  />
                                 </>
-                              ) : row.status == "COMPLETE" || row.status == "EXPIRED" || row.status == "CANCELED" ? (
+                              ) : row.status == "COMPLETE" ||
+                                row.status == "EXPIRED" ||
+                                row.status == "CANCELED" ? (
                                 <>
-                                  <DeleteIcon onClick={(e)=>{handelActionChange("DELETED", row.jobId)}} />
+                                  <DeleteIcon
+                                    onClick={(e) => {
+                                      handelActionChange("DELETED", row.jobId);
+                                    }}
+                                  />
                                 </>
                               ) : null}
                             </FormGroup>

@@ -45,6 +45,7 @@ const CreateCampaign = (props) => {
   const [formValues, setFormValues] = useState(initialValues);
   const { showError, setShowError, errorState, errorDispatch } = useError();
   const [showFlowState, setShowFlowState] = useState(false);
+  var [update, updateForm] = useState(false);
 
   var scheduleData = {};
 
@@ -215,8 +216,37 @@ const CreateCampaign = (props) => {
     ) {
       setShowError(false);
       e.preventDefault();
+      e.preventDefault();
+      if (update) {
         fetch(
-          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/update/campaign",
+          "http://41.217.203.246" + ":" + "5002" + "/bng/ui/update/campaign",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...scheduleData1,
+              userId: localStorage.getItem("userId"),
+              campName: campaignName,
+              campPriority: campaignSchedulePriority,
+            }),
+          }
+        )
+          .then((res) => {
+            res.json().then((res) => {
+              if (res) {
+                // showSuccess(true);
+              } else if (res.length == 0) {
+              }
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        fetch(
+          "http://41.217.203.246" + ":" + "5002" + "/bng/ui/create/campaign",
           {
             method: "POST",
             headers: {
@@ -233,7 +263,12 @@ const CreateCampaign = (props) => {
           .then((res) => {
             res.json().then((res) => {
               if (res.status === 'successful') {
-                localStorage.setItem("campId", res.campId);    
+                localStorage.setItem("campId", res.campId);
+                // history.push({
+                //   pathname: "/Campaigns/createFlow",
+                //   state: { detail: flowData },
+                // });
+                // showSuccess(true)
                 setShowFlowState(true);
                 props.setDisableNext(false);
                 setIsDisabled(true)
@@ -245,6 +280,7 @@ const CreateCampaign = (props) => {
           .catch((e) => {
             console.log(e);
           });
+      }
       
     } else {
       setShowError(true);

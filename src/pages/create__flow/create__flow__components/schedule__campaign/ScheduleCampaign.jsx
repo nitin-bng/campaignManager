@@ -2,6 +2,9 @@ import React from "react";
 
 import "./scheduleCampaign.css";
 import { useState, useEffect, useContext } from "react";
+
+import { makeStyles } from "@material-ui/core/styles";
+
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -9,21 +12,44 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { getDateInFormat } from "../../../../services/getDateInFormat";
+
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import Stack from "@mui/material/Stack";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { useError } from "../../../../store/errorContext";
+
 import { store } from "../../../../store/store";
 import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { useNavigate } from "react-router-dom";
 import "../create__campaign/createCampaign.css";
 import { CircularProgress } from "@material-ui/core";
+import { border } from "@mui/system";
+var rows = [];
+const useStyles = makeStyles({
+  table: {
+    minWidth: 100,
+  },
+  tr: {
+    textAlign: "center",
+  },
+});
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-
+function createData(jobId, jobName, priority, status) {
+  return { jobId, jobName, priority, status };
+}
 let localDate = new Date();
 
 const ScheduleCampaign = (props) => {
+  const Navigate = useNavigate();
+  const { showError } = useError();
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -40,22 +66,53 @@ const ScheduleCampaign = (props) => {
       key: "selection",
     },
   ]);
+  console.log("todaydate", state[0].startDate);
 
   const [selectedStartDate, handleStartDateChange] = useState("");
   const [selectedEndDate, handleEndDateChange] = useState("");
+  const [selectedBlackoutStartDate, handleBlackoutStartDate] = useState(
+    new Date()
+  );
+  const [selectedBlackoutEndDate, handleBlackoutEndDate] = useState(new Date());
   const [fileName, setfileName] = useState(null);
   const [scheduleData1, setScheduleData] = useState({});
+  var [form, showForm] = useState(false);
+  var [tabledata, setData] = useState([]);
+  var [update, updateForm] = useState(false);
+  var [success, showSuccess] = useState(false);
   const [stringInputError, handlestringInputError] = useState(false);
+  const [campaignListData, setCampaignListData] = useState([]);
+  const classes = useStyles();
   const scheduleData = {};
   const globalState = useContext(store);
   let localStore = globalState.state;
+  const languages = globalState.state.languages;
 
   const {
+    setCampaignName,
     campaignName,
     campaignSchedulePriority,
+    setCampaignSchedulePriority,
   } = globalState;
   var blackoutDay = [];
-
+  const weekDaya = [
+    { Day: "sunday", id: 1 },
+    { Day: "monday", id: 2 },
+    { Day: "teausday", id: 3 },
+    { Day: "wednesday", id: 4 },
+    { Day: "thursday", id: 5 },
+    { Day: "friday", id: 6 },
+    { Day: "saturday", id: 7 },
+  ];
+  const top100Films = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 },
+    { title: "The Godfather: Part II", year: 1974 },
+    { title: "The Dark Knight", year: 2008 },
+    { title: "12 Angry Men", year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: "Pulp Fiction", year: 1994 },
+  ];
   const initialValues = {
     jobName: { campaignName },
     priority: { campaignSchedulePriority },
@@ -78,6 +135,8 @@ const ScheduleCampaign = (props) => {
     dateRange: "",
     file: "",
   };
+  const [options] = useState(weekDaya);
+  const [selectedDayValue, setSelectedDayValue] = useState([]);
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -107,10 +166,46 @@ const ScheduleCampaign = (props) => {
       }));
     }
     getCampaignDataList();
+    getcampaignScheduleList();
   }, []);
-
+  const getcampaignScheduleList = () => {
+    fetch(
+      `http://41.217.203.246" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem(
+        "userId"
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        res.json().then((res) => {
+          if (res.length > 0) {
+            rows = [];
+            res.map((params) => {
+              rows.push(
+                createData(
+                  params.jobId,
+                  params.jobName,
+                  params.priority,
+                  params.status
+                )
+              );
+            });
+            setData(rows);
+          } else if (res.length == 0) {
+            setData([]);
+          }
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -118,9 +213,11 @@ const ScheduleCampaign = (props) => {
       .then(function (data) {
         console.log("get flowList", data);
         data.unshift({ campName: "select" });
+        setCampaignListData(data);
         data.forEach((element) => {
           console.log("rishabh running runnig");
           console.log("===========>", element.campName, campaignName);
+          // console.log(campaignName);
           if (element.campName == campaignName) {
             console.log("rishabh running runnig");
             setScheduleData((prev) => {
@@ -151,6 +248,8 @@ const ScheduleCampaign = (props) => {
       handlestringInputError(false);
       return;
     } else {
+      // alert("message");
+      // setCurrentFieldId(id)
       handlestringInputError(true);
     }
   };
@@ -237,6 +336,8 @@ const ScheduleCampaign = (props) => {
           ...scheduleData,
         }));
       } else if (e.target.id == "selectBlackoutDay") {
+        debugger;
+        //   blackoutDay = e.target.value;
         blackoutDay = e.target.value;
         console.log(blackoutDay);
       } else if (e.target.id == "uploadCsvFfile") {
@@ -245,7 +346,8 @@ const ScheduleCampaign = (props) => {
         var formData = new FormData();
         formData.append("file", files[0]);
         fetch(
-          `http://34.214.61.86:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
+          // "http://41.217.203.246" + ":" + "5002" + "/bng/ui/uploadMsisdn",
+          `http://41.217.203.246:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
             "userId"
           )}&channel=${localStorage.getItem("channelName")}`,
           {
@@ -256,6 +358,8 @@ const ScheduleCampaign = (props) => {
           .then((res) => {
             res.json().then((res) => {
               if (res.status === "successful") {
+                // localStorage.setItem("selctedFile", res.fileName)
+                // newFileName = res.fileName
                 setfileName(res.fileName);
                 scheduleData["fileName"] = res.fileName;
                 scheduleData["reserveBalance"] = res.reserve_balance;
@@ -312,6 +416,7 @@ const ScheduleCampaign = (props) => {
       } else if (catagory == "startBlackoutTime") {
         scheduleData["blackoutStartTime"] =
           e.getHours() + ":" + e.getMinutes() + ":" + e.getSeconds();
+        handleBlackoutStartDate(e);
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
           ...scheduleData,
@@ -319,6 +424,7 @@ const ScheduleCampaign = (props) => {
       } else if (catagory == "endBlackoutTime") {
         scheduleData["blackoutEndTime"] =
           e.getHours() + ":" + e.getMinutes() + ":" + e.getSeconds();
+        handleBlackoutEndDate(e);
         setScheduleData((scheduleData1) => ({
           ...scheduleData1,
           ...scheduleData,
@@ -328,7 +434,10 @@ const ScheduleCampaign = (props) => {
 
     console.log(scheduleData);
   };
-
+  const handleDayChange = (event, values) => {
+    debugger;
+    console.log(selectedDayValue);
+  };
   const validate = (values) => {
     debugger;
     errors = {};
@@ -352,6 +461,7 @@ const ScheduleCampaign = (props) => {
         errors.Channel = "Channel is required";
       }
     }
+
     if (!values.file) {
       errors.file = "csv file is required";
     }
@@ -374,62 +484,67 @@ const ScheduleCampaign = (props) => {
 
   const handleSubmit = () => {
     debugger;
-    if(scheduleData1.startDate && scheduleData1.endDate){
-    try {
-      checkDateAndTime();
+    if (scheduleData1.startDate && scheduleData1.endDate) {
+      try {
+        checkDateAndTime();
 
-      setFormErrors(validate(formValues));
-      scheduleData1.userId = localStorage.getItem("userId");
-      scheduleData1.country = localStorage.getItem("userCountry");
-      scheduleData1.jobName = campaignName;
-      scheduleData1.priority = campaignSchedulePriority;
+        setFormErrors(validate(formValues));
+        scheduleData1.userId = localStorage.getItem("userId");
+        scheduleData1.country = localStorage.getItem("userCountry");
+        scheduleData1.jobName = campaignName;
+        scheduleData1.priority = campaignSchedulePriority;
 
-      console.log(scheduleData1);
+        console.log(scheduleData1);
 
-      if (Object.keys(errors).length == 0 && !stringInputError) {
-        fetch(
-          `http://34.214.61.86:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
-            "userId"
-          )}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(scheduleData1),
-          }
-        )
-          .then((res) => {
-            if (res.status == 200) {
-              localStorage.removeItem("channelName");
-              console.log(res);
-            } else if (res.length == 0) {
+        if (Object.keys(errors).length == 0 && !stringInputError) {
+          fetch(
+            `http://41.217.203.246:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
+              "userId"
+            )}`,
+
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(scheduleData1),
             }
-            props.setDisableNext(false);
-            props.handleNext()
-            setIsDisabled(true);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+          )
+            .then((res) => {
+              if (res.status == 200) {
+                debugger;
+                localStorage.removeItem("channelName");
+
+                console.log(res);
+              } else if (res.length == 0) {
+              }
+              props.setDisableNext(false);
+              props.handleNext();
+              setIsDisabled(true);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      } catch (e) {
+        if (e.message.includes("split")) {
+          setErrorMessage("Please select Start and End time");
+        } else {
+          setErrorMessage(e.message);
+        }
       }
-    } catch (e) {
-      if (e.message.includes("split")) {
-        setErrorMessage("Please select Start and End time");
-      } else {
-        setErrorMessage(e.message);
-      }
-    }}
-    else{
-      setErrorMessage("Please select dates")
+    } else {
+      setErrorMessage("Please select dates");
     }
   };
 
   const showListData = (e) => {
     setCancelModal(true);
-
   };
-
+  const updateFormData = (id) => {
+    updateForm(true);
+  };
+  const deleteFormData = (id) => {};
   const dummyClick = (id) => {
     debugger;
     const elem = document.getElementById(id);
@@ -468,6 +583,7 @@ const ScheduleCampaign = (props) => {
                     className="jobForm"
                     style={{
                       width: "100%",
+                      // border: "2px solid red",
                       padding: "1rem 0",
                       display: "flex",
                       justifyContent: "space-around",
@@ -479,12 +595,15 @@ const ScheduleCampaign = (props) => {
                       style={{
                         display: "flex",
                         flexWrap: "wrap",
+                        // border: "2px solid blue",
                         height: "100%",
                         justifyContent: "center",
                         alignItems: "center",
                         width: "50%",
+                        // textAlign: "left",
                       }}
                     >
+                      {/* <div className="mb-3 col-4" style={{ display: "flex" }}> */}
                       <div
                         className="campaign__name"
                         style={{ display: "none" }}
@@ -508,6 +627,7 @@ const ScheduleCampaign = (props) => {
                           />
                         </Box>
                       </div>
+
                       <div
                         className="create__campaign__priority__dropdown"
                         style={{ display: "none" }}
@@ -559,6 +679,7 @@ const ScheduleCampaign = (props) => {
                           </Select>
                         </FormControl>
                       </div>
+
                       <div
                         className="create__campaign__workflow__name"
                         style={{ display: "none" }}
@@ -574,9 +695,11 @@ const ScheduleCampaign = (props) => {
                             className="campaignId form-select"
                             aria-label="Default select example"
                           >
+                            {console.log("rishabh colsole", campaignName)}
                           </TextField>
                         </FormControl>
                       </div>
+
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
                         style={{ width: "40%", margin: "1rem" }}
@@ -585,6 +708,7 @@ const ScheduleCampaign = (props) => {
                           <InputLabel
                             id="demo-simple-select-label"
                             required
+                            // error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
                           >
                             Select channel
                           </InputLabel>
@@ -604,15 +728,13 @@ const ScheduleCampaign = (props) => {
                           </Select>
                         </FormControl>
                       </div>
+
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
                         style={{ width: "40%", margin: "1rem" }}
                       >
                         <FormControl fullWidth>
-                          <InputLabel
-                            id="demo-simple-select-label"
-                            required
-                          >
+                          <InputLabel id="demo-simple-select-label" required>
                             Operator
                           </InputLabel>
                           <Select
@@ -636,6 +758,7 @@ const ScheduleCampaign = (props) => {
                           </Select>
                         </FormControl>
                       </div>
+
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
                         style={{ width: "40%", margin: "1rem" }}
@@ -661,6 +784,7 @@ const ScheduleCampaign = (props) => {
                           </Stack>
                         </LocalizationProvider>
                       </div>
+
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
                         style={{ width: "40%", margin: "1rem" }}
@@ -672,6 +796,7 @@ const ScheduleCampaign = (props) => {
                           <Stack style={{ width: "100%", marginTop: "1rem" }}>
                             <TimePicker
                               label="Day End Time"
+                              // value={blackoutStartHour}
                               id="dayEndTime"
                               value={selectedEndDate}
                               name="dayEndTime"
@@ -686,6 +811,7 @@ const ScheduleCampaign = (props) => {
                           </Stack>
                         </LocalizationProvider>
                       </div>
+
                       <br />
                     </div>
 
@@ -699,20 +825,20 @@ const ScheduleCampaign = (props) => {
                           justifyContent: "center",
                         }}
                       >
-                          <DateRange
-                            style={{}}
-                            editableDateInputs={true}
-                            moveRangeOnFirstSelection={true}
-                            dateDisplayFormat={"MMM d, yyyy"}
-                            onChange={(item) => {
-                              setErrorMessage('')
-                              setState([item.selection]);
-                              scheduleData["endDate"] = getDateInFormat(
-                                item.selection.endDate
-                              )+"T00:00:00.000Z";
-                              scheduleData["startDate"] = getDateInFormat(
-                                item.selection.startDate
-                              )+"T00:00:00.000Z";
+                        <DateRange
+                          style={{}}
+                          editableDateInputs={true}
+                          moveRangeOnFirstSelection={true}
+                          dateDisplayFormat={"MMM d, yyyy"}
+                          onChange={(item) => {
+                            setErrorMessage("");
+                            setState([item.selection]);
+                            scheduleData["endDate"] =
+                              getDateInFormat(item.selection.endDate) +
+                              "T00:00:00.000Z";
+                            scheduleData["startDate"] =
+                              getDateInFormat(item.selection.startDate) +
+                              "T00:00:00.000Z";
 
                             setScheduleData((scheduleData1) => {
                               let result = {
@@ -725,6 +851,8 @@ const ScheduleCampaign = (props) => {
                           minDate={todaysDate.startDate}
                           ranges={state}
                         />
+
+                        {/* <p>{formErrors.dateRange}</p> */}
                       </div>
                     </div>
                   </form>
@@ -788,6 +916,7 @@ const ScheduleCampaign = (props) => {
                             color: "white",
                             textTransform: "uppercase",
                             textShadow: "1px 1px 2px black",
+
                             transition: "all 0.5s",
                             fontWeight: "700",
                           }}
@@ -830,50 +959,62 @@ const ScheduleCampaign = (props) => {
               </div>
 
               {openCancelModal && (
-                <div className="bg-modal" style={{position:"fixed", top:'0', left:"0"}}>
+                <div
+                  className="bg-modal"
+                  style={{ position: "fixed", top: "0", left: "0" }}
+                >
                   <div className="modal-content">
-                    <h3 className="title">If you cancel then you have to create campaign again</h3>
-                    <h3 className="title">are you sure you want to cancel ? </h3>
-                    <div style={{width:"100%", display:"flex", justifyContent:"space-evenly"}}>
-
-                    <button
+                    <h3 className="title">
+                      If you cancel then you have to create campaign again
+                    </h3>
+                    <h3 className="title">
+                      are you sure you want to cancel ?{" "}
+                    </h3>
+                    <div
                       style={{
-                        padding: ".5rem 1rem",
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: " #374151",
-                        color: "white",
-                        textTransform: "uppercase",
-                        textShadow: "1px 1px 2px black",
-                        width: "10%",
-                        marginBottom: "1rem",
-                        transition: "all 0.5s",
-                        fontWeight: "700",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-evenly",
                       }}
-                      className="closeBtn"
-                      onClick={(e) => handleModal(e)}
                     >
-                      No
-                    </button>
-                    <button
-                      style={{
-                        padding: ".5rem 1rem",
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: " #374151",
-                        color: "white",
-                        textTransform: "uppercase",
-                        textShadow: "1px 1px 2px black",
-                        width: "10%",
-                        marginBottom: "1rem",
-                        transition: "all 0.5s",
-                        fontWeight: "700",
-                      }}
-                      className="closeBtn"
-                      onClick={(e) => handleYesModal(e)}
-                    >
-                      Yes
-                    </button>
+                      <button
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #374151",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          width: "10%",
+                          marginBottom: "1rem",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                        className="closeBtn"
+                        onClick={(e) => handleModal(e)}
+                      >
+                        No
+                      </button>
+                      <button
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #374151",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          width: "10%",
+                          marginBottom: "1rem",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                        className="closeBtn"
+                        onClick={(e) => handleYesModal(e)}
+                      >
+                        Yes
+                      </button>
                     </div>
                   </div>
                 </div>

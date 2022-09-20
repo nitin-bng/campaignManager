@@ -216,7 +216,7 @@ const CreateCampaign = (props) => {
       setShowError(false);
       e.preventDefault();
         fetch(
-          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/update/campaign",
+          "http://34.214.61.86" + ":" + "5002" + "/bng/ui/create/campaign",
           {
             method: "POST",
             headers: {

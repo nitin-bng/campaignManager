@@ -419,7 +419,7 @@ const UserConfig = () => {
     setElements(formJSON[0]);
     console.log(formJSON);
     fetch(
-      "http://41.217.203.246" +
+      "http://34.214.61.86" +
         ":" +
         "8087/" +
         localStorage.getItem("userType") +

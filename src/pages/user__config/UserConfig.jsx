@@ -358,10 +358,10 @@ const UserConfig = () => {
     else if(!msisdnLength){
       setConfigError('Please Enter Mobile Number length')
     }
-    else if (assignChannel === '' || assignChannel === 0){
+    else if (assignChannel === '' || ~~assignChannel === 0){
       setConfigError('Please Enter Simultaneous outgoing calls')
     }
-    else if (assignTps === '' || assignTps === 0){
+    else if (assignTps === '' || ~~assignTps === 0){
       setConfigError('Please Enter SMS TPS required')
     }
     else{fetch(

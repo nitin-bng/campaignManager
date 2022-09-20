@@ -22,7 +22,6 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
           display: "flex",
           height: "fit-content",
           flexDirection: "column",
-          // border: "2px solid blue",
         }}
       >
         <input
@@ -30,10 +29,8 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
             border: "2px solid red",
             display: "flex",
             overflow: "hidden",}:{
-            // border: "2px red green",
             display: "flex",
-            overflow: "hidden",
-            // height: "10px",
+            overflow: "hidden",  
           }}
           accept="audio/wav"
           type="file"
@@ -57,8 +54,6 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
         localStore.ivrCampFlowData.flow.main_audio_file[lang] !==
           "" ? (
           <>
-            {/* <br></br> */}
-            {/* show all the audio files uploaded */}
             <div
               style={{
                 border: ".2px solid black",
@@ -74,7 +69,6 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
             >
               {GetMainAudioFiles(lang, "MainAudioFile")}
             </div>
-            {/* <hr /> */}
           </>
         ) : null}
         {showLoader && <CircularProgress />}

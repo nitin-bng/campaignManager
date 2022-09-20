@@ -30,7 +30,6 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
           display: "flex",
           height: "fit-content",
           flexDirection: "column",
-          // border: "2px solid blue",
         }}
       >
         <input
@@ -39,10 +38,8 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
           class="custom-file-input"
           name="main_audio_file"
           style={{
-            // border: "2px solid green",
             display: "flex",
             overflow: "hidden",
-            // height: "10px",
           }}
           onChange={async(event) => {
             setShowLoader(true)
@@ -62,7 +59,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
         {globalState.state.ivrCampFlowData.flow.actions[
           global.dtmf_key - 1
         ].audio_file[lang] ? (
-          // (<div>{globalState.state.ivrCampFlowData.flow.actions[global.dtmf_key - 1].audio_file[lang]}</div>)
+          
           <div
             style={{
               border: ".2px solid black",
@@ -78,7 +75,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
               lang={lang}
             />
           </div>
-        ) : // <div>Please upload the audio file</div>
+        ) : 
         null}
         {showLoader && <CircularProgress />}
       </div>)

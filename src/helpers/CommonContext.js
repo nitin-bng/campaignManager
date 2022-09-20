@@ -22,16 +22,11 @@ export const CommonProvider = ({ children }) => {
 
   return (
     <CommonContext.Provider
-      value={{
-        // basic flow details
+      value={{    
         flowName,
         setFlowName,
         channel,
-        setChannel,
-        // basic flow details
-
-        // if ivr selected
-        // wait time context
+        setChannel,   
         dtmfTime,
         setdtmfTime,
         dtmfTimeHindi,
@@ -48,21 +43,10 @@ export const CommonProvider = ({ children }) => {
         setWelcomePromptWaitTime,
         numberOfMainDTMFWhenIVRIsSelected,
         setnumberOfMainDTMFWhenIVRIsSelected,
-        // wait time context
-        //if ivr selected
-
-        // ceateCampaign
         campaignName,
         setCampaignName,
-        // ceateCampaign
-
-
-
-
-        //dynamic JSON of Language
         languageJson, 
-        setLangugeJson,
-        //dynamic JSON of Language
+        setLangugeJson, 
       }}
     >
       {children}

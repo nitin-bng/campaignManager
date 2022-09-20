@@ -28,7 +28,6 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         display: "flex",
         height: "fit-content",
         flexDirection: "column",
-        // border: "2px solid blue",
       }}>
         <input
           accept="audio/wav"
@@ -36,10 +35,8 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
           class="custom-file-input"
           name="main_audio_file"
           style={{
-            // border: "2px solid green",
             display: "flex",
             overflow: "hidden",
-            // height: "10px",
           }}
           onChange={async(event) => {
             setShowLoader(true)
@@ -70,7 +67,6 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         ] !== "" ? (
           <>
             <br></br>
-            {/* show all the audio files uploaded */}
             <div
               item
               className="fileNames"
@@ -100,10 +96,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
                     lang={lang}
                   />
                 </div>
-              ) : (
-                // <div>
-                //   Please upload the audio file
-                // </div>
+              ) : (   
                 null
               )}
             </div>

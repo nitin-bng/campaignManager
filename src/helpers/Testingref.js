@@ -1,7 +1,6 @@
-import React,{useContext, useEffect, useRef} from 'react'
+import React,{ useRef} from 'react'
 
 const levelStartRefs = useRef([]);
-const arr = [1,2,3,4,5]
 const levelStartInput = (item, idxx) => {
   return (
     <div
@@ -11,7 +10,6 @@ const levelStartInput = (item, idxx) => {
       }}
     >
       <div className="flex justify-center ">
-        {/** levelStart dropdown button */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -22,8 +20,6 @@ const levelStartInput = (item, idxx) => {
           className="focus:outline-none"
         ></button>
       </div>
-
-      {/** levelStart drpodown */}
       <div className="top-11 ">
         <input
           type="number"

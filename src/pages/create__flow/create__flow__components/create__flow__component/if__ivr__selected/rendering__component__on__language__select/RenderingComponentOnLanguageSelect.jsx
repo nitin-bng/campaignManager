@@ -4,35 +4,24 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { CommonContext } from "../../../../../../helpers/CommonContext";
 import "./renderingcomponentonlanguageselect.css";
-import { BsCheckCircle } from "react-icons/bs";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
-import { FiPauseCircle } from "react-icons/fi";
-import { Howl } from "howler";
 import ReactAudioPlayer from "react-audio-player";
-
 import config from "../../../../../../ApiConfig/Config";
 import { store } from "../../../../../../store/store";
 import { useError } from "../../../../../../store/errorContext";
-import { areAllAudioUploaded } from "../../../../../../services/areAllAudioUploaded";
-import Review from "../../../review/Review";
 import { CircularProgress } from "@mui/material";
+
 const RenderingComponentOnLanguageSelect = (props) => {
   console.log("props for wait time ", props);
   let globalState = useContext(store);
   const { dispatch } = globalState;
   let localStore = globalState.state;
-  const channel = globalState.state.ivrCampFlowData.flow.channel;
   console.log("language props ====>", props);
-  const { dtmfTime, setDtmfTime } = useContext(CommonContext);
-  const { showError, setShowError, errorDispatch } = useError();
+  const { showError, errorDispatch } = useError();
   const [isError, setIsError] = useState(true);
   const [normalState, setNormalState] = useState(true);
   const [showLoader, setShowLoader] = useState(false)
-  // const [audioError, setAudioError] = useState(false)
 
   const saveValues = (e) => {
-    // let value = e.target.value >=0 ? e.target.value :0
 
     debugger;
     let id = e.target.id.split("-");
@@ -52,16 +41,13 @@ const RenderingComponentOnLanguageSelect = (props) => {
       dispatch({ type: "SET_DATA", nState: localStore });
     }
   };
-  // useEffect(() => {
-  //   console.log("dtmfTime", dtmfTime);
-  // }, [dtmfTime]);
+
   const getLangWaitTime = (lang) => {
     console.log("waittime=>", lang);
     console.log(
       "rishabh test lang array",
       globalState.state.ivrCampFlowData.flow.language
     );
-    // if (globalState.state.ivrCampFlowData.flow.language) {
     for (
       var i = 0;
       i < globalState.state.ivrCampFlowData.flow.language[0].actions.length;
@@ -80,12 +66,10 @@ const RenderingComponentOnLanguageSelect = (props) => {
       }
     }
     console.log("condition not met");
-    // }
   };
   const waitTime = useMemo(() => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
-  // const waitTime = 5
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
@@ -126,15 +110,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
       "lang",
       lang
     );
-    // return
     try {
       const uploadedFiles = await uploadMultipleFiles(files);
       console.log("%c ==FILES UPLOADED==", "background:yellow", uploadedFiles);
       let localStore = globalState.state;
       const localFileName = uploadedFiles.response;
       const serverFileName = uploadedFiles.key;
-
-      //set origional and server name mapping in temp
       localStore.temp.uploads.push({
         l_name: localFileName,
         s_name: serverFileName,
@@ -144,7 +125,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -154,7 +134,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         }
 
         console.log("oldState", oldStateFiles);
-        // dict[lang] = oldStateFiles + uploadedFiles[0].key;
         dict[lang] = oldStateFiles + uploadedFiles.response;
         localStore.ivrCampFlowData.flow[key] = {
           ...localStore.ivrCampFlowData.flow[key],
@@ -170,7 +149,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -211,7 +189,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         }
         dispatch({ type: "SET_DATA", nState: localStore });
       } else if (target === "repeat_audio_file") {
-        // const key = e.target.name;
         const dict = {};
         dict[lang] = uploadedFiles[0].key;
         localStore.ivrCampFlowData.flow.repeat.audio_file = dict;
@@ -241,8 +218,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         } else if (targetArray[0] === "level2") {
           const parent_dtmf = targetArray[1];
           const current_dtmf = targetArray[2];
-          // console.log("this is level 2 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
             current_dtmf - 1
           ].audio_file[lang] = localStore.ivrCampFlowData.flow.actions[
@@ -259,8 +234,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
           const gparent = targetArray[1];
           const parent_dtmf = targetArray[2];
           const current_dtmf = targetArray[3];
-          // console.log("this is level 3 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[gparent].actions[
             parent_dtmf - 1
           ].actions[current_dtmf - 1].audio_file[lang] = localStore
@@ -302,14 +275,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
       formData.append("file", e);
       console.log("-----------------props------", formData.getAll("file"));
     });
-    // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
     const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
-
-    // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
-    // const path = 'http://35.154.125.150:5080/uploadMultipleFile';
     console.log("Path is", path);
     return await fetch(path, {
-      // fetch('http://172.16.10.212:/api/bng/zbp/uploadMultipleFile',{
       method: "POST",
       body: formData,
     })
@@ -322,36 +290,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
       .catch((e) => {
         console.log("error in file upload", e);
       });
-  }
-
-  const playPauseAudio = (src) => {
-    debugger;
-    AudioClips(src);
-  };
-
-  function AudioClips() {
-    debugger;
-    // const [isPlaying, setIsPlaying] = useState(false);
-    let isPlaying = false;
-
-    // const soundPlay = () => {
-    //     debugger;
-    const sound = new Howl({
-      src: globalState.state.ivrCampFlowData.flow.main_audio_file,
-      html5: true,
-    });
-
-    if (isPlaying) {
-      sound.pause();
-      isPlaying = false;
-    } else {
-      sound.play();
-      isPlaying = true;
-    }
-    //  }
-    // function playPause () {
-
-    //  }
   }
 
   const GetMainAudioFiles = (lang, type) => {
@@ -367,15 +305,12 @@ const RenderingComponentOnLanguageSelect = (props) => {
         .map((e, index) => {
           return (
             <span
-              // style={{ border: "2px solid green", marginTop:"-10px"}}
               key={e}
             >
               <span style={{ color: "darkgray" }}>
                 {index + 1} - {e}
               </span>
               <br />
-              {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-              {/* {e} */}
               <div
                 className="playingOptions"
                 style={{
@@ -384,37 +319,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   marginTop: "5px",
                 }}
               >
-                {/* <BsCheckCircle size={15} className="checkedIcon" />
-                <IoIosCloseCircleOutline
-                  className="checkedIcon"
-                  size={15}
-                  style={{ color: "red", cursor: "pointer" }}
-                />
-                <FiPlayCircle
-                  className="checkedIcon"
-                  size={15}
-                  // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                  onClick={() => playPauseAudio(e)}
-                  style={{
-                    color: "purple",
-                    cursor: "pointer",
-                  }}
-                />
-                <FiPauseCircle
-                  size={15}
-                  className="checkedIcon"
-                  // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                  onClick={() => playPauseAudio(e)}
-                  style={{ cursor: "pointer" }}
-                /> */}
                 <ReactAudioPlayer
                   src={`http://34.214.61.86/cm_data/audio/${e}`}
-                  // autoPlay
                   controls
                 />
-                {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
               </div>
-              {/* <span className="m-t-10"> </span> */}
             </span>
           );
         });
@@ -437,55 +346,25 @@ const RenderingComponentOnLanguageSelect = (props) => {
               .map((e, index) => {
                 return (
                   <span
-                    // style={{ border: "2px solid green"}}
                     key={e}
                   >
                     <span style={{ color: "darkgray" }}>
                       {index + 1} - {e}
                     </span>
                     <br />
-                    {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-                    {/* {e} */}
                     <div
                       className="playingOptions"
                       style={{
                         display: "flex",
                         justifyContent: "space-around",
-                        // marginTop: "5px",
                         margin: "auto",
                       }}
                     >
-                      {/* <BsCheckCircle size={15} className="checkedIcon" />
-                      <IoIosCloseCircleOutline
-                        className="checkedIcon"
-                        size={15}
-                        style={{ color: "red", cursor: "pointer" }}
-                      />
-                      <FiPlayCircle
-                        className="checkedIcon"
-                        size={15}
-                        // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                        onClick={() => playPauseAudio(e)}
-                        style={{
-                          color: "purple",
-                          cursor: "pointer",
-                        }}
-                      />
-                      <FiPauseCircle
-                        size={15}
-                        className="checkedIcon"
-                        // id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                        onClick={() => playPauseAudio(e)}
-                        style={{ cursor: "pointer" }}
-                      /> */}
                       <ReactAudioPlayer
                         src={`http://34.214.61.86/cm_data/audio/${e}`}
-                        // autoPlay
                         controls
                       />
-                      {/* <audio src="1.mp3" controls type="audio/mpeg"/> */}
                     </div>
-                    {/* <span className="m-t-10"> </span> */}
                   </span>
                 );
               });
@@ -511,7 +390,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 type="number"
                 label={"Wait time for " + props.lang + " language"}
                 variant="outlined"
-                // value={localStore.ivrCampFlowData.flow.language[0].actions?localStore.ivrCampFlowData.flow.language[0].actions.map(item=>item.waitTime):waitTime}
                 value={waitTime}
                 onChange={(e) => {
                   saveValues(e);
@@ -530,11 +408,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
               />
             </Box>
           </div>
-          {/* {localStore.ivrCampFlowData.flow.languageChange.map((lang) => ( */}
-          {/* {globalState.state.ivrCampFlowData.flow.languageChange.length > 1 &&
-            globalState.state.ivrCampFlowData.flow.languageChange.map(
-              (lang) => ( */}
-
           <div style={{}} className={props.hideItemStyle} hideItem>
             <input
               accept="audio/wav"
@@ -547,11 +420,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       overflow: "hidden",
                     }
                   : {
-                      // border: "2px solid green",
                       justifyContent: "center",
                       display: "flex",
                       overflow: "hidden",
-                      // height: "10px",
                     }
               }
               type="file"
@@ -579,7 +450,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
               props.languageCode
             ] !== "" ? (
               <>
-                {/* show all the audio files uploaded */}
                 <div
                   item
                   className="fileNames"
@@ -600,9 +470,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
             ) : null}
             {showLoader && <CircularProgress />}
           </div>
-          {/* )
-            )} */}
-          {/* ))}  */}
         </div>
       </div>
     </>

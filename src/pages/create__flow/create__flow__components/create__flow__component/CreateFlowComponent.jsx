@@ -1,7 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-
 import { Languages } from "../../../../helpers/All__mapping";
-
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,16 +9,12 @@ import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
-
 import IfIVRSelected from "./if__ivr__selected/IfIVRSelected";
 import IfSMSSelected from "./if__sms__selected/IfSMSSelected";
 import RenderingComponentOnLanguageSelect from "./if__ivr__selected/rendering__component__on__language__select/RenderingComponentOnLanguageSelect";
 import RenderingComponentOnLanguageSelectOfSMS from "./if__sms__selected/rendering__component__on__language__select__sms/RenderingComponentOnLanguageSelectOfSMS";
-// import MainDTMF from "./if__ivr__selected/main__dtmf/MainDTMF";
 import { CommonContext } from "../../../../helpers/CommonContext";
 import { store } from "../../../../store/store";
-import classNames from "classnames";
-
 import "./createFlowComponent.css";
 import { useError } from "../../../../store/errorContext";
 import { IfUssdSelected } from "./if_ussd_selected/if_ussd_selected";
@@ -37,17 +31,8 @@ const MenuProps = {
 };
 
 const CreateFlowComponent = (props) => {
-  const [data, setData] = useState({
-    dtmf: 0,
-    playOption: "PLAY",
-  });
-  const { showError, setShowError, errorDispatch, errorState } = useError();
+  const { showError, errorDispatch } = useError();
 
-  // const [hideItem, setHideItem] = useState(true);
-  // const hideItemStyle = classNames("file__chooser__container", {
-  //   "hideInput": hideItem,
-  //   "showInput": !hideItem,
-  // });
 
   const languagesCode = [];
   const {
@@ -61,24 +46,16 @@ const CreateFlowComponent = (props) => {
     setDtmfTimeSpanish,
     ifIVRselectedThenLanguage,
     setIfIVRselectedThenLanguage,
-    // dtmfTime,
-    // setdtmfTime,
-
-    flowName,
     setFlowName,
     channel,
     setChannel,
   } = useContext(CommonContext);
-  debugger;
   const globalState = useContext(store);
   const { dispatch } = globalState;
-  const [selectChannel, setSelectChannel] = useState("");
-  // const [languages, setLanguages] = useState([]);
   let localStore = globalState.state;
   const languages = globalState.state.languages;
 
   const handleChange = (event) => {
-    debugger;
     setChannel(event.target.value);
     localStore.ivrCampFlowData.flow.channel = event.target.value;
     localStorage.setItem("channelName", event.target.value);
@@ -148,8 +125,6 @@ const CreateFlowComponent = (props) => {
         actions: "",
       },
     ];
-    // console.log("e.target.value", e.target.value);
-
     for (var x = 0; x < e.target.value.length; x++) {
       for (var y in languages) {
         if (e.target.value[x] == languages[y].lang) {
@@ -195,7 +170,6 @@ const CreateFlowComponent = (props) => {
       ] = "";
     }
 
-    // localStore.ivrCampFlowData.flow.channel_local = e.target.value
     console.log("finalLanguageList finalLanguageList", finalLanguageList);
     localStore.ivrCampFlowData.flow.language = finalLanguageList;
     dispatch({ type: "SET_DATA", nState: localStore });
@@ -271,11 +245,7 @@ const CreateFlowComponent = (props) => {
                         : false
                     }
                   >
-                    {/* {console.log(channel)} */}
-
                     <MenuItem value={"IVR"}>IVR</MenuItem>
-                    {/* <MenuItem value={"SMS"}>SMS</MenuItem>
-                    <MenuItem value={"IVR_SMS"}>IVR/SMS</MenuItem> */}
                     <MenuItem value={"USSD"}>USSD</MenuItem>
                   </Select>
                 </FormControl>
@@ -464,7 +434,6 @@ const CreateFlowComponent = (props) => {
               )}
               {channel === "USSD" ? (
                 <IfUssdSelected hideItemStyle={props.hideItemStyle} />
-                // <IfUssdSelected hideItemStyle={false} />
               ): <></>}
             </div>
           </div>

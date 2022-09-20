@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import "./review.css";
 import Collapse from "@mui/material/Collapse";
 import Card from "@mui/material/Card";
@@ -9,20 +8,17 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 
 import TextField from "@mui/material/TextField";
 import { store } from "../../../../store/store";
 const Review = () => {
   const [api, setApi] = useState(false);
-
   const globalState = useContext(store);
   let localStore = globalState.state;
   const [expanded, setExpanded] = React.useState(true);
   const [expanded2, setExpanded2] = React.useState(true);
   const [expanded3, setExpanded3] = React.useState(true);
-
   const [campCreateData, setCampCreateData] = useState([]);
   const [campScheduleData, setCampScheduleData] = useState([]);
 
@@ -56,8 +52,6 @@ const Review = () => {
       .then((response) => response.json())
       .then(function (data) {
         console.log("get flowList", data);
-        // data.unshift({ campName: "select" });
-        // setCampaignListData(data);
         data.forEach((element) => {
           console.log("rishabh running runnig");
           console.log("===========>", element);
@@ -68,7 +62,6 @@ const Review = () => {
           } else {
             console.log("than than gopal");
           }
-          // console.log(campaignName);
         });
         return data;
       })
@@ -130,7 +123,6 @@ const Review = () => {
     <>
       <div className="review">
         <div className="review__container">
-          {/* flow details */}
           <Card
             style={{ backgroundColor: "white", padding: ".5rem" }}
             fullWidth
@@ -205,7 +197,6 @@ const Review = () => {
             </Collapse>
           </Card>
 
-          {/* create campaign details */}
           <Card
             style={{
               backgroundColor: "white",
@@ -274,7 +265,6 @@ const Review = () => {
                     <TextField
                       disabled
                       id="outlined-basic"
-                      //   label="Campaign Name"
                       variant="outlined"
                       value={campCreateData.campName}
                     />
@@ -307,7 +297,6 @@ const Review = () => {
                     <TextField
                       disabled
                       id="outlined-basic"
-                      //   label="Work Flow Id"
                       variant="outlined"
                       value={campCreateData.wfId}
                     />
@@ -338,7 +327,6 @@ const Review = () => {
                     <TextField
                       disabled
                       id="outlined-basic"
-                      //   label="Campaign Priority"
                       variant="outlined"
                       value={campCreateData.campPriority}
                     />
@@ -369,7 +357,6 @@ const Review = () => {
                     <TextField
                       disabled
                       id="outlined-basic"
-                      //   label="Campaign Type"
                       variant="outlined"
                       value={campCreateData.campaign_type}
                     />
@@ -378,8 +365,6 @@ const Review = () => {
               </CardContent>
             </Collapse>
           </Card>
-
-          {/* scheduled campaign */}
           <Card
             style={{
               backgroundColor: "white",
@@ -432,7 +417,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Campaign ID"
                         variant="outlined"
                         value={campScheduleData.campId}
                     />
@@ -459,7 +443,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Channel Selected"
                         variant="outlined"
                         value={campScheduleData.channel}
                     />
@@ -485,7 +468,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Country Selected"
                         variant="outlined"
                         value={campScheduleData.country}
                     />
@@ -511,7 +493,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Daily Start Time"
                         variant="outlined"
                         value={campScheduleData.dailyStartTime}
                     />
@@ -537,7 +518,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Daily End Time"
                         variant="outlined"
                         value={campScheduleData.dailyEndTime}
                     />
@@ -563,7 +543,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Start Date"
                         variant="outlined"
                         value={campScheduleData.startDate}
                     />
@@ -589,7 +568,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="End Date"
                         variant="outlined"
                         value={campScheduleData.endDate}
                     />
@@ -615,7 +593,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Operator"
                         variant="outlined"
                         value={campScheduleData.operator}
                     />
@@ -641,7 +618,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Priority"
                         variant="outlined"
                         value={campScheduleData.priority}
                     />
@@ -667,7 +643,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Campaign Status"
                         variant="outlined"
                         value={campScheduleData.status}
                     />
@@ -693,7 +668,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Reserved Balance"
                         variant="outlined"
                         value={campScheduleData.reserveBalance}
                     />
@@ -719,7 +693,6 @@ const Review = () => {
                     <TextField 
                     disabled
                         id="outlined-basic"
-                        // label="Uploaded CSV File Name"
                         variant="outlined"
                         value={campScheduleData.fileName}
                     />

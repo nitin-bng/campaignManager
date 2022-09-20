@@ -1,12 +1,9 @@
 .subDTMF__subdtmf{
     width: 100%;
-    /* border: 2px solid red; */
     display: flex;
-
 }
 
 .sudDTMF__subdtmf__container{
-    /* border: 2px solid green; */
     width: 100%;
     margin: 1rem;
 
@@ -16,10 +13,5 @@
 .main__subdtmf__wait__time__container,
 .select__number__of__subDTMF__from__subdtmf__container
 {
-    /* border: 2px solid red; */
     width: 30%;
-}
-
-.rendering__sub__subdtmf__container{
-    /* border: 2px solid red; */
 }

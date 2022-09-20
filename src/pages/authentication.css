@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/* common css for signup ans signin page  */
 .signin,.signup{
     width: 100vw;
     height: 100vh;
@@ -50,10 +49,7 @@
     font-weight: 700;
     color: #3f51b6;
 }
-/* common css for signup ans signin page ends */
 
-
-/* signup.jsx starts */
 .signup__form{
     width: 60%;
     height: 90%;
@@ -211,10 +207,7 @@
 .authentication__links__signup .links p{
     font-weight: 500;
 }
-/* signup.jsx ends */
 
-
-/* signin.jsx starts */
 .signin__form{
     width: 30%;
     height: 70%;
@@ -271,8 +264,6 @@
 .authentication__links .links p{
     font-weight: 500;
 }
-/* signin.jsx ends */
-
 
 .forgotpassword__form{
     height: 60%;
@@ -349,7 +340,3 @@ input{
     height: 100% !important;
     align-items: center !important;
 }
-
-/* #Email:focus label{
-    color: red !important;
-} */

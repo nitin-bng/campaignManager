@@ -7,8 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Sidebar__menu__items } from "../../helpers/All__mapping";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
@@ -98,7 +96,6 @@ export default function TemporaryDrawer() {
                     {text.icon}
                   </ListItemIcon>
                   <ListItemText
-                    // primary={text.menu__title}
                     style={{
                       color: "white",
                       fontWeight: "900",
@@ -128,7 +125,6 @@ export default function TemporaryDrawer() {
             />
           </Button>
           <Drawer
-            // anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >

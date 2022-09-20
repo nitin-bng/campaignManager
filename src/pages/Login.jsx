@@ -1,22 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
 import {
   TextField,
   Button,
-  FormControlLabel,
-  Checkbox,
-  Typography,
+
 } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 import PersonIcon from "@material-ui/icons/Person";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
+
 import "./authentication.css";
 import { useForm } from "react-hook-form";
 
 import config from "../ApiConfig/Config";
 import { toast } from "react-toastify";
-// import style from 'styled-component'
 const Login = () => {
   const Navigate = useNavigate();
 
@@ -26,7 +22,6 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    // console.log(data.email);
     loginUser(data);
   };
 
@@ -146,18 +141,6 @@ const Login = () => {
             </div>
 
             <div className="terms__and__button__container">
-              {/* <div className="terms__checkbox">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<CheckBoxOutlineBlankIcon />}
-                      checkboxicon={<CheckBoxIcon />}
-                      name="checkedI"
-                    />
-                  }
-                  label="Remember me"
-                />
-              </div> */}
               <div className="create__account__button button">
                 <Button
                   variant="contained"
@@ -175,8 +158,6 @@ const Login = () => {
               <p className="links">
                 <Link to="/campaign-manager/forgotpassword">Forgot Password ?</Link>
                 <Link to="/campaign-manager/signup">Do not have an account ?</Link>
-                {/* <p>OR</p>
-                <Link to="/home">Use as guest</Link> */}
               </p>
             </div>
           </div>

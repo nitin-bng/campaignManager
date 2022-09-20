@@ -257,8 +257,8 @@ const UserConfig = () => {
     days: "",
     totalTps: "",
     date: "",
-    startTime: "",
-    endTime: "",
+    startTime: "00:00:00",
+    endTime: "00:00:00",
   };
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -294,8 +294,8 @@ const UserConfig = () => {
       appendZero: appendZero,
       days: blackOutDays,
       date: blackoutDate,
-      startTime: startTimeToSendAtBackend,
-      endTime: endTimeToSendAtBackend,
+      startTime: startTimeToSendAtBackend || "00:00:00",
+      endTime: endTimeToSendAtBackend || "00:00:00",
     };
     
     if((startTimeToSendAtBackend || endTimeToSendAtBackend) && !(startTimeToSendAtBackend && endTimeToSendAtBackend)){

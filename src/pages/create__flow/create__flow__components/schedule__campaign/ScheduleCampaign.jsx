@@ -24,6 +24,7 @@ import { CircularProgress } from "@material-ui/core";
 let localDate = new Date();
 
 const ScheduleCampaign = (props) => {
+  const [error, setError] = useState(true)
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -263,6 +264,7 @@ const ScheduleCampaign = (props) => {
                   ...scheduleData1,
                   ...scheduleData,
                 }));
+                setError(false)
               } else if (res.status === "unsuccessful") {
                 setShowLoader(false);
                 setErrorMessage(res.reason);
@@ -375,6 +377,7 @@ const ScheduleCampaign = (props) => {
   const handleSubmit = () => {
     debugger;
     if(scheduleData1.startDate && scheduleData1.endDate){
+      if(!error){
     try {
       checkDateAndTime();
 
@@ -419,6 +422,9 @@ const ScheduleCampaign = (props) => {
       } else {
         setErrorMessage(e.message);
       }
+    
+    }}else{
+      setErrorMessage("Please Upload files")
     }}
     else{
       setErrorMessage("Please select dates")

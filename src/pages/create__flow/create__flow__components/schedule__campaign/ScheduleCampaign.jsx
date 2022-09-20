@@ -48,8 +48,7 @@ function createData(jobId, jobName, priority, status) {
 let localDate = new Date();
 
 const ScheduleCampaign = (props) => {
-  const Navigate = useNavigate();
-  const { showError } = useError();
+  const [error, setError] = useState(true)
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -367,6 +366,7 @@ const ScheduleCampaign = (props) => {
                   ...scheduleData1,
                   ...scheduleData,
                 }));
+                setError(false)
               } else if (res.status === "unsuccessful") {
                 setShowLoader(false);
                 setErrorMessage(res.reason);
@@ -484,9 +484,10 @@ const ScheduleCampaign = (props) => {
 
   const handleSubmit = () => {
     debugger;
-    if (scheduleData1.startDate && scheduleData1.endDate) {
-      try {
-        checkDateAndTime();
+    if(scheduleData1.startDate && scheduleData1.endDate){
+      if(!error){
+    try {
+      checkDateAndTime();
 
         setFormErrors(validate(formValues));
         scheduleData1.userId = localStorage.getItem("userId");
@@ -526,15 +527,19 @@ const ScheduleCampaign = (props) => {
               console.log(e);
             });
         }
-      } catch (e) {
-        if (e.message.includes("split")) {
-          setErrorMessage("Please select Start and End time");
-        } else {
-          setErrorMessage(e.message);
-        }
+      } 
+    catch (e) {
+      if (e.message.includes("split")) {
+        setErrorMessage("Please select Start and End time");
+      } else {
+        setErrorMessage(e.message);
       }
-    } else {
-      setErrorMessage("Please select dates");
+    
+    }}else{
+      setErrorMessage("Please Upload files")
+    }}
+    else{
+      setErrorMessage("Please select dates")
     }
   };
 

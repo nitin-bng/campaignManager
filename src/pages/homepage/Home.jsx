@@ -799,9 +799,9 @@ const Home = () => {
                                 <>
                                   <CancelIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
                                 </>
-                              ) : row.status == "COMPLETE" ? (
+                              ) : row.status == "COMPLETE" || row.status == "EXPIRED" || row.status == "CANCELED" ? (
                                 <>
-                                  <DoneIcon onClick={(e)=>{handelActionChange("CANCELED", row.jobId)}} />
+                                  <DeleteIcon onClick={(e)=>{handelActionChange("DELETED", row.jobId)}} />
                                 </>
                               ) : null}
                             </FormGroup>

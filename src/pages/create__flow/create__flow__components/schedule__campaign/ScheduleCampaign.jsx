@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import "../create__campaign/createCampaign.css";
 import { CircularProgress } from "@material-ui/core";
 import { border } from "@mui/system";
+import config from "../../../../ApiConfig/Config";
 var rows = [];
 const useStyles = makeStyles({
   table: {
@@ -169,9 +170,7 @@ const ScheduleCampaign = (props) => {
   }, []);
   const getcampaignScheduleList = () => {
     fetch(
-      `http://41.217.203.246" + ":" + "5002" + "/bng/ui/list/campschedule?userId=${localStorage.getItem(
-        "userId"
-      )}`,
+      config.server.path+config.server.port2+`/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`,
       {
         method: "GET",
         headers: {
@@ -204,10 +203,8 @@ const ScheduleCampaign = (props) => {
       });
   };
   const getCampaignDataList = () => {
-    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    // const path = config.server.path+config.server.port2+`/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`;
+    fetch(config.server.path+config.server.port2+`/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`)
       .then((response) => response.json())
       .then(function (data) {
         console.log("get flowList", data);
@@ -345,10 +342,7 @@ const ScheduleCampaign = (props) => {
         var formData = new FormData();
         formData.append("file", files[0]);
         fetch(
-          // "http://41.217.203.246" + ":" + "5002" + "/bng/ui/uploadMsisdn",
-          `http://41.217.203.246:5002/bng/ui/uploadMsisdn?userId=${localStorage.getItem(
-            "userId"
-          )}&channel=${localStorage.getItem("channelName")}`,
+          config.server.path + config.server.port2+`/bng/ui/uploadMsisdn?userId=${localStorage.getItem("userId")}&channel=${localStorage.getItem("channelName")}`,
           {
             method: "POST",
             body: formData,
@@ -499,10 +493,7 @@ const ScheduleCampaign = (props) => {
 
         if (Object.keys(errors).length == 0 && !stringInputError) {
           fetch(
-            `http://41.217.203.246:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
-              "userId"
-            )}`,
-
+            config.server.path+config.server.port2+`/bng/ui/create/campschedule?userId=${localStorage.getItem("userId")}`,
             {
               method: "POST",
               headers: {

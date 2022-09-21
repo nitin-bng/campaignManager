@@ -360,13 +360,7 @@ const UserConfig = () => {
   useEffect(() => {
     console.log(formJSON);
     fetch(
-      "http://41.217.203.246" +
-        ":" +
-        "8087/" +
-        localStorage.getItem("userType") +
-        "/getConfig" +
-        "/" +
-        localStorage.getItem("userId"),
+      config.server.path + config.server.port3+"/"+localStorage.getItem("userType") +"/getConfig" +"/" +localStorage.getItem("userId"),
       {
         method: "GET",
         headers: {

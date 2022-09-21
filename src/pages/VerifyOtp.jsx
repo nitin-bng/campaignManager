@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Loader from "./Loader";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import config from "../ApiConfig/Config"
 const useStyles = makeStyles((theme) => ({
   grid: {
     backgroundColor: "grey",
@@ -53,7 +53,7 @@ export default function VerifyOtp(props) {
   const getOtp = () => {
     var phone = localStorage.getItem("phoneNumber");
     fetch(
-      "http://41.217.203.246:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
+      config.server.path + config.server.port3 + "/user/sendotp?phoneNumber=" + JSON.parse(phone)
     )
       .then((result) => result.json())
       .then((res) => {
@@ -68,7 +68,7 @@ export default function VerifyOtp(props) {
   const handleSubmit = (e) => {
     setLoader(true);
     fetch(
-      "http://41.217.203.246:8087/user/verify?phoneNumber=" +
+      config.server.path + config.server.port3 +"/user/verify?phoneNumber=" +
         JSON.parse(localStorage.getItem("phoneNumber")) +
         "&otp=" +
         otpState.otp

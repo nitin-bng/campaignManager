@@ -93,10 +93,7 @@ const CreateFlow = () => {
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    fetch(config.server.path + config.server.port2 + `/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`)
       .then((response) => response.json())
       .then(function (data) {
         debugger;
@@ -249,12 +246,7 @@ const CreateFlow = () => {
 
         const getCompleteFlow = (id) => {
           fetch(
-            "http://41.217.203.246:5002/bng/ui/flowjson?wfId=" +
-              id +
-              "&flowName=" +
-              localStorage.getItem("flowName") +
-              "&userId=" +
-              localStorage.getItem("userId"),
+            config.server.path + config.server.port2 + "/bng/ui/flowjson?wfId=" +id +"&flowName=" +localStorage.getItem("flowName") +"&userId=" +localStorage.getItem("userId"),
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -274,6 +266,20 @@ const CreateFlow = () => {
         };
       } else if (activeStep === 1) {
         console.log("activeStep === 1");
+        // const path =config.server.path + config.server.port2 + "/bng/ui/flow/content?isContent=true&campId=" +localStorage.getItem("campId") +"&wfId=" +localStorage.getItem("wfId");
+        fetch( config.server.path + config.server.port2 + "/bng/ui/flow/content?isContent=true&campId=" +localStorage.getItem("campId") +"&wfId=" +localStorage.getItem("wfId")
+        , {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        })
+          .then(async (response) => {
+            var res = await response.json();
+            console.log("campaign submitted--response", res);
+            
+
+          })
+          .catch((e) => console.log("error in submitting form", e));
       } else if (activeStep === 2) {
         console.log("activeStep === 2");
       } else if (activeStep === 3) {
@@ -297,8 +303,8 @@ const CreateFlow = () => {
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
-    return await fetch(path)
+    // const path = config.server.path + config.server.port2+ "/bng/ui/get/flow?wfId=" + id;
+    return await fetch(config.server.path + config.server.port2+ "/bng/ui/get/flow?wfId=" + id)
       .then((response) => response.json())
       .then(function (data) {
         localStorage.setItem("channelName", data.flow.channel);
@@ -324,10 +330,8 @@ const CreateFlow = () => {
     setOpenModal(false);
   };
   useEffect(() => {
-    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    // const path = config.server.path + config.server.port2+`/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
+    fetch(config.server.path + config.server.port2+`/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`)
       .then((res) => {
         res.json().then((res) => {
           console.log("rishabh res", res);

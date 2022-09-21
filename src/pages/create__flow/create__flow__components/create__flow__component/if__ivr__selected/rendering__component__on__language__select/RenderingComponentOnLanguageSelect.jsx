@@ -320,7 +320,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 }}
               >
                 <ReactAudioPlayer
-                  src={`http://41.217.203.246/cm_data/audio/${e}`}
+                  src={config.server.path+`/cm_data/audio/${e}`}
                   controls
                 />
               </div>
@@ -361,7 +361,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       }}
                     >
                       <ReactAudioPlayer
-                        src={`http://41.217.203.246/cm_data/audio/${e}`}
+                        src={config.server.path+`/cm_data/audio/${e}`}
                         controls
                       />
                     </div>

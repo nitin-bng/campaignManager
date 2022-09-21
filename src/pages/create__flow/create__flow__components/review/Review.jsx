@@ -12,6 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 
 import TextField from "@mui/material/TextField";
 import { store } from "../../../../store/store";
+import config from "../../../../ApiConfig/Config";
 const Review = () => {
   const [api, setApi] = useState(false);
   const globalState = useContext(store);
@@ -45,10 +46,8 @@ const Review = () => {
   };
 
   const getCampaignDataList = () => {
-    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    // const path = config.server.path+config.server.port2+`/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`;
+    fetch(config.server.path+config.server.port2+`/bng/ui/list/campaign?userId=${localStorage.getItem("userId")}`)
       .then((response) => response.json())
       .then(function (data) {
         console.log("get flowList", data);
@@ -73,9 +72,7 @@ const Review = () => {
 
   const getcampaignScheduleList = () => {
     fetch(
-      `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
-        "userId"
-      )}`,
+      config.server.path+config.server.port2+`/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`,
       {
         method: "GET",
         headers: {

@@ -19,6 +19,7 @@ import { useError } from "../../../../store/errorContext";
 import "./createCampaign.css";
 import { toast } from "react-toastify";
 import { useMemo } from "react";
+import config from "../../../../ApiConfig/Config";
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
@@ -104,8 +105,8 @@ const CreateCampaign = (props) => {
   const getFlow = async (id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
-    return await fetch(path)
+    // const path = config.server.path+config.server.port2+"/bng/ui/get/flow?wfId=" + id;
+    return await fetch(config.server.path+config.server.port2+"/bng/ui/get/flow?wfId=" + id)
       .then((response) => response.json())
       .then(function (data) {
         localStorage.setItem("channelName", data.flow.channel); 
@@ -219,7 +220,7 @@ const CreateCampaign = (props) => {
       e.preventDefault();
       if (update) {
         fetch(
-          "http://41.217.203.246" + ":" + "5002" + "/bng/ui/update/campaign",
+          config.server.path+config.server.port2 + "/bng/ui/update/campaign",
           {
             method: "PUT",
             headers: {
@@ -246,7 +247,7 @@ const CreateCampaign = (props) => {
           });
       } else {
         fetch(
-          "http://41.217.203.246" + ":" + "5002" + "/bng/ui/create/campaign",
+          config.server.path+config.server.port2 + "/bng/ui/create/campaign",
 
           {
             method: "POST",

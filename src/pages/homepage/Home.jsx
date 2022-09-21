@@ -37,6 +37,7 @@ import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { store } from "../../store/store";
+import config from "../../ApiConfig/Config";
 
 ChartJS.register(
   ArcElement,
@@ -140,9 +141,7 @@ const Home = () => {
 
 const getcampaignScheduleList = () =>{
   fetch(
-    `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
-      "userId"
-    )}`,
+    config.server.path + config.server.port2+`/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`,
     {
       method: "GET",
       headers: {
@@ -181,10 +180,8 @@ const getcampaignScheduleList = () =>{
 }
 
   const dashBoardDataFromApi = async () => {
-    const path = `http://41.217.203.246:5002/bng/ui/dashboard/${localStorage.getItem(
-      "userId"
-    )}`;
-    fetch(path)
+    // const path = config.server.path + config.server.port2+`/bng/ui/dashboard/${localStorage.getItem("userId")}`;
+    fetch(config.server.path + config.server.port2+`/bng/ui/dashboard/${localStorage.getItem("userId")}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("dashBoardDataFromApi", data);
@@ -217,7 +214,7 @@ const getcampaignScheduleList = () =>{
     console.log("action", action, id);
 
     fetch(
-      `http://41.217.203.246:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
+      config.server.path + config.server.port2+`/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
     )
       .then((result) => result.json())
       .then((res) => {

@@ -276,7 +276,7 @@ const IfIVRSelected = (props) => {
                 }}
               >
                 <ReactAudioPlayer
-                  src={`http://41.217.203.246/cm_data/audio/${e}`}
+                  src={config.server.path+`/cm_data/audio/${e}`}
                   controls
                 />
               </div>
@@ -305,7 +305,7 @@ const IfIVRSelected = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {e}
                     <ReactAudioPlayer
-                  src={`http://41.217.203.246/cm_data/audio/${e}`}
+                  src={config.server.path+`/cm_data/audio/${e}`}
                       controls
                     />
                     <br></br>

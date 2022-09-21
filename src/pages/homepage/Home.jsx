@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import MenuAppBar from "../../components/topbar/MenuAppBar";
+// import faker from 'faker';
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -9,9 +11,10 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
+  Title,
 } from "chart.js";
-import { Doughnut, Line } from "react-chartjs-2";
-
+import { Doughnut, Line, Bar } from "react-chartjs-2";
 import {
   DoughnutChartData,
   DoughnutChartData2,
@@ -46,8 +49,101 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
+  CategoryScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
 );
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "aaj se phle",
+    },
+  },
+  scales: {
+    xAxes: [
+      {
+        barThickness: 1,
+        maxBarThickness: 2,
+      },
+    ],
+    yAxes: [
+      {
+        barThickness: 1,
+        maxBarThickness: 2,
+      },
+    ],
+  },
+};
+
+const labels = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+  "29",
+  "30",
+];
+
+export const data = {
+  labels,
+  datasets: [
+    {
+      label: "Success",
+      data: [100, 1000, 500, 2000, 1500, 600, 10],
+      backgroundColor: "green",
+    },
+    {
+      label: "Failed",
+      data: [65, 59, 80, 81, 56, 55, 40],
+      backgroundColor: "red",
+    },
+    {
+      label: "Running",
+      data: [65, 59, 80, 81, 56, 55, 40],
+      backgroundColor: "rgb(255, 127, 14)",
+    },
+    {
+      label: "Total",
+      data: [100000, 200000, 300000, 400000, 500000, 600000, 700000],
+      backgroundColor: "rgba(53, 162, 235, 1)",
+    },
+  ],
+};
+
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -73,10 +169,8 @@ function getStyles(name, personName, theme) {
 
 const Home = () => {
   const globalState = useContext(store);
-  const {
-    dispatch,
-  } = globalState;
-
+  const { dispatch } = globalState;
+  const [showDoughnuts, setShowDoughnuts] = useState(false);
   var [tabledata2, setData2] = useState([]);
   const [callSuccess, setCallSuccess] = useState([]);
   const [callFail, setCallFail] = useState([]);
@@ -139,49 +233,55 @@ const Home = () => {
     getcampaignScheduleList();
   }, []);
 
-const getcampaignScheduleList = () =>{
-  fetch(
-    config.server.path + config.server.port2+`/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((res) => {
-      res.json().then((res) => {
-        if (res.length > 0) {
-          rows2 = [];
-          res.map((params) => {
-            rows2.push(
-              createData2(
-                params.jobId,
-                params.jobName,
-                params.startDate?.slice(0, 10),
-                params.endDate?.slice(0, 10),
-                params.dailyStartTime,
-                params.dailyEndTime,
-                params.priority,
-                params.status
-              )
-            );
-          });
-          setData2(rows2);
-          // console.log("rishabh res", res);
-        } else if (res.length == 0) {
-          setData2([]);
-        }
+  const getcampaignScheduleList = () => {
+    fetch(
+      config.server.path +
+        config.server.port2 +
+        `/bng/ui/list/campschedule?userId=${localStorage.getItem("userId")}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        res.json().then((res) => {
+          if (res.length > 0) {
+            rows2 = [];
+            res.map((params) => {
+              rows2.push(
+                createData2(
+                  params.jobId,
+                  params.jobName,
+                  params.startDate?.slice(0, 10),
+                  params.endDate?.slice(0, 10),
+                  params.dailyStartTime,
+                  params.dailyEndTime,
+                  params.priority,
+                  params.status
+                )
+              );
+            });
+            setData2(rows2);
+            // console.log("rishabh res", res);
+          } else if (res.length == 0) {
+            setData2([]);
+          }
+        });
+      })
+      .catch((e) => {
+        console.log(e);
       });
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-}
+  };
 
   const dashBoardDataFromApi = async () => {
     // const path = config.server.path + config.server.port2+`/bng/ui/dashboard/${localStorage.getItem("userId")}`;
-    fetch(config.server.path + config.server.port2+`/bng/ui/dashboard/${localStorage.getItem("userId")}`)
+    fetch(
+      config.server.path +
+        config.server.port2 +
+        `/bng/ui/dashboard/${localStorage.getItem("userId")}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("dashBoardDataFromApi", data);
@@ -205,16 +305,16 @@ const getcampaignScheduleList = () =>{
     const {
       target: { value },
     } = event;
-    setPersonName(
-      typeof value === "string" ? value.split(",") : value
-    );
+    setPersonName(typeof value === "string" ? value.split(",") : value);
   };
 
   const handelActionChange = (action, id) => {
     console.log("action", action, id);
 
     fetch(
-      config.server.path + config.server.port2+`/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
+      config.server.path +
+        config.server.port2 +
+        `/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
     )
       .then((result) => result.json())
       .then((res) => {
@@ -227,7 +327,7 @@ const getcampaignScheduleList = () =>{
       .catch((error) => {
         console.log("the error is::", error);
       });
-      getcampaignScheduleList();
+    getcampaignScheduleList();
   };
 
   return (
@@ -242,86 +342,151 @@ const getcampaignScheduleList = () =>{
           <div className="home__maincontent__container">
             <div className="home__maincontent">
               <div className="home__maincontent__card__container">
-                <div
-                  className="home__maincontent__card home__maincontent__card2"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    margin: "1rem",
-                    padding: "1rem",
-                    border: "2px solid green",
-                  }}
-                >
-                  <FormControl sx={{ m: 1, width: 300 }}>
-                    <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-                    <Select
-                      labelId="demo-multiple-name-label"
-                      id="demo-multiple-name"
-                      value={personName}
-                      onChange={handleChange}
-                      input={<OutlinedInput label="Name" />}
-                      MenuProps={MenuProps}
+                {showDoughnuts ? (
+                  <>
+                    <div
+                      className="home__maincontent__card home__maincontent__card2"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1rem",
+                        padding: "1rem",
+                        border: "2px solid green",
+                      }}
                     >
-                      {names.map((name) => (
-                        <MenuItem
-                          key={name}
-                          value={name}
-                          style={getStyles(name, personName, theme)}
+                      <FormControl sx={{ m: 1, width: 300 }}>
+                        <InputLabel id="demo-multiple-name-label">
+                          Name
+                        </InputLabel>
+                        <Select
+                          labelId="demo-multiple-name-label"
+                          id="demo-multiple-name"
+                          value={personName}
+                          onChange={handleChange}
+                          input={<OutlinedInput label="Name" />}
+                          MenuProps={MenuProps}
                         >
-                          {name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <Doughnut
-                    width={"30%"}
-                    options={{ maintainAspectRatio: false }}
-                    data={DoughnutChartData}
-                  />
-                </div>
-                <div
-                  className="home__maincontent__card home__maincontent__card4"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    margin: "1rem",
-                    padding: "1rem",
-                    border: "2px solid green",
-                  }}
-                >
-                  <FormControl sx={{ m: 1, width: 300 }}>
-                    <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-                    <Select
-                      labelId="demo-multiple-name-label"
-                      id="demo-multiple-name"
-                      value={personName}
-                      onChange={handleChange}
-                      input={<OutlinedInput label="Name" />}
-                      MenuProps={MenuProps}
+                          {names.map((name) => (
+                            <MenuItem
+                              key={name}
+                              value={name}
+                              style={getStyles(name, personName, theme)}
+                            >
+                              {name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <Doughnut
+                        width={"30%"}
+                        options={{ maintainAspectRatio: false }}
+                        data={DoughnutChartData}
+                      />
+                    </div>
+                    <div
+                      className="home__maincontent__card home__maincontent__card4"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1rem",
+                        padding: "1rem",
+                        border: "2px solid green",
+                      }}
                     >
-                      {names.map((name) => (
-                        <MenuItem
-                          key={name}
-                          value={name}
-                          style={getStyles(name, personName, theme)}
+                      <FormControl sx={{ m: 1, width: 300 }}>
+                        <InputLabel id="demo-multiple-name-label">
+                          Name
+                        </InputLabel>
+                        <Select
+                          labelId="demo-multiple-name-label"
+                          id="demo-multiple-name"
+                          value={personName}
+                          onChange={handleChange}
+                          input={<OutlinedInput label="Name" />}
+                          MenuProps={MenuProps}
                         >
-                          {name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <Doughnut
-                    width={"30%"}
-                    options={{ maintainAspectRatio: false }}
-                    data={DoughnutChartData2}
-                  />
+                          {names.map((name) => (
+                            <MenuItem
+                              key={name}
+                              value={name}
+                              style={getStyles(name, personName, theme)}
+                            >
+                              {name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <Doughnut
+                        width={"30%"}
+                        options={{ maintainAspectRatio: false }}
+                        data={DoughnutChartData2}
+                      />
+                    </div>
+                  </>
+                ) : null}
+
+                <div className="home__maincontent__card home__maincontent__card10" style={{width:"96%", marginTop:"2rem"}}>
+                  <div className="home__maincontent__camp__select__dropdown">
+                    <FormControl sx={{ m: 1, width: 300 }}>
+                      <InputLabel id="demo-multiple-name-label">
+                        Name
+                      </InputLabel>
+                      <Select
+                        labelId="demo-multiple-name-label"
+                        id="demo-multiple-name"
+                        value={personName}
+                        onChange={handleChange}
+                        input={<OutlinedInput label="Name" />}
+                        MenuProps={MenuProps}
+                      >
+                        {names.map((name) => (
+                          <MenuItem
+                            key={name}
+                            value={name}
+                            style={getStyles(name, personName, theme)}
+                          >
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    
+                  </div>
+                  <div className="home__maincontent__camp__select__dropdown">
+                    <FormControl sx={{ m: 1, width: 300 }}>
+                      <InputLabel id="demo-multiple-name-label">
+                        Name
+                      </InputLabel>
+                      <Select
+                        labelId="demo-multiple-name-label"
+                        id="demo-multiple-name"
+                        value={personName}
+                        onChange={handleChange}
+                        input={<OutlinedInput label="Name" />}
+                        MenuProps={MenuProps}
+                      >
+                        {names.map((name) => (
+                          <MenuItem
+                            key={name}
+                            value={name}
+                            style={getStyles(name, personName, theme)}
+                          >
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    
+                  </div>
                 </div>
+
                 <div
                   className="home__maincontent__card home__maincontent__card3"
                   style={{ width: "96%", margin: "1rem" }}
                 >
                   <Line
-                    height={"80%"}
+                    width={100}
+                    height={30}
                     data={{
                       labels: [
                         new Date().getDate() -
@@ -433,6 +598,13 @@ const getcampaignScheduleList = () =>{
                     }}
                   />
                 </div>
+
+                <div
+                  className="home__maincontent__card home__maincontent__card3"
+                  style={{ width: "96%", margin: "1rem" }}
+                >
+                  <Bar options={options} data={data} width={100} height={30} />
+                </div>
               </div>
             </div>
           </div>
@@ -490,7 +662,6 @@ const getcampaignScheduleList = () =>{
                           <TableCell align="center">{row.priority}</TableCell>
                           <TableCell align="center">{row.status}</TableCell>
                           <TableCell align="center">
-
                             <FormGroup
                               style={{
                                 display: "flex",

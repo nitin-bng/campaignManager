@@ -360,7 +360,7 @@ const UserConfig = () => {
   useEffect(() => {
     console.log(formJSON);
     fetch(
-      "http://34.214.61.86" +
+      "http://41.217.203.246" +
         ":" +
         "8087/" +
         localStorage.getItem("userType") +

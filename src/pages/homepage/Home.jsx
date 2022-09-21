@@ -140,7 +140,7 @@ const Home = () => {
 
 const getcampaignScheduleList = () =>{
   fetch(
-    `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+    `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
       "userId"
     )}`,
     {
@@ -181,7 +181,7 @@ const getcampaignScheduleList = () =>{
 }
 
   const dashBoardDataFromApi = async () => {
-    const path = `http://34.214.61.86:5002/bng/ui/dashboard/${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/dashboard/${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -217,7 +217,7 @@ const getcampaignScheduleList = () =>{
     console.log("action", action, id);
 
     fetch(
-      `http://34.214.61.86:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
+      `http://41.217.203.246:5002/bng/ui/update/campschedulestatus?jobId=${id}&status=${action}`
     )
       .then((result) => result.json())
       .then((res) => {

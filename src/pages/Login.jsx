@@ -38,6 +38,7 @@ const Login = () => {
         res.json()
            .then((res)=>{
             if(res.status === 'successful'){
+              
               localStorage.setItem("userType", res.userType)
               localStorage.setItem("userId", res.id)
               getUserDetails(res.id)
@@ -73,7 +74,10 @@ const Login = () => {
         }
         localStorage.setItem("userCountry", res.user.country);
         localStorage.setItem("operatorName", res.user.operatorName);
+        localStorage.setItem("operatorDisplayName", res.user.operatorDisplayName);
+        localStorage.setItem("operatorCountry", res.user.operatorCountry);
         sessionStorage.setItem("userName", res.user.name);
+
         Navigate("/campaign-manager/home");
       });
     });

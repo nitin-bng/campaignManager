@@ -45,7 +45,7 @@ const Review = () => {
   };
 
   const getCampaignDataList = () => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/campaign?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -73,7 +73,7 @@ const Review = () => {
 
   const getcampaignScheduleList = () => {
     fetch(
-      `http://34.214.61.86:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
+      `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
         "userId"
       )}`,
       {
@@ -109,7 +109,9 @@ const Review = () => {
 
   useEffect(()=>{
     if(!campCreateData.campName && !campScheduleData.jobName){
-      setApi((prev)=> !prev)
+      setTimeout(()=>{
+        setApi((prev)=> !prev)
+      }, 1000)
     }
   },[api])
 
@@ -463,13 +465,38 @@ const Review = () => {
                         color: "grey",
                       }}
                     >
-                      Country Selected
+                      User Country Selected
                     </InputLabel>
                     <TextField 
                     disabled
                         id="outlined-basic"
                         variant="outlined"
                         value={campScheduleData.country}
+                    />
+                  </div>
+                  <div
+                    className="feilds"
+                    style={{ width: "40%", zIndex: "999",position:"relative", marginTop:"1rem" }}
+                  >
+                    <InputLabel
+                      style={{
+                        padding: "0 5px",
+                        backgroundColor: "white",
+                        position: "absolute",
+                        top: "-8px",
+                        left: "10px",
+                        zIndex: "1000",
+                        fontSize: "12px",
+                        color: "grey",
+                      }}
+                    >
+                      Operator Country Selected
+                    </InputLabel>
+                    <TextField 
+                    disabled
+                        id="outlined-basic"
+                        variant="outlined"
+                        value={localStorage.getItem("operatorCountry")}
                     />
                   </div>
                   <div
@@ -594,7 +621,7 @@ const Review = () => {
                     disabled
                         id="outlined-basic"
                         variant="outlined"
-                        value={campScheduleData.operator}
+                        value={localStorage.getItem("operatorDisplayName")}
                     />
                   </div>
                   <div

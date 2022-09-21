@@ -53,7 +53,7 @@ export default function VerifyOtp(props) {
   const getOtp = () => {
     var phone = localStorage.getItem("phoneNumber");
     fetch(
-      "http://34.214.61.86:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
+      "http://41.217.203.246:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
     )
       .then((result) => result.json())
       .then((res) => {
@@ -68,7 +68,7 @@ export default function VerifyOtp(props) {
   const handleSubmit = (e) => {
     setLoader(true);
     fetch(
-      "http://34.214.61.86:8087/user/verify?phoneNumber=" +
+      "http://41.217.203.246:8087/user/verify?phoneNumber=" +
         JSON.parse(localStorage.getItem("phoneNumber")) +
         "&otp=" +
         otpState.otp

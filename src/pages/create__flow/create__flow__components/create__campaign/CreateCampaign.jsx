@@ -104,7 +104,7 @@ const CreateCampaign = (props) => {
   const getFlow = async (id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
+    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {

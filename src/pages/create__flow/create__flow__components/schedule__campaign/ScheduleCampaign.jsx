@@ -758,7 +758,7 @@ const ScheduleCampaign = (props) => {
                             <MenuItem
                               value={localStorage.getItem("operatorName")}
                             >
-                              {localStorage.getItem("operatorName")}
+                              {localStorage.getItem("operatorDisplayName")}
                             </MenuItem>
                           </Select>
                         </FormControl>

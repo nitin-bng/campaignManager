@@ -93,7 +93,7 @@ const CreateFlow = () => {
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -249,7 +249,7 @@ const CreateFlow = () => {
 
         const getCompleteFlow = (id) => {
           fetch(
-            "http://34.214.61.86:5002/bng/ui/flowjson?wfId=" +
+            "http://41.217.203.246:5002/bng/ui/flowjson?wfId=" +
               id +
               "&flowName=" +
               localStorage.getItem("flowName") +
@@ -297,7 +297,7 @@ const CreateFlow = () => {
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
+    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
@@ -324,7 +324,7 @@ const CreateFlow = () => {
     setOpenModal(false);
   };
   useEffect(() => {
-    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)

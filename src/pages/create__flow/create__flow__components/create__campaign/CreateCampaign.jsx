@@ -247,6 +247,7 @@ const CreateCampaign = (props) => {
       } else {
         fetch(
           "http://41.217.203.246" + ":" + "5002" + "/bng/ui/create/campaign",
+
           {
             method: "POST",
             headers: {

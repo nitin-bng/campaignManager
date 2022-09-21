@@ -68,20 +68,6 @@ export const options = {
       text: "aaj se phle",
     },
   },
-  scales: {
-    xAxes: [
-      {
-        barThickness: 1,
-        maxBarThickness: 2,
-      },
-    ],
-    yAxes: [
-      {
-        barThickness: 1,
-        maxBarThickness: 2,
-      },
-    ],
-  },
 };
 
 const labels = [
@@ -142,8 +128,6 @@ export const data = {
     },
   ],
 };
-
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -231,7 +215,26 @@ const Home = () => {
 
   useEffect(() => {
     getcampaignScheduleList();
+    dashBoardData()
   }, []);
+
+  const dashBoardData = () => {
+    fetch(
+      config.server.path +
+        config.server.port2 +
+        `/bng/ui/dashboard/${localStorage.getItem("userId")}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      res.json().then((res) => {
+        console.log("res", res);
+      });
+    });
+  };
 
   const getcampaignScheduleList = () => {
     fetch(
@@ -425,7 +428,10 @@ const Home = () => {
                   </>
                 ) : null}
 
-                <div className="home__maincontent__card home__maincontent__card10" style={{width:"96%", marginTop:"2rem"}}>
+                <div
+                  className="home__maincontent__card home__maincontent__card10"
+                  style={{ width: "96%", marginTop: "2rem" }}
+                >
                   <div className="home__maincontent__camp__select__dropdown">
                     <FormControl sx={{ m: 1, width: 300 }}>
                       <InputLabel id="demo-multiple-name-label">
@@ -450,7 +456,6 @@ const Home = () => {
                         ))}
                       </Select>
                     </FormControl>
-                    
                   </div>
                   <div className="home__maincontent__camp__select__dropdown">
                     <FormControl sx={{ m: 1, width: 300 }}>
@@ -476,7 +481,6 @@ const Home = () => {
                         ))}
                       </Select>
                     </FormControl>
-                    
                   </div>
                 </div>
 

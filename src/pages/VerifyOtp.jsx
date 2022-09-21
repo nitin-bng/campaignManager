@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import OtpInput from "react-otp-input";
-// import OTPInput, { ResendOTP } from "otp-input-react";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -12,14 +10,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-// import "./styles.css";
-import config from "../ApiConfig/Config";
-import { Link } from "react-router-dom";
 import Loader from "./Loader";
-// import { useHistory } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./authentication.css";
+
 const useStyles = makeStyles((theme) => ({
   grid: {
     backgroundColor: "grey",
@@ -43,34 +36,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VerifyOtp(props) {
   const classes = useStyles();
-  const theme = useTheme();
 
-  const [otpCode, setOtpCode] = useState("");
   const [loader, setLoader] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [response, setResponse] = useState("");
   const [reason, setReason] = useState("");
-  const [error, setError] = useState("");
-
   const [otpState, setOtpState] = useState({ otp: "" });
-  // let history = useHistory();
   const navigate = useNavigate();
   const location = useLocation();
-  // console.log("navigate", navigate);
-  // console.log("props", props);
   useEffect(() => {
-    // console.log(props);
     localStorage.getItem("phoneNumber");
     if (navigate != undefined && navigate.location !== undefined) {
-      // if (props.location.state.detail == "mobile_no_not_verified") {
       getOtp();
-      // }
     }
   }, []);
   const getOtp = () => {
     var phone = localStorage.getItem("phoneNumber");
     fetch(
-      "http://41.217.203.246:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
+      "http://34.214.61.86:8087/user/sendotp?phoneNumber=" + JSON.parse(phone)
     )
       .then((result) => result.json())
       .then((res) => {
@@ -80,19 +63,12 @@ export default function VerifyOtp(props) {
       })
       .catch((error) => {
         setLoader(false);
-        // console.log("the error is::", error);
       });
   };
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    if (otpState === "") {
-      setError("OTP is required");
-      // console.log("otp bharoooo");
-      return;
-    }
     setLoader(true);
     fetch(
-      "http://41.217.203.246:8087/user/verify?phoneNumber=" +
+      "http://34.214.61.86:8087/user/verify?phoneNumber=" +
         JSON.parse(localStorage.getItem("phoneNumber")) +
         "&otp=" +
         otpState.otp
@@ -103,7 +79,6 @@ export default function VerifyOtp(props) {
           setLoader(false);
           setResponse(res.status);
           setReason(res.reason);
-          // console.log("Response is::", res);
         } else {
           setResponse(res.status);
           setReason(res.reason);
@@ -113,22 +88,13 @@ export default function VerifyOtp(props) {
       })
       .catch((error) => {
         setLoader(false);
-        // console.log("the error is::", error);
       });
   };
   const handleModal = () => {
     setOpenModal(false);
     if (response === "successful") {
-      // history.push({
-      //     pathname: '/',
-      //     state: { detail: 'true' }
-      // });
       navigate("/campaign-manager/");
     } else {
-      // history.push({
-      //     pathname: '/otp',
-      //     state: { detail: 'true' }
-      // });
       navigate("/campaign-manager/verifyotp");
     }
   };
@@ -141,10 +107,8 @@ export default function VerifyOtp(props) {
       component="main"
       maxWidth="sm"
       style={{
-        // border: "2px solid red",
         width: "100vw",
         height: "100vh",
-        // background: "red",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -219,10 +183,8 @@ export default function VerifyOtp(props) {
                   textShadow: "1px 1px 2px black",
                   fontWeight: "700",
                   marginTop:"1rem",
-                  // margin:"auto"
                 }}
                 type="submit"
-                // fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -241,10 +203,8 @@ export default function VerifyOtp(props) {
                   textShadow: "1px 1px 2px black",
                   fontWeight: "700",
                   marginTop:"1rem",
-                  // margin:"auto"
                 }}
                 type="submit"
-                // fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -273,7 +233,6 @@ export default function VerifyOtp(props) {
                 textTransform: "uppercase",
                 textShadow: "1px 1px 2px black",
                 width: "10%",
-                // margin: "auto",
                 marginBottom: "1rem",
                 transition: "all 0.5s",
                 fontWeight: "700",

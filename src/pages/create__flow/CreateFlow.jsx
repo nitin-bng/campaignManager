@@ -24,7 +24,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-// import MainDTMF from "./create__flow__components/create__flow__component/if__ivr__selected/main__dtmf/MainDTMF";
 import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
@@ -38,11 +37,9 @@ const CreateFlow = () => {
     wrapper: {
       display: "flex",
       marginTop: "191px",
-      // overflow: 'hidden',
       color: "Gray",
       justifyContent: "center",
       margin: "0 auto",
-      // marginLeft:'270px'
     },
     color: {
       color: "gray",
@@ -65,31 +62,25 @@ const CreateFlow = () => {
     },
   }));
   const classes = useStyles();
-  const { showError, setShowError, errorState, errorDispatch } = useError();
-  const { ifIVRselectedThenLanguage, setChannel } = useContext(CommonContext);
+  const { errorState, errorDispatch, setShowError } = useError();
+  const { setChannel } = useContext(CommonContext);
   var [tabledata3, setData3] = useState([]);
   const { dispatch, campaignName } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
   var createCampDataToSend = {};
-  const [hideItem, setHideItem] = useState(true);
   const hideItemStyle = classNames("file__chooser__container", {
-    hideInput: hideItem,
-    showInput: !hideItem,
+    hideInput: true,
+    showInput: false,
   });
   const [FlowListData, setFlowListData] = useState([]);
   const [showFlowTable, setShowFlowTable] = useState(true);
   const [disableNext, setDisableNext] = useState(false);
-  const [flowData, setFlowData] = useState({});
-  // const [flowDataFromAPI, setFlowData] = useState({});
-
-  var [channelName, getChannelName] = useState(null);
   var flowDataFromApi = {};
   const [openModal, setOpenModal] = useState(false);
 
   const [activeStep, setActiveStep] = React.useState(0);
   var rows3 = [];
-  var flowId = "";
   function createData3(
     id,
     wfId,
@@ -102,7 +93,7 @@ const CreateFlow = () => {
   const getFlowList = () => {
     console.log("get flow list called");
     debugger;
-    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -140,27 +131,7 @@ const CreateFlow = () => {
     return result;
   };
 
-  // const checkAudioError = () => {
-  //   let result = true
-  //   for(let val of audioError){
-  //     if(val === false){
-  //       result = true
-  //       break
-  //     }
-  //   }
-  //   return result
-  // }
-
   const handleNext = () => {
-    // console.log("flowName", flowName);
-    // console.log("channel", channel);
-    // console.log("ifIVRselectedThenLanguage", ifIVRselectedThenLanguage);
-    // console.log("dtmfTimeHindi", dtmfTimeHindi);
-    // console.log("dtmfTimeEnglish", dtmfTimeEnglish);
-    // console.log("dtmfTimeArabic", dtmfTimeArabic);
-    // console.log("dtmfTimeSpanish", dtmfTimeSpanish);
-    // console.log("welcomePromptWaitTime", welcomePromptWaitTime);
-    // console.log("numberOfMainDTMFWhenIVRIsSelected", numberOfMainDTMFWhenIVRIsSelected);
     console.log(
       "dtmf count",
       globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
@@ -198,7 +169,6 @@ const CreateFlow = () => {
           max_impression_count: "0",
           total_click_count: "99999",
           total_impression_count: "888777",
-          // 'service_name': form.service,
           campaign_frequency: "form.CampaignFrequency",
         },
         timezone: {
@@ -239,7 +209,6 @@ const CreateFlow = () => {
           max_impression_count: "0",
           total_click_count: "99999",
           total_impression_count: "888777",
-          // 'service_name': form.service,
           campaign_frequency: "form.CampaignFrequency",
         },
         timezone: {
@@ -271,21 +240,16 @@ const CreateFlow = () => {
             var res = await response.json();
             console.log("flow without content submitted--response", res);
             if (response.status !== 200 || response.status === "FAILED") {
-              // setFormSubmitted(false);
             } else {
               getCompleteFlow(res.wfId);
               localStorage.setItem("wfId", res.wfId);
-              // setFormSubmitted(true);
             }
           })
           .catch((e) => console.log("error in submitting form", e));
 
         const getCompleteFlow = (id) => {
-          debugger;
-          // const path = 'http//:41.217.203.246:5002/bng/ui/flowjson?wfId=' + id
-          let localStore = globalState.state;
           fetch(
-            "http://41.217.203.246:5002/bng/ui/flowjson?wfId=" +
+            "http://34.214.61.86:5002/bng/ui/flowjson?wfId=" +
               id +
               "&flowName=" +
               localStorage.getItem("flowName") +
@@ -310,35 +274,6 @@ const CreateFlow = () => {
         };
       } else if (activeStep === 1) {
         console.log("activeStep === 1");
-
-        const path =
-          "http://41.217.203.246:5002/bng/ui/flow/content?isContent=true&campId=" +
-          localStorage.getItem("campId") +
-          "&wfId=" +
-          localStorage.getItem("wfId");
-        fetch(path, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataToSend),
-        })
-          .then(async (response) => {
-            var res = await response.json();
-            console.log("campaign submitted--response", res);
-            // setLoading(false);
-            if (response.status !== 200 || response.status === "FAILED") {
-              // return false;
-              // setFormSubmitted(false);
-            } else {
-              //TO DO : RESET STORE
-              // setFormSubmitted(true);
-              // dispatch({ type: 'EMPTY_DATA', nState: null });
-              // return true;
-            }
-            // .then(e => {
-            //     console.log("campaign submitted--response", e,);
-            //     return e;
-          })
-          .catch((e) => console.log("error in submitting form", e));
       } else if (activeStep === 2) {
         console.log("activeStep === 2");
       } else if (activeStep === 3) {
@@ -348,15 +283,6 @@ const CreateFlow = () => {
     } else {
       setShowError(true);
     }
-  };
-
-  const handleBack = () => {
-    errorDispatch({ type: "INITIALIZE" });
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const flowFromApi = (data) => {
@@ -371,21 +297,12 @@ const CreateFlow = () => {
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    flowId = id;
-    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
+    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
-        setFlowData(data);
-        getChannelName(data.flow.channel);
-        // if(data.flow.channel != "IVR_SMS"){
         localStorage.setItem("channelName", data.flow.channel);
-        // }
         localStorage.setItem("flowName", data.service_Data.name);
-        // history.push({
-        //     pathname: '/campaign/ivr',
-        //     state: { detail: data }
-        // });
         console.log("dataFrom api call ", data);
         flowDataFromApi = data.flow;
 
@@ -405,17 +322,9 @@ const CreateFlow = () => {
   };
   const handleModal = () => {
     setOpenModal(false);
-    // if (response === "successful") {
-    //   navigate("/verifyotp");
-    //   // state: { detail: 'true' }
-    // } else if (response === "unsuccessful") {
-    //   navigate("/");
-    // } else {
-    //   navigate("/forgotpassword");
-    // }
   };
   useEffect(() => {
-    const path = `http://41.217.203.246:5002/bng/ui/list/flows?userId=${localStorage.getItem(
+    const path = `http://34.214.61.86:5002/bng/ui/list/flows?userId=${localStorage.getItem(
       "userId"
     )}`;
     fetch(path)
@@ -441,7 +350,6 @@ const CreateFlow = () => {
               );
             });
             setData3(rows3);
-            // setFlowListData(rows3);
           } else if (res.length == 0) {
             setData3([]);
           }
@@ -477,18 +385,6 @@ const CreateFlow = () => {
                     );
                   })}
                 </Stepper>
-
-                {/* {activeStep === steps.length ? (
-                  <React.Fragment>
-                    <Typography sx={{ mt: 2, mb: 1 }}>
-                      All steps completed - you&apos;re finished
-                    </Typography>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                      <Box sx={{ flex: "1 1 auto" }} />
-                      <Button onClick={handleReset}>Reset</Button>
-                    </Box>
-                  </React.Fragment>
-                ) : ( */}
                 <>
                   <Typography style={{ height: "85%" }} sx={{ mt: 2, mb: 1 }}>
                     {activeStep === 0 ? (
@@ -498,13 +394,11 @@ const CreateFlow = () => {
                             <div
                               className="row"
                               style={{
-                                // border: "2px solid red",
                                 width: "90%",
                                 margin: "2rem auto",
                                 boxSizing: "border-box",
                                 display: "flex",
                                 flexDirection: "column",
-                                // alignItems:"flex-end"
                               }}
                             >
                               <button
@@ -518,7 +412,6 @@ const CreateFlow = () => {
                                   textShadow: "1px 1px 2px black",
                                   width: "20%",
                                   margin: "1rem 0",
-                                  // marginBottom: ".5rem",
                                   transition: "all 0.5s",
                                   fontWeight: "700",
                                   alignSelf: "flex-end",
@@ -603,9 +496,6 @@ const CreateFlow = () => {
                                                   textTransform: "uppercase",
                                                   textShadow:
                                                     "1px 1px 2px black",
-                                                  // width: "10%",
-                                                  // marginTop: "1rem",
-                                                  // marginBottom: ".5rem",
                                                   transition: "all 0.5s",
                                                   fontWeight: "700",
                                                 }}
@@ -617,7 +507,6 @@ const CreateFlow = () => {
                                                 Preview
                                               </button>
                                             </TableCell>
-                                            {/* <TableCell align="center">{row.wfId}</TableCell> */}
                                           </TableRow>
                                         ))}
                                       </TableBody>
@@ -640,7 +529,6 @@ const CreateFlow = () => {
                                 <div
                                   className="modal-content"
                                   style={{
-                                    // border: "2px solid red",
                                     width: "90vw",
                                     height: "90vh",
                                   }}
@@ -657,7 +545,6 @@ const CreateFlow = () => {
                                 <div
                                   style={{
                                     display: "flex",
-                                    // border: "2px solid red",
                                     width: "100%",
                                     alignItems:"center",
                                     justifyContent:"space-around"
@@ -743,26 +630,6 @@ const CreateFlow = () => {
                       ""
                     )}
                   </Typography>
-                  {/* 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      position: "fixed",
-                      width: "90%",
-                      backgroundColor: "white",
-                      flexDirection: "row",
-                      pt: 2,
-                    }}
-                    style={{border:"2px solid red"}}
-                  > */}
-                  {/* <Button
-                        color="inherit"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{ mr: 1 }}
-                      >
-                        Back
-                      </Button> */}
                   <Button
                     className="NextButton"
                     onClick={handleNext}
@@ -782,9 +649,7 @@ const CreateFlow = () => {
                   >
                     {activeStep === steps.length - 1 ? "Finish" : "Next"}
                   </Button>
-                  {/* </Box> */}
                 </>
-                {/* )} */}
               </Box>
             </div>
           </div>

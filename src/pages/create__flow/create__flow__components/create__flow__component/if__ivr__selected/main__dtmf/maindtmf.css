@@ -1,5 +1,4 @@
 .main__dtmf{
-    /* border: 2px solid red; */
     width: 90%;
     height: fit-content;
     padding: 1rem;
@@ -19,13 +18,11 @@
 .main__dtmf__wait__time__container,
 .select__number__of__subDTMF__from__main__dtmf__container
 {
-    /* border: 2px solid red; */
     width: 30%;
 }
 
 .rendering__subdtmf__container{
     display: flex;
-    /* border: 2px solid blue; */
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;

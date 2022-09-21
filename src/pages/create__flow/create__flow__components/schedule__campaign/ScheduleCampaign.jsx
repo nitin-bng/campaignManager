@@ -2,20 +2,9 @@ import React from "react";
 
 import "./scheduleCampaign.css";
 import { useState, useEffect, useContext } from "react";
-import { DateRangePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { KeyboardTimePicker } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import PublishIcon from "@material-ui/icons/Publish";
+
 import { makeStyles } from "@material-ui/core/styles";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -33,16 +22,14 @@ import Stack from "@mui/material/Stack";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useError } from "../../../../store/errorContext";
 
-import DatePicker from "react-multi-date-picker";
 import { store } from "../../../../store/store";
-// import DateRangePicker from 'rsuite/DateRangePicker';
 import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import { useNavigate } from "react-router-dom";
 import "../create__campaign/createCampaign.css";
 import { CircularProgress } from "@material-ui/core";
-import { toast } from "react-toastify";
+import { border } from "@mui/system";
 var rows = [];
 const useStyles = makeStyles({
   table: {
@@ -61,8 +48,7 @@ function createData(jobId, jobName, priority, status) {
 let localDate = new Date();
 
 const ScheduleCampaign = (props) => {
-  const Navigate = useNavigate();
-  const { showError } = useError();
+  const [error, setError] = useState(true)
   const [errorMessage, setErrorMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -380,6 +366,7 @@ const ScheduleCampaign = (props) => {
                   ...scheduleData1,
                   ...scheduleData,
                 }));
+                setError(false)
               } else if (res.status === "unsuccessful") {
                 setShowLoader(false);
                 setErrorMessage(res.reason);
@@ -444,13 +431,11 @@ const ScheduleCampaign = (props) => {
         }));
       }
     }
-    // console.log("scheduleData1::", scheduleData1);
 
     console.log(scheduleData);
   };
   const handleDayChange = (event, values) => {
     debugger;
-    // setSelectedDayValue(Array.isArray(val) ? val.map(x => x.value) : []);
     console.log(selectedDayValue);
   };
   const validate = (values) => {
@@ -476,21 +461,7 @@ const ScheduleCampaign = (props) => {
         errors.Channel = "Channel is required";
       }
     }
-    //   if (!values.Country) {
-    //     errors.Country = "Country is required";
-    //   }
-    // if (!values.Operator && !localStorage.getItem("operatorName")) {
-    //   errors.Operator = "Operator is required";
-    // }
-    // if (!values.dayStartTime) {
-    //   errors.dayStartTime = "startTime is required";
-    // }
-    // if (!values.dayEndTime) {
-    //   errors.dayEndTime = "endTime is required";
-    // }
-    // if (!values.dateRange) {
-    //   errors.dateRange = "date is required";
-    // }
+
     if (!values.file) {
       errors.file = "csv file is required";
     }
@@ -501,20 +472,7 @@ const ScheduleCampaign = (props) => {
     const date = new Date();
     const startTimeArray = scheduleData1.dailyStartTime.split(":");
     const endTimeArray = scheduleData1.dailyEndTime.split(":");
-    // if (getDateInFormat(date) === scheduleData1.startDate) {
-    //   console.log("same day", date.getHours(), ~~startTimeArray[0]);
-    //   if (
-    //     date.getHours() > ~~startTimeArray[0] ||
-    //     (date.getHours() === ~~startTimeArray[0] &&
-    //       date.getMinutes() > ~~startTimeArray[1]) ||
-    //     (date.getHours() === ~~startTimeArray[0] &&
-    //       date.getMinutes() === ~~startTimeArray[1] &&
-    //       date.getSeconds() > ~~startTimeArray[2])
-    //   ) {
-    //     throw Error("Start time has already passed");
-    //   }
-    // }
-    // console.log("end time array", endTimeArray);
+
     if (
       ~~endTimeArray[0] < ~~startTimeArray[0] ||
       (~~endTimeArray[0] === ~~startTimeArray[0] &&
@@ -527,72 +485,66 @@ const ScheduleCampaign = (props) => {
   const handleSubmit = () => {
     debugger;
     if(scheduleData1.startDate && scheduleData1.endDate){
+      if(!error){
     try {
       checkDateAndTime();
 
-      setFormErrors(validate(formValues));
-      scheduleData1.userId = localStorage.getItem("userId");
-      scheduleData1.country = localStorage.getItem("userCountry");
-      scheduleData1.jobName = campaignName;
-      scheduleData1.priority = campaignSchedulePriority;
+        setFormErrors(validate(formValues));
+        scheduleData1.userId = localStorage.getItem("userId");
+        scheduleData1.country = localStorage.getItem("userCountry");
+        scheduleData1.jobName = campaignName;
+        scheduleData1.priority = campaignSchedulePriority;
 
-      console.log(scheduleData1);
-      // scheduleData["fileName"] = fileName
+        console.log(scheduleData1);
 
-      if (Object.keys(errors).length == 0 && !stringInputError) {
-        fetch(
-          `http://41.217.203.246:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
-            "userId"
-          )}`,
-          // `http://41.217.203.246:5002/bng/ui/list/campschedule?userId=${localStorage.getItem(
-          // "userId"
-          // )}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(scheduleData1),
-          }
-        )
-          .then((res) => {
-            // res.json()
-            // .then((res) => {
-            if (res.status == 200) {
-              debugger;
-              localStorage.removeItem("channelName");
-              // showSuccess(true);
+        if (Object.keys(errors).length == 0 && !stringInputError) {
+          fetch(
+            `http://41.217.203.246:5002/bng/ui/create/campschedule?userId=${localStorage.getItem(
+              "userId"
+            )}`,
 
-              console.log(res);
-            } else if (res.length == 0) {
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(scheduleData1),
             }
-            // })
-            props.setDisableNext(false);
-            props.handleNext()
-            // toast("Now you can go to next page");
-            setIsDisabled(true);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }
-    } catch (e) {
+          )
+            .then((res) => {
+              if (res.status == 200) {
+                debugger;
+                localStorage.removeItem("channelName");
+
+                console.log(res);
+              } else if (res.length == 0) {
+              }
+              props.setDisableNext(false);
+              props.handleNext();
+              setIsDisabled(true);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      } 
+    catch (e) {
       if (e.message.includes("split")) {
         setErrorMessage("Please select Start and End time");
       } else {
         setErrorMessage(e.message);
       }
+    
+    }}else{
+      setErrorMessage("Please Upload files")
     }}
     else{
       setErrorMessage("Please select dates")
     }
   };
-  const showFormData = (e) => {
-    showForm(true);
-  };
+
   const showListData = (e) => {
     setCancelModal(true);
-
   };
   const updateFormData = (id) => {
     updateForm(true);
@@ -603,41 +555,12 @@ const ScheduleCampaign = (props) => {
     const elem = document.getElementById(id);
     elem.click();
   };
-  const handleConfirm = () => {
-    // getcampaignScheduleList();
-    // showSuccess(false);
-    showForm(false);
-    updateForm(false);
-    Navigate("/campaign-manager/home");
-  };
-
-  const handleDateSelect = (ranges) => {
-    console.log(ranges); // native Date object
-  };
-
-
 
   const handleModal = () => {
     setCancelModal(false);
-    // if (response === "successful") {
-    //   navigate("/campmngr/verifyotp");
-    //   // state: { detail: 'true' }
-    // } else if (response === "unsuccessful") {
-    //   navigate("/campmngr");
-    // } else {
-    //   navigate("/campmngr/forgotpassword");
-    // }
   };
   const handleYesModal = () => {
     window.location.reload(true);
-    // if (response === "successful") {
-    //   navigate("/campmngr/verifyotp");
-    //   // state: { detail: 'true' }
-    // } else if (response === "unsuccessful") {
-    //   navigate("/campmngr");
-    // } else {
-    //   navigate("/campmngr/forgotpassword");
-    // }
   };
 
   return (
@@ -645,10 +568,7 @@ const ScheduleCampaign = (props) => {
       <div className="schedule__campaign">
         <div className="schedule__campaign__container" style={{}}>
           <div style={{ width: "100%", height: "100%" }}>
-            {/* {!success ? ( */}
             <div className="col-sm-12 create__flow__component" style={{}}>
-              {/* {form || update ? 
-                 (  */}
               <div
                 className="parent-container create__flow__component__container"
                 style={{}}
@@ -702,8 +622,6 @@ const ScheduleCampaign = (props) => {
                           <TextField
                             label="Job Name"
                             value={campaignName}
-                            // value={formValues.jobName}
-                            // onChange={(e) => setCampaignName(e.target.value)}
                             variant="outlined"
                             type="text"
                             className="form-control"
@@ -714,27 +632,6 @@ const ScheduleCampaign = (props) => {
                           />
                         </Box>
                       </div>
-                      {/* <label>Job Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="jobName"
-                            aria-describedby="emailHelp"
-                            placeholder={"enter job name"}
-                            name="jobName"
-                            onChange={(event) => handleChange(event, "jobName")}
-                          />
-                          <label
-                            className={
-                              stringInputError
-                                ? "showStringErrorJob"
-                                : "hideStringErrorJob"
-                            }
-                          >
-                            Enter a valid job name
-                          </label>
-                          <p>{formErrors.jobName}</p> */}
-                      {/* </div> */}
 
                       <div
                         className="create__campaign__priority__dropdown"
@@ -753,12 +650,7 @@ const ScheduleCampaign = (props) => {
                             id="demo-simple-select priority"
                             className="campaignId form-select"
                             aria-label="Default select example"
-                            // onChange={(event) =>
-                            //   handleChange(event, "priority")
-                            // }
                           >
-                            {/* {console.log(channel)} */}
-
                             <MenuItem id="priority" value={1}>
                               1
                             </MenuItem>
@@ -793,41 +685,11 @@ const ScheduleCampaign = (props) => {
                         </FormControl>
                       </div>
 
-                      {/* <div className="mb-3 col-4">
-                          <label>Priority</label>
-                         
-                          <select
-                            name="priority"
-                            id="priority"
-                            className="campaignId form-select"
-                            aria-label="Default select example"
-                            onChange={(event) =>
-                              handleChange(event, "priority")
-                            }
-                          >
-                            <option value="select">select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                          </select>
-                          <p>{formErrors.priority}</p>
-                        </div> */}
-
                       <div
                         className="create__campaign__workflow__name"
                         style={{ display: "none" }}
                       >
                         <FormControl fullWidth>
-                          {/* <InputLabel id="demo-simple-select-label">
-                              Capaign Name{" "}
-                            </InputLabel> */}
                           <TextField
                             labelId="demo-simple-TextField-label"
                             label="Selected campaign name"
@@ -837,67 +699,11 @@ const ScheduleCampaign = (props) => {
                             id="demo-simple-select campaignId"
                             className="campaignId form-select"
                             aria-label="Default select example"
-                            // onChange={(event) =>
-                            //   handleChange(event, "campaignId")
-                            // }
                           >
                             {console.log("rishabh colsole", campaignName)}
-
-                            {/* {campaignListData &&
-                                campaignListData.map((e) => (
-                                  <MenuItem key={e.campName} value={e.campId}>
-                                    {e.campName}
-
-                                  </MenuItem>
-                                ))} */}
                           </TextField>
                         </FormControl>
-
-                        {/* <Box
-              component="form"
-              style={{ width: "100%" }}
-              noValidate
-              autoComplete="off"
-            >
-              <label>Work Flow Name</label>
-              <select
-                id="wfId"
-                name="wfId"
-                className="campaignId form-select"
-                aria-label="Default select example"
-                onChange={(event) => handleChange(event, "wfId")}
-                value={localStorage.getItem("flowName")}
-              >
-                {props.FlowListData &&
-                  props.FlowListData.map((e) => (
-                    <option key={e.id} value={e.wfId}>
-                      {e.flowName}
-                    </option>
-                  ))}
-              </select>
-            </Box> */}
                       </div>
-
-                      {/* <div className="mb-3 col-4">
-                          <label>Capaign Name</label>
-                          <select
-                            name="campaignId"
-                            id="campaignId"
-                            className="campaignId form-select"
-                            aria-label="Default select example"
-                            onChange={(event) =>
-                              handleChange(event, "campaignId")
-                            }
-                          >
-                            {campaignListData &&
-                              campaignListData.map((e) => (
-                                <option key={e.campName} value={e.campId}>
-                                  {e.campName}
-                                </option>
-                              ))}
-                          </select>
-                          <p>{formErrors.campaignId}</p>
-                        </div> */}
 
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
@@ -920,8 +726,6 @@ const ScheduleCampaign = (props) => {
                             disabled={props.disableEditingWhileCreatingCamp}
                             required
                           >
-                            {/* {console.log(channel)} */}
-
                             <MenuItem value={"IVR"}>IVR</MenuItem>
                             <MenuItem value={"SMS"}>SMS</MenuItem>
                             <MenuItem value={"IVR_SMS"}>IVR/SMS</MenuItem>
@@ -930,72 +734,12 @@ const ScheduleCampaign = (props) => {
                         </FormControl>
                       </div>
 
-                      {/* <div className="mb-3 col-4">
-                       
-                          <label>Channel</label>
-                          {localStorage.getItem("channelName") &&
-                          (localStorage.getItem("channelName") == "IVR" ||
-                            localStorage.getItem("channelName") == "SMS") ? (
-                            <select
-                              name="Channel"
-                              id="Channel"
-                              className="channel form-select"
-                              aria-label="Default select example"
-                              onChange={(event) =>
-                                handleChange(event, "Channel")
-                              }
-                              disabled
-                            >
-                              <option
-                                value={localStorage.getItem("channelName")}
-                              >
-                                {localStorage.getItem("channelName")}
-                              </option>
-                            </select>
-                          ) : localStorage.getItem("channelName") &&
-                            localStorage.getItem("channelName") == "IVR_SMS" ? (
-                            <select
-                              name="Channel"
-                              id="Channel"
-                              className="channel form-select"
-                              aria-label="Default select example"
-                              onChange={(event) =>
-                                handleChange(event, "Channel")
-                              }
-                            >
-                              <option value="Select">Select</option>
-                              <option value="IVR">ivr</option>
-                              <option value="SMS">sms</option>
-                            </select>
-                          ) : (
-                            <select
-                              name="Channel"
-                              id="Channel"
-                              className="channel form-select"
-                              aria-label="Default select example"
-                              onChange={(event) =>
-                                handleChange(event, "Channel")
-                              }
-                            >
-                              <option value="Select">Select</option>
-                              <option value="IVR">ivr</option>
-                              <option value="SMS">sms</option>
-                              <option value="IVR_SMS">ivr/sms</option>
-                            </select>
-                          )}
-                          <p>{formErrors.Channel}</p>
-                        </div> */}
-
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
                         style={{ width: "40%", margin: "1rem" }}
                       >
                         <FormControl fullWidth>
-                          <InputLabel
-                            id="demo-simple-select-label"
-                            required
-                            // error={showError ? localStore.ivrCampFlowData.flow.channel.length ? false: true:false}
-                          >
+                          <InputLabel id="demo-simple-select-label" required>
                             Operator
                           </InputLabel>
                           <Select
@@ -1011,8 +755,6 @@ const ScheduleCampaign = (props) => {
                             }
                             disabled
                           >
-                            {/* {console.log(channel)} */}
-
                             <MenuItem
                               value={localStorage.getItem("operatorName")}
                             >
@@ -1021,28 +763,6 @@ const ScheduleCampaign = (props) => {
                           </Select>
                         </FormControl>
                       </div>
-
-                      {/* 
-                        <div className="mb-3 col-4">
-                          <label>Operator</label>
-                          <select
-                            name="Operator"
-                            id="Operator"
-                            className="operator form-select"
-                            aria-label="Default select example"
-                            onChange={(event) =>
-                              handleChange(event, "Operator")
-                            }
-                            disabled
-                          >
-                            <option value={localStorage.getItem("operatorName")}>{localStorage.getItem("operatorName")}</option>
-                          </select>
-                          <p>{formErrors.Operator}</p>
-                        </div> */}
-                      {/* <div className="mb-3 col-4"> */}
-                      {/* <label style={{ width: "100%" }}>
-                            Day Start Time
-                          </label> */}
 
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
@@ -1055,7 +775,6 @@ const ScheduleCampaign = (props) => {
                           <Stack style={{ width: "100%", marginTop: "1rem" }}>
                             <TimePicker
                               label="Day Start Time"
-                              // value={blackoutStartHour}
                               id="dayStartTime"
                               value={selectedStartDate}
                               name="dayStartTime"
@@ -1070,20 +789,6 @@ const ScheduleCampaign = (props) => {
                           </Stack>
                         </LocalizationProvider>
                       </div>
-                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        placeholder="select start time"
-                                        mask="__:__ _M"
-                                        id="dayStartTime"
-                                        value={selectedStartDate}
-                                        name='dayStartTime'
-                                        onChange={event => handleChange(event, "dayStartTime")}
-                                    />
-                                </MuiPickersUtilsProvider>
-                                <p>{formErrors.dayStartTime}</p> */}
-                      {/* </div> */}
-                      {/* <div className="mb-3 col-4"> */}
-                      {/* <label style={{ width: "100%" }}>Day End Time</label> */}
 
                       <div
                         className="create__flow__component__select__channel__dropdown__container"
@@ -1112,18 +817,6 @@ const ScheduleCampaign = (props) => {
                         </LocalizationProvider>
                       </div>
 
-                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        placeholder="select end time"
-                                        mask="__:__ _M"
-                                        id="dayEndTime"
-                                        value={selectedEndDate}
-                                        name='dayEndTime'
-                                        onChange={time => handleChange(time, "dayEndTime")}
-                                    />
-                                </MuiPickersUtilsProvider>
-                                <p>{formErrors.dayEndTime}</p> */}
-                      {/* </div> */}
                       <br />
                     </div>
 
@@ -1137,29 +830,20 @@ const ScheduleCampaign = (props) => {
                           justifyContent: "center",
                         }}
                       >
-                        {/* <label style={{ marginBottom: "16px" }}>
-                            Select Date
-                          </label> */}
-                        {/* <DateRangePickerComponent id="daterangepicker" /> */}
-                        {/* <Calendar
-        date={new Date()}
-        onChange={(e)=> handleDateSelect(e)}
-      /> */}
-
-                          <DateRange
-                            style={{}}
-                            editableDateInputs={true}
-                            moveRangeOnFirstSelection={true}
-                            dateDisplayFormat={"MMM d, yyyy"}
-                            onChange={(item) => {
-                              setErrorMessage('')
-                              setState([item.selection]);
-                              scheduleData["endDate"] = getDateInFormat(
-                                item.selection.endDate
-                              )+"T00:00:00.000Z";
-                              scheduleData["startDate"] = getDateInFormat(
-                                item.selection.startDate
-                              )+"T00:00:00.000Z";
+                        <DateRange
+                          style={{}}
+                          editableDateInputs={true}
+                          moveRangeOnFirstSelection={true}
+                          dateDisplayFormat={"MMM d, yyyy"}
+                          onChange={(item) => {
+                            setErrorMessage("");
+                            setState([item.selection]);
+                            scheduleData["endDate"] =
+                              getDateInFormat(item.selection.endDate) +
+                              "T00:00:00.000Z";
+                            scheduleData["startDate"] =
+                              getDateInFormat(item.selection.startDate) +
+                              "T00:00:00.000Z";
 
                             setScheduleData((scheduleData1) => {
                               let result = {
@@ -1185,7 +869,6 @@ const ScheduleCampaign = (props) => {
                       display: "flex",
                       justifyContent: "space-between",
                       width: "90%",
-                      // border:"2px solid green"
                     }}
                   >
                     <button
@@ -1197,8 +880,6 @@ const ScheduleCampaign = (props) => {
                         color: "white",
                         textTransform: "uppercase",
                         textShadow: "1px 1px 2px black",
-                        // width:"10%",
-                        // margin: "auto",
                         transition: "all 0.5s",
                         fontWeight: "700",
                       }}
@@ -1218,7 +899,6 @@ const ScheduleCampaign = (props) => {
                       }}
                     >
                       <div className="mb-3 col-4" style={{ display: "grid" }}>
-                        {/* <label>Upload Csv Fileimage.png</label> */}
                         <input
                           type="file"
                           accept=".csv"
@@ -1230,11 +910,9 @@ const ScheduleCampaign = (props) => {
                         />
                         <button
                           className="uploadFileButton submitJob"
-                          // style={{ height: "45px" }}
                           type="button"
                           component="span"
                           onClick={() => dummyClick(`uploadCsvFfile`)}
-                          // onClick={(e) => handleChange(e, "uploadCsvFfile")}
                           style={{
                             padding: ".5rem 1rem",
                             border: "none",
@@ -1243,8 +921,7 @@ const ScheduleCampaign = (props) => {
                             color: "white",
                             textTransform: "uppercase",
                             textShadow: "1px 1px 2px black",
-                            // width:"10%",
-                            // margin: "auto",
+
                             transition: "all 0.5s",
                             fontWeight: "700",
                           }}
@@ -1252,7 +929,6 @@ const ScheduleCampaign = (props) => {
                           <span style={{ fontSize: "14px" }}>
                             {fileName !== null ? fileName : "Upload File"}
                           </span>
-                          {/* <PublishIcon style={{ fontSize: "20px" ,border:"2px solid green" }} className="upicon" /> */}
                         </button>
                         <p>{formErrors.file}</p>
                       </div>
@@ -1272,8 +948,6 @@ const ScheduleCampaign = (props) => {
                         color: "white",
                         textTransform: "uppercase",
                         textShadow: "1px 1px 2px black",
-                        // width:"10%",
-                        // margin: "auto",
                         transition: "all 0.5s",
                         fontWeight: "700",
                       }}
@@ -1288,132 +962,69 @@ const ScheduleCampaign = (props) => {
                   {showLoader && <CircularProgress />}
                 </div>
               </div>
-              {/* )  */}
-
-              {/* :  */}
-
-              {/* (
-                  <div className="listContainer">
-                    <div style={{ textAlign: "end" }}>
-                      <button
-                        type="submit"
-                        className="btn btn-primary addNew"
-                        onClick={(e) => showFormData(e)}
-                      >
-                        + Add New
-                      </button>
-                    </div>
-                    <div className="card-body text-center p-0">
-                      <div className="table-responsive table-striped ctable">
-                          <Table
-                            className={classes.table}
-                            aria-label="simple table"
-                          >
-                            <TableHead className="thead-light">
-                              <TableRow>
-                                <TableCell> Id</TableCell>
-                                <TableCell align="right">Job Name</TableCell>
-                                <TableCell align="right">Priority</TableCell>
-                                <TableCell align="right">Status</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {tabledata.map((row) => (
-                                <TableRow
-                                  key={row.service_id}
-                                  className="tableRow"
-                                >
-                                  <TableCell align="right">
-                                    {row.jobId}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    {row.jobName}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    {row.priority}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    {row.status}
-                                  </TableCell>
-                          
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                      </div>
-                    </div>
-                  </div>
-                ) 
-                }  */}
 
               {openCancelModal && (
-                <div className="bg-modal" style={{position:"fixed", top:'0', left:"0"}}>
+                <div
+                  className="bg-modal"
+                  style={{ position: "fixed", top: "0", left: "0" }}
+                >
                   <div className="modal-content">
-                    <h3 className="title">If you cancel then you have to create campaign again</h3>
-                    <h3 className="title">are you sure you want to cancel ? </h3>
-                    <div style={{width:"100%", display:"flex", justifyContent:"space-evenly"}}>
-
-                    <button
+                    <h3 className="title">
+                      If you cancel then you have to create campaign again
+                    </h3>
+                    <h3 className="title">
+                      are you sure you want to cancel ?{" "}
+                    </h3>
+                    <div
                       style={{
-                        padding: ".5rem 1rem",
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: " #374151",
-                        color: "white",
-                        textTransform: "uppercase",
-                        textShadow: "1px 1px 2px black",
-                        width: "10%",
-                        // margin: "auto",
-                        marginBottom: "1rem",
-                        transition: "all 0.5s",
-                        fontWeight: "700",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-evenly",
                       }}
-                      className="closeBtn"
-                      onClick={(e) => handleModal(e)}
                     >
-                      No
-                    </button>
-                    <button
-                      style={{
-                        padding: ".5rem 1rem",
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: " #374151",
-                        color: "white",
-                        textTransform: "uppercase",
-                        textShadow: "1px 1px 2px black",
-                        width: "10%",
-                        // margin: "auto",
-                        marginBottom: "1rem",
-                        transition: "all 0.5s",
-                        fontWeight: "700",
-                      }}
-                      className="closeBtn"
-                      onClick={(e) => handleYesModal(e)}
-                    >
-                      Yes
-                    </button>
+                      <button
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #374151",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          width: "10%",
+                          marginBottom: "1rem",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                        className="closeBtn"
+                        onClick={(e) => handleModal(e)}
+                      >
+                        No
+                      </button>
+                      <button
+                        style={{
+                          padding: ".5rem 1rem",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: " #374151",
+                          color: "white",
+                          textTransform: "uppercase",
+                          textShadow: "1px 1px 2px black",
+                          width: "10%",
+                          marginBottom: "1rem",
+                          transition: "all 0.5s",
+                          fontWeight: "700",
+                        }}
+                        className="closeBtn"
+                        onClick={(e) => handleYesModal(e)}
+                      >
+                        Yes
+                      </button>
                     </div>
                   </div>
                 </div>
               )}
             </div>
-            {/* ) : ( */}
-            {/* null */}
-            {/* // <div className="successCard">
-              //   <div className="successIcon">
-              //     <i className="checkmark">✓</i>
-              //   </div>
-              //   <h1>Success</h1>
-              //   <button */}
-            {/* //     type="submit"
-              //     className="btn btn-primary submitJob"
-              //     onClick={(e) => handleConfirm(e)}
-              //   >
-              //     Finish!!
-              //   </button>
-              // </div>
-            )} */}
           </div>
         </div>
       </div>

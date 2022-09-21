@@ -10,41 +10,19 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
-// import OutlinedInput from "@mui/material/OutlinedInput";
-// import ListItemText from "@mui/material/ListItemText";
-// import Checkbox from "@mui/material/Checkbox";
-
 import "./createCampaign.css";
 import { CommonContext } from "../../../../helpers/CommonContext";
 import { useEffect } from "react";
-import IfIVRSelected from "../create__flow__component/if__ivr__selected/IfIVRSelected";
-import RenderingComponentOnLanguageSelect from "../create__flow__component/if__ivr__selected/rendering__component__on__language__select/RenderingComponentOnLanguageSelect";
 import CreateFlowComponent from "../create__flow__component/CreateFlowComponent";
 import { store } from "../../../../store/store";
 import { useError } from "../../../../store/errorContext";
-import { ErrorSharp } from "@material-ui/icons";
 import "./createCampaign.css";
 import { toast } from "react-toastify";
-import { SliderValueLabel } from "@mui/material";
 import { useMemo } from "react";
-const priorityArray = [
-  "1(Least Prior)",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-];
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
   const localStore = globalState.state.ivrCampFlowData;
-  const [campType, setCampType] = useState("Outgoing")
-  var [update, updateForm] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false)
   const {
     dispatch,
@@ -62,26 +40,14 @@ const CreateCampaign = (props) => {
     cli_sms: "",
     cli_ussd: "",
   };
-  const {
-    flowName,
-    // setFlowName,
-  } = useContext(CommonContext);
 
-  const [selectPriority, setSelectPriority] = useState("");
-  const [createCampCli, setCreateCampCli] = useState();
   const [scheduleData1, setScheduleData] = useState({});
-  const [flowData, setFlowData] = useState({});
-  var [channelName, getChannelName] = useState(null);
   const [formValues, setFormValues] = useState(initialValues);
   const { showError, setShowError, errorState, errorDispatch } = useError();
   const [showFlowState, setShowFlowState] = useState(false);
-  var flowId = "";
+  var [update, updateForm] = useState(false);
 
   var scheduleData = {};
-  var flowDataFromApi = {};
-  const handlePriorityChange = (event) => {
-    setSelectPriority(event.target.value);
-  };
 
   const localWfId = localStorage.getItem('wfId')
   const value = useMemo(()=>props.FlowListData.filter(item=>item.wfId === localWfId)[0],[props.FlowListData, localWfId])
@@ -100,14 +66,8 @@ const CreateCampaign = (props) => {
     }
   },[value])
 
-  const saveValues = (e) => {
-    setCreateCampCli(e.target.value);
-  };
-
   useEffect(() => {
     debugger;
-    // setData([]);
-    // props.getFlowList();
     props.setDisableNext(true);
     setCampaignName('')
     setCampaignSchedulePriority()
@@ -144,23 +104,12 @@ const CreateCampaign = (props) => {
   const getFlow = async (id) => {
     debugger;
     localStorage.setItem("wfId", id);
-    flowId = id;
-    const path = "http://41.217.203.246:5002/bng/ui/get/flow?wfId=" + id;
+    const path = "http://34.214.61.86:5002/bng/ui/get/flow?wfId=" + id;
     return await fetch(path)
       .then((response) => response.json())
       .then(function (data) {
-        setFlowData(data);
-        getChannelName(data.flow.channel);
-        // if(data.flow.channel != "IVR_SMS"){
-        localStorage.setItem("channelName", data.flow.channel);
-        // }
-        localStorage.setItem("flowName", data.service_Data.name);
-        // history.push({
-        //     pathname: '/campaign/ivr',
-        //     state: { detail: data }
-        // });
-        flowDataFromApi = data.flow;
-
+        localStorage.setItem("channelName", data.flow.channel); 
+        localStorage.setItem("flowName", data.service_Data.name);  
         flowFromApi(data.flow);
         return data;
       })
@@ -169,7 +118,7 @@ const CreateCampaign = (props) => {
       });
   };
 
-  const handleChange = (e, catagory) => {
+  const handleChange = (e) => {
     debugger;
     const { name, value } = e.target;
     setFormValues({
@@ -177,7 +126,7 @@ const CreateCampaign = (props) => {
       [name]: !isNaN(value) ? (value >= 0 ? value : 0) : value,
     });
     if (e.target.id == "campName") {
-      // validateData('campName', e);
+      
       scheduleData["campName"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -203,21 +152,21 @@ const CreateCampaign = (props) => {
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_ivr") {
-      // validateData('cli_ivr', e);
+      
       scheduleData["cli_ivr"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_sms") {
-      // validateData('cli_sms', e);
+      
       scheduleData["cli_sms"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_ussd") {
-      // validateData('cli_ussd', e);
+      
       scheduleData["cli_ussd"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -267,6 +216,7 @@ const CreateCampaign = (props) => {
     ) {
       setShowError(false);
       e.preventDefault();
+      e.preventDefault();
       if (update) {
         fetch(
           "http://41.217.203.246" + ":" + "5002" + "/bng/ui/update/campaign",
@@ -297,6 +247,7 @@ const CreateCampaign = (props) => {
       } else {
         fetch(
           "http://41.217.203.246" + ":" + "5002" + "/bng/ui/create/campaign",
+
           {
             method: "POST",
             headers: {
@@ -331,6 +282,7 @@ const CreateCampaign = (props) => {
             console.log(e);
           });
       }
+      
     } else {
       setShowError(true);
     }
@@ -342,10 +294,6 @@ const CreateCampaign = (props) => {
     localStore.ivrCampFlowData.flow = data;
     dispatch({ type: "SET_DATA", nState: localStore });
   };
-
-  // useEffect(()=>{
-  //   flowFromApi()
-  // },[])
 
   return (
     <>
@@ -369,9 +317,6 @@ const CreateCampaign = (props) => {
                 name="campName"
                 label="Campaign Name"
                 value={campaignName}
-                // value={formValues.campName}
-                // onChange={(e) => setCampaignName(e.target.value)}
-                // onChange={(event) => handleChange(event, "jobName")}
                 onChange={(e) => setCampaignName(e.target.value)}
                 variant="outlined"
                 required
@@ -457,49 +402,15 @@ const CreateCampaign = (props) => {
                 aria-label="Default select example"
                 name="wfId"
                 value={value?.flowName ? value.flowName : ''}
-                // onChange={(event) => handleChange(event, "wfId")}
-                // required
-                // error={showError ? (formValues.wfId ? false : true) : false}
                 disabled={true}
               >
-                {/* {props.FlowListData &&
-                  props.FlowListData.map((e) => (
-                    <MenuItem key={e.id} value={e.wfId}>
-                      {e.flowName}
-                    </MenuItem>
-                  ))} */}
               </TextField>
             </FormControl>
-
-            {/* <Box
-              component="form"
-              style={{ width: "100%" }}
-              noValidate
-              autoComplete="off"
-            >
-              <label>Work Flow Name</label>
-              <select
-                id="wfId"
-                name="wfId"
-                className="campaignId form-select"
-                aria-label="Default select example"
-                onChange={(event) => handleChange(event, "wfId")}
-                value={localStorage.getItem("flowName")}
-              >
-                {props.FlowListData &&
-                  props.FlowListData.map((e) => (
-                    <option key={e.id} value={e.wfId}>
-                      {e.flowName}
-                    </option>
-                  ))}
-              </select>
-            </Box> */}
           </div>
           {localStorage.getItem("channelName") == "USSD" ? (
             <div
               className="create__campaign__campaign__type__radio__button"
-              style={{
-                // border: "2px solid blue",
+              style={{          
                 height: "50px",
               }}
               disabled
@@ -537,62 +448,12 @@ const CreateCampaign = (props) => {
                   Campaign Type
                 </FormLabel>
                 <RadioGroup row>
-                  {/* <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "6px",
-                  padding: "5px",
-                  boxSizing: "border-box",
-                  // border: "2px solid green",
-                }}
-              >
-                <div
-                  style={{
-                    // border: "2px solid red",
-                    display: "flex",
-                    width: "40%",
-                  }}
-                >
-                  <label htmlFor="incoming" className="campaignInputCheckbox">Incoming</label>
-                  <input
-                    type="radio"
-                    id="incoming"
-                    name="campaign_type"
-                    value="incoming"
-                    onChange={(e) => handleChange(e, "incoming")}
-                    style={{
-                      marginLeft: "10px",
-                      // border: "2px solid red",
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    // border: "2px solid red",
-                    display: "flex",
-                    width: "40%",
-                  }}
-                >
-                  <label htmlFor="outgoing" className="campaignInputCheckbox">Outgoing</label>
-                  <input
-                    type="radio"
-                    id="outgoing"
-                    name="campaign_type"
-                    value="outgoing"
-                    onChange={(e) => handleChange(e, "outgoing")}
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  />
-                </div>
-              </div> */}
                   <FormControlLabel
                     name="campaign_type"
                     value="incoming"
                     control={<Radio />}
                     label="Incoming"
-                    onChange={(e) => handleChange(e, "incoming")}
+                    onChange={(e) => handleChange(e)}
                     style={{ marginLeft: "5px" }}
                   />
                   <FormControlLabel
@@ -601,7 +462,7 @@ const CreateCampaign = (props) => {
                     value="outgoing"
                     control={<Radio />}
                     label="Outgoing"
-                    onChange={(e) => handleChange(e, "outgoing")}
+                    onChange={(e) => handleChange(e)}
                   />
                 </RadioGroup>
               </FormControl>
@@ -609,8 +470,7 @@ const CreateCampaign = (props) => {
           ) : (
             <div
               className="create__campaign__campaign__type__radio__button"
-              style={{
-                // border: "2px solid blue",
+              style={{  
                 height: "50px",
               }}
             >
@@ -645,62 +505,12 @@ const CreateCampaign = (props) => {
                   Campaign Type
                 </FormLabel>
                 <RadioGroup row>
-                  {/* <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "6px",
-                  padding: "5px",
-                  boxSizing: "border-box",
-                  // border: "2px solid green",
-                }}
-              >
-                <div
-                  style={{
-                    // border: "2px solid red",
-                    display: "flex",
-                    width: "40%",
-                  }}
-                >
-                  <label htmlFor="incoming" className="campaignInputCheckbox">Incoming</label>
-                  <input
-                    type="radio"
-                    id="incoming"
-                    name="campaign_type"
-                    value="incoming"
-                    onChange={(e) => handleChange(e, "incoming")}
-                    style={{
-                      marginLeft: "10px",
-                      // border: "2px solid red",
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    // border: "2px solid red",
-                    display: "flex",
-                    width: "40%",
-                  }}
-                >
-                  <label htmlFor="outgoing" className="campaignInputCheckbox">Outgoing</label>
-                  <input
-                    type="radio"
-                    id="outgoing"
-                    name="campaign_type"
-                    value="outgoing"
-                    onChange={(e) => handleChange(e, "outgoing")}
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  />
-                </div>
-              </div> */}
                   <FormControlLabel
                     name="campaign_type"
                     value="incoming"
                     control={<Radio />}
                     label="Incoming"
-                    onChange={(e) => handleChange(e, "incoming")}
+                    onChange={(e) => handleChange(e)}
                     style={{ marginLeft: "5px" }}
                   />
                   <FormControlLabel
@@ -708,7 +518,7 @@ const CreateCampaign = (props) => {
                     value="outgoing"
                     control={<Radio />}
                     label="Outgoing"
-                    onChange={(e) => handleChange(e, "outgoing")}
+                    onChange={(e) => handleChange(e)}
                   />
                 </RadioGroup>
               </FormControl>

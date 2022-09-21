@@ -8,32 +8,18 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import "./ifivrselected.css";
-import classNames from "classnames";
-
 import MainDTMF from "./main__dtmf/MainDTMF";
 import { CommonContext } from "../../../../../helpers/CommonContext";
 import { store } from "../../../../../store/store";
-
-import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
-
 import config from "../../../../../ApiConfig/Config";
 import Typography from "@mui/material/Typography";
 import ReactAudioPlayer from "react-audio-player";
-
-import { BsCheckCircle } from "react-icons/bs";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FiPlayCircle, FiRefreshCcw } from "react-icons/fi";
-import { FiPauseCircle } from "react-icons/fi";
-import { Howl } from "howler";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 
 const IfIVRSelected = (props) => {
   debugger;
   const {
-    welcomePromptWaitTime,
-    setWelcomePromptWaitTime,
-    numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
   } = useContext(CommonContext);
 
@@ -44,7 +30,7 @@ const IfIVRSelected = (props) => {
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
-  const { showError, setShowError, errorDispatch, errorState } = useError();
+  const { showError, setShowError, errorDispatch } = useError();
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
@@ -70,13 +56,6 @@ const IfIVRSelected = (props) => {
     globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount,
   ]);
 
-  const handleDataInput = (e, type) => {
-    if (type === "mainAudioWaitTime") {
-      localStore.ivrCampFlowData.flow["waitTime"] = e.target.value;
-    }
-    dispatch({ type: "SET_DATA", nState: localStore });
-  };
-
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
     console.log(
@@ -88,7 +67,6 @@ const IfIVRSelected = (props) => {
       "lang",
       lang
     );
-    // return
     try {
       const uploadedFiles = await uploadMultipleFiles(files);
       console.log("%c ==FILES UPLOADED==", "background:yellow", uploadedFiles);
@@ -96,7 +74,6 @@ const IfIVRSelected = (props) => {
       const localFileName = uploadedFiles.response;
       const serverFileName = uploadedFiles.key;
 
-      //set origional and server name mapping in temp
       localStore.temp.uploads.push({
         l_name: localFileName,
         s_name: serverFileName,
@@ -106,7 +83,6 @@ const IfIVRSelected = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -116,7 +92,6 @@ const IfIVRSelected = (props) => {
         }
 
         console.log("oldState", oldStateFiles);
-        // dict[lang] = oldStateFiles + uploadedFiles[0].key;
         dict[lang] = oldStateFiles + uploadedFiles.response;
         localStore.ivrCampFlowData.flow[key] = {
           ...localStore.ivrCampFlowData.flow[key],
@@ -131,7 +106,6 @@ const IfIVRSelected = (props) => {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
-        // console.log("local", localStore)
         if (
           localStore.ivrCampFlowData.flow &&
           localStore.ivrCampFlowData.flow[target] &&
@@ -172,7 +146,6 @@ const IfIVRSelected = (props) => {
         }
         dispatch({ type: "SET_DATA", nState: localStore });
       } else if (target === "repeat_audio_file") {
-        // const key = e.target.name;
         const dict = {};
         dict[lang] = uploadedFiles[0].key;
         localStore.ivrCampFlowData.flow.repeat.audio_file = dict;
@@ -202,8 +175,6 @@ const IfIVRSelected = (props) => {
         } else if (targetArray[0] === "level2") {
           const parent_dtmf = targetArray[1];
           const current_dtmf = targetArray[2];
-          // console.log("this is level 2 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[parent_dtmf - 1].actions[
             current_dtmf - 1
           ].audio_file[lang] = localStore.ivrCampFlowData.flow.actions[
@@ -220,8 +191,6 @@ const IfIVRSelected = (props) => {
           const gparent = targetArray[1];
           const parent_dtmf = targetArray[2];
           const current_dtmf = targetArray[3];
-          // console.log("this is level 3 audio file for language ", lang, " ---> ", uploadedFiles[0].key);
-          // console.log('localStore', parent_dtmf, current_dtmf, localStore);
           localStore.ivrCampFlowData.flow.actions[gparent].actions[
             parent_dtmf - 1
           ].actions[current_dtmf - 1].audio_file[lang] = localStore
@@ -263,14 +232,9 @@ const IfIVRSelected = (props) => {
       formData.append("file", e);
       console.log("-----------------props------", formData.getAll("file"));
     });
-    // const path = Configs.server.path + ':' + Configs.server.port + '' + Configs.api.multipleFileUpload;
     const path = config.server.path + ":" + "5002" + "" + "/bng/ui/uploadFile";
-
-    // const path = 'http://35.154.125.150:5080/api/bng/zbp/uploadMultipleFile';
-    // const path = 'http://35.154.125.150:5080/uploadMultipleFile';
     console.log("Path is", path);
     return await fetch(path, {
-      // fetch('http://172.16.10.212:/api/bng/zbp/uploadMultipleFile',{
       method: "POST",
       body: formData,
     })
@@ -285,36 +249,6 @@ const IfIVRSelected = (props) => {
       });
   }
 
-  const playPauseAudio = (src) => {
-    debugger;
-    AudioClips(src);
-  };
-
-  function AudioClips() {
-    debugger;
-    // const [isPlaying, setIsPlaying] = useState(false);
-    let isPlaying = false;
-
-    // const soundPlay = () => {
-    //     debugger;
-    const sound = new Howl({
-      src: globalState.state.ivrCampFlowData.flow.main_audio_file,
-      html5: true,
-    });
-
-    if (isPlaying) {
-      sound.pause();
-      isPlaying = false;
-    } else {
-      sound.play();
-      isPlaying = true;
-    }
-    //  }
-    // function playPause () {
-
-    //  }
-  }
-
   const GetMainAudioFiles = (lang, type) => {
     debugger;
     let id = lang.split("-");
@@ -327,16 +261,12 @@ const IfIVRSelected = (props) => {
         .map((e, index) => {
           return (
             <span
-              // style={{ border: "2px solid green", marginTop:"-10px"}}
               key={e}
             >
               <span style={{ color: "darkgray" }}>
-                {/* {" "} */}
                 {index + 1} - {e}
               </span>{" "}
               <br />
-              {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
-              {/* {e} */}
               <div
                 className="playingOptions"
                 style={{
@@ -345,37 +275,11 @@ const IfIVRSelected = (props) => {
                   marginTop: "5px",
                 }}
               >
-                {/* <BsCheckCircle size={15} className="checkedIcon" />
-                <IoIosCloseCircleOutline
-                  className="checkedIcon"
-                  size={15}
-                  style={{ color: "red", cursor: "pointer" }}
-                />
-                <FiPlayCircle
-                  className="checkedIcon"
-                  size={15}
-                  id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                  onClick={() => playPauseAudio(e)}
-                  style={{
-                    color: "purple",
-                    cursor: "pointer",
-                  }}
-                />
-                <FiPauseCircle
-                  size={15}
-                  className="checkedIcon"
-                  id={globalState.state.ivrCampFlowData.flow.main_audio_file.en}
-                  onClick={() => playPauseAudio(e)}
-                  style={{ cursor: "pointer" }}
-                /> */}
-
                 <ReactAudioPlayer
-                  src={`http://41.217.203.246/cm_data/audio/${e}`}
-                  // autoPlay
+                  src={`http://34.214.61.86/cm_data/audio/${e}`}
                   controls
                 />
               </div>
-              {/* <span className="m-t-10"> </span> */}
             </span>
           );
         });
@@ -399,48 +303,13 @@ const IfIVRSelected = (props) => {
                 return (
                   <span key={e}>
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
-                    {/* {globalState.state.temp.uploads.length > 0 ? globalState.state.temp.uploads.find(f => e === f.s_name) ? globalState.state.temp.uploads.find(f => e === f.s_name).l_name : e : e} */}
                     {e}
-                    {/* <BsCheckCircle size={15} className="checkedIcon" />
-                    <IoIosCloseCircleOutline
-                      className="checkedIcon"
-                      size={15}
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <FiPlayCircle
-                      className="checkedIcon"
-                      size={15}
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{
-                        color: "purple",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <FiPauseCircle
-                      size={15}
-                      className="checkedIcon"
-                      id={
-                        globalState.state.ivrCampFlowData.flow.language[0]
-                          .actions[i].lang_file["ivr"][lang]
-                      }
-                      onClick={() => playPauseAudio(e)}
-                      style={{ cursor: "pointer" }}
-                    /> */}
                     <ReactAudioPlayer
-                  src={`http://41.217.203.246/cm_data/audio/${e}`}
-                  // autoPlay
+                  src={`http://34.214.61.86/cm_data/audio/${e}`}
                       controls
                     />
                     <br></br>
                     <br></br>
-                    {/* <span className="m-t-10"> </span> */}
                   </span>
                 );
               });
@@ -467,9 +336,7 @@ const IfIVRSelected = (props) => {
   };
 
   const detectLevel = (e, target, current) => {
-    debugger;
     handleChange(e);
-    // console.log('dtmfs--- options', props, e, target, current)
     if (target === "main_audio") {
       handleDataChange(e);
     } else if (target === "sub_audio_dtmfs") {
@@ -596,26 +463,19 @@ const IfIVRSelected = (props) => {
         for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
           localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.pop();
       }
-
-      // // dispatch('SET_DTMF_SUB', data)
       localStore.ivrCampFlowData.flow.actions[current.id - 1].dtmf_count =
         newNumOfCards;
       dispatch({ type: "SET_DATA", nState: localStore });
-
-      //TO-DO : Write using SET_DTMF_SUB
     }
   };
 
   const setDataDynamic = (type, e, current) => {
     debugger;
 
-    const val = e.target.value;
     let localStore = globalState.state;
-    // console.log(current, e.target.value, props);
 
     if (type === "sub_audio_dtmfs") {
       if (current.level === 1) {
-        //for level 1
         console.log("===================================================");
 
         const oldNumOfCards =
@@ -726,7 +586,6 @@ const IfIVRSelected = (props) => {
             });
           });
         } else {
-          //delete cards from the end of the array
           for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
             localStore.ivrCampFlowData.flow.actions[
               current.dtmf_key - 1
@@ -734,7 +593,6 @@ const IfIVRSelected = (props) => {
         }
       }
       if (current.level === 2) {
-        //for level 2
         let levels = current.id.split("_").map((e) => parseInt(e) - 1);
         console.log(
           "========================222===========================",
@@ -850,7 +708,6 @@ const IfIVRSelected = (props) => {
             });
           });
         } else {
-          //delete cards from the end of the array
           for (var i = 0; i < oldNumOfCards - newNumOfCards; i++)
             localStore.ivrCampFlowData.flow.actions[levels[0]].actions[
               levels[1]
@@ -879,12 +736,10 @@ const IfIVRSelected = (props) => {
     console.log("change dtmf type", e, obj);
     const key = e.target.name;
     let localStore = globalState.state;
-    // localStore.ivrCampFlowData.flow[key] = e.target.value;
 
     if (key === "type") {
       if (obj.parent_dtmf) {
         obj.type = e.target.value;
-        // console.log("%cKEY level 2", 'color:green', "key", key, "ew", e, obj, localStore)
 
         if (obj.level === 3) {
           let levels = obj.id.split("_").map((e) => parseInt(e) - 1);
@@ -957,27 +812,14 @@ const IfIVRSelected = (props) => {
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
     else if (level === "sub")
       localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime = val;
-
     console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
     dispatch({ type: "SET_DATA", nState: localStore });
   };
-  const [arr1, setArr] = useState([]);
-  useEffect(() => {
-    localStorage.setItem("colorStateCounter", 1);
-    var arr = [];
-    for (var i = 1; i < numberOfMainDTMFWhenIVRIsSelected + 1; i++) {
-      arr.push(i);
-    }
-    setArr(arr);
-  }, [numberOfMainDTMFWhenIVRIsSelected]);
 
   const numberOfDTMF = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
 
-  // const howManyDTMFToShow = (numberOfMainDTMFWhenIVRIsSelected) => {
-
-  // };
   var hellohello = [];
   var languageName = [];
   return (
@@ -1037,21 +879,14 @@ const IfIVRSelected = (props) => {
                 <TextField
                   id={"waitTime_" + global.dtmf_key}
                   disabled={
-                    // disableProperties &&
                     disableChannel == "SMS" ||
-                    // !disableProperties &&
                     disableChannel == "SMS" ||
                     props.disableEditingWhileCreatingCamp
                   }
                   label="Welcome prompt Wait Time"
                   type="number"
                   name={"waitTime_" + global.dtmf_key}
-                  // value={welcomePromptWaitTime}
                   value={globalState.state.ivrCampFlowData.flow.waitTime}
-                  // onChange={(e) => {
-                  //   // setWelcomePromptWaitTime(e.target.value);
-                  //   handleDataInput(e, "mainAudioWaitTime");
-                  // }}
                   onChange={(e) => setWaitTime("main", e.target, null)}
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
@@ -1094,7 +929,6 @@ const IfIVRSelected = (props) => {
                       .main_audio_dtmfCount
                   }
                   label="Number of options in IVR flow"
-                  // onChange={handleChange}
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);
@@ -1122,7 +956,6 @@ const IfIVRSelected = (props) => {
                 </Select>
               </FormControl>
             </div>
-            {/* {howManyDTMFToShow(numberOfMainDTMFWhenIVRIsSelected)} */}
           </div>
 
           <div className="ifIVRselected__number__of__DTMF__to__show__container">
@@ -1147,13 +980,6 @@ const IfIVRSelected = (props) => {
                   disableEditingWhileCreatingCamp={
                     props.disableEditingWhileCreatingCamp
                   }
-                  // edit={props.edit}
-                  // uploadFiles={uploadFiles}
-                  // setRepeat={setRepeat}
-                  // setDataCust={setDataCust}
-                  // disableProperties={disableProperties}
-                  // resetFileArray={resetFileArray}
-                  // disableChannel={disableChannel}
                 />
               );
             })}

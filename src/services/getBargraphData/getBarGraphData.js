@@ -1,67 +1,75 @@
+import { getDateInFormat } from "../getDateInFormat";
 import { dateFilter, isDateSmaller } from "./dateFilter";
+import { getMonth } from "./getMonth";
 import { initialValue } from "./initialValue";
 
-const getBarGraphData = (data, campName = "", startDate = "", endDate = "") => {
+let defaultStartDate = new Date();
+let defaultEndDate = new Date();
+
+defaultStartDate.setDate(defaultStartDate.getDate() - 30);
+defaultEndDate.setDate(defaultEndDate.getDate() - 1);
+
+const getBarGraphData = (
+  data,
+  campName = "",
+  startDate = getDateInFormat(defaultStartDate),
+  endDate = getDateInFormat(defaultEndDate)
+) => {
+  let result = {};
   let localData = data;
   let localDates = {};
-  let localSuccess = {};
-  let localFailed = {};
-  let localTotal = {};
 
   if (campName) {
     localData = localData.filter((item) => item.campName === campName);
   }
-  if (startDate && endDate) {
-    localData = localData.filter((item) =>
-      dateFilter(item, startDate, endDate)
-    );
-  }
+  console.log('localdata', localData)
+  localData = localData.filter((item) => dateFilter(item, startDate, endDate));
 
-  localData = localData.reduce((prevValue, item) => {
-    let newValue = { ...prevValue };
+  result = localData.reduce((prevValue, item) => {
+    let newValue = JSON.parse(JSON.stringify(prevValue));
     let loopArray = item.dataByDates;
+
     for (let i = loopArray.length - 1; i >= 0; i--) {
       if (
         isDateSmaller(loopArray[i].date, startDate) &&
         isDateSmaller(endDate, loopArray[i].date)
       ) {
         localDates = { ...localDates, [loopArray[i].date]: 1 };
-
-        localSuccess = {
-          ...localSuccess,
-          [loopArray[i].date]:
-            ~~localSuccess[loopArray[i].date] + ~~loopArray[i].Success
-        };
-        localFailed = {
-          ...localFailed,
-          [loopArray[i].date]:
-            ~~localFailed[loopArray[i].date] + ~~loopArray[i].Failed
-        };
-        localTotal = {
-          ...localTotal,
-          [loopArray[i].date]:
-            ~~localTotal[loopArray[i].date] +
-            ~~loopArray[i].Success +
-            ~~loopArray[i].Failed
-        };
       }
     }
-
-    newValue.labels = Object.keys(localDates).map((item) => item);
-    newValue.datasets[0] = Object.keys(localSuccess).map(
-      (item) => localSuccess[item]
-    );
-    newValue.datasets[1] = Object.keys(localFailed).map(
-      (item) => localFailed[item]
-    );
-    newValue.datasets[2] = Object.keys(localTotal).map(
-      (item) => localTotal[item]
-    );
-
     return newValue;
   }, initialValue);
 
-  return localData;
+  result.labels = Object.keys(localDates).sort((a, b) =>
+    isDateSmaller(a, b) ? 1 : -1
+  );
+
+  result = localData.reduce((prevValue, item) => {
+    let newValue = JSON.parse(JSON.stringify(prevValue));
+    let loopArray = item.dataByDates;
+
+    for (let i = loopArray.length - 1; i >= 0; i--) {
+      if (newValue.labels.includes(loopArray[i].date)) {
+        let index = newValue.labels.indexOf(loopArray[i].date);
+        newValue.datasets[0].data[index] =
+          ~~newValue.datasets[0].data[index] + ~~loopArray[i]["picked"];
+        newValue.datasets[1].data[index] =
+          ~~newValue.datasets[1].data[index] + ~~loopArray[i]["progress"];
+        newValue.datasets[2].data[index] =
+          ~~newValue.datasets[2].data[index] +
+          ~~loopArray[i]["picked"] +
+          ~~loopArray[i]["progress"];
+      }
+    }
+
+    return newValue;
+  }, result);
+
+  result.labels = result.labels.map(
+    (item) => item.slice(8, 10) + " " + getMonth(item.slice(5, 7))
+  );
+
+  return result;
 };
 
 export { getBarGraphData };

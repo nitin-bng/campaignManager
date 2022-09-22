@@ -552,7 +552,7 @@ const Home = () => {
                           onChange={(item) => {
                             setState([item.selection]);
                           }}
-                          minDate={todaysDate.startDate}
+                          maxDate={todaysDate.startDate}
                           ranges={state}
                         />
                         </CardContent>

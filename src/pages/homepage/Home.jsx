@@ -42,6 +42,30 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { store } from "../../store/store";
 import config from "../../ApiConfig/Config";
 
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+
+import { DateRange } from "react-date-range";
+
+
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -65,7 +89,8 @@ export const options = {
     },
     title: {
       display: true,
-      text: "aaj se phle",
+      text: "Dates ----->",
+      position: "bottom",
     },
   },
 };
@@ -159,7 +184,25 @@ const Home = () => {
   const [callSuccess, setCallSuccess] = useState([]);
   const [callFail, setCallFail] = useState([]);
   const [callRetry, setCallRetry] = useState([]);
+  const [expanded, setExpanded] = React.useState(false);
+  const todaysDate = {
+    startDate: new Date(),
+    endDate: null,
+  };
+  
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  
   var rows2 = [];
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   function createData2(
     jobId,
@@ -215,7 +258,7 @@ const Home = () => {
 
   useEffect(() => {
     getcampaignScheduleList();
-    dashBoardData()
+    dashBoardData();
   }, []);
 
   const dashBoardData = () => {
@@ -430,9 +473,20 @@ const Home = () => {
 
                 <div
                   className="home__maincontent__card home__maincontent__card10"
-                  style={{ width: "96%", marginTop: "2rem" }}
+                  style={{
+                    width: "96%",
+                    marginTop: "2rem",
+                    border: "2px solid red",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems:"flex-start",
+                    overflow:"visible"
+                  }}
                 >
-                  <div className="home__maincontent__camp__select__dropdown">
+                  <div
+                    className="home__maincontent__camp__select__dropdown"
+                    // style={{ border: "2px solid green" }}
+                  >
                     <FormControl sx={{ m: 1, width: 300 }}>
                       <InputLabel id="demo-multiple-name-label">
                         Name
@@ -457,30 +511,53 @@ const Home = () => {
                       </Select>
                     </FormControl>
                   </div>
-                  <div className="home__maincontent__camp__select__dropdown">
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                      <InputLabel id="demo-multiple-name-label">
-                        Name
-                      </InputLabel>
-                      <Select
-                        labelId="demo-multiple-name-label"
-                        id="demo-multiple-name"
-                        value={personName}
-                        onChange={handleChange}
-                        input={<OutlinedInput label="Name" />}
-                        MenuProps={MenuProps}
-                      >
-                        {names.map((name) => (
-                          <MenuItem
-                            key={name}
-                            value={name}
-                            style={getStyles(name, personName, theme)}
-                          >
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                  <div
+                    className="home__maincontent__camp__select__dropdown"
+                    style={{ width: "30%", position:"relative"}}
+                  >
+                    <Card
+                      style={{
+                        // backgroundColor: "rgba(0, 0, 0, 0.04)",
+                        // padding: "1rem",
+                        position:"absolute",
+                        top:"7px",
+                        width: "100%",
+                      }}
+                      fullWidth
+                    >
+                      <CardActions disableSpacing>
+                        <Typography>
+                          Select Date Range
+                        </Typography>
+                        <ExpandMore
+                          expand={expanded}
+                          onClick={handleExpandClick}
+                          aria-expanded={expanded}
+                          aria-label="show more"
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <ExpandMoreIcon />
+                        </ExpandMore>
+                      </CardActions>
+                      <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        <CardContent>
+                        <DateRange
+                          style={{}}
+                          editableDateInputs={true}
+                          moveRangeOnFirstSelection={true}
+                          dateDisplayFormat={"MMM d, yyyy"}
+                          onChange={(item) => {
+                            setState([item.selection]);
+                          }}
+                          minDate={todaysDate.startDate}
+                          ranges={state}
+                        />
+                        </CardContent>
+                      </Collapse>
+                    </Card>
                   </div>
                 </div>
 

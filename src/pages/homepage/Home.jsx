@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import MenuAppBar from "../../components/topbar/MenuAppBar";
 // import faker from 'faker';
+import { addDays } from "date-fns";
 
 import {
   Chart as ChartJS,
@@ -52,8 +53,6 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 
 import { DateRange } from "react-date-range";
-
-
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -189,15 +188,15 @@ const Home = () => {
     startDate: new Date(),
     endDate: null,
   };
-  
-  const [state, setState] = useState([
-    {
+
+  const [state, setState] = useState({
+    selection: {
       startDate: new Date(),
-      endDate: new Date(),
+      endDate: null,
       key: "selection",
     },
-  ]);
-  
+  });
+
   var rows2 = [];
 
   const handleExpandClick = () => {
@@ -340,6 +339,11 @@ const Home = () => {
       });
   };
 
+
+  const setEndDate = () =>{
+    
+  }
+
   useEffect(() => {
     dashBoardDataFromApi();
   }, []);
@@ -479,8 +483,8 @@ const Home = () => {
                     border: "2px solid red",
                     display: "flex",
                     justifyContent: "space-around",
-                    alignItems:"flex-start",
-                    overflow:"visible"
+                    alignItems: "flex-start",
+                    overflow: "visible",
                   }}
                 >
                   <div
@@ -513,22 +517,20 @@ const Home = () => {
                   </div>
                   <div
                     className="home__maincontent__camp__select__dropdown"
-                    style={{ width: "30%", position:"relative"}}
+                    style={{ width: "30%", position: "relative" }}
                   >
                     <Card
                       style={{
                         // backgroundColor: "rgba(0, 0, 0, 0.04)",
                         // padding: "1rem",
-                        position:"absolute",
-                        top:"7px",
+                        position: "absolute",
+                        top: "7px",
                         width: "100%",
                       }}
                       fullWidth
                     >
                       <CardActions disableSpacing>
-                        <Typography>
-                          Select Date Range
-                        </Typography>
+                        <Typography>Select Date Range</Typography>
                         <ExpandMore
                           expand={expanded}
                           onClick={handleExpandClick}
@@ -544,18 +546,24 @@ const Home = () => {
                       </CardActions>
                       <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
-                        <DateRange
-                          style={{}}
-                          editableDateInputs={true}
-                          moveRangeOnFirstSelection={true}
-                          dateDisplayFormat={"MMM d, yyyy"}
-                          onChange={(item) => {
-                            setState([item.selection]);
-                          }}
-                          maxDate={todaysDate.startDate}
-                          ranges={state}
-                          
-                        />
+                          <DateRange
+                            style={{}}
+                            editableDateInputs={true}
+                            moveRangeOnFirstSelection={true}
+                            dateDisplayFormat={"MMM d, yyyy"}
+                            onChange={(item) => {
+                              console.log("item", item);
+                              setState({ ...state, ...item });
+                              console.log("state", state);
+                            }}
+                            months={1}
+                            minDate={addDays(state.selection.startDate, -30)}
+                            // maxDate={addDays(new Date(), 30)}
+                            maxDate={ todaysDate.startDate}
+                            // direction="vertical"
+                            // scroll={{ enabled: true }}
+                            ranges={[state.selection]}
+                          />
                         </CardContent>
                       </Collapse>
                     </Card>
@@ -754,7 +762,7 @@ const Home = () => {
                               {row.status == "SCHEDULED" ? (
                                 <>
                                   <CancelIcon
-                                  className="homepageActionIcons"
+                                    className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("CANCELED", row.jobId);
                                     }}
@@ -763,7 +771,7 @@ const Home = () => {
                               ) : row.status == "RUNNING" ? (
                                 <>
                                   <PauseCircleFilledIcon
-                                  className="homepageActionIcons"
+                                    className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("PAUSE", row.jobId);
                                     }}
@@ -772,7 +780,7 @@ const Home = () => {
                               ) : row.status == "PAUSE" ? (
                                 <>
                                   <PlayCircleFilledIcon
-                                  className="homepageActionIcons"
+                                    className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("RUNNING", row.jobId);
                                     }}
@@ -781,7 +789,7 @@ const Home = () => {
                               ) : row.status == "EXPIRED" ? (
                                 <>
                                   <CancelIcon
-                                  className="homepageActionIcons"
+                                    className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("CANCELED", row.jobId);
                                     }}
@@ -792,7 +800,7 @@ const Home = () => {
                                 row.status == "CANCELED" ? (
                                 <>
                                   <DeleteIcon
-                                  className="homepageActionIcons"
+                                    className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("DELETED", row.jobId);
                                     }}

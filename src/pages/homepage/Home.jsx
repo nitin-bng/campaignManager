@@ -141,11 +141,6 @@ export const data = {
       backgroundColor: "red",
     },
     {
-      label: "Running",
-      data: [65, 59, 80, 81, 56, 55, 40],
-      backgroundColor: "rgb(255, 127, 14)",
-    },
-    {
       label: "Total",
       data: [100000, 200000, 300000, 400000, 500000, 600000, 700000],
       backgroundColor: "rgba(53, 162, 235, 1)",

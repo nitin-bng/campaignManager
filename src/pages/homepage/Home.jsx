@@ -554,6 +554,7 @@ const Home = () => {
                           }}
                           maxDate={todaysDate.startDate}
                           ranges={state}
+                          
                         />
                         </CardContent>
                       </Collapse>
@@ -753,6 +754,7 @@ const Home = () => {
                               {row.status == "SCHEDULED" ? (
                                 <>
                                   <CancelIcon
+                                  className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("CANCELED", row.jobId);
                                     }}
@@ -761,6 +763,7 @@ const Home = () => {
                               ) : row.status == "RUNNING" ? (
                                 <>
                                   <PauseCircleFilledIcon
+                                  className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("PAUSE", row.jobId);
                                     }}
@@ -769,6 +772,7 @@ const Home = () => {
                               ) : row.status == "PAUSE" ? (
                                 <>
                                   <PlayCircleFilledIcon
+                                  className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("RUNNING", row.jobId);
                                     }}
@@ -777,6 +781,7 @@ const Home = () => {
                               ) : row.status == "EXPIRED" ? (
                                 <>
                                   <CancelIcon
+                                  className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("CANCELED", row.jobId);
                                     }}
@@ -787,6 +792,7 @@ const Home = () => {
                                 row.status == "CANCELED" ? (
                                 <>
                                   <DeleteIcon
+                                  className="homepageActionIcons"
                                     onClick={(e) => {
                                       handelActionChange("DELETED", row.jobId);
                                     }}

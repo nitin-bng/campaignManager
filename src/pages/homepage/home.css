@@ -71,4 +71,12 @@
     height: 400px !important;
     width: 500px !important;
  }
+ .homepageActionIcons{
+    transition: all 0.5s !important;
+ }
+
+ .homepageActionIcons:hover{
+    cursor: pointer !important;
+    transform: scale(1.2) !important;
+ }
 

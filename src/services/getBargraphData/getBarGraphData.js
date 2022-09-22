@@ -19,6 +19,12 @@ const getBarGraphData = (
   let localData = data;
   let localDates = {};
 
+  let todaysDate = new Date()
+
+  if(endDate === getDateInFormat(todaysDate)){
+    endDate = getDateInFormat(defaultEndDate)
+  }
+
   if (campName) {
     localData = localData.filter((item) => item.campName === campName);
   }

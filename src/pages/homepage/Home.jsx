@@ -183,6 +183,8 @@ const Home = () => {
   const [callRetry, setCallRetry] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const [graphData, setGraphData] = useState(barDefaultData)
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
   const [barGraphData, setBarGraphData] = useState(data)
   const todaysDate = {
     startDate: new Date(),
@@ -204,8 +206,6 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
   });
 
   var rows2 = [];
-
-  console.log('nitin date state', state.selection.startDate, state.selection.endDate)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -288,14 +288,12 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
     });
   };
 
-
   useEffect(()=>{
-    if(state.selection.startDate && state.selection.endDate){
-      console.log('ran with', state.selection.startDate, state.selection.endDate)
-          setBarGraphData(getBarGraphData(graphData, '', getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
+    if((state.selection.startDate && state.selection.endDate)|| personName[0]){
+          setBarGraphData(getBarGraphData(graphData, personName[0], getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
     }
   }
-  ,[state.selection.startDate, state.selection.endDate])
+  ,[state.selection.startDate, state.selection.endDate, personName[0]])
 
   const getcampaignScheduleList = () => {
     fetch(
@@ -366,9 +364,6 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
   useEffect(() => {
     dashBoardDataFromApi();
   }, []);
-
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
     const {

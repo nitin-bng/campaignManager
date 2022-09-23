@@ -53,6 +53,9 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 
 import { DateRange } from "react-date-range";
+import { getBarGraphData } from "../../services/getBargraphData/getBarGraphData";
+import { getDateInFormat } from "../../services/getDateInFormat";
+import { barDefaultData } from "../../services/getBargraphData/data";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -132,22 +135,17 @@ export const data = {
   datasets: [
     {
       label: "Success",
-      data: [100, 1000, 500, 2000, 1500, 600, 10],
+      data: [],
       backgroundColor: "green",
     },
     {
       label: "Failed",
-      data: [65, 59, 80, 81, 56, 55, 40],
+      data: [],
       backgroundColor: "red",
     },
     {
-      label: "Running",
-      data: [65, 59, 80, 81, 56, 55, 40],
-      backgroundColor: "rgb(255, 127, 14)",
-    },
-    {
       label: "Total",
-      data: [100000, 200000, 300000, 400000, 500000, 600000, 700000],
+      data: [],
       backgroundColor: "rgba(53, 162, 235, 1)",
     },
   ],
@@ -184,15 +182,25 @@ const Home = () => {
   const [callFail, setCallFail] = useState([]);
   const [callRetry, setCallRetry] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
+  const [graphData, setGraphData] = useState(barDefaultData)
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
+  const [barGraphData, setBarGraphData] = useState(data)
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
   };
 
+  let defaultStartDate = new Date();
+let defaultEndDate = new Date();
+
+defaultStartDate.setDate(defaultStartDate.getDate() - 30);
+defaultEndDate.setDate(defaultEndDate.getDate() - 1);
+
   const [state, setState] = useState({
     selection: {
-      startDate: new Date(),
-      endDate: null,
+      startDate: defaultStartDate,
+      endDate: defaultEndDate,
       key: "selection",
     },
   });
@@ -274,9 +282,18 @@ const Home = () => {
     ).then((res) => {
       res.json().then((res) => {
         console.log("res", res);
+        setBarGraphData(getBarGraphData(res.graphData, '', getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
+        setGraphData(res.graphData)
       });
     });
   };
+
+  useEffect(()=>{
+    if((state.selection.startDate && state.selection.endDate)|| personName[0]){
+          setBarGraphData(getBarGraphData(graphData, personName[0], getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
+    }
+  }
+  ,[state.selection.startDate, state.selection.endDate, personName[0]])
 
   const getcampaignScheduleList = () => {
     fetch(
@@ -347,9 +364,6 @@ const Home = () => {
   useEffect(() => {
     dashBoardDataFromApi();
   }, []);
-
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
     const {
@@ -693,7 +707,7 @@ const Home = () => {
                   className="home__maincontent__card home__maincontent__card3"
                   style={{ width: "96%", margin: "1rem" }}
                 >
-                  <Bar options={options} data={data} width={100} height={30} />
+                  <Bar options={options} data={barGraphData} width={100} height={30} />
                 </div>
               </div>
             </div>

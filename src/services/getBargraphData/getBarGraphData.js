@@ -43,7 +43,7 @@ const getBarGraphData = (
       }
     }
     return newValue;
-  }, initialValue);
+  }, JSON.parse(JSON.stringify(initialValue)));
 
   result.labels = Object.keys(localDates).sort((a, b) =>
     isDateSmaller(a, b) ? 1 : -1
@@ -69,6 +69,30 @@ const getBarGraphData = (
 
     return newValue;
   }, result);
+
+  let i = 30 - result.labels.length
+
+  if(i >0){
+    let dateArray = []
+    if(!result.labels.length){
+      dateArray = startDate.split('-')
+      todaysDate.setDate(dateArray[2])
+    }
+    else{
+      dateArray = result.labels[result.labels.length-1].split('-')
+      todaysDate.setDate(~~dateArray[2]+1)
+    }
+
+    todaysDate.setFullYear(dateArray[0])
+    todaysDate.setMonth(dateArray[1]-1)
+    console.log('nitin before loop',todaysDate, dateArray)
+     for(let j=i; j>0; j--){
+      console.log('nitin',todaysDate)
+      result.labels = [...result.labels, getDateInFormat(todaysDate)]
+      todaysDate.setDate(~~todaysDate.getDate() + 1)
+     }
+  }
+
 
   result.labels = result.labels.map(
     (item) => item.slice(8, 10) + " " + getMonth(item.slice(5, 7))

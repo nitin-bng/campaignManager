@@ -85,9 +85,7 @@ const getBarGraphData = (
 
     todaysDate.setFullYear(dateArray[0])
     todaysDate.setMonth(dateArray[1]-1)
-    console.log('nitin before loop',todaysDate, dateArray)
      for(let j=i; j>0; j--){
-      console.log('nitin',todaysDate)
       result.labels = [...result.labels, getDateInFormat(todaysDate)]
       todaysDate.setDate(~~todaysDate.getDate() + 1)
      }

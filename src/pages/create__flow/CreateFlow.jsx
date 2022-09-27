@@ -66,7 +66,7 @@ const CreateFlow = () => {
   }));
   const classes = useStyles();
   const { errorState, errorDispatch, setShowError } = useError();
-  const { setChannel } = useContext(CommonContext);
+  const { setChannel, setIfIVRselectedThenLanguage, ifIVRselectedThenLanguage } = useContext(CommonContext);
   var [tabledata3, setData3] = useState([]);
   const { dispatch, campaignName } = globalState;
   let localStore = globalState.state;
@@ -343,7 +343,12 @@ const CreateFlow = () => {
       .then(function (data) {
         localStorage.setItem("channelName", data.flow.channel);
         localStorage.setItem("flowName", data.service_Data.name);
-        console.log("dataFrom api call ", data);
+        console.log("dataFrom api call ", data.flow.language[0].actions);
+        setIfIVRselectedThenLanguage(data.flow.language[0].actions
+          ? data.flow.language[0].actions.map(
+              (item) => item.languageName
+            )
+          : ifIVRselectedThenLanguage)
         flowDataFromApi = data.flow;
 
         console.log("flowDataFromApi", flowDataFromApi);

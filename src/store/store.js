@@ -206,6 +206,7 @@ const StateProvider = ({ children }) => {
               actionType: {
                 ivr: "",
                 sms: "",
+                ussd: ""
               },
               node_type: "PROCESSING",
               dtmf_key: oldNumOfCards + e,

@@ -322,7 +322,7 @@ const CreateFlowComponent = (props) => {
               ) : (
                 <></>
               )}
-
+              {console.log('Nitin', channel, ifIVRselectedThenLanguage)}
               {
                 ifIVRselectedThenLanguage.length > 1 ? <div className="hello">
                 {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&

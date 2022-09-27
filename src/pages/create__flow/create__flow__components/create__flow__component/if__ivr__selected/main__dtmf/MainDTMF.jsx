@@ -273,10 +273,8 @@ const MainDTMF = (props) => {
   const globalState = useContext(store);
   let localStore = globalState.state;
   const { disableChannel } = props;
-  console.log("dtmfs options", props);
 
   const { dispatch } = globalState;
-  console.log('Nitin', globalState.state.ivrCampFlowData.flow.actions, props.data)
   const genArray = (n) => {
     return Array(n)
       .fill()
@@ -764,7 +762,6 @@ const MainDTMF = (props) => {
                       }
                       label="DTMF__option"
                       onChange={(e) => {
-                        console.log('nitin clicked', e, props.global, props.current)
                         props.dataHandleWithObj(
                           e,
                           props.global || props.current

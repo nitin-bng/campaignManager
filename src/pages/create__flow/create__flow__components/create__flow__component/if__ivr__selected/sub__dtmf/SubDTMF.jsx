@@ -1051,7 +1051,6 @@ const SubDTMF = (props) => {
                       })}
                     </Select>
                   </FormControl>
-                  {console.log('Nitin subdtmf', props.current.type)}
                 </div>
                 <div className="main__subdtmf__wait__time__container">
                   <Box

@@ -3,6 +3,7 @@ const edgeType = 'smoothstep';
 
 
 const createNodesAndEdges = (data) =>{
+    console.log("rishabh data", data);
     let initialNodes = [
         {
           id: "0",
@@ -13,8 +14,8 @@ const createNodesAndEdges = (data) =>{
       ];
       let initialEdges = []
       
-      if (data[0].ivrCampFlowData.flow.language[0].actions.length !== 0) {
-        data[0].ivrCampFlowData.flow.language[0].actions.forEach((element, idx) => {
+      if (data.ivrCampFlowData.flow.language[0].actions.length !== 0) {
+        data.ivrCampFlowData.flow.language[0].actions.forEach((element, idx) => {
           console.log("ele", element, idx);
           initialNodes = [...initialNodes, {
             id: element.id+"_"+idx,
@@ -24,7 +25,7 @@ const createNodesAndEdges = (data) =>{
           }];
             initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType}]    
           console.log("initial", initialNodes);
-          data[0].ivrCampFlowData.flow.actions.forEach((ele, index)=>{
+          data.ivrCampFlowData.flow.actions.forEach((ele, index)=>{
                 initialEdges = [...initialEdges,  {id: 'e'+element.id+"_"+idx+ele.level+"_"+ele.dtmf_key+"_"+index, source: element.id+"_"+idx, target: ele.level+"_"+ele.dtmf_key+"_"+index, type: edgeType}]
           })
         });
@@ -45,8 +46,8 @@ const createNodesAndEdges = (data) =>{
       }
 
     })}
-      if(data[0].ivrCampFlowData.flow.actions.length !== 0){
-        data[0].ivrCampFlowData.flow.actions.forEach((element, idx)=>{
+      if(data.ivrCampFlowData.flow.actions.length !== 0){
+        data.ivrCampFlowData.flow.actions.forEach((element, idx)=>{
             initialNodes =  [...initialNodes, {
             id: element.level+"_"+element.dtmf_key+"_"+idx,
             type: "processing",

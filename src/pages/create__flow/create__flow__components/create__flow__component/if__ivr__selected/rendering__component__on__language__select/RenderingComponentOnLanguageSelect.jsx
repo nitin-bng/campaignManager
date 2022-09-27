@@ -21,7 +21,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const [normalState, setNormalState] = useState(true);
   const [showLoader, setShowLoader] = useState(false)
 
-  const saveValues = (e) => {
+  const saveValues = (e, type) => {
 
     debugger;
     let id = e.target.id.split("-");
@@ -33,9 +33,14 @@ const RenderingComponentOnLanguageSelect = (props) => {
       if (
         id[1] == localStore.ivrCampFlowData.flow.language[0].actions[i].language
       ) {
-        localStore.ivrCampFlowData.flow.language[0].actions[i].waitTime =
-          e.target.value;
-        console.log("localstore", localStore);
+        if(type === 'IVR'){
+          localStore.ivrCampFlowData.flow.language[0].actions[i].waitTime =
+            e.target.value;
+          console.log("localstore", localStore);
+        }
+        else if (type === 'USSD'){
+          localStore.ivrCampFlowData.flow.language[0].actions[i].input.ussd_key = e.target.value
+        }
       }
 
       dispatch({ type: "SET_DATA", nState: localStore });
@@ -61,15 +66,16 @@ const RenderingComponentOnLanguageSelect = (props) => {
           "condition met",
           globalState.state.ivrCampFlowData.flow.language[0]
         );
-        return globalState.state.ivrCampFlowData.flow.language[0].actions[i]
-          .waitTime;
+        return {waitTime: globalState.state.ivrCampFlowData.flow.language[0].actions[i]
+          .waitTime, ussdKey: globalState.state.ivrCampFlowData.flow.language[0].actions[i].input.ussd_key}
       }
     }
     console.log("condition not met");
   };
-  const waitTime = useMemo(() => {
+  const {waitTime, ussdKey} = useMemo(() => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
+
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
@@ -86,7 +92,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   }, []);
 
   useEffect(() => {
-    if (waitTime) {
+    if ((localStore.ivrCampFlowData.flow.channel === 'IVR' && waitTime)|| (localStore.ivrCampFlowData.flow.channel === 'USSD' && ussdKey)) {
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
         payload: true,
@@ -97,7 +103,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
         payload: false,
       });
     }
-  }, [waitTime]);
+  }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -374,7 +380,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
-  return (
+  return (<>
+    {localStore.ivrCampFlowData.flow.channel === 'IVR' ? 
     <>
       <div className="rendering__component__on__language__select">
         <div className="rendering__component__on__language__select__container">
@@ -392,7 +399,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 variant="outlined"
                 value={waitTime}
                 onChange={(e) => {
-                  saveValues(e);
+                  saveValues(e, "IVR");
                   setNormalState((prev) => !prev);
                 }}
                 onWheel={(e) => e.target.blur()}
@@ -472,6 +479,43 @@ const RenderingComponentOnLanguageSelect = (props) => {
           </div>
         </div>
       </div>
+    </> 
+    : localStore.ivrCampFlowData.flow.channel === 'USSD' && <>
+      < div className="rendering__component__on__language__select">
+        <div className="rendering__component__on__language__select__container">
+          <div className="language__specific__wait__time__container">
+            <Box
+              component="form"
+              style={{ width: "100%" }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id={"waitTime-" + props.languageCode}
+                type="input"
+                label={"Input key for " + props.lang + " language"}
+                variant="outlined"
+                value={ussdKey}
+                onChange={(e) => {
+                  saveValues(e, "USSD")
+                  setNormalState((prev) => !prev);
+                }}
+                onWheel={(e) => e.target.blur()}
+                disabled={props.disableEditingWhileCreatingCamp}
+                required
+                error={
+                  showError
+                    ? ussdKey
+                      ? false
+                      : true
+                    : false
+                }
+              />
+            </Box>
+          </div>
+          </div>
+          </div>
+    </>}
     </>
   );
 };

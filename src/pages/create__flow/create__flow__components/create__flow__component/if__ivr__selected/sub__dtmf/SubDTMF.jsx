@@ -781,6 +781,7 @@ const SubDTMF = (props) => {
 
   return (
     <>
+    {localStore.ivrCampFlowData.flow.channel === 'IVR' ? 
       <div className="subDTMF__subdtmf">
         <div className="sudDTMF__subdtmf__container">
           <Card
@@ -992,6 +993,209 @@ const SubDTMF = (props) => {
           </Card>
         </div>
       </div>
+      :localStore.ivrCampFlowData.flow.channel === 'USSD' && <div className="subDTMF__subdtmf">
+      <div className="sudDTMF__subdtmf__container">
+        <Card
+          style={{
+            backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
+            width: props.width,
+          }}
+        >
+          <CardActions disableSpacing>
+            <Typography paragraph>SUB DTMF</Typography>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              style={{
+                borderRadius: "0",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <div className="main__dtmf__maincontent__container">
+                <div className="subdtmf__select__option__container">
+                  <FormControl style={{ width: "100%" }}>
+                    <InputLabel id="demo-simple-select-label">
+                      DTMF option
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.current.type}
+                      label="DTMF__option"
+                      disabled={props.disableEditingWhileCreatingCamp}
+                      onChange={(e) => {
+                        traverseAndModify(
+                          props.current.id,
+                          props.current,
+                          "type",
+                          e.target.value,
+                          "edit"
+                        );
+                        props.dataHandleWithObj(
+                          e,
+                          props.global || props.current
+                        );
+                      }}
+                      name="type"
+                    >
+                      {["PLAY", "Schedule SMS", "HITURL_USSD"].map((number, index) => {
+                        return <MenuItem value={number}>{number}</MenuItem>;
+                      })}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="main__subdtmf__wait__time__container">
+                  <Box
+                    component="form"
+                    style={{ width: "100%" }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <TextField
+                      id="if__IVR__selected"
+                      type="input"
+                      label= "Input key for DTMF input"
+                      disabled={props.disableEditingWhileCreatingCamp}
+                      value={traverseAndModify(
+                        props.current.id,
+                        props.current,
+                        "waitTime",
+                        null,
+                        "read"
+                      )}
+                      onChange={(e) => {
+                        setIsFilled(() => e.target.value !== "");
+                        traverseAndModify(
+                          props.current.id,
+                          props.current,
+                          "waitTime",
+                          e.target.value,
+                          "edit"
+                        );
+                      }}
+                      onWheel={(e) => e.target.blur()}
+                      variant="outlined"
+                      required
+                      error={
+                        showError
+                          ? true
+                            ? false
+                            : true
+                          : false
+                      }
+                    />
+                  </Box>
+                </div>
+                <div className="select__number__of__subDTMF__from__subdtmf__container">
+                  <FormControl style={{ width: "100%" }}>
+                    <InputLabel id="demo-simple-select-label" required>
+                    Number of options for this selection
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-select"
+                      value={props.current.dtmf_count}
+                      disabled={props.disableEditingWhileCreatingCamp}
+                      label="Number of options for this selection"
+                      name="sub_audio_dtmfs_dtmfCount"
+                      onChange={(e) => {
+                        detectLevel(e, "sub_audio_dtmfs", props.current);
+                      }}
+                      required
+                    >
+                      {numberOfSubDTMF.map((number, index) => {
+                        return <MenuItem value={number}>{number}</MenuItem>;
+                      })}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div
+                  className={props.hideItemStyle}
+                  style={{ width: "100%" }}
+                >
+                  {localStore.ivrCampFlowData.flow.language.map((hello) => {
+                    console.log(
+                      "localStore.ivrCampFlowData.flow.language ===>",
+                      hello
+                    );
+                    hellohello.push(hello.actions);
+                    hello.actions.forEach((el) => {
+                      console.log("action element ===>", el.languageName);
+                      languageName.push(el.languageName);
+                    });
+                    console.log(
+                      "localStore.ivrCampFlowData.flow.language hello ===>",
+                      hellohello
+                    );
+                  })}
+                  <div className="ghghg" style={{ margin: "10px 0" }}>
+                    {languageName.map((el) => {
+                      return (
+                        <Typography style={{ fontSize: "12px" }}>
+                          Welcome prompt audio file for {el}
+                        </Typography>
+                      );
+                    })}
+                  </div>
+                  <div className="ghghgh">
+                    {localStore.ivrCampFlowData.flow.languageChange.map(
+                      (lang) => (
+                        <FileUploaderForSubDTMF
+                          lang={lang}
+                          main_audio_file={
+                            localStore.ivrCampFlowData.flow.main_audio_file
+                          }
+                          current={props.current}
+                          uploadFiles={uploadFiles}
+                          traverseAndModify={traverseAndModify}
+                          AudioFilesL2={AudioFilesL2}
+                          hideItemStyle={props.hideItemStyle}
+                        />
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <div className="rendering__sub__subdtmf__container">
+              {props.current.actions &&
+                props.current.actions.map((e, index) => {
+                  return (
+                    <div style={{}}>
+                      <SubDTMF
+                        width="100%"
+                        isBgColor={!props.isBgColor}
+                        data={props}
+                        current={e}
+                        handleDataChange={props.handleDataChange}
+                        uploadFiles={props.uploadFiles}
+                        setWaitTime={props.setWaitTime}
+                        setDataDynamic={props.setDataDynamic}
+                        parentNumber={props.dtmfNumber}
+                        numberOfSubDTMF={e}
+                        dataHandleWithObj={props.dataHandleWithObj}
+                        hideItemStyle={props.hideItemStyle}
+                        disableEditingWhileCreatingCamp={
+                          props.disableEditingWhileCreatingCamp
+                        }
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </Collapse>
+        </Card>
+      </div>
+    </div>}
     </>
   );
 };

@@ -134,6 +134,7 @@ const CreateFlowComponent = (props) => {
             input: {
               ivr_key: x + 1,
               sms_key: "",
+              ussd_key: ''
             },
             language: languages[y].code,
             languageName: languages[y].lang,
@@ -144,6 +145,7 @@ const CreateFlowComponent = (props) => {
             actionType: {
               ivr: "PLAY",
               sms: "HITURL_SMS",
+              ussd: "HITURL_USSD"
             },
             action_delay_min: 0,
             repeatCount: 0,
@@ -255,7 +257,7 @@ const CreateFlowComponent = (props) => {
           <div className="call__flow__details__container">
 
             <div className="call__flow__details">
-              {channel === "IVR" ? (<>
+              {(channel === "IVR" || channel === "USSD") ? (<>
                   <div className="call__flow__details__heading__container">
                     <h1>Call Flow Details</h1>
                   </div>
@@ -320,11 +322,11 @@ const CreateFlowComponent = (props) => {
               ) : (
                 <></>
               )}
-
+              {console.log('Nitin', channel, ifIVRselectedThenLanguage)}
               {
                 ifIVRselectedThenLanguage.length > 1 ? <div className="hello">
                 {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-                channel === "IVR" ? (
+                (channel === "IVR" || channel === "USSD") ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={1}
                     lang="Hindi"
@@ -340,7 +342,7 @@ const CreateFlowComponent = (props) => {
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-                channel === "IVR" ? (
+                (channel === "IVR" || channel === "USSD") ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={2}
                     lang="English"
@@ -356,7 +358,7 @@ const CreateFlowComponent = (props) => {
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-                channel === "IVR" ? (
+                (channel === "IVR" || channel === "USSD") ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={3}
                     lang="Arabic"
@@ -372,7 +374,7 @@ const CreateFlowComponent = (props) => {
                   ""
                 )}
                 {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-                channel === "IVR" ? (
+                (channel === "IVR" || channel === "USSD") ? (
                   <RenderingComponentOnLanguageSelect
                     indxx={4}
                     lang="Spanish"
@@ -433,7 +435,9 @@ const CreateFlowComponent = (props) => {
                 ""
               )}
               {channel === "USSD" ? (
-                <IfUssdSelected hideItemStyle={props.hideItemStyle} />
+                <IfUssdSelected disableEditingWhileCreatingCamp={
+                  props.disableEditingWhileCreatingCamp
+                } hideItemStyle={props.hideItemStyle} />
               ): <></>}
             </div>
           </div>

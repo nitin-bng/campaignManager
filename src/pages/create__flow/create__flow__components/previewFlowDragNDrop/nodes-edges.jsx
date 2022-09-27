@@ -1,10 +1,8 @@
-import data from "./original json for flow creation"
-
 const position = { x: 0, y: 0 };
 const edgeType = 'smoothstep';
 
 
-const createNodesAndEdges = () =>{
+const createNodesAndEdges = (data) =>{
     let initialNodes = [
         {
           id: "0",
@@ -66,7 +64,6 @@ return {initialNodes, initialEdges}
 }
 
 
-export const {initialNodes, initialEdges} = createNodesAndEdges()
+export {createNodesAndEdges}
 
-console.log('nitin listx', initialEdges, initialNodes)
   

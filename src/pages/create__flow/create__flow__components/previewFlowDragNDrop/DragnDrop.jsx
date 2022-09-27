@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import ReactFlow, { addEdge, ConnectionLineType, useNodesState, useEdgesState } from 'react-flow-renderer';
 import dagre from 'dagre';
 
-import { initialNodes, initialEdges } from './nodes-edges.jsx';
+import { createNodesAndEdges } from './nodes-edges.jsx';
+import { store } from "../../../../store/store";
 
 import './index.css';
 
@@ -44,14 +45,20 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
   return { nodes, edges };
 };
 
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges
-);
 
-const LayoutFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+const LayoutFlow = ({data}) => {
+
+
+  const [nodes, setNodes, onNodesChange] = useNodesState();
+  const [edges, setEdges, onEdgesChange] = useEdgesState();
+  const globalState = useContext(store);
+  
+
+  useEffect(()=>{
+    const {initialNodes, initialEdges} = createNodesAndEdges(globalState.state)
+    setNodes(initialNodes)
+    setEdges(initialEdges)
+  },[globalState.state])
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds)),

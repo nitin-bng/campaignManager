@@ -182,20 +182,20 @@ const Home = () => {
   const [callFail, setCallFail] = useState([]);
   const [callRetry, setCallRetry] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
-  const [graphData, setGraphData] = useState(barDefaultData)
+  const [graphData, setGraphData] = useState(barDefaultData);
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
-  const [barGraphData, setBarGraphData] = useState(data)
+  const [barGraphData, setBarGraphData] = useState(data);
   const todaysDate = {
     startDate: new Date(),
     endDate: null,
   };
 
   let defaultStartDate = new Date();
-let defaultEndDate = new Date();
+  let defaultEndDate = new Date();
 
-defaultStartDate.setDate(defaultStartDate.getDate() - 30);
-defaultEndDate.setDate(defaultEndDate.getDate() - 1);
+  defaultStartDate.setDate(defaultStartDate.getDate() - 30);
+  defaultEndDate.setDate(defaultEndDate.getDate() - 1);
 
   const [state, setState] = useState({
     selection: {
@@ -282,18 +282,34 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
     ).then((res) => {
       res.json().then((res) => {
         console.log("res", res);
-        setBarGraphData(getBarGraphData(res.graphData, '', getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
-        setGraphData(res.graphData)
+        setBarGraphData(
+          getBarGraphData(
+            res.graphData,
+            "",
+            getDateInFormat(state.selection.startDate),
+            getDateInFormat(state.selection.endDate)
+          )
+        );
+        setGraphData(res.graphData);
       });
     });
   };
 
-  useEffect(()=>{
-    if((state.selection.startDate && state.selection.endDate)|| personName[0]){
-          setBarGraphData(getBarGraphData(graphData, personName[0], getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
+  useEffect(() => {
+    if (
+      (state.selection.startDate && state.selection.endDate) ||
+      personName[0]
+    ) {
+      setBarGraphData(
+        getBarGraphData(
+          graphData,
+          personName[0],
+          getDateInFormat(state.selection.startDate),
+          getDateInFormat(state.selection.endDate)
+        )
+      );
     }
-  }
-  ,[state.selection.startDate, state.selection.endDate, personName[0]])
+  }, [state.selection.startDate, state.selection.endDate, personName[0]]);
 
   const getcampaignScheduleList = () => {
     fetch(
@@ -356,10 +372,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
       });
   };
 
-
-  const setEndDate = () =>{
-    
-  }
+  const setEndDate = () => {};
 
   useEffect(() => {
     dashBoardDataFromApi();
@@ -573,7 +586,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                             months={1}
                             minDate={addDays(state.selection.startDate, -30)}
                             // maxDate={addDays(new Date(), 30)}
-                            maxDate={ todaysDate.startDate}
+                            maxDate={todaysDate.startDate}
                             // direction="vertical"
                             // scroll={{ enabled: true }}
                             ranges={[state.selection]}
@@ -583,131 +596,139 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                     </Card>
                   </div>
                 </div>
+                {showDoughnuts ? (
+                  <>
+                    <div
+                      className="home__maincontent__card home__maincontent__card3"
+                      style={{ width: "96%", margin: "1rem" }}
+                    >
+                      <Line
+                        width={100}
+                        height={30}
+                        data={{
+                          labels: [
+                            new Date().getDate() -
+                              5 +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() -
+                              4 +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() -
+                              3 +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() -
+                              2 +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() -
+                              1 +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                            new Date().getDate() +
+                              "-" +
+                              new Date().getMonth() +
+                              "-" +
+                              new Date().getFullYear(),
+                          ],
+
+                          datasets: [
+                            {
+                              label: "Success",
+                              data: [
+                                callSuccess[5],
+                                callSuccess[4],
+                                callSuccess[3],
+                                callSuccess[2],
+                                callSuccess[1],
+                                callSuccess[0],
+                              ],
+                              fill: true,
+                              backgroundColor: "rgb(75,192,192)",
+                              borderColor: "rgba(75,192,192)",
+                            },
+                            {
+                              label: "Failure",
+                              data: [
+                                callFail[5],
+                                callFail[4],
+                                callFail[3],
+                                callFail[2],
+                                callFail[1],
+                                callFail[0],
+                              ],
+                              fill: false,
+                              backgroundColor: "#742774",
+                              borderColor: "#742774",
+                            },
+                            {
+                              label: "Progress",
+                              data: [
+                                callRetry[5],
+                                callRetry[4],
+                                callRetry[3],
+                                callRetry[2],
+                                callRetry[1],
+                                callRetry[0],
+                              ],
+                              fill: false,
+                              backgroundColor: "rgb(255, 127, 14)",
+                              borderColor: "rgb(255, 127, 14)",
+                            },
+                          ],
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : null}
 
                 <div
                   className="home__maincontent__card home__maincontent__card3"
                   style={{ width: "96%", margin: "1rem" }}
                 >
-                  <Line
+                  <Bar
+                    options={options}
+                    data={barGraphData}
                     width={100}
                     height={30}
-                    data={{
-                      labels: [
-                        new Date().getDate() -
-                          5 +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() -
-                          4 +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() -
-                          3 +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() -
-                          2 +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() -
-                          1 +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                        new Date().getDate() +
-                          "-" +
-                          new Date().getMonth() +
-                          "-" +
-                          new Date().getFullYear(),
-                      ],
-
-                      datasets: [
-                        {
-                          label: "Success",
-                          data: [
-                            callSuccess[5],
-                            callSuccess[4],
-                            callSuccess[3],
-                            callSuccess[2],
-                            callSuccess[1],
-                            callSuccess[0],
-                          ],
-                          fill: true,
-                          backgroundColor: "rgb(75,192,192)",
-                          borderColor: "rgba(75,192,192)",
-                        },
-                        {
-                          label: "Failure",
-                          data: [
-                            callFail[5],
-                            callFail[4],
-                            callFail[3],
-                            callFail[2],
-                            callFail[1],
-                            callFail[0],
-                          ],
-                          fill: false,
-                          backgroundColor: "#742774",
-                          borderColor: "#742774",
-                        },
-                        {
-                          label: "Progress",
-                          data: [
-                            callRetry[5],
-                            callRetry[4],
-                            callRetry[3],
-                            callRetry[2],
-                            callRetry[1],
-                            callRetry[0],
-                          ],
-                          fill: false,
-                          backgroundColor: "rgb(255, 127, 14)",
-                          borderColor: "rgb(255, 127, 14)",
-                        },
-                      ],
-                    }}
                   />
-                </div>
-
-                <div
-                  className="home__maincontent__card home__maincontent__card3"
-                  style={{ width: "96%", margin: "1rem" }}
-                >
-                  <Bar options={options} data={barGraphData} width={100} height={30} />
                 </div>
               </div>
             </div>
@@ -809,7 +830,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                                     }}
                                   />
                                 </>
-                              ) : row.status == "COMPLETE" ||
+                              ) : row.status == "COMPLETED" ||
                                 row.status == "EXPIRED" ||
                                 row.status == "CANCELED" ? (
                                 <>

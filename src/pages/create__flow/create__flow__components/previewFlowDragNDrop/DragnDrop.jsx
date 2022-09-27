@@ -60,6 +60,8 @@ const LayoutFlow = ({data}) => {
     setEdges(initialEdges)
   },[globalState.state])
 
+
+
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds)),
     []

@@ -8,7 +8,7 @@ const createNodesAndEdges = (data) =>{
         {
           id: "0",
           type: "input",
-          data: { label: "hello" },
+          data: { label: data.ivrCampFlowData.flow.flowName },
           position
         },
       ];

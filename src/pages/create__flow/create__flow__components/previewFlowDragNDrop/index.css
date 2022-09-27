@@ -1,0 +1,22 @@
+.layoutflow {
+    flex-grow: 1;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 2px solid red;
+  }
+  
+  .layoutflow .controls {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10;
+    font-size: 12px;
+    border: 2px solid red;
+
+  }
+  
+  .layoutflow .controls button:first-child {
+    margin-right: 10px;
+  }
+  

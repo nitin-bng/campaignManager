@@ -27,6 +27,9 @@ import Paper from "@material-ui/core/Paper";
 import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
+import LayoutFlow from "./create__flow__components/previewFlowDragNDrop/DragnDrop";
+
+
 
 const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 
@@ -572,10 +575,11 @@ const CreateFlow = () => {
                                     height: "90vh",
                                   }}
                                 >
-                                  <CreateFlowComponent
+                                  {/* <CreateFlowComponent
                                     hideItemStyle={hideItemStyle}
                                     disableEditingWhileCreatingCamp={true}
-                                  />
+                                  /> */}
+                                  <LayoutFlow />
                                   {console.log(
                                     "hello hello hello",
                                     globalState

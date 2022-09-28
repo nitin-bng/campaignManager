@@ -21,9 +21,9 @@ const getBarGraphData = (
 
   let todaysDate = new Date()
 
-  if(endDate === getDateInFormat(todaysDate)){
-    endDate = getDateInFormat(defaultEndDate)
-  }
+  // if(endDate === getDateInFormat(todaysDate)){
+  //   endDate = getDateInFormat(defaultEndDate)
+  // }
 
   if (campName) {
     localData = localData.filter((item) => item.campName === campName);
@@ -59,11 +59,11 @@ const getBarGraphData = (
         newValue.datasets[0].data[index] =
           ~~newValue.datasets[0].data[index] + ~~loopArray[i]["picked"];
         newValue.datasets[1].data[index] =
-          ~~newValue.datasets[1].data[index] + ~~loopArray[i]["progress"];
+          ~~newValue.datasets[1].data[index] + ~~loopArray[i]["scheduled"];
         newValue.datasets[2].data[index] =
           ~~newValue.datasets[2].data[index] +
           ~~loopArray[i]["picked"] +
-          ~~loopArray[i]["progress"];
+          ~~loopArray[i]["scheduled"];
       }
     }
 

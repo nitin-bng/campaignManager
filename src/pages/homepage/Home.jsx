@@ -190,12 +190,13 @@ const Home = () => {
     endDate: null,
   };
   const [names, setNames] = useState([])
+  const [showLineGraph, setShowLineGraph] = useState(false)
 
   let defaultStartDate = new Date();
 let defaultEndDate = new Date();
 
 defaultStartDate.setDate(defaultStartDate.getDate() - 30);
-defaultEndDate.setDate(defaultEndDate.getDate() - 1);
+defaultEndDate.setDate(defaultEndDate.getDate());
 
   const [state, setState] = useState({
     selection: {
@@ -582,7 +583,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                   </div>
                 </div>
 
-                <div
+                {showLineGraph && <div
                   className="home__maincontent__card home__maincontent__card3"
                   style={{ width: "96%", margin: "1rem" }}
                 >
@@ -699,7 +700,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                       ],
                     }}
                   />
-                </div>
+                </div>}
 
                 <div
                   className="home__maincontent__card home__maincontent__card3"

@@ -139,9 +139,9 @@ export const data = {
       backgroundColor: "green",
     },
     {
-      label: "Failed",
+      label: "Remaining",
       data: [],
-      backgroundColor: "red",
+      backgroundColor: "orange",
     },
     {
       label: "Total",
@@ -284,13 +284,13 @@ const Home = () => {
         console.log("res", res);
         setBarGraphData(
           getBarGraphData(
-            res.graphData,
+            res.dateData,
             "",
             getDateInFormat(state.selection.startDate),
             getDateInFormat(state.selection.endDate)
           )
         );
-        setGraphData(res.graphData);
+        setGraphData(res.dateData);
       });
     });
   };

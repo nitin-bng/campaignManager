@@ -19,10 +19,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
   const { showError, errorDispatch } = useError();
   const [isError, setIsError] = useState(true);
   const [normalState, setNormalState] = useState(true);
-  const [showLoader, setShowLoader] = useState(false)
+  const [showLoader, setShowLoader] = useState(false);
 
   const saveValues = (e, type) => {
-
     debugger;
     let id = e.target.id.split("-");
     for (
@@ -33,13 +32,14 @@ const RenderingComponentOnLanguageSelect = (props) => {
       if (
         id[1] == localStore.ivrCampFlowData.flow.language[0].actions[i].language
       ) {
-        if(type === 'IVR'){
+        if (type === "IVR") {
           localStore.ivrCampFlowData.flow.language[0].actions[i].waitTime =
             e.target.value;
           console.log("localstore", localStore);
-        }
-        else if (type === 'USSD'){
-          localStore.ivrCampFlowData.flow.language[0].actions[i].input.ussd_key = e.target.value
+        } else if (type === "USSD") {
+          localStore.ivrCampFlowData.flow.language[0].actions[
+            i
+          ].input.ussd_key = e.target.value;
         }
       }
 
@@ -66,16 +66,21 @@ const RenderingComponentOnLanguageSelect = (props) => {
           "condition met",
           globalState.state.ivrCampFlowData.flow.language[0]
         );
-        return {waitTime: globalState.state.ivrCampFlowData.flow.language[0].actions[i]
-          .waitTime, ussdKey: globalState.state.ivrCampFlowData.flow.language[0].actions[i].input.ussd_key}
+        return {
+          waitTime:
+            globalState.state.ivrCampFlowData.flow.language[0].actions[i]
+              .waitTime,
+          ussdKey:
+            globalState.state.ivrCampFlowData.flow.language[0].actions[i].input
+              .ussd_key,
+        };
       }
     }
     console.log("condition not met");
   };
-  const {waitTime, ussdKey} = useMemo(() => {
+  const { waitTime, ussdKey } = useMemo(() => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
-
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
@@ -85,14 +90,18 @@ const RenderingComponentOnLanguageSelect = (props) => {
       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
       payload: false,
     });
-    return () => errorDispatch({
-      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-      payload: true,
-    });
+    return () =>
+      errorDispatch({
+        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+        payload: true,
+      });
   }, []);
 
   useEffect(() => {
-    if ((localStore.ivrCampFlowData.flow.channel === 'IVR' && waitTime)|| (localStore.ivrCampFlowData.flow.channel === 'USSD' && ussdKey)) {
+    if (
+      (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
+      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
+    ) {
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
         payload: true,
@@ -310,9 +319,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
         .split(",")
         .map((e, index) => {
           return (
-            <span
-              key={e}
-            >
+            <span key={e}>
               <span style={{ color: "darkgray" }}>
                 {index + 1} - {e}
               </span>
@@ -326,7 +333,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 }}
               >
                 <ReactAudioPlayer
-                  src={config.server.path+`/cm_data/audio/${e}`}
+                  src={config.server.path + `/cm_data/audio/${e}`}
                   controls
                 />
               </div>
@@ -351,9 +358,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
               .split(",")
               .map((e, index) => {
                 return (
-                  <span
-                    key={e}
-                  >
+                  <span key={e}>
                     <span style={{ color: "darkgray" }}>
                       {index + 1} - {e}
                     </span>
@@ -367,7 +372,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       }}
                     >
                       <ReactAudioPlayer
-                        src={config.server.path+`/cm_data/audio/${e}`}
+                        src={config.server.path + `/cm_data/audio/${e}`}
                         controls
                       />
                     </div>
@@ -380,143 +385,162 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
-  return (<>
-    {localStore.ivrCampFlowData.flow.channel === 'IVR' ? 
+  return (
     <>
-    {console.log("component called")}
-      <div className="rendering__component__on__language__select">
-        <div className="rendering__component__on__language__select__container">
-          <div className="language__specific__wait__time__container">
-            <Box
-              component="form"
-              style={{ width: "100%" }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id={"waitTime-" + props.languageCode}
-                type="number"
-                label={"Wait time for " + props.lang + " language"}
-                variant="outlined"
-                value={waitTime}
-                onChange={(e) => {
-                  saveValues(e, "IVR");
-                  setNormalState((prev) => !prev);
-                }}
-                onWheel={(e) => e.target.blur()}
-                disabled={props.disableEditingWhileCreatingCamp}
-                required
-                error={
-                  showError
-                    ? parseInt(waitTime, 10) >= 0
-                      ? false
-                      : true
-                    : false
-                }
-              />
-            </Box>
-          </div>
-          <div style={{}} className={props.hideItemStyle} hideItem>
-            <input
-              accept="audio/wav"
-              style={
-                showError && isError
-                  ? {
-                      border: "2px solid red",
-                      justifyContent: "center",
-                      display: "flex",
-                      overflow: "hidden",
-                    }
-                  : {
-                      justifyContent: "center",
-                      display: "flex",
-                      overflow: "hidden",
-                    }
-              }
-              type="file"
-              class="custom-file-input"
-              name="lang_audio_file"
-              onChange={async(event) => {
-                setShowLoader(true)
-                await uploadFiles(
-                  "lang_audio_file",
-                  event,
-                  event.currentTarget.files,
-                  props.languageCode,
-                );
-                setIsError(false)
-                setShowLoader(false)
-              }}
-              id={props.languageCode + "-Lang"}
-              required
-            />
-            {globalState.state.ivrCampFlowData.flow.lang_audio_file &&
-            globalState.state.ivrCampFlowData.flow.lang_audio_file[
-              props.languageCode
-            ] &&
-            globalState.state.ivrCampFlowData.flow.lang_audio_file[
-              props.languageCode
-            ] !== "" ? (
-              <>
-                <div
-                  item
-                  className="fileNames"
-                  id={props.languageCode + "langAudioShow"}
-                  style={{
-                    border: ".2px solid black",
-                    width: "200px",
-                    fontSize: "10px",
-                    wordWrap: "break-word",
-                    paddingBottom: "3px",
-                    margin: "auto",
-                    marginBottom: "10px",
-                  }}
+      {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
+        <>
+          {console.log("component called")}
+          <div className="rendering__component__on__language__select">
+            <div className="rendering__component__on__language__select__container">
+              <div className="language__specific__wait__time__container">
+                <Box
+                  component="form"
+                  style={{ width: "100%" }}
+                  noValidate
+                  autoComplete="off"
                 >
-                  {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
+                  <TextField
+                    id={"waitTime-" + props.languageCode}
+                    type="number"
+                    label={"Wait time for " + props.lang + " language"}
+                    variant="outlined"
+                    value={waitTime}
+                    onChange={(e) => {
+                      saveValues(e, "IVR");
+                      setNormalState((prev) => !prev);
+                    }}
+                    onWheel={(e) => e.target.blur()}
+                    disabled={props.disableEditingWhileCreatingCamp}
+                    required
+                    error={
+                      showError
+                        ? parseInt(waitTime, 10) >= 0
+                          ? false
+                          : true
+                        : false
+                    }
+                  />
+                </Box>
+              </div>
+              <div style={{}} className={props.hideItemStyle} hideItem>
+                <input
+                  accept="audio/wav"
+                  style={
+                    showError && isError
+                      ? {
+                          border: "2px solid red",
+                          justifyContent: "center",
+                          display: "flex",
+                          overflow: "hidden",
+                        }
+                      : {
+                          justifyContent: "center",
+                          display: "flex",
+                          overflow: "hidden",
+                        }
+                  }
+                  type="file"
+                  class="custom-file-input"
+                  name="lang_audio_file"
+                  onChange={async (event) => {
+                    setShowLoader(true);
+                    await uploadFiles(
+                      "lang_audio_file",
+                      event,
+                      event.currentTarget.files,
+                      props.languageCode
+                    );
+                    setIsError(false);
+                    setShowLoader(false);
+                  }}
+                  id={props.languageCode + "-Lang"}
+                  required
+                />
+                {globalState.state.ivrCampFlowData.flow.lang_audio_file &&
+                globalState.state.ivrCampFlowData.flow.lang_audio_file[
+                  props.languageCode
+                ] &&
+                globalState.state.ivrCampFlowData.flow.lang_audio_file[
+                  props.languageCode
+                ] !== "" ? (
+                  <>
+                    <div
+                      item
+                      className="fileNames"
+                      id={props.languageCode + "langAudioShow"}
+                      style={{
+                        border: ".2px solid black",
+                        width: "200px",
+                        fontSize: "10px",
+                        wordWrap: "break-word",
+                        paddingBottom: "3px",
+                        margin: "auto",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
+                    </div>
+                  </>
+                ) : null}
+                {showLoader && <CircularProgress />}
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        localStore.ivrCampFlowData.flow.channel === "USSD" && (
+          <>
+            <div className="rendering__component__on__language__select">
+              <div className="rendering__component__on__language__select__container">
+                <div className="language__specific__wait__time__container">
+                  <Box
+                    component="form"
+                    style={{ width: "100%" }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <TextField
+                      id={"waitTime-" + props.languageCode}
+                      type="input"
+                      label={"Input key for " + props.lang + " language"}
+                      variant="outlined"
+                      value={ussdKey}
+                      onChange={(e) => {
+                        saveValues(e, "USSD");
+                        setNormalState((prev) => !prev);
+                      }}
+                      onWheel={(e) => e.target.blur()}
+                      disabled={props.disableEditingWhileCreatingCamp}
+                      required
+                      error={showError ? (ussdKey ? false : true) : false}
+                    />
+                  </Box>
                 </div>
-              </>
-            ) : null}
-            {showLoader && <CircularProgress />}
-          </div>
-        </div>
-      </div>
-    </> 
-    : localStore.ivrCampFlowData.flow.channel === 'USSD' && <>
-      < div className="rendering__component__on__language__select">
-        <div className="rendering__component__on__language__select__container">
-          <div className="language__specific__wait__time__container">
-            <Box
-              component="form"
-              style={{ width: "100%" }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id={"waitTime-" + props.languageCode}
-                type="input"
-                label={"Input key for " + props.lang + " language"}
-                variant="outlined"
-                value={ussdKey}
-                onChange={(e) => {
-                  saveValues(e, "USSD")
-                  setNormalState((prev) => !prev);
-                }}
-                onWheel={(e) => e.target.blur()}
-                disabled={props.disableEditingWhileCreatingCamp}
-                required
-                error={
-                  showError
-                    ? ussdKey
-                      ? false
-                      : true
-                    : false
-                }
-              />
-            </Box>
-          </div>
-          </div>
-          </div>
-    </>}
+                <div style={{}} className={props.hideItemStyle} hideItem>
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="Type Your Message here"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
+                    // onChange={(e) => handleUSSD(e.target.value)}
+                    error={
+                      showError
+                        ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                          ? false
+                          : true
+                        : false
+                    }
+                    style={{ width: "100%", marginTop:"1rem" }}
+                  />
+                  {showLoader && <CircularProgress />}
+                </div>
+              </div>
+            </div>
+          </>
+        )
+      )}
     </>
   );
 };

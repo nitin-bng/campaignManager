@@ -283,8 +283,8 @@ defaultEndDate.setDate(defaultEndDate.getDate());
     ).then((res) => {
       res.json().then((res) => {
         console.log("res", res);
-        setBarGraphData(getBarGraphData(res.graphData, '', getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
-        setGraphData(res.graphData)
+        setBarGraphData(getBarGraphData(res.dateData, '', getDateInFormat(state.selection.startDate), getDateInFormat(state.selection.endDate)))
+        setGraphData(res.dateData)
       });
     });
   };

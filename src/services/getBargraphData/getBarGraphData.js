@@ -59,7 +59,7 @@ const getBarGraphData = (
         newValue.datasets[0].data[index] =
           ~~newValue.datasets[0].data[index] + ~~loopArray[i]["picked"];
         newValue.datasets[1].data[index] =
-          ~~newValue.datasets[1].data[index] + ~~loopArray[i]["progress"];
+          ~~newValue.datasets[1].data[index] + ~~loopArray[i]["scheduled"];
         newValue.datasets[2].data[index] =
           ~~newValue.datasets[2].data[index] +
           ~~loopArray[i]["picked"] +
@@ -82,7 +82,6 @@ const getBarGraphData = (
       dateArray = result.labels[result.labels.length-1].split('-')
       todaysDate.setDate(~~dateArray[2]+1)
     }
-
     todaysDate.setFullYear(dateArray[0])
     todaysDate.setMonth(dateArray[1]-1)
      for(let j=i; j>0; j--){
@@ -90,8 +89,6 @@ const getBarGraphData = (
       todaysDate.setDate(~~todaysDate.getDate() + 1)
      }
   }
-
-
   result.labels = result.labels.map(
     (item) => item.slice(8, 10) + " " + getMonth(item.slice(5, 7))
   );

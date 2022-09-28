@@ -7,9 +7,9 @@ const initialValue = {
         backgroundColor: "green"
       },
       {
-        label: "Failed",
+        label: "Remaining",
         data: [],
-        backgroundColor: "red"
+        backgroundColor: "yellow"
       },
       {
         label: "Total",

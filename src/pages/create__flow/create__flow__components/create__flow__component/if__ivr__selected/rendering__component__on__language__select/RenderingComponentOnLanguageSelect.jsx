@@ -383,6 +383,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   return (<>
     {localStore.ivrCampFlowData.flow.channel === 'IVR' ? 
     <>
+    {console.log("component called")}
       <div className="rendering__component__on__language__select">
         <div className="rendering__component__on__language__select__container">
           <div className="language__specific__wait__time__container">

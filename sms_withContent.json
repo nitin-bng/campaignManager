@@ -1,0 +1,156 @@
+{
+  "flow": {
+    "language_local": ["en"],
+    "language": [
+      {
+        "level": 0,
+        "node_type": "LANG_SELECTION",
+        "id": "0",
+        "actions": [
+          {
+            "id": "0_5",
+            "input": {
+              "ivr_key": 1,
+              "sms_key": "input key one"
+            },
+            "language": "_E",
+            "lang_file": {
+              "ivr": "",
+              "sms": "input key one msg response"
+            },
+            "actionType": {
+              "ivr": "PLAY",
+              "sms": "HITURL_SMS"
+            },
+            "action_delay_min": 0,
+            "repeatCount": 0,
+            "waitTime": ""
+          },
+          {
+            "id": "0_5",
+            "input": {
+              "ivr_key": 2,
+              "sms_key": "input key two"
+            },
+            "language": "_H",
+            "lang_file": {
+              "ivr": "",
+              "sms": "input key two msg response"
+            },
+            "actionType": {
+              "ivr": "PLAY",
+              "sms": "HITURL_SMS"
+            },
+            "action_delay_min": 0,
+            "repeatCount": 0,
+            "waitTime": ""
+          }
+        ]
+      }
+    ],
+    "flow_type": "SINGLE_CH_FLOW",
+    "defaultLanguage": "_E",
+    "languageChange": ["_E", "_H"],
+    "channel": "SMS",
+    "channel_local": [],
+    "channelChange": [],
+    "main_file": {
+      "ivr": {
+        "_E": "",
+        "_H": ""
+      },
+      "sms": {
+        "_E": "first msg of eng lang",
+        "_H": "first msg of hind lang"
+      }
+    },
+    "actionType": {
+      "ivr": "PLAY",
+      "sms": "SCHEDULE_SMS"
+    },
+    "actions": [
+      {
+        "input": {
+          "ivr_key": 1,
+          "sms_key": "input key dtmf one"
+        },
+        "sms": "DTMF mag response hindi",
+        "file": {
+          "ivr": {
+            "_E": "",
+            "_H": ""
+          },
+          "sms": {
+            "_E": "DTMF mag response eng",
+            "_H": "DTMF mag response hindi"
+          }
+        },
+        "actionType": {
+          "ivr": "",
+          "sms": "HITURL_SMS"
+        },
+        "node_type": "PROCESSING",
+        "dtmf_key": 1,
+        "audio_file": {},
+        "type": "HITURL_SMS",
+        "level": 1,
+        "waitTime": "",
+        "dtmf_count": 0,
+        "actions": [],
+        "action_tag": "",
+        "id": 1,
+        "repeat": {
+          "value": false,
+          "dtmf": 0,
+          "audio_file": []
+        }
+      },
+      {
+        "input": {
+          "ivr_key": 2,
+          "sms_key": "input ket dtmf two"
+        },
+        "sms": "DTMF two mag response eng",
+        "file": {
+          "ivr": {
+            "_E": "",
+            "_H": ""
+          },
+          "sms": {
+            "_E": "DTMF two mag response eng",
+            "_H": "DTMF  two mag response hindi"
+          }
+        },
+        "actionType": {
+          "ivr": "",
+          "sms": "HITURL_SMS"
+        },
+        "node_type": "PROCESSING",
+        "dtmf_key": 2,
+        "audio_file": {},
+        "type": "HITURL_SMS",
+        "level": 1,
+        "waitTime": "",
+        "dtmf_count": 0,
+        "actions": [],
+        "action_tag": "",
+        "id": 2,
+        "repeat": {
+          "value": false,
+          "dtmf": 0,
+          "audio_file": []
+        }
+      }
+    ],
+    "repeat": {
+      "value": false,
+      "dtmf": 0,
+      "audio_file": []
+    },
+    "flowName": "smstest",
+    "main_audio_dtmfCount": 2
+  },
+  "publisher": null,
+  "device": null,
+  "country": null
+}

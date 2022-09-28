@@ -162,7 +162,6 @@ const MenuProps = {
   },
 };
 
-var names = [];
 
 function getStyles(name, personName, theme) {
   return {
@@ -190,6 +189,7 @@ const Home = () => {
     startDate: new Date(),
     endDate: null,
   };
+  const [names, setNames] = useState([])
 
   let defaultStartDate = new Date();
 let defaultEndDate = new Date();
@@ -347,9 +347,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
       .then((response) => response.json())
       .then((data) => {
         console.log("dashBoardDataFromApi", data);
-        data.campName.map((ele) => {
-          return names.push(ele);
-        });
+        setNames(data.campName)
       })
       .catch(() => {
         return <p>dashboard data not available</p>;
@@ -809,7 +807,7 @@ defaultEndDate.setDate(defaultEndDate.getDate() - 1);
                                     }}
                                   />
                                 </>
-                              ) : row.status == "COMPLETE" ||
+                              ) : row.status == "COMPLETED" ||
                                 row.status == "EXPIRED" ||
                                 row.status == "CANCELED" ? (
                                 <>

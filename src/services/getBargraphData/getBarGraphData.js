@@ -63,7 +63,7 @@ const getBarGraphData = (
         newValue.datasets[2].data[index] =
           ~~newValue.datasets[2].data[index] +
           ~~loopArray[i]["picked"] +
-          ~~loopArray[i]["progress"];
+          ~~loopArray[i]["scheduled"];
       }
     }
 

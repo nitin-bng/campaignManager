@@ -162,8 +162,6 @@ const MenuProps = {
   },
 };
 
-var names = [];
-
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
@@ -190,6 +188,7 @@ const Home = () => {
     startDate: new Date(),
     endDate: null,
   };
+  const [names, setNames] = useState([])
 
   let defaultStartDate = new Date();
   let defaultEndDate = new Date();
@@ -363,9 +362,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("dashBoardDataFromApi", data);
-        data.campName.map((ele) => {
-          return names.push(ele);
-        });
+        setNames(data.campName);
       })
       .catch(() => {
         return <p>dashboard data not available</p>;
@@ -407,6 +404,7 @@ const Home = () => {
     getcampaignScheduleList();
   };
 
+  console.log('Nitin name', names)
   return (
     <>
       <div className="home">

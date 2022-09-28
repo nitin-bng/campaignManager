@@ -25,6 +25,7 @@ import ReactAudioPlayer from "react-audio-player";
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForMainDTMF } from "../../../../../../components/fileUpload/FileUploaderForMainDTMF";
+import { CommonContext } from "../../../../../../helpers/CommonContext";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -43,14 +44,15 @@ const numberOfSubDTMF = [
 const MainDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
-  console.log("props props props", props);
+  const {channel} = useContext(CommonContext)
+
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
-  ] = React.useState("");
+  ] = useState("");
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -468,6 +470,12 @@ const MainDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
+    if(channel === 'USSD'){
+      globalState.state.ivrCampFlowData.flow.actions[
+        props.data - 1
+      ].type = 'HITURL_USSD'
+      dispatch({ type: "SET_DATA", nState: globalState.state });
+    }
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
@@ -483,7 +491,7 @@ const MainDTMF = (props) => {
     if (
       (!isFilled &&
       !globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
-      .waitTime && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled && globalState.state.ivrCampFlowData.flow.actions[
+      .waitTime && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled && !globalState.state.ivrCampFlowData.flow.actions[
         props.global.dtmf_key - 1
       ].input['ussd_key'] && localStore.ivrCampFlowData.flow.channel === 'USSD')
       ) {
@@ -777,6 +785,9 @@ const MainDTMF = (props) => {
                     </Select>
                   </FormControl>
                 </div>
+                {console.log('Nitin', globalState.state.ivrCampFlowData.flow.actions[
+      props.data - 1
+    ].type)}
                 <div className="main__dtmf__wait__time__container">
                   <Box
                     component="form"

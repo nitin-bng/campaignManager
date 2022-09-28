@@ -9,7 +9,8 @@ const initialValue = {
       {
         label: "Remaining",
         data: [],
-        backgroundColor: "yellow"
+
+        backgroundColor: "orange"
       },
       {
         label: "Total",

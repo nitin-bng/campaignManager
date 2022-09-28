@@ -893,7 +893,7 @@ const MainDTMF = (props) => {
                     {languageName.map((el) => {
                       return (
                         <Typography style={{ fontSize: "12px" }}>
-                          Welcome prompt audio file for {el}
+                          input key dtmf for {el}
                         </Typography>
                       );
                     })}
@@ -908,15 +908,23 @@ const MainDTMF = (props) => {
                   >
                     {localStore.ivrCampFlowData.flow.languageChange.map(
                       (lang) => (
-                        <FileUploaderForMainDTMF
-                          lang={lang}
-                          hideItemStyle={props.hideItemStyle}
-                          parentNode={props.parentNode}
-                          global={props.global}
-                          globalState={globalState}
-                          uploadFiles={uploadFiles}
-                          AudioFiles={AudioFiles}
-                        />
+                        <TextField
+                    id="outlined-multiline-static"
+                    label="Type Your Message here"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
+                    // onChange={(e) => handleUSSD(e.target.value)}
+                    error={
+                      showError
+                        ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                          ? false
+                          : true
+                        : false
+                    }
+                    style={{ width: "100%", margin:"1rem" }}
+                  />
                       )
                     )}
                   </div>

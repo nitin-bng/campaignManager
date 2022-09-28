@@ -183,7 +183,7 @@ const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [graphData, setGraphData] = useState(barDefaultData)
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [personName, setPersonName] = React.useState(['All Campaigns']);
   const [barGraphData, setBarGraphData] = useState(data)
   const todaysDate = {
     startDate: new Date(),
@@ -267,6 +267,9 @@ defaultEndDate.setDate(defaultEndDate.getDate());
   useEffect(() => {
     getcampaignScheduleList();
     dashBoardData();
+    setInterval(() => {
+      dashBoardData();
+    }, 30000);
   }, []);
 
   const dashBoardData = () => {
@@ -370,7 +373,7 @@ defaultEndDate.setDate(defaultEndDate.getDate());
     } = event;
     setPersonName(typeof value === "string" ? value.split(",") : value);
   };
-
+  console.log('nitin', personName)
   const handelActionChange = (action, id) => {
     console.log("action", action, id);
 
@@ -405,7 +408,7 @@ defaultEndDate.setDate(defaultEndDate.getDate());
           <div className="home__maincontent__container">
             <div className="home__maincontent">
               <div className="home__maincontent__card__container">
-                {showDoughnuts ? (
+                {/* {showDoughnuts ? (
                   <>
                     <div
                       className="home__maincontent__card home__maincontent__card2"
@@ -419,14 +422,14 @@ defaultEndDate.setDate(defaultEndDate.getDate());
                     >
                       <FormControl sx={{ m: 1, width: 300 }}>
                         <InputLabel id="demo-multiple-name-label">
-                          Name
+                          Campaign Name
                         </InputLabel>
                         <Select
                           labelId="demo-multiple-name-label"
                           id="demo-multiple-name"
                           value={personName}
                           onChange={handleChange}
-                          input={<OutlinedInput label="Name" />}
+                          input={<OutlinedInput label="Campaign Name" />}
                           MenuProps={MenuProps}
                         >
                           {names.map((name) => (
@@ -458,14 +461,14 @@ defaultEndDate.setDate(defaultEndDate.getDate());
                     >
                       <FormControl sx={{ m: 1, width: 300 }}>
                         <InputLabel id="demo-multiple-name-label">
-                          Name
+                        Campaign Name
                         </InputLabel>
                         <Select
                           labelId="demo-multiple-name-label"
                           id="demo-multiple-name"
                           value={personName}
                           onChange={handleChange}
-                          input={<OutlinedInput label="Name" />}
+                          input={<OutlinedInput label="Campaign Name" />}
                           MenuProps={MenuProps}
                         >
                           {names.map((name) => (
@@ -486,14 +489,14 @@ defaultEndDate.setDate(defaultEndDate.getDate());
                       />
                     </div>
                   </>
-                ) : null}
+                ) : null} */}
 
                 <div
                   className="home__maincontent__card home__maincontent__card10"
                   style={{
                     width: "96%",
                     marginTop: "2rem",
-                    border: "2px solid red",
+                    // border: "2px solid red",
                     display: "flex",
                     justifyContent: "space-around",
                     alignItems: "flex-start",
@@ -506,16 +509,23 @@ defaultEndDate.setDate(defaultEndDate.getDate());
                   >
                     <FormControl sx={{ m: 1, width: 300 }}>
                       <InputLabel id="demo-multiple-name-label">
-                        Name
+                      Campaign Name
                       </InputLabel>
                       <Select
                         labelId="demo-multiple-name-label"
                         id="demo-multiple-name"
                         value={personName}
                         onChange={handleChange}
-                        input={<OutlinedInput label="Name" />}
+                        input={<OutlinedInput label="Campaign Name" />}
                         MenuProps={MenuProps}
                       >
+                            <MenuItem
+                              key={'All Campaigns'}
+                              value={'All Campaigns'}
+                              style={getStyles('All Campaigns', personName, theme)}
+                            >
+                              All Campaigns
+                            </MenuItem>
                         {names.map((name) => (
                           <MenuItem
                             key={name}

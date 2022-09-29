@@ -1042,7 +1042,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={props.current.type}
+                      value={'HITURL_USSD'}
                       label="DTMF__option"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {

@@ -229,7 +229,6 @@ const MainDTMF = (props) => {
       }
     };
 
-
     async function uploadMultipleFiles(props) {
       debugger;
     console.log("-----------------props------", props);
@@ -468,6 +467,8 @@ const MainDTMF = (props) => {
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
+  console.log('here', localStore)
+
   useEffect(() => {
     setShowError(false);
     if(channel === 'USSD'){
@@ -502,12 +503,21 @@ const MainDTMF = (props) => {
       globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
       .waitTime,
     ]);
+
+    const removeExtraSubDTMFs = () =>{
+      localStore.ivrCampFlowData.flow.actions = globalState.state.ivrCampFlowData.flow.actions.map(item=>{
+        let newItem = item
+        newItem.actions = newItem.actions.map(item=>{return {...item, actions: []}}) 
+        return newItem
+      }
+        )
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
     
   return (
     <>
     {localStore.ivrCampFlowData.flow.channel === 'IVR' ?
       <div className="main__dtmf">
-        {console.log("data is here", props.data)}
         <div className="main__dtmf__container">
           <Card
             style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -734,7 +744,6 @@ const MainDTMF = (props) => {
       </div>
       : 
       <div className="main__dtmf">
-      {console.log("data is here", props.data)}
       <div className="main__dtmf__container">
         <Card
           style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -785,9 +794,6 @@ const MainDTMF = (props) => {
                     </Select>
                   </FormControl>
                 </div>
-                {console.log('Nitin', globalState.state.ivrCampFlowData.flow.actions[
-      props.data - 1
-    ].type)}
                 <div className="main__dtmf__wait__time__container">
                   <Box
                     component="form"
@@ -854,6 +860,7 @@ const MainDTMF = (props) => {
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
                         detectLevel(e, "sub_audio_dtmfs", props.global);
+                        removeExtraSubDTMFs()
                       }}
                       disabled={props.disableEditingWhileCreatingCamp}
                       required
@@ -944,6 +951,7 @@ const MainDTMF = (props) => {
             </CardContent>
             <div className="rendering__subdtmf__container">
               {props.global.actions.map((e, index) => {
+                // e.actions = []
                 return (
                   <SubDTMF
                     data={props}

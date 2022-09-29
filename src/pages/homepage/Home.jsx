@@ -403,8 +403,6 @@ const Home = () => {
       });
     getcampaignScheduleList();
   };
-
-  console.log('Nitin name', names)
   return (
     <>
       <div className="home">

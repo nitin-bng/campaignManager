@@ -48,7 +48,9 @@ const MainDTMF = (props) => {
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
   const {channel} = useContext(CommonContext)
+  const [showLoader, setShowLoader] = useState(false)
 
+  console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
@@ -934,6 +936,19 @@ const MainDTMF = (props) => {
                     variant="outlined"
                     value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
                     // onChange={(e) => handleUSSD(e.target.value)}
+                    onChange={async(event) => {
+                      setShowLoader(true)
+                      await uploadFiles(
+                        props.parentNode +
+                          "_" +
+                          global.dtmf_key,
+                        event,
+                        event.currentTarget.files,
+                        lang,
+                      );
+                      // setIsError(false)
+                      setShowLoader(false)
+                    }}
                     error={
                       showError
                         ? localStore.ivrCampFlowData.flow.main_file.ussd._E

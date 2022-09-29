@@ -82,37 +82,37 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
 
-  useEffect(() => {
-    if (props.hideItemStyle === undefined) {
-      errorDispatch({ type: "AUDIO", payload: true });
-    }
-    errorDispatch({
-      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-      payload: false,
-    });
-    return () =>
-      errorDispatch({
-        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-        payload: true,
-      });
-  }, []);
+  // useEffect(() => {
+  //   if (props.hideItemStyle === undefined) {
+  //     errorDispatch({ type: "AUDIO", payload: true });
+  //   }
+  //   errorDispatch({
+  //     type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+  //     payload: false,
+  //   });
+  //   return () =>
+  //     errorDispatch({
+  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+  //       payload: true,
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    if (
-      (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
-      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
-    ) {
-      errorDispatch({
-        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-        payload: true,
-      });
-    } else {
-      errorDispatch({
-        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-        payload: false,
-      });
-    }
-  }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
+  // useEffect(() => {
+  //   if (
+  //     (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
+  //     (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
+  //   ) {
+  //     errorDispatch({
+  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+  //       payload: true,
+  //     });
+  //   } else {
+  //     errorDispatch({
+  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+  //       payload: false,
+  //     });
+  //   }
+  // }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -402,7 +402,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   <TextField
                     id={"waitTime-" + props.languageCode}
                     type="number"
-                    label={"Wait time for " + props.lang + " language"}
+                    label={"Wait gfhgh for " + props.lang + " language"}
                     variant="outlined"
                     value={waitTime}
                     onChange={(e) => {
@@ -517,7 +517,45 @@ const RenderingComponentOnLanguageSelect = (props) => {
                   </Box>
                 </div>
                 <div style={{}} className={props.hideItemStyle} hideItem>
-                  <TextField
+                <TextField
+                  // accept="audio/wav"
+                  // style={
+                  //   showError && isError
+                  //     ? {
+                  //         border: "2px solid red",
+                  //         justifyContent: "center",
+                  //         display: "flex",
+                  //         overflow: "hidden",
+                  //       }
+                  //     : {
+                  //         justifyContent: "center",
+                  //         display: "flex",
+                  //         overflow: "hidden",
+                  //       }
+                  // }
+                  // type="file"
+                  // id="outlined-multiline-static"
+                    label="Type Your Message here"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                  // class="custom-file-input"
+                  name="lang_audio_file"
+                  onChange={async (event) => {
+                    setShowLoader(true);
+                    await uploadFiles(
+                      "lang_audio_file",
+                      event,
+                      event.currentTarget.files,
+                      props.languageCode
+                    );
+                    setIsError(false);
+                    setShowLoader(false);
+                  }}
+                  id={props.languageCode + "-Lang"}
+                  required
+                />
+                  {/* <TextField
                     id="outlined-multiline-static"
                     label="Type Your Message here"
                     multiline
@@ -533,7 +571,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                         : false
                     }
                     style={{ width: "100%", marginTop:"1rem" }}
-                  />
+                  /> */}
                   {showLoader && <CircularProgress />}
                 </div>
               </div>

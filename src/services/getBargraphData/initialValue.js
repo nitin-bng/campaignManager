@@ -9,7 +9,6 @@ const initialValue = {
       {
         label: "Remaining",
         data: [],
-
         backgroundColor: "orange"
       },
       {

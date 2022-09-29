@@ -25,6 +25,7 @@ import ReactAudioPlayer from "react-audio-player";
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForMainDTMF } from "../../../../../../components/fileUpload/FileUploaderForMainDTMF";
+import { CommonContext } from "../../../../../../helpers/CommonContext";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -43,16 +44,17 @@ const numberOfSubDTMF = [
 const MainDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
+  const {channel} = useContext(CommonContext)
   const [showLoader, setShowLoader] = useState(false)
 
   console.log("props props props", props);
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
-  ] = React.useState("");
+  ] = useState("");
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -228,7 +230,6 @@ const MainDTMF = (props) => {
         return;
       }
     };
-
 
     async function uploadMultipleFiles(props) {
       debugger;
@@ -468,40 +469,57 @@ const MainDTMF = (props) => {
     setArr(arr);
   }, [numberOfMainDTMFWhenIVRIsSelected]);
 
-  // useEffect(() => {
-  //   setShowError(false);
-  //   return () => {
-  //     errorDispatch({ type: "MAIN_DTMF", payload: false });
-  //   };
-  // }, []);
+  console.log('here', localStore)
 
-  // useEffect(() => {
-  //   if (isFilled) {
-  //     errorDispatch({ type: "MAIN_DTMF", payload: false });
-  //   }
-  // }, [isFilled]);
+  useEffect(() => {
+    setShowError(false);
+    if(channel === 'USSD'){
+      globalState.state.ivrCampFlowData.flow.actions[
+        props.data - 1
+      ].type = 'HITURL_USSD'
+      dispatch({ type: "SET_DATA", nState: globalState.state });
+    }
+    return () => {
+      errorDispatch({ type: "MAIN_DTMF", payload: false });
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     (!isFilled &&
-  //     !globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
-  //     .waitTime && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled && globalState.state.ivrCampFlowData.flow.actions[
-  //       props.global.dtmf_key - 1
-  //     ].input['ussd_key'] && localStore.ivrCampFlowData.flow.channel === 'USSD')
-  //     ) {
-  //       errorDispatch({ type: "MAIN_DTMF", payload: true });
-  //     }
-  //   }, [
-  //     isFilled,
-  //     globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
-  //     .waitTime,
-  //   ]);
+  useEffect(() => {
+    if (isFilled) {
+      errorDispatch({ type: "MAIN_DTMF", payload: false });
+    }
+  }, [isFilled]);
+
+  useEffect(() => {
+    if (
+      (!isFilled &&
+      !globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
+      .waitTime && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled && !globalState.state.ivrCampFlowData.flow.actions[
+        props.global.dtmf_key - 1
+      ].input['ussd_key'] && localStore.ivrCampFlowData.flow.channel === 'USSD')
+      ) {
+        errorDispatch({ type: "MAIN_DTMF", payload: true });
+      }
+    }, [
+      isFilled,
+      globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
+      .waitTime,
+    ]);
+
+    const removeExtraSubDTMFs = () =>{
+      localStore.ivrCampFlowData.flow.actions = globalState.state.ivrCampFlowData.flow.actions.map(item=>{
+        let newItem = item
+        newItem.actions = newItem.actions.map(item=>{return {...item, actions: []}}) 
+        return newItem
+      }
+        )
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
     
   return (
     <>
     {localStore.ivrCampFlowData.flow.channel === 'IVR' ?
       <div className="main__dtmf">
-        {console.log("data is here", props.data)}
         <div className="main__dtmf__container">
           <Card
             style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -728,7 +746,6 @@ const MainDTMF = (props) => {
       </div>
       : 
       <div className="main__dtmf">
-      {console.log("data is here", props.data)}
       <div className="main__dtmf__container">
         <Card
           style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
@@ -845,6 +862,7 @@ const MainDTMF = (props) => {
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
                         detectLevel(e, "sub_audio_dtmfs", props.global);
+                        removeExtraSubDTMFs()
                       }}
                       disabled={props.disableEditingWhileCreatingCamp}
                       required
@@ -948,6 +966,7 @@ const MainDTMF = (props) => {
             </CardContent>
             <div className="rendering__subdtmf__container">
               {props.global.actions.map((e, index) => {
+                // e.actions = []
                 return (
                   <SubDTMF
                     data={props}

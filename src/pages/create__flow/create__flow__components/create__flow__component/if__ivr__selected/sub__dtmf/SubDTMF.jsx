@@ -26,6 +26,7 @@ import ReactAudioPlayer from "react-audio-player";
 import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForSubDTMF } from "../../../../../../components/fileUpload/FileUploaderForSubDTMF";
+import { CommonContext } from "../../../../../../helpers/CommonContext";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -51,7 +52,8 @@ const SubDTMF = (props) => {
   const [
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
-  ] = React.useState("");
+  ] = useState("");
+  const {channel} = useContext(CommonContext)
 
   const [isFilled, setIsFilled] = useState(false);
 
@@ -535,7 +537,9 @@ const SubDTMF = (props) => {
       if (keyToChange == "input.sms_key") {
         return localStoreC.input.sms_key;
       }
-      console.log("readingg---....", localStoreC);
+      if(keyToChange === 'ussd_key'){
+        return localStoreC.input.ussd_key
+      }
       return localStoreC[keyToChange];
     }
     if (type === "return") {
@@ -587,7 +591,13 @@ const SubDTMF = (props) => {
       }
       localStoreC.type = value;
     } else {
+      if(keyToChange==='ussd_key'){
+        console.log("this shouldn't run")
+        localStoreC.input[keyToChange] = value;
+      }
+      else{
       localStoreC[keyToChange] = value;
+      }
     }
 
     findAndModifyFirst(localStoreB, "actions", { id: id }, localStoreC);
@@ -744,6 +754,10 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
+    if(channel === 'USSD'){
+      console.log('inside useEffect', props.current)
+      // dispatch({ type: "SET_DATA", nState: localStore });
+    }
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
     };
@@ -1028,7 +1042,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={props.current.type}
+                      value={'HITURL_USSD'}
                       label="DTMF__option"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
@@ -1046,7 +1060,7 @@ const SubDTMF = (props) => {
                       }}
                       name="type"
                     >
-                      {["PLAY", "Schedule SMS", "HITURL_USSD"].map((number, index) => {
+                      {["HITURL_USSD"].map((number, index) => {
                         return <MenuItem value={number}>{number}</MenuItem>;
                       })}
                     </Select>
@@ -1067,16 +1081,17 @@ const SubDTMF = (props) => {
                       value={traverseAndModify(
                         props.current.id,
                         props.current,
-                        "waitTime",
+                        "ussd_key",
                         null,
                         "read"
                       )}
                       onChange={(e) => {
                         setIsFilled(() => e.target.value !== "");
+                        debugger
                         traverseAndModify(
                           props.current.id,
                           props.current,
-                          "waitTime",
+                          "ussd_key",
                           e.target.value,
                           "edit"
                         );

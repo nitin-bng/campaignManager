@@ -636,7 +636,6 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
               onChange={(e) => {
                 detectLevel(e, "main_audio");
                 console.log(e.target);
-                console.log("here");
               }}
               name="main_audio_dtmfCount"
               disabled={disableEditingWhileCreatingCamp}

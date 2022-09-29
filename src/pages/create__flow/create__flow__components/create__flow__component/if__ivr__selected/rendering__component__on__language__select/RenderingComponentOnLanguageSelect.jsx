@@ -385,6 +385,20 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
+  const handleUSSD = (msg) =>{
+    localStore.ivrCampFlowData.flow['lang_audio_file'] = localStore.ivrCampFlowData.flow['lang_audio_file'] ? localStore.ivrCampFlowData.flow['lang_audio_file'] : {}
+    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = msg
+    localStore.ivrCampFlowData.flow.language[0].actions = localStore.ivrCampFlowData.flow.language[0].actions.map(item=>{
+    if(item.languageName === props.lang){
+      item.lang_file['sms'] = msg
+      item.lang_file['ussd'] = msg
+    }
+    return item
+    })
+    dispatch({ type: "SET_DATA", nState: localStore });
+    setIsError(msg === '');
+  }
+
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -541,19 +555,10 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     variant="outlined"
                   // class="custom-file-input"
                   name="lang_audio_file"
-                  onChange={async (event) => {
-                    setShowLoader(true);
-                    await uploadFiles(
-                      "lang_audio_file",
-                      event,
-                      event.currentTarget.files,
-                      props.languageCode
-                    );
-                    setIsError(false);
-                    setShowLoader(false);
-                  }}
+                  onChange={(event) => handleUSSD(event.target.value)}
                   id={props.languageCode + "-Lang"}
                   required
+                  error={showError && isError ? true:false}
                 />
                   {/* <TextField
                     id="outlined-multiline-static"

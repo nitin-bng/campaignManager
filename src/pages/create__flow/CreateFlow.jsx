@@ -464,7 +464,14 @@ const CreateFlow = () => {
                                   alignSelf: "flex-end",
                                 }}
                                 className="closeBtn"
-                                onClick={() => setShowFlowTable(false)}
+                                onClick={() => {
+                                  setChannel('');
+                                  localStore.ivrCampFlowData.flow.channel = '';
+                                  localStorage.setItem("channelName", '');
+                                  dispatch({ type: "SET_DATA", nState: localStore });
+                                  setShowFlowTable(false)
+                                }
+                                }
                               >
                                 Create New Flow
                               </button>

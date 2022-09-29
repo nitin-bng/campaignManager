@@ -25,7 +25,7 @@ const getBarGraphData = (
   //   endDate = getDateInFormat(defaultEndDate)
   // }
 
-  if (campName && campName !== 'All Campaign') {
+  if (campName && campName !== 'All Campaigns') {
     localData = localData.filter((item) => item.campName === campName);
   }
   console.log("localData", localData);

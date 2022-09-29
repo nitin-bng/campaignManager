@@ -16,7 +16,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 import SubDTMF from "../sub__dtmf/SubDTMF";
 import { store } from "../../../../../../store/store";
 import { Howl } from "howler";
@@ -483,7 +482,7 @@ const MainDTMF = (props) => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
   }, []);
-
+  
   useEffect(() => {
     if (isFilled) {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
@@ -513,6 +512,19 @@ const MainDTMF = (props) => {
         return newItem
       }
         )
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
+
+    const handleUSSD = (msg, languageCode) =>{
+      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
+          if(item.dtmf_key === props.global.dtmf_key){
+            item.audio_file[languageCode] = msg
+            item.file.sms[languageCode] = msg
+            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
+            item.file.ussd[languageCode] = msg
+          }
+        return item
+      })
       dispatch({ type: "SET_DATA", nState: localStore });
     }
     
@@ -934,21 +946,8 @@ const MainDTMF = (props) => {
                     multiline
                     rows={2}
                     variant="outlined"
-                    value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
-                    // onChange={(e) => handleUSSD(e.target.value)}
-                    onChange={async(event) => {
-                      setShowLoader(true)
-                      await uploadFiles(
-                        props.parentNode +
-                          "_" +
-                          global.dtmf_key,
-                        event,
-                        event.currentTarget.files,
-                        lang,
-                      );
-                      // setIsError(false)
-                      setShowLoader(false)
-                    }}
+                    // value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
+                    onChange={(e) => handleUSSD(e.target.value, lang)}
                     error={
                       showError
                         ? localStore.ivrCampFlowData.flow.main_file.ussd._E

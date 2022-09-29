@@ -456,11 +456,14 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
   //   }
   // }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
 
-  const handleUSSD = (msg) => {
-    localStore.ivrCampFlowData.flow["type"] = "HITURL_USSD";
-    localStore.ivrCampFlowData.flow.main_file.ussd["_E"] = msg;
-    localStore.ivrCampFlowData.flow["main_audio_file"] = msg;
-    dispatch({ type: "SET_MAIN_AUDIO_FILE", nState: localStore });
+  const handleUSSD = (msg, languageCode) => {
+    localStore.ivrCampFlowData.flow['main_audio_file'] = localStore.ivrCampFlowData.flow['main_audio_file'] ? localStore.ivrCampFlowData.flow['main_audio_file'] : {}
+    localStore.ivrCampFlowData.flow.main_audio_file[languageCode] = msg
+    localStore.ivrCampFlowData.flow.main_file['sms'] = localStore.ivrCampFlowData.flow.main_file['sms'] ? localStore.ivrCampFlowData.flow.main_file['sms'] : {} 
+    localStore.ivrCampFlowData.flow.main_file['sms'][languageCode] = msg
+    localStore.ivrCampFlowData.flow.main_file['ussd'] = localStore.ivrCampFlowData.flow.main_file['ussd'] ? localStore.ivrCampFlowData.flow.main_file['ussd'] : {}
+    localStore.ivrCampFlowData.flow.main_file['ussd'][languageCode] = msg
+    dispatch({ type: "SET_DATA", nState: localStore });
   };
 
   const setInputKey = (level, target, dtmf_key) => {
@@ -586,13 +589,12 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
                 hideItemStyle={hideItemStyle}
                 localStore={localStore}
                 lang={lang}
-
                   id="outlined-multiline-static"
                   label="Type Your Message here"
                   multiline
                   rows={2}
                   variant="outlined"
-                  // onChange={(e) => handleUSSD(e.target.value)}
+                  onChange={(e) => handleUSSD(e.target.value, lang)}
                   error={
                     showError
                       ? localStore.ivrCampFlowData.flow.main_file.ussd._E

@@ -15,9 +15,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
 import { findAndModifyFirst } from "obj-traverse/lib/obj-traverse";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { store } from "../../../../../../store/store";
 import { Howl } from "howler";
@@ -60,7 +58,7 @@ const SubDTMF = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const [showLoader, setShowLoader] = useState(false)
   const handleChange = (event) => {
     setnumberOfMainDTMFWhenIVRIsSelected(event.target.value);
   };
@@ -771,14 +769,20 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     if (
-      !isFilled &&
+      (!isFilled &&
       !traverseAndModify(
         props.current.id,
         props.current,
         "waitTime",
         null,
         "read"
-      )
+      ) && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled &&
+        !traverseAndModify(
+          props.current.id,
+          props.current,
+          "ussd_key",
+          null,
+          "read") && localStore.ivrCampFlowData.flow.channel === 'USSD')
     ) {
       errorDispatch({ type: "SUB_DTMF", payload: true });
     }
@@ -790,8 +794,15 @@ const SubDTMF = (props) => {
       "waitTime",
       null,
       "read"
-    ),
+    ),traverseAndModify(
+      props.current.id,
+      props.current,
+      "ussd_key",
+      null,
+      "read"
+    )
   ]);
+
 
   return (
     <>
@@ -1101,7 +1112,13 @@ const SubDTMF = (props) => {
                       required
                       error={
                         showError
-                          ? true
+                          ? traverseAndModify(
+                            props.current.id,
+                            props.current,
+                            "ussd_key",
+                            null,
+                            "read"
+                          )
                             ? false
                             : true
                           : false

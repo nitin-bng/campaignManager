@@ -182,7 +182,7 @@ const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [graphData, setGraphData] = useState(barDefaultData);
   const theme = useTheme();
-  const [personName, setPersonName] = useState(['ALL Campaigns']);
+  const [personName, setPersonName] = useState(['All Campaigns']);
   const [barGraphData, setBarGraphData] = useState(data);
   const todaysDate = {
     startDate: new Date(),
@@ -265,9 +265,13 @@ const Home = () => {
   useEffect(() => {
     getcampaignScheduleList();
     dashBoardData();
-    setInterval(() => {
+    let id = setInterval(() => {
       dashBoardData();
     }, 30000);
+
+    return () =>{
+      clearInterval(id)
+    }
   }, []);
 
   const dashBoardData = () => {
@@ -384,7 +388,6 @@ const Home = () => {
     } = event;
     setPersonName(typeof value === "string" ? value.split(",") : value);
   };
-
   const handelActionChange = (action, id) => {
     console.log("action", action, id);
 

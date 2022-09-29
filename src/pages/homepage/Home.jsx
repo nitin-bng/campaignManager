@@ -783,7 +783,7 @@ setLoader(true)
                         <TableCell align="center">Start Time</TableCell>
                         <TableCell align="center">End Time</TableCell>
                         <TableCell align="center">Priority</TableCell>
-                        <TableCell align="center">Total MSISDN</TableCell>
+                        <TableCell align="center">Total Base</TableCell>
                         <TableCell align="center">Status</TableCell>
                         <TableCell align="center">Action</TableCell>
                       </TableRow>

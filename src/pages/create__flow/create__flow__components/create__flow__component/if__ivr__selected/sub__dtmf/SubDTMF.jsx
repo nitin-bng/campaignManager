@@ -1135,7 +1135,7 @@ const SubDTMF = (props) => {
 
                 <div
                   className={props.hideItemStyle}
-                  style={{ width: "100%" }}
+                  style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
                 >
                   {localStore.ivrCampFlowData.flow.language.map((hello) => {
                     console.log(
@@ -1152,29 +1152,62 @@ const SubDTMF = (props) => {
                       hellohello
                     );
                   })}
-                  <div className="ghghg" style={{ margin: "10px 0" }}>
+                  <div
+                    className="ghghg"
+                    style={{
+                      margin: "10px 0",
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
                     {languageName.map((el) => {
                       return (
                         <Typography style={{ fontSize: "12px" }}>
-                          Welcome prompt audio file for {el}
+                          input key subdtmf for {el}
                         </Typography>
                       );
                     })}
                   </div>
-                  <div className="ghghgh">
+                  <div
+                    className="ghghgh"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      width: "100%",
+                    }}
+                  >
                     {localStore.ivrCampFlowData.flow.languageChange.map(
                       (lang) => (
-                        <FileUploaderForSubDTMF
-                          lang={lang}
-                          main_audio_file={
-                            localStore.ivrCampFlowData.flow.main_audio_file
-                          }
-                          current={props.current}
-                          uploadFiles={uploadFiles}
-                          traverseAndModify={traverseAndModify}
-                          AudioFilesL2={AudioFilesL2}
-                          hideItemStyle={props.hideItemStyle}
-                        />
+                        <TextField
+                    id="outlined-multiline-static"
+                    label="Type Your Message here"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
+                    // onChange={(e) => handleUSSD(e.target.value)}
+                    onChange={async(event) => {
+                      setShowLoader(true)
+                      await uploadFiles(
+                        props.parentNode +
+                          "_" +
+                          global.dtmf_key,
+                        event,
+                        event.currentTarget.files,
+                        lang,
+                      );
+                      // setIsError(false)
+                      setShowLoader(false)
+                    }}
+                    error={
+                      showError
+                        ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                          ? false
+                          : true
+                        : false
+                    }
+                    style={{ width: "100%", margin:"1rem" }}
+                  />
                       )
                     )}
                   </div>

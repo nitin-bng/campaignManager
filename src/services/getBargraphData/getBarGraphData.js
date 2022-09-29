@@ -21,11 +21,11 @@ const getBarGraphData = (
 
   let todaysDate = new Date()
 
-  if(endDate === getDateInFormat(todaysDate)){
-    endDate = getDateInFormat(defaultEndDate)
-  }
+  // if(endDate === getDateInFormat(todaysDate)){
+  //   endDate = getDateInFormat(defaultEndDate)
+  // }
 
-  if (campName) {
+  if (campName && campName !== 'All Campaign') {
     localData = localData.filter((item) => item.campName === campName);
   }
   console.log("localData", localData);

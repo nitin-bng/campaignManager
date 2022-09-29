@@ -56,6 +56,7 @@ import { DateRange } from "react-date-range";
 import { getBarGraphData } from "../../services/getBargraphData/getBarGraphData";
 import { getDateInFormat } from "../../services/getDateInFormat";
 import { barDefaultData } from "../../services/getBargraphData/data";
+import Loader from "../../pages/Loader";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -173,6 +174,8 @@ function getStyles(name, personName, theme) {
 
 const Home = () => {
   const globalState = useContext(store);
+  const [loader, setLoader] = useState(false);
+
   const { dispatch } = globalState;
   const [showDoughnuts, setShowDoughnuts] = useState(false);
   var [tabledata2, setData2] = useState([]);
@@ -218,6 +221,7 @@ const Home = () => {
     dailyStartTime,
     dailyEndTime,
     priority,
+    totalMsisdn,
     status
   ) {
     return {
@@ -228,6 +232,7 @@ const Home = () => {
       dailyStartTime,
       dailyEndTime,
       priority,
+      totalMsisdn,
       status,
     };
   }
@@ -339,6 +344,7 @@ const Home = () => {
                   params.dailyStartTime,
                   params.dailyEndTime,
                   params.priority,
+                  params.totalMsisdn,
                   params.status
                 )
               );
@@ -386,6 +392,8 @@ const Home = () => {
   };
 
   const handelActionChange = (action, id) => {
+setLoader(true)
+
     console.log("action", action, id);
 
     fetch(
@@ -405,6 +413,9 @@ const Home = () => {
         console.log("the error is::", error);
       });
     getcampaignScheduleList();
+    setLoader(false)
+
+
   };
   return (
     <>
@@ -772,6 +783,7 @@ const Home = () => {
                         <TableCell align="center">Start Time</TableCell>
                         <TableCell align="center">End Time</TableCell>
                         <TableCell align="center">Priority</TableCell>
+                        <TableCell align="center">Total MSISDN</TableCell>
                         <TableCell align="center">Status</TableCell>
                         <TableCell align="center">Action</TableCell>
                       </TableRow>
@@ -791,6 +803,7 @@ const Home = () => {
                             {row.dailyEndTime}
                           </TableCell>
                           <TableCell align="center">{row.priority}</TableCell>
+                          <TableCell align="center">{row.totalMsisdn}</TableCell>
                           <TableCell align="center">{row.status}</TableCell>
                           <TableCell align="center">
                             <FormGroup
@@ -800,6 +813,9 @@ const Home = () => {
                                 alignItems: "center",
                               }}
                             >
+{/* SCHEDULED, RUNNING, PAUSED, EXPIRED, STOPPED, COMPLETED, CANCELED */}
+{/* SCHEDULED, RUNNING, PAUSED, EXPIRED,        , COMPLETED, CANCELED, DELETED */}
+
                               {row.status == "SCHEDULED" ? (
                                 <>
                                   <CancelIcon
@@ -814,11 +830,11 @@ const Home = () => {
                                   <PauseCircleFilledIcon
                                     className="homepageActionIcons"
                                     onClick={(e) => {
-                                      handelActionChange("PAUSE", row.jobId);
+                                      handelActionChange("PAUSED", row.jobId);
                                     }}
                                   />
                                 </>
-                              ) : row.status == "PAUSE" ? (
+                              ) : row.status == "PAUSED" ? (
                                 <>
                                   <PlayCircleFilledIcon
                                     className="homepageActionIcons"
@@ -827,16 +843,7 @@ const Home = () => {
                                     }}
                                   />
                                 </>
-                              ) : row.status == "EXPIRED" ? (
-                                <>
-                                  <CancelIcon
-                                    className="homepageActionIcons"
-                                    onClick={(e) => {
-                                      handelActionChange("CANCELED", row.jobId);
-                                    }}
-                                  />
-                                </>
-                              ) : row.status == "COMPLETED" ||
+                              )  : row.status == "COMPLETED" ||
                                 row.status == "EXPIRED" ||
                                 row.status == "CANCELED" ? (
                                 <>
@@ -865,3 +872,4 @@ const Home = () => {
 };
 
 export default Home;
+

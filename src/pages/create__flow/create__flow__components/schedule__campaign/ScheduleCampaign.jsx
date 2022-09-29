@@ -356,6 +356,7 @@ const ScheduleCampaign = (props) => {
                 setfileName(res.fileName);
                 scheduleData["fileName"] = res.fileName;
                 scheduleData["reserveBalance"] = res.reserve_balance;
+                scheduleData["totalMsisdn"] = res.totalMsisdn;
                 setScheduleData((scheduleData1) => ({
                   ...scheduleData1,
                   ...scheduleData,

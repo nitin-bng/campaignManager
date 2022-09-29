@@ -385,18 +385,18 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
-  const handleUSSD = (event) =>{
+  const handleUSSD = (msg) =>{
     localStore.ivrCampFlowData.flow['lang_audio_file'] = localStore.ivrCampFlowData.flow['lang_audio_file'] ? localStore.ivrCampFlowData.flow['lang_audio_file'] : {}
-    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = event.target.value
+    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = msg
     localStore.ivrCampFlowData.flow.language[0].actions = localStore.ivrCampFlowData.flow.language[0].actions.map(item=>{
     if(item.languageName === props.lang){
-      item.lang_file['sms'] = event.target.value
-      item.lang_file['ussd'] = event.target.value
+      item.lang_file['sms'] = msg
+      item.lang_file['ussd'] = msg
     }
     return item
     })
     dispatch({ type: "SET_DATA", nState: localStore });
-    setIsError(event.target.value === '');
+    setIsError(msg === '');
   }
 
   return (
@@ -555,7 +555,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     variant="outlined"
                   // class="custom-file-input"
                   name="lang_audio_file"
-                  onChange={(event) => handleUSSD(event)}
+                  onChange={(event) => handleUSSD(event.target.value)}
                   id={props.languageCode + "-Lang"}
                   required
                   error={showError && isError ? true:false}

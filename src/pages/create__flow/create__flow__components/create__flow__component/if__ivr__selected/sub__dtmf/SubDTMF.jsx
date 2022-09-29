@@ -494,7 +494,7 @@ const SubDTMF = (props) => {
     }
   };
 
-  function traverseAndModify(id, objToTraverse, keyToChange, value, type) {
+  function traverseAndModify(id, objToTraverse, keyToChange, value, type, languageCode='') {
     debugger;
     console.log(
       "traverse and modify",
@@ -592,6 +592,13 @@ const SubDTMF = (props) => {
       if(keyToChange==='ussd_key'){
         console.log("this shouldn't run")
         localStoreC.input[keyToChange] = value;
+      }
+      if(keyToChange === 'ussd_msg'){
+        console.log('nitin', localStoreC)
+        localStoreC.audio_file[languageCode] = value
+        localStoreC.file.sms[languageCode] = value
+        localStoreC.file['ussd'] = localStoreC.file['ussd'] ? localStoreC.file['ussd'] : {} 
+        localStoreC.file.ussd[languageCode] = value
       }
       else{
       localStoreC[keyToChange] = value;
@@ -1201,21 +1208,15 @@ const SubDTMF = (props) => {
                     multiline
                     rows={2}
                     variant="outlined"
-                    value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
-                    // onChange={(e) => handleUSSD(e.target.value)}
-                    onChange={async(event) => {
-                      setShowLoader(true)
-                      await uploadFiles(
-                        props.parentNode +
-                          "_" +
-                          global.dtmf_key,
-                        event,
-                        event.currentTarget.files,
-                        lang,
-                      );
-                      // setIsError(false)
-                      setShowLoader(false)
-                    }}
+                    onChange={(e) =>
+                      traverseAndModify(
+                        props.current.id,
+                        props.current,
+                        "ussd_msg",
+                        e.target.value,
+                        "edit",
+                        lang
+                      )}
                     error={
                       showError
                         ? localStore.ivrCampFlowData.flow.main_file.ussd._E

@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { CommonContext } from "../../../../../helpers/CommonContext";
 import MainDTMF from "../if__ivr__selected/main__dtmf/MainDTMF";
+import Typography from "@mui/material/Typography";
 
 const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -437,23 +438,23 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
       .map((x, i) => i + 1);
   };
 
-  useEffect(() => {
-    if (hideItemStyle === undefined) {
-      setShowError(false);
-      errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-    }
-    return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-  }, []);
+  // useEffect(() => {
+  //   if (hideItemStyle === undefined) {
+  //     setShowError(false);
+  //     errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+  //   }
+  //   return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+  // }, []);
 
-  useEffect(() => {
-    if (hideItemStyle === undefined) {
-      if (localStore.ivrCampFlowData.flow.main_file.ussd._E) {
-        errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-      } else {
-        errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-      }
-    }
-  }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
+  // useEffect(() => {
+  //   if (hideItemStyle === undefined) {
+  //     if (localStore.ivrCampFlowData.flow.main_file.ussd._E) {
+  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+  //     } else {
+  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+  //     }
+  //   }
+  // }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
 
   const handleUSSD = (msg) => {
     localStore.ivrCampFlowData.flow["type"] = "HITURL_USSD";
@@ -547,39 +548,65 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
     }
   };
 
+  var hellohello = [];
+  var languageName = [];
+
   return (
     <>
       <div className="main__wait__time__and__dtmf__container" style={{}}>
         <div
+          style={{ boxShadow: "2px 2px 3px grey" }}
           className={hideItemStyle}
-          hideItem
-          style={{
-            padding: "2rem",
-            // border:"2px solid green",
-            width:"50%",
-            height:"10%"
-
-          }}
         >
-          <TextField
-            id="outlined-multiline-static"
-            label="Type Your Message here"
-            multiline
-            rows={2}
-            variant="outlined"
-            value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
-            onChange={(e) => handleUSSD(e.target.value)}
-            error={
-              showError
-                ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                  ? false
-                  : true
-                : false
-            }
-            style={{ width: "100%" }}
-          />
+          {localStore.ivrCampFlowData.flow.language.map((hello) => {
+            console.log("localStore.ivrCampFlowData.flow.language ===>", hello);
+            hellohello.push(hello.actions);
+            hello.actions.forEach((el) => {
+              console.log("action element ===>", el.languageName);
+              languageName.push(el.languageName);
+            });
+            console.log(
+              "localStore.ivrCampFlowData.flow.language hello ===>",
+              hellohello
+            );
+          })}
+          <div className="ghghg" style={{ margin: "10px 0" }}>
+            {languageName.map((el) => {
+              return (
+                <Typography style={{ fontSize: "12px" }}>
+                  Welcome prompt message {el}
+                </Typography>
+              );
+            })}
+          </div>
+          <div className="ghghgh" style={{}}>
+            {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+              <>
+                <TextField
+                hideItemStyle={hideItemStyle}
+                localStore={localStore}
+                lang={lang}
+
+                  id="outlined-multiline-static"
+                  label="Type Your Message here"
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  // onChange={(e) => handleUSSD(e.target.value)}
+                  error={
+                    showError
+                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                        ? false
+                        : true
+                      : false
+                  }
+                  style={{ width: "100%", marginTop: "1rem" }}
+                />
+              </>
+            ))}
+          </div>
         </div>
-        
+
         <div className="main__dtms__container">
           <FormControl style={{ width: "80%" }}>
             <InputLabel

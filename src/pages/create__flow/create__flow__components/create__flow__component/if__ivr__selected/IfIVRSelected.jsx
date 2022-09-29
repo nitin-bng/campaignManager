@@ -850,7 +850,7 @@ const IfIVRSelected = (props) => {
               {languageName.map((el) => {
                 return (
                   <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt audio file for {el}
+                    Welcome prompt trrthk file for {el}
                   </Typography>
                 );
               })}
@@ -883,7 +883,7 @@ const IfIVRSelected = (props) => {
                     disableChannel == "SMS" ||
                     props.disableEditingWhileCreatingCamp
                   }
-                  label="Welcome prompt Wait Time"
+                  label="Welcome fggjhj Wait Time"
                   type="number"
                   name={"waitTime_" + global.dtmf_key}
                   value={globalState.state.ivrCampFlowData.flow.waitTime}

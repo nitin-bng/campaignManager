@@ -9,12 +9,13 @@ import Select from "@mui/material/Select";
 import { CommonContext } from "../../../../../helpers/CommonContext";
 import MainDTMF from "../if__ivr__selected/main__dtmf/MainDTMF";
 import Typography from "@mui/material/Typography";
+import { LanguageComponent } from "../../../../../components/languageComponent";
 
 const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
-const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
+const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, languageComponentProps, flow }) => {
   const globalState = useContext(store);
   const { dispatch } = globalState;
   const localStore = globalState.state;
@@ -665,6 +666,9 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp }) => {
           </FormControl>
         </div>
       </div>
+
+      {!flow && <LanguageComponent  props={languageComponentProps}/>}
+
       <div className="ifIVRselected__number__of__DTMF__to__show__container">
         {genArray(
           globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ||

@@ -589,7 +589,7 @@ const CreateCampaign = (props) => {
         </button>
         {showFlowState ? (
           <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent disableEditingWhileCreatingCamp={true} />
+            <CreateFlowComponent disableEditingWhileCreatingCamp={true} flow={false}/>
           </div>
         ) : null}
       </div>

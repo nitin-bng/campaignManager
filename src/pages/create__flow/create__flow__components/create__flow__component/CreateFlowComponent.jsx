@@ -252,8 +252,6 @@ const CreateFlowComponent = (props) => {
                     <h1>Call Flow Details</h1>
                   </div>
 
-                  {props.flow && <LanguageComponent props={props} />}
-
               {channel === "IVR" ? (
                 <IfIVRSelected
                   disableEditingWhileCreatingCamp={
@@ -274,7 +272,6 @@ const CreateFlowComponent = (props) => {
                   props.disableEditingWhileCreatingCamp
                 } hideItemStyle={props.hideItemStyle} 
                   languageComponentProps = {props}
-                  flow={props.flow}
                   />
               ): <></>}
             </div>

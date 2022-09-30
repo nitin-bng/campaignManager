@@ -660,7 +660,6 @@ const CreateFlow = () => {
                           <CreateFlowComponent
                             reset={false}
                             hideItemStyle={hideItemStyle}
-                            flow={true}
                           />
                         )}
                       </>

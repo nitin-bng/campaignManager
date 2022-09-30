@@ -31,24 +31,48 @@ const getBarGraphData = (
   console.log("localData", localData);
   localData = localData.filter((item) => dateFilter(item, startDate, endDate));
 
-  result = localData.reduce((prevValue, item) => {
-    let newValue = JSON.parse(JSON.stringify(prevValue));
-    let loopArray = item.dataByDates;
+  // result = localData.reduce((prevValue, item) => {
+  //   let newValue = JSON.parse(JSON.stringify(prevValue));
+  //   let loopArray = item.dataByDates;
 
-    for (let i = loopArray.length - 1; i >= 0; i--) {
-      if (
-        isDateSmaller(loopArray[i].date, startDate) &&
-        isDateSmaller(endDate, loopArray[i].date)
-      ) {
-        localDates = { ...localDates, [loopArray[i].date]: 1 };
+  //   for (let i = loopArray.length - 1; i >= 0; i--) {
+  //     if (
+  //       isDateSmaller(loopArray[i].date, startDate) &&
+  //       isDateSmaller(endDate, loopArray[i].date)
+  //     ) {
+  //       localDates = { ...localDates, [loopArray[i].date]: 1 };
+  //     }
+  //   }
+  //   return newValue;
+  // }, JSON.parse(JSON.stringify(initialValue)));
+
+  // result.labels = Object.keys(localDates).sort((a, b) =>
+  //   isDateSmaller(a, b) ? 1 : -1
+  // );
+
+  const getLabels = () =>{
+    let labels = []
+    let date = new Date()
+    let dateArray = startDate.split('-')
+    date.setFullYear(dateArray[0])
+    date.setMonth(dateArray[1]-1)
+    date.setDate(dateArray[2])
+    let loopValue = true
+
+    while(loopValue){
+      let formatedDate = getDateInFormat(date)
+      if( formatedDate === endDate){
+        labels = [...labels, endDate]
+        loopValue = false
+        break
       }
+      labels = [...labels, formatedDate]
+      date.setDate(date.getDate()+1)
     }
-    return newValue;
-  }, JSON.parse(JSON.stringify(initialValue)));
+    return labels
+  }
 
-  result.labels = Object.keys(localDates).sort((a, b) =>
-    isDateSmaller(a, b) ? 1 : -1
-  );
+  result.labels = getLabels()
 
   result = localData.reduce((prevValue, item) => {
     let newValue = JSON.parse(JSON.stringify(prevValue));

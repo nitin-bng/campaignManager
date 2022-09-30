@@ -18,17 +18,8 @@ import { store } from "../../../../store/store";
 import "./createFlowComponent.css";
 import { useError } from "../../../../store/errorContext";
 import { IfUssdSelected } from "./if_ussd_selected/if_ussd_selected";
+import { LanguageComponent } from "../../../../components/languageComponent";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 const CreateFlowComponent = (props) => {
   const { showError, errorDispatch } = useError();
@@ -257,166 +248,9 @@ const CreateFlowComponent = (props) => {
           <div className="call__flow__details__container">
 
             <div className="call__flow__details">
-              {(channel === "IVR" || channel === "USSD") ? (<>
                   <div className="call__flow__details__heading__container">
                     <h1>Call Flow Details</h1>
                   </div>
-                <div className="call__flow__details__languages__dropdown__container">
-                  <FormControl style={{ width: "50%" }}>
-                    <InputLabel
-                      style={{
-                        backgroundColor: "white",
-                        paddingRight: "4px",
-                      }}
-                      id="demo-multiple-checkbox-label"
-                      required
-                      error={
-                        showError
-                          ? ifIVRselectedThenLanguage.length
-                            ? false
-                            : true
-                          : false
-                      }
-                    >
-                      Select Languages
-                    </InputLabel>
-                    <Select
-                      labelId="demo-multiple-checkbox-label"
-                      id="demo-multiple-checkbox"
-                      multiple
-                      value={
-                        localStore.ivrCampFlowData.flow.language[0].actions
-                          ? localStore.ivrCampFlowData.flow.language[0].actions.map(
-                              (item) => item.languageName
-                            )
-                          : ifIVRselectedThenLanguage
-                      }
-                      onChange={handleLanguageChange}
-                      input={<OutlinedInput label="Select language" />}
-                      renderValue={(selected) => selected.join(", ")}
-                      MenuProps={MenuProps}
-                      disabled={props.disableEditingWhileCreatingCamp}
-                      required
-                      error={
-                        showError
-                          ? ifIVRselectedThenLanguage.length
-                            ? false
-                            : true
-                          : false
-                      }
-                    >
-                      {Languages.map((Languages) => (
-                        <MenuItem key={Languages} value={Languages}>
-                          <Checkbox
-                            checked={
-                              ifIVRselectedThenLanguage.indexOf(Languages) > -1
-                            }
-                          />
-                          <ListItemText primary={Languages} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                </>
-              ) : (
-                <></>
-              )}
-              {
-                ifIVRselectedThenLanguage.length > 1 ? <div className="hello">
-                {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-                (channel === "IVR" || channel === "USSD") ? (
-                  <RenderingComponentOnLanguageSelect
-                    indxx={1}
-                    lang="Hindi"
-                    dtmfTime={dtmfTimeHindi}
-                    setDtmfTime={setDtmfTimeHindi}
-                    languageCode="_H"
-                    hideItemStyle={props.hideItemStyle}
-                    disableEditingWhileCreatingCamp={
-                      props.disableEditingWhileCreatingCamp
-                    }
-                  />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-                (channel === "IVR" || channel === "USSD") ? (
-                  <RenderingComponentOnLanguageSelect
-                    indxx={2}
-                    lang="English"
-                    dtmfTime={dtmfTimeEnglish}
-                    setDtmfTime={setDtmfTimeEnglish}
-                    languageCode="_E"
-                    hideItemStyle={props.hideItemStyle}
-                    disableEditingWhileCreatingCamp={
-                      props.disableEditingWhileCreatingCamp
-                    }
-                  />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-                (channel === "IVR" || channel === "USSD") ? (
-                  <RenderingComponentOnLanguageSelect
-                    indxx={3}
-                    lang="Arabic"
-                    dtmfTime={dtmfTimeArabic}
-                    setDtmfTime={setDtmfTimeArabic}
-                    languageCode="_A"
-                    hideItemStyle={props.hideItemStyle}
-                    disableEditingWhileCreatingCamp={
-                      props.disableEditingWhileCreatingCamp
-                    }
-                  />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-                (channel === "IVR" || channel === "USSD") ? (
-                  <RenderingComponentOnLanguageSelect
-                    indxx={4}
-                    lang="Spanish"
-                    dtmfTime={dtmfTimeSpanish}
-                    setDtmfTime={setDtmfTimeSpanish}
-                    languageCode="_S"
-                    hideItemStyle={props.hideItemStyle}
-                    disableEditingWhileCreatingCamp={
-                      props.disableEditingWhileCreatingCamp
-                    }
-                  />
-                ) : (
-                  ""
-                )}
-
-                {/* .................. sms .................. */}
-                {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-                channel === "SMS" ? (
-                  <RenderingComponentOnLanguageSelectOfSMS lang="Hindi" />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-                channel === "SMS" ? (
-                  <RenderingComponentOnLanguageSelectOfSMS lang="English" />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-                channel === "SMS" ? (
-                  <RenderingComponentOnLanguageSelectOfSMS lang="Arabic" />
-                ) : (
-                  ""
-                )}
-                {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-                channel === "SMS" ? (
-                  <RenderingComponentOnLanguageSelectOfSMS lang="Spanish" />
-                ) : (
-                  ""
-                )}
-              </div> : <></>
-              }
-              
 
               {channel === "IVR" ? (
                 <IfIVRSelected
@@ -436,7 +270,9 @@ const CreateFlowComponent = (props) => {
               {channel === "USSD" ? (
                 <IfUssdSelected disableEditingWhileCreatingCamp={
                   props.disableEditingWhileCreatingCamp
-                } hideItemStyle={props.hideItemStyle} />
+                } hideItemStyle={props.hideItemStyle} 
+                  languageComponentProps = {props}
+                  />
               ): <></>}
             </div>
           </div>

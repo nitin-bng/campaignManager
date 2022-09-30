@@ -175,8 +175,6 @@ function getStyles(name, personName, theme) {
 const Home = () => {
   const globalState = useContext(store);
   const [loader, setLoader] = useState(false);
-
-  const { dispatch } = globalState;
   const [showDoughnuts, setShowDoughnuts] = useState(false);
   var [tabledata2, setData2] = useState([]);
   const [callSuccess, setCallSuccess] = useState([]);
@@ -193,11 +191,11 @@ const Home = () => {
   };
   const [names, setNames] = useState([])
 
-  let defaultStartDate = new Date();
-  let defaultEndDate = new Date();
+let defaultStartDate = new Date();
+let defaultEndDate = new Date();
 
-  defaultStartDate.setDate(defaultStartDate.getDate() - 30);
-  defaultEndDate.setDate(defaultEndDate.getDate());
+defaultStartDate.setDate(defaultStartDate.getDate() - 30);
+defaultEndDate.setDate(defaultEndDate.getDate());
 
   const [state, setState] = useState({
     selection: {
@@ -206,7 +204,6 @@ const Home = () => {
       key: "selection",
     },
   });
-
   var rows2 = [];
 
   const handleExpandClick = () => {
@@ -293,34 +290,22 @@ const Home = () => {
     ).then((res) => {
       res.json().then((res) => {
         console.log("res", res);
-        setBarGraphData(
-          getBarGraphData(
-            res.dateData,
-            "",
-            getDateInFormat(state.selection.startDate),
-            getDateInFormat(state.selection.endDate)
-          )
-        );
         setGraphData(res.dateData);
       });
     });
   };
 
   useEffect(() => {
-    if (
-      (state.selection.startDate && state.selection.endDate) ||
-      personName[0]
-    ) {
-      setBarGraphData(
-        getBarGraphData(
-          graphData,
-          personName[0],
-          getDateInFormat(state.selection.startDate),
-          getDateInFormat(state.selection.endDate)
-        )
+  setBarGraphData(
+    getBarGraphData(
+      graphData,
+      personName[0],
+      getDateInFormat(state.selection.startDate),
+      getDateInFormat(state.selection.endDate)
+      )
       );
-    }
-  }, [state.selection.startDate, state.selection.endDate, personName[0]]);
+      
+    }, [state.selection.startDate, state.selection.endDate, personName[0], graphData]);
 
   const getcampaignScheduleList = () => {
     fetch(

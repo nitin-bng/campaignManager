@@ -476,6 +476,9 @@ const MainDTMF = (props) => {
       globalState.state.ivrCampFlowData.flow.actions[
         props.data - 1
       ].type = 'HITURL_USSD'
+      globalState.state.ivrCampFlowData.flow.actions[
+        props.data - 1
+      ].actionType.ussd = 'HITURL_USSD'
       dispatch({ type: "SET_DATA", nState: globalState.state });
     }
     return () => {

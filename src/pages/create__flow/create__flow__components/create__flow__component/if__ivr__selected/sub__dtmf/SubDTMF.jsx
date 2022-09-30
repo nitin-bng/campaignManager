@@ -592,6 +592,8 @@ const SubDTMF = (props) => {
       if(keyToChange==='ussd_key'){
         console.log("this shouldn't run")
         localStoreC.input[keyToChange] = value;
+        localStoreC.type = 'HITURL_USSD';
+        localStoreC.actionType['ussd'] = 'HITURL_USSD';
       }
       if(keyToChange === 'ussd_msg'){
         console.log('nitin', localStoreC)

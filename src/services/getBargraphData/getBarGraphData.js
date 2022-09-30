@@ -77,14 +77,17 @@ const getBarGraphData = (
     let dateArray = []
     if(!result.labels.length){
       dateArray = startDate.split('-')
+      todaysDate.setFullYear(dateArray[0])
+      todaysDate.setMonth(dateArray[1]-1)
       todaysDate.setDate(dateArray[2])
     }
     else{
       dateArray = result.labels[result.labels.length-1].split('-')
+      todaysDate.setFullYear(dateArray[0])
+      todaysDate.setMonth(dateArray[1]-1)
       todaysDate.setDate(~~dateArray[2]+1)
     }
-    todaysDate.setFullYear(dateArray[0])
-    todaysDate.setMonth(dateArray[1]-1)
+
      for(let j=i; j>0; j--){
       result.labels = [...result.labels, getDateInFormat(todaysDate)]
       todaysDate.setDate(~~todaysDate.getDate() + 1)

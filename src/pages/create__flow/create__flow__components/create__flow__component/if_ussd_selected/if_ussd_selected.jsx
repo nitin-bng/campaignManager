@@ -43,11 +43,6 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
       localStore.ivrCampFlowData.flow[key] = e.target.value;
       dispatch({ type: "SET_DTMF_MAIN", nState: localStore });
     }
-    console.log(
-      "%c== local STORE ==",
-      "background:lightblue; font-size:1.3rem",
-      localStore
-    );
   };
 
   const detectLevel = (e, target, current) => {
@@ -570,6 +565,32 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
     },
   }));
 
+
+  const handleThankYou = (e) =>{
+    setIsThankYouMsg(e.target.checked)
+    if(e.target.checked){
+      dispatch({type: "SET_THANKYOU", nState: true})
+    }
+    else{
+      dispatch({type: "SET_THANKYOU", nState: false})
+    }
+    
+  }
+
+  const handleThankYouMsg = (msg, languageCode) =>{
+    localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
+      if(item.node_type === 'ENDNODE'){
+        item.audio_file[languageCode] = msg
+        item.file.sms[languageCode] = msg
+        item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
+        item.file.ussd[languageCode] = msg
+      }
+    return item
+  })
+  dispatch({ type: "SET_DATA", nState: localStore });
+  }
+
+
   return (
     <>
     <div className={hideItemStyle}  style={{marginTop:"1rem"}}>
@@ -719,7 +740,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
         })}
       </div>
       <div className={hideItemStyle}>
-        <input style={{width: 1+"rem"}} type="checkbox" id="thank-you-msg" value={isThankYouMsg} onChange={(e)=> setIsThankYouMsg(e.target.checked)} />
+        <input style={{width: 1+"rem"}} type="checkbox" id="thank-you-msg" value={isThankYouMsg} onChange={(e)=> handleThankYou(e)} />
         <label style={{width: 10+"rem"}} htmlFor="thank-you-msg" >Add Thank you message</label>
       </div>
       {isThankYouMsg &&  localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
@@ -733,7 +754,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
                   multiline
                   rows={2}
                   variant="outlined"
-                  onChange={(e) => handleUSSD(e.target.value, lang)}
+                  onChange={(e) => handleThankYouMsg(e.target.value, lang)}
                   error={
                     showError
                       ? localStore.ivrCampFlowData.flow.main_file.ussd._E

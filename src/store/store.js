@@ -237,6 +237,48 @@ const StateProvider = ({ children }) => {
         const dtmfType = { ...state };
         return dtmfType;
 
+      case "SET_THANKYOU":
+        if(action.nState){
+          state.ivrCampFlowData.flow.actions = [...state.ivrCampFlowData.flow.actions, {
+            input: {
+              ivr_key: '',
+              sms_key: "",
+              ussd_key:''
+            },
+            sms: "",
+            file: {
+              ivr: '',
+              sms: '',
+              ussd: ''
+            },
+            actionType: {
+              ivr: "",
+              sms: "",
+              ussd: ""
+            },
+            node_type: "ENDNODE",
+            dtmf_key: '',
+            audio_file: {},
+            type: "HITURL_USSD",
+            level: 1,
+            waitTime: "",
+            dtmf_count: 0,
+            actions: [],
+            action_tag: "",
+
+            id: state.ivrCampFlowData.flow.actions.length+1,
+            repeat: {
+              value: false,
+              dtmf: 0,
+              audio_file: [],
+            },
+          }]
+        }
+        else{
+          state.ivrCampFlowData.flow.actions = state.ivrCampFlowData.flow.actions.filter(item=> item.node_type !== 'ENDNODE')
+        }
+        return state
+        
       case "SET_MAIN_AUDIO_FILE":
         const mainAudioFile = { ...state };
         return mainAudioFile;

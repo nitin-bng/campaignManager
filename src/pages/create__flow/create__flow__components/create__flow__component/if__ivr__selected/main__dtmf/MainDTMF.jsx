@@ -945,7 +945,9 @@ const MainDTMF = (props) => {
                       (lang) => (
                         <TextField
                     id="outlined-multiline-static"
-                    label="Type Your Message here"
+                    label={`Type Your Message for input key ${globalState.state.ivrCampFlowData.flow.actions[
+                      props.global.dtmf_key - 1
+                    ].input['ussd_key']}`}
                     multiline
                     rows={2}
                     variant="outlined"

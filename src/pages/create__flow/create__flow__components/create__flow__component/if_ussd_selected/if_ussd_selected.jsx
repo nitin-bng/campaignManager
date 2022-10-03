@@ -19,6 +19,8 @@ const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
+const languageNames = {_E: 'English', _H: 'Hindi', _A: 'Arabic', _S: 'Spanish'}
+
 const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, languageComponentProps }) => {
   const globalState = useContext(store);
   const { dispatch } = globalState;
@@ -665,7 +667,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
                 localStore={localStore}
                 lang={lang}
                   id="outlined-multiline-static"
-                  label="Type Your Message here"
+                  label={`Type Your Welcome Message for ${languageNames[lang]}`}
                   multiline
                   rows={2}
                   variant="outlined"

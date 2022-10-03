@@ -1206,7 +1206,13 @@ const SubDTMF = (props) => {
                       (lang) => (
                         <TextField
                     id="outlined-multiline-static"
-                    label="Type Your Message here"
+                    label={`Type Your Message for input key ${traverseAndModify(
+                      props.current.id,
+                      props.current,
+                      "ussd_key",
+                      null,
+                      "read"
+                    )}`}
                     multiline
                     rows={2}
                     variant="outlined"

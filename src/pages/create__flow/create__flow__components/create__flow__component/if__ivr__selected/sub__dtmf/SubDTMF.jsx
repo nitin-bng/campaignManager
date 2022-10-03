@@ -1161,7 +1161,7 @@ const SubDTMF = (props) => {
 
                 <div
                   className={props.hideItemStyle}
-                  style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
+                  style={{ width: "100%" }}
                 >
                   {localStore.ivrCampFlowData.flow.language.map((hello) => {
                     console.log(

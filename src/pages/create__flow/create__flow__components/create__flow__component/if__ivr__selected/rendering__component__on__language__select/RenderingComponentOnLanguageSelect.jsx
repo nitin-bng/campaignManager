@@ -530,25 +530,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     />
                   </Box>
                 </div>
-                <div style={{}} className={props.hideItemStyle} hideItem>
+                <div style={{marginTop:"1rem"}} className={props.hideItemStyle} hideItem>
                 <TextField
-                  // accept="audio/wav"
-                  // style={
-                  //   showError && isError
-                  //     ? {
-                  //         border: "2px solid red",
-                  //         justifyContent: "center",
-                  //         display: "flex",
-                  //         overflow: "hidden",
-                  //       }
-                  //     : {
-                  //         justifyContent: "center",
-                  //         display: "flex",
-                  //         overflow: "hidden",
-                  //       }
-                  // }
-                  // type="file"
-                  // id="outlined-multiline-static"
                     label="Type Your Message here"
                     multiline
                     rows={2}

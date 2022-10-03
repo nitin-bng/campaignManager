@@ -10,6 +10,10 @@ import { CommonContext } from "../../../../../helpers/CommonContext";
 import MainDTMF from "../if__ivr__selected/main__dtmf/MainDTMF";
 import Typography from "@mui/material/Typography";
 import { LanguageComponent } from "../../../../../components/languageComponent";
+import { styled } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+
 
 const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -555,63 +559,24 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
   var hellohello = [];
   var languageName = [];
 
+  const Root = styled('div')(({ theme }) => ({
+    width: '100%',
+    ...theme.typography.body2,
+    '& > :not(style) + :not(style)': {
+      marginTop: theme.spacing(2),
+    },
+  }));
+
   return (
     <>
-      <div className="main__wait__time__and__dtmf__container" style={{}}>
-        <div
-          style={{ boxShadow: "2px 2px 3px grey" }}
-          className={hideItemStyle}
-        >
-          {localStore.ivrCampFlowData.flow.language.map((hello) => {
-            console.log("localStore.ivrCampFlowData.flow.language ===>", hello);
-            hellohello.push(hello.actions);
-            hello.actions.forEach((el) => {
-              console.log("action element ===>", el.languageName);
-              languageName.push(el.languageName);
-            });
-            console.log(
-              "localStore.ivrCampFlowData.flow.language hello ===>",
-              hellohello
-            );
-          })}
-          <div className="ghghg" style={{ margin: "10px 0" }}>
-            {languageName.map((el) => {
-              return (
-                <Typography style={{ fontSize: "12px" }}>
-                  Welcome prompt message {el}
-                </Typography>
-              );
-            })}
-          </div>
-          <div className="ghghgh" style={{}}>
-            {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-              <>
-                <TextField
-                hideItemStyle={hideItemStyle}
-                localStore={localStore}
-                lang={lang}
-                  id="outlined-multiline-static"
-                  label="Type Your Message here"
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  onChange={(e) => handleUSSD(e.target.value, lang)}
-                  error={
-                    showError
-                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                        ? false
-                        : true
-                      : false
-                  }
-                  style={{ width: "100%", marginTop: "1rem" }}
-                />
-              </>
-            ))}
-          </div>
-        </div>
+    <div className={hideItemStyle}  style={{marginTop:"1rem"}}>
+      <Divider>Sticker here</Divider>
+    </div>
+      <div className="main__wait__time__and__dtmf__container" style={{display:"flex", flexDirection:"column" }}>
+    
 
         <div className="main__dtms__container">
-          <FormControl style={{ width: "80%" }}>
+          <FormControl style={{ width: "80%", marginTop:"1rem" }}>
             <InputLabel
               id="demo-simple-select-label"
               required
@@ -665,9 +630,66 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
             </Select>
           </FormControl>
         </div>
+
+        <div
+          style={{ width:"96%" }}
+          className={hideItemStyle}
+        >
+          {localStore.ivrCampFlowData.flow.language.map((hello) => {
+            console.log("localStore.ivrCampFlowData.flow.language ===>", hello);
+            hellohello.push(hello.actions);
+            hello.actions.forEach((el) => {
+              console.log("action element ===>", el.languageName);
+              languageName.push(el.languageName);
+            });
+            console.log(
+              "localStore.ivrCampFlowData.flow.language hello ===>",
+              hellohello
+            );
+          })}
+          <div className="ghghg" style={{ margin: "10px 0" }}>
+            {languageName.map((el) => {
+              return (
+                <Typography style={{ fontSize: "12px" }}>
+                  Welcome prompt message {el}
+                </Typography>
+              );
+            })}
+          </div>
+          <div className="ghghgh" style={{}}>
+            {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+              <>
+                <TextField
+                hideItemStyle={hideItemStyle}
+                localStore={localStore}
+                lang={lang}
+                  id="outlined-multiline-static"
+                  label="Type Your Message here"
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  onChange={(e) => handleUSSD(e.target.value, lang)}
+                  error={
+                    showError
+                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                        ? false
+                        : true
+                      : false
+                  }
+                  style={{ width: "100%", margin: "1rem" }}
+                />
+              </>
+            ))}
+          </div>
+        </div>
       </div>
 
+      <div className={hideItemStyle}  style={{marginTop:"1rem"}}>
+      <Divider className={hideItemStyle} style={{marginTop:"1rem"}}>Sticker here</Divider>
+</div>
       <LanguageComponent  props={languageComponentProps}/>
+
+
 
       <div className="ifIVRselected__number__of__DTMF__to__show__container">
         {genArray(

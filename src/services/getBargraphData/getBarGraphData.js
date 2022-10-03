@@ -28,7 +28,7 @@ const getBarGraphData = (
   if (campName && campName !== 'All Campaigns') {
     localData = localData.filter((item) => item.campName === campName);
   }
-  console.log("localData", localData);
+   
   localData = localData.filter((item) => dateFilter(item, startDate, endDate));
 
   // result = localData.reduce((prevValue, item) => {

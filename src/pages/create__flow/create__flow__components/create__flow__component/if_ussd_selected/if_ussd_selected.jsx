@@ -694,7 +694,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
           );
         })}
       </div>
-      <div>
+      <div className={hideItemStyle}>
         <input style={{width: 1+"rem"}} type="checkbox" id="thank-you-msg" value={isThankYouMsg} onChange={(e)=> setIsThankYouMsg(e.target.checked)} />
         <label style={{width: 10+"rem"}} htmlFor="thank-you-msg" >Add Thank you message</label>
       </div>

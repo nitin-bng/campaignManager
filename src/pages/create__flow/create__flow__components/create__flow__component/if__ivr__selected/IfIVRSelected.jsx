@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import ReactAudioPlayer from "react-audio-player";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
+import { LanguageComponent } from "../../../../../components/languageComponent";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -959,7 +960,7 @@ const IfIVRSelected = (props) => {
               </FormControl>
             </div>
           </div>
-
+          <LanguageComponent  props={props.languageComponentProps}/>
           <div className="ifIVRselected__number__of__DTMF__to__show__container">
             {genArray(
               globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ||

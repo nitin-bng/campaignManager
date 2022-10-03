@@ -34,6 +34,7 @@ const IfIVRSelected = (props) => {
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
+  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
 
   useEffect(() => {
     setShowError(false);

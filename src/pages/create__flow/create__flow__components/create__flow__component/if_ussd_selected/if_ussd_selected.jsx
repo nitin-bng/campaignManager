@@ -27,6 +27,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
   });
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
+  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
 
   const handleDataChange = (e) => {
     debugger;
@@ -693,6 +694,33 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
           );
         })}
       </div>
+      <div>
+        <input style={{width: 1+"rem"}} type="checkbox" id="thank-you-msg" value={isThankYouMsg} onChange={(e)=> setIsThankYouMsg(e.target.checked)} />
+        <label style={{width: 10+"rem"}} htmlFor="thank-you-msg" >Add Thank you message</label>
+      </div>
+      {isThankYouMsg &&  localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+              <>
+                <TextField
+                hideItemStyle={hideItemStyle}
+                localStore={localStore}
+                lang={lang}
+                  id="outlined-multiline-static"
+                  label="Type Your Message here"
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  onChange={(e) => handleUSSD(e.target.value, lang)}
+                  error={
+                    showError
+                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                        ? false
+                        : true
+                      : false
+                  }
+                  style={{ width: "100%", marginTop: "1rem" }}
+                />
+              </>
+            ))}
     </>
   );
 };

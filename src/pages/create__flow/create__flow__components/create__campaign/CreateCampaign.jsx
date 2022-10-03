@@ -46,7 +46,8 @@ const CreateCampaign = (props) => {
   const [formValues, setFormValues] = useState(initialValues);
   const { showError, setShowError, errorState, errorDispatch } = useError();
   const [showFlowState, setShowFlowState] = useState(false);
-  var [update, updateForm] = useState(false);
+  const [update, updateForm] = useState(false);
+  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
 
   var scheduleData = {};
 

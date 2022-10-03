@@ -258,6 +258,7 @@ const CreateFlowComponent = (props) => {
                     props.disableEditingWhileCreatingCamp
                   }
                   hideItemStyle={props.hideItemStyle}
+                  languageComponentProps = {props}
                 />
               ) : (
                 ""

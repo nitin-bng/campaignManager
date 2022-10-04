@@ -19,7 +19,7 @@ const RenderingComponentOnLanguageSelectOfSMS = (props) => {
                 <TextField
                   id="if__IVR__selected"
                   type="number"
-                  label={"input key for " + props.lang + " language"}
+                  label={"input key to choose " + props.lang}
                   variant="outlined"
                 />
               </Box>

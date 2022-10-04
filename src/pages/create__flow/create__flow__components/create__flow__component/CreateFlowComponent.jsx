@@ -175,7 +175,7 @@ const CreateFlowComponent = (props) => {
         <div className="create__flow__component__container">
           <div className="basic__flow__details__container">
             <div className="basic__flow__details__heading__container">
-              <h1>Basic Flow Details</h1>
+              <h1>Basic Flow Configuration</h1>
             </div>
             <div className="basic__flow__details">
               <div className="create__flow__component__flow__name__container">
@@ -248,9 +248,7 @@ const CreateFlowComponent = (props) => {
           <div className="call__flow__details__container">
 
             <div className="call__flow__details">
-                  <div className="call__flow__details__heading__container">
-                    <h1>Call Flow Details</h1>
-                  </div>
+                  
 
               {channel === "IVR" ? (
                 <IfIVRSelected

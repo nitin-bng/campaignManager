@@ -582,42 +582,44 @@ const IfUssdSelected = ({
     },
   }));
 
-
-  const handleThankYou = (e) =>{
-    setIsThankYouMsg(e.target.checked)
-    if(e.target.checked){
-      dispatch({type: "SET_THANKYOU", nState: true})
+  const handleThankYou = (e) => {
+    setIsThankYouMsg(e.target.checked);
+    if (e.target.checked) {
+      dispatch({ type: "SET_THANKYOU", nState: true });
+    } else {
+      dispatch({ type: "SET_THANKYOU", nState: false });
     }
-    else{
-      dispatch({type: "SET_THANKYOU", nState: false})
-    }
-    
-  }
+  };
 
-  const handleThankYouMsg = (msg, languageCode) =>{
-    localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
-      if(item.node_type === 'ENDNODE'){
-        item.audio_file[languageCode] = msg
-        item.file.sms[languageCode] = msg
-        item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
-        item.file.ussd[languageCode] = msg
-      }
-    return item
-  })
-  dispatch({ type: "SET_DATA", nState: localStore });
-  }
-
+  const handleThankYouMsg = (msg, languageCode) => {
+    localStore.ivrCampFlowData.flow.actions =
+      localStore.ivrCampFlowData.flow.actions.map((item) => {
+        if (item.node_type === "ENDNODE") {
+          item.audio_file[languageCode] = msg;
+          item.file.sms[languageCode] = msg;
+          item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
+          item.file.ussd[languageCode] = msg;
+        }
+        return item;
+      });
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
 
   return (
     <>
-    <div className={hideItemStyle}  >
-    </div>
-    <Divider style={{marginTop:"1rem"}}>Welcome { localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? "& Language Selection" : ''} Node</Divider>
-      <div className="main__wait__time__and__dtmf__container" style={{display:"flex", flexDirection:"column" }}>
-        <div
-          style={{ width:"96%" }}
-          className={hideItemStyle}
-        >
+      <div className={hideItemStyle}></div>
+      <Divider style={{ marginTop: "1rem" }}>
+        Welcome{" "}
+        {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
+          ? "& Language Selection"
+          : ""}{" "}
+        Node
+      </Divider>
+      <div
+        className="main__wait__time__and__dtmf__container"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ width: "96%" }} className={hideItemStyle}>
           {localStore.ivrCampFlowData.flow.language.map((hello) => {
             console.log("localStore.ivrCampFlowData.flow.language ===>", hello);
             hellohello.push(hello.actions);
@@ -634,9 +636,9 @@ const IfUssdSelected = ({
             {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
               <>
                 <TextField
-                hideItemStyle={hideItemStyle}
-                localStore={localStore}
-                lang={lang}
+                  hideItemStyle={hideItemStyle}
+                  localStore={localStore}
+                  lang={lang}
                   id="outlined-multiline-static"
                   label={`Welcome Message in ${languageNames[lang]}`}
                   multiline
@@ -658,67 +660,72 @@ const IfUssdSelected = ({
         </div>
       </div>
 
-      <div className={hideItemStyle}  style={{marginTop:"1rem"}}>
-      <Divider className={hideItemStyle} style={{marginTop:"1rem"}}>Sticker here</Divider>
-</div>
-      <LanguageComponent  props={languageComponentProps}/>
+      <div className={hideItemStyle} style={{ marginTop: "1rem" }}>
+        <Divider className={hideItemStyle} style={{ marginTop: "1rem" }}>
+          Sticker here
+        </Divider>
+      </div>
+      <LanguageComponent props={languageComponentProps} />
 
-      <div className="main__dtms__container">
-          <FormControl style={{ width: "80%", marginTop:"1rem" }}>
-            <InputLabel
-              id="demo-simple-select-label"
-              required
-              error={
-                showError
-                  ? parseInt(
-                      globalState.state.ivrCampFlowData.flow
-                        .main_audio_dtmfCount,
-                      10
-                    ) >= 0
-                    ? false
-                    : true
-                  : false
-              }
-            >
-              Number of options after Welcome { localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? "& Language Selection" : ''} Node
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={
-                globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
-              }
-              label={`Number of options after Welcome ${ localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? "& Language Selection" : ''} Node`}
-              onChange={(e) => {
-                detectLevel(e, "main_audio");
-                console.log(e.target);
-              }}
-              name="main_audio_dtmfCount"
-              disabled={disableEditingWhileCreatingCamp}
-              required
-              error={
-                showError
-                  ? parseInt(
-                      globalState.state.ivrCampFlowData.flow
-                        .main_audio_dtmfCount,
-                      10
-                    ) >= 0
-                    ? false
-                    : true
-                  : false
-              }
-            >
-              {numberOfDTMF.map((number, index) => {
-                return (
-                  <MenuItem value={number} name={"main_audio_dtmfCount"}>
-                    {number}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-
+      <div className="main__dtms__container" style={{ width: "100%" }}>
+        <FormControl style={{ width: "40%", marginTop: "1rem" }}>
+          <InputLabel
+            id="demo-simple-select-label"
+            required
+            error={
+              showError
+                ? parseInt(
+                    globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount,
+                    10
+                  ) >= 0
+                  ? false
+                  : true
+                : false
+            }
+          >
+            Number of options after Welcome{" "}
+            {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
+              ? "& Language Selection"
+              : ""}{" "}
+            Node
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount}
+            label={`Number of options after Welcome ${
+              localStore.ivrCampFlowData.flow.language[0].actions.length > 1
+                ? "& Language Selection"
+                : ""
+            } Node`}
+            onChange={(e) => {
+              detectLevel(e, "main_audio");
+              console.log(e.target);
+            }}
+            name="main_audio_dtmfCount"
+            disabled={disableEditingWhileCreatingCamp}
+            required
+            error={
+              showError
+                ? parseInt(
+                    globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount,
+                    10
+                  ) >= 0
+                  ? false
+                  : true
+                : false
+            }
+          >
+            {numberOfDTMF.map((number, index) => {
+              return (
+                <MenuItem value={number} name={"main_audio_dtmfCount"}>
+                  {number}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </div>
 
       <div className="ifIVRselected__number__of__DTMF__to__show__container">
         {genArray(
@@ -744,33 +751,50 @@ const IfUssdSelected = ({
           );
         })}
       </div>
-      <div className={hideItemStyle}>
-        <input style={{width: 1+"rem"}} type="checkbox" id="thank-you-msg" value={isThankYouMsg} onChange={(e)=> handleThankYou(e)} />
-        <label style={{width: 10+"rem"}} htmlFor="thank-you-msg" >Add Thank you message</label>
+      <div
+        style={{ width: "30%", display: "flex", margin:"auto" }}
+        className={hideItemStyle}
+      >
+        <div style={{ width: "20%" }}>
+          <input
+            style={{}}
+            type="checkbox"
+            id="thank-you-msg"
+            value={isThankYouMsg}
+            onChange={(e) => handleThankYou(e)}
+          />
+        </div>
+        <label
+          style={{ width: "80%"}}
+          htmlFor="thank-you-msg"
+        >
+          Add Thank you message
+        </label>
       </div>
-      {isThankYouMsg &&  localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-              <>
-                <TextField
-                hideItemStyle={hideItemStyle}
-                localStore={localStore}
-                lang={lang}
-                  id="outlined-multiline-static"
-                  label={`Thank you message for ${languageNames[lang]}`}
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  onChange={(e) => handleThankYouMsg(e.target.value, lang)}
-                  error={
-                    showError
-                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                        ? false
-                        : true
-                      : false
-                  }
-                  style={{ width: "100%", marginTop: "1rem" }}
-                />
-              </>
-            ))}
+      {isThankYouMsg &&
+        localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+          <div style={{width:"40%", display:"inline-block", margin:"0 5%"}}>
+            <TextField
+              hideItemStyle={hideItemStyle}
+              localStore={localStore}
+              lang={lang}
+              id="outlined-multiline-static"
+              label={`Thank you message for ${languageNames[lang]}`}
+              multiline
+              rows={2}
+              variant="outlined"
+              onChange={(e) => handleThankYouMsg(e.target.value, lang)}
+              error={
+                showError
+                  ? localStore.ivrCampFlowData.flow.main_file.ussd._E
+                    ? false
+                    : true
+                  : false
+              }
+              style={{ width: "10%", marginTop: "1rem" }}
+            />
+          </div>
+        ))}
     </>
   );
 };

@@ -825,7 +825,7 @@ const SubDTMF = (props) => {
             }}
           >
             <CardActions disableSpacing>
-              <Typography paragraph>SUB DTMF</Typography>
+              <Typography paragraph>SUB OPTION</Typography>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -928,14 +928,14 @@ const SubDTMF = (props) => {
                   <div className="select__number__of__subDTMF__from__subdtmf__container">
                     <FormControl style={{ width: "100%" }}>
                       <InputLabel id="demo-simple-select-label" required>
-                      Number of options for this selection
+                      Number of options after this node
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-select"
                         value={props.current.dtmf_count}
                         disabled={props.disableEditingWhileCreatingCamp}
-                        label="Number of options for this selection"
+                        label="Number of options after this node"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.current);
@@ -1036,7 +1036,7 @@ const SubDTMF = (props) => {
           }}
         >
           <CardActions disableSpacing>
-            <Typography paragraph>SUB DTMF</Typography>
+            <Typography paragraph>SUB OPTION</Typography>
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
@@ -1096,7 +1096,7 @@ const SubDTMF = (props) => {
                     <TextField
                       id="if__IVR__selected"
                       type="input"
-                      label= "Input key for DTMF input"
+                      label= "Input key to choose this option"
                       disabled={props.disableEditingWhileCreatingCamp}
                       value={traverseAndModify(
                         props.current.id,
@@ -1138,14 +1138,14 @@ const SubDTMF = (props) => {
                 <div className="select__number__of__subDTMF__from__subdtmf__container">
                   <FormControl style={{ width: "100%" }}>
                     <InputLabel id="demo-simple-select-label" required>
-                    Number of options for this selection
+                    Number of options after this node
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-select"
                       value={props.current.dtmf_count}
                       disabled={props.disableEditingWhileCreatingCamp}
-                      label="Number of options for this selection"
+                      label="Number of options after this node"
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
                         detectLevel(e, "sub_audio_dtmfs", props.current);
@@ -1189,7 +1189,7 @@ const SubDTMF = (props) => {
                     {languageName.map((el) => {
                       return (
                         <Typography style={{ fontSize: "12px" }}>
-                          input key subdtmf for {el}
+                          Message in {el}
                         </Typography>
                       );
                     })}

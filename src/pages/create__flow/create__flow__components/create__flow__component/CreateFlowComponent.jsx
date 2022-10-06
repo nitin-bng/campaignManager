@@ -19,6 +19,12 @@ import "./createFlowComponent.css";
 import { useError } from "../../../../store/errorContext";
 import { IfUssdSelected } from "./if_ussd_selected/if_ussd_selected";
 import { LanguageComponent } from "../../../../components/languageComponent";
+import Divider from '@mui/material/Divider';
+
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
 
 
 const CreateFlowComponent = (props) => {
@@ -96,6 +102,15 @@ const CreateFlowComponent = (props) => {
     console.log(localStore);
   };
 
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
   const handleLanguageChange = (e) => {
     debugger;
     const {
@@ -125,7 +140,7 @@ const CreateFlowComponent = (props) => {
             input: {
               ivr_key: x + 1,
               sms_key: "",
-              ussd_key: ''
+              ussd_key: "",
             },
             language: languages[y].code,
             languageName: languages[y].lang,
@@ -136,7 +151,7 @@ const CreateFlowComponent = (props) => {
             actionType: {
               ivr: "PLAY",
               sms: "HITURL_SMS",
-              ussd: "HITURL_USSD"
+              ussd: "HITURL_USSD",
             },
             action_delay_min: 0,
             repeatCount: 0,
@@ -169,6 +184,7 @@ const CreateFlowComponent = (props) => {
     console.log(localStore);
   };
 
+
   return (
     <>
       <div className="create__flow__component">
@@ -192,7 +208,7 @@ const CreateFlowComponent = (props) => {
                         ? localStore.ivrCampFlowData.flow.flowName
                         : ""
                     }
-                    label="flow name"
+                    label="Flow name"
                     variant="outlined"
                     onChange={handelFlowNameChange}
                     disabled={props.disableEditingWhileCreatingCamp}
@@ -220,13 +236,13 @@ const CreateFlowComponent = (props) => {
                         : false
                     }
                   >
-                    Select channel
+                    Flow channel
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={localStore.ivrCampFlowData.flow.channel}
-                    label="Select Channel"
+                    label="Flow Channel"
                     onChange={handleChange}
                     disabled={props.disableEditingWhileCreatingCamp}
                     required
@@ -245,10 +261,67 @@ const CreateFlowComponent = (props) => {
               </div>
             </div>
           </div>
+          <div className="call__flow__details__languages__dropdown__container">
+        <FormControl style={{ width: "50%" }}>
+          <InputLabel
+            style={{
+              backgroundColor: "white",
+              paddingRight: "4px",
+            }}
+            id="demo-multiple-checkbox-label"
+            required
+            error={
+              showError
+                ? ifIVRselectedThenLanguage.length
+                  ? false
+                  : true
+                : false
+            }
+          >
+            Flow Languages
+          </InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={
+              localStore.ivrCampFlowData.flow.language[0].actions
+                ? localStore.ivrCampFlowData.flow.language[0].actions.map(
+                    (item) => item.languageName
+                  )
+                : ifIVRselectedThenLanguage
+            }
+            onChange={handleLanguageChange}
+            input={<OutlinedInput label="Select language" />}
+            renderValue={(selected) => selected.join(", ")}
+            MenuProps={MenuProps}
+            disabled={props.disableEditingWhileCreatingCamp}
+            required
+            error={
+              showError
+                ? ifIVRselectedThenLanguage.length
+                  ? false
+                  : true
+                : false
+            }
+          >
+            {Languages.map((Languages) => (
+              <MenuItem key={Languages} value={Languages}>
+                <Checkbox
+                  checked={ifIVRselectedThenLanguage.indexOf(Languages) > -1}
+                />
+                <ListItemText primary={Languages} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
           <div className="call__flow__details__container">
 
             <div className="call__flow__details">
-                  
+                  {channel && <div className="call__flow__details__heading__container">
+                    <h1>Basic Flow Creation</h1>
+                  </div>}
 
               {channel === "IVR" ? (
                 <IfIVRSelected

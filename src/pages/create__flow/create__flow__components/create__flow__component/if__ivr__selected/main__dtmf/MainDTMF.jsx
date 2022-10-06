@@ -539,9 +539,9 @@ const MainDTMF = (props) => {
           <Card
             style={{ backgroundColor: "rgba(0, 0, 0, 0.04)", padding: "1rem" }}
             fullWidth
-          >
+          > 
             <CardActions disableSpacing>
-              <Typography paragraph>DTMF : {props.dtmfNumber} </Typography>
+              <Typography paragraph>Option : {props.dtmfNumber} </Typography>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -643,13 +643,13 @@ const MainDTMF = (props) => {
                               : true
                             : false
                         }>
-                        Number of options for this selection
+                        Number of options after this node
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={props.global.dtmf_count}
-                        label="Number of options for this selection"
+                        label="Number of options after this node"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
                           detectLevel(e, "sub_audio_dtmfs", props.global);
@@ -767,7 +767,7 @@ const MainDTMF = (props) => {
           fullWidth
         >
           <CardActions disableSpacing>
-            <Typography paragraph>DTMF : {props.dtmfNumber} </Typography>
+            <Typography paragraph>OPTION : {props.dtmfNumber} </Typography>
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
@@ -826,7 +826,7 @@ const MainDTMF = (props) => {
                         props.disableEditingWhileCreatingCamp
                       }
                       type="input"
-                      label= "Input key for USSD input"
+                      label= "Input key to choose this option"
                       name={"waitTime_" + props.global.dtmf_key}
                       value={
                         globalState.state.ivrCampFlowData.flow.actions[
@@ -867,13 +867,13 @@ const MainDTMF = (props) => {
                             : true
                           : false
                       }>
-                      Number of options for this selection
+                      Number of options after this node
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={props.global.dtmf_count}
-                      label="Number of options for this selection"
+                      label="Number of options after this node"
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
                         detectLevel(e, "sub_audio_dtmfs", props.global);
@@ -928,7 +928,7 @@ const MainDTMF = (props) => {
                     {languageName.map((el) => {
                       return (
                         <Typography style={{ fontSize: "12px" }}>
-                          input key dtmf for {el}
+                          Message in {el}
                         </Typography>
                       );
                     })}

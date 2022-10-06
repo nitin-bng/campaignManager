@@ -516,7 +516,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     <TextField
                       id={"waitTime-" + props.languageCode}
                       type="input"
-                      label={"Input key for " + props.lang + " language"}
+                      label={"Input key to choose " + props.lang }
                       variant="outlined"
                       value={ussdKey}
                       onChange={(e) => {

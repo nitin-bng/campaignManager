@@ -318,7 +318,7 @@ const CreateFlowComponent = (props) => {
       </div>
           <div className="call__flow__details__container">
 
-            <div className="call__flow__details">
+            <div className="call__flow__details" style={{marginTop:"1rem"}}>
                   {channel && <div className="call__flow__details__heading__container">
                     <h1>Basic Flow Creation</h1>
                   </div>}

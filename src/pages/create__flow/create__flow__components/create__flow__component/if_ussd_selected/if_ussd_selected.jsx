@@ -755,7 +755,7 @@ const IfUssdSelected = ({
         style={{ width: "30%", display: "flex", margin:"auto" }}
         className={hideItemStyle}
       >
-        <div style={{ width: "20%" }}>
+        <div style={{ width: "20%" }} className={hideItemStyle} >
           <input
             style={{}}
             type="checkbox"
@@ -767,13 +767,14 @@ const IfUssdSelected = ({
         <label
           style={{ width: "80%"}}
           htmlFor="thank-you-msg"
+          className={hideItemStyle}
         >
           Add Thank you message
         </label>
       </div>
       {isThankYouMsg &&
         localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-          <div style={{width:"40%", display:"inline-block", margin:"0 5%"}}>
+          <div style={{width:"40%", display:"inline-block", margin:"0 5%"}} className={hideItemStyle}>
             <TextField
               hideItemStyle={hideItemStyle}
               localStore={localStore}

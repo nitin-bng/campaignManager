@@ -81,7 +81,6 @@ const getBarGraphData = (
     for (let i = loopArray.length - 1; i >= 0; i--) {
       if (newValue.labels.includes(loopArray[i].date)) {
         let index = newValue.labels.indexOf(loopArray[i].date);
-        console.log('nitin', index, newValue)
         newValue.datasets[0].data[index] =
           ~~newValue.datasets[0].data[index] + ~~loopArray[i]["picked"];
         newValue.datasets[1].data[index] =

@@ -80,7 +80,7 @@ const CreateFlowComponent = (props) => {
       ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
     } 
-    else if(localStore.ivrCampFlowData.flow.channel === 'USSD' && localStore.ivrCampFlowData.flow.flowName){
+    else if(localStore.ivrCampFlowData.flow.channel === 'USSD' && localStore.ivrCampFlowData.flow.flowName && ifIVRselectedThenLanguage.length){
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
       
     }

@@ -13,6 +13,7 @@ import { LanguageComponent } from "../../../../../components/languageComponent";
 import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
+import { MessageUploadForIfUSSDSelected } from "../../../../../components/messageUpload/MessageUploadForIfUSSDSelected";
 
 const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -449,42 +450,19 @@ const IfUssdSelected = ({
       .map((x, i) => i + 1);
   };
 
-  // useEffect(() => {
-  //   if (hideItemStyle === undefined) {
-  //     setShowError(false);
-  //     errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-  //   }
-  //   return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-  // }, []);
+  useEffect(() => {
+      setShowError(false);
+      errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+    return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+  }, []);
 
-  // useEffect(() => {
-  //   if (hideItemStyle === undefined) {
-  //     if (localStore.ivrCampFlowData.flow.main_file.ussd._E) {
-  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-  //     } else {
-  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-  //     }
-  //   }
-  // }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
-
-  const handleUSSD = (msg, languageCode) => {
-    localStore.ivrCampFlowData.flow["main_audio_file"] = localStore
-      .ivrCampFlowData.flow["main_audio_file"]
-      ? localStore.ivrCampFlowData.flow["main_audio_file"]
-      : {};
-    localStore.ivrCampFlowData.flow.main_audio_file[languageCode] = msg;
-    localStore.ivrCampFlowData.flow.main_file["sms"] = localStore
-      .ivrCampFlowData.flow.main_file["sms"]
-      ? localStore.ivrCampFlowData.flow.main_file["sms"]
-      : {};
-    localStore.ivrCampFlowData.flow.main_file["sms"][languageCode] = msg;
-    localStore.ivrCampFlowData.flow.main_file["ussd"] = localStore
-      .ivrCampFlowData.flow.main_file["ussd"]
-      ? localStore.ivrCampFlowData.flow.main_file["ussd"]
-      : {};
-    localStore.ivrCampFlowData.flow.main_file["ussd"][languageCode] = msg;
-    dispatch({ type: "SET_DATA", nState: localStore });
-  };
+  useEffect(() => {
+      if ((localStore.ivrCampFlowData.flow.main_file.ussd._E && localStore.ivrCampFlowData.flow.channel === 'IVR')||(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount >=0 && localStore.ivrCampFlowData.flow.channel === 'USSD')) {
+        errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+      } else {
+        errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+      }
+  }, [localStore.ivrCampFlowData.flow.main_file.ussd._E, globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount]);
 
   const setInputKey = (level, target, dtmf_key) => {
     let localStore = globalState.state;
@@ -635,25 +613,7 @@ const IfUssdSelected = ({
           <div className="ghghgh" style={{}}>
             {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
               <>
-                <TextField
-                  hideItemStyle={hideItemStyle}
-                  localStore={localStore}
-                  lang={lang}
-                  id="outlined-multiline-static"
-                  label={`Welcome Message in ${languageNames[lang]}`}
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  onChange={(e) => handleUSSD(e.target.value, lang)}
-                  error={
-                    showError
-                      ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                        ? false
-                        : true
-                      : false
-                  }
-                  style={{ width: "100%", margin: "1rem" }}
-                />
+                  <MessageUploadForIfUSSDSelected lang={lang} hideItemStyle={hideItemStyle} languageNames={languageNames} />
               </>
             ))}
           </div>

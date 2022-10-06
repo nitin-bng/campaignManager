@@ -82,37 +82,40 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
 
-  // useEffect(() => {
-  //   if (props.hideItemStyle === undefined) {
-  //     errorDispatch({ type: "AUDIO", payload: true });
-  //   }
-  //   errorDispatch({
-  //     type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-  //     payload: false,
-  //   });
-  //   return () =>
-  //     errorDispatch({
-  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-  //       payload: true,
-  //     });
-  // }, []);
+  useEffect(() => {
+    if (props.hideItemStyle === undefined) {
+      if(localStore.ivrCampFlowData.flow.channel === 'IVR'){
+        errorDispatch({ type: "AUDIO", payload: true });
+      }
+      if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
+        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+      }
+    }
+    errorDispatch({
+      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+      payload: true,
+    });
+    return () =>
+      errorDispatch({
+        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+        payload: false,
+      });
+  }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
-  //     (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
-  //   ) {
-  //     errorDispatch({
-  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-  //       payload: true,
-  //     });
-  //   } else {
-  //     errorDispatch({
-  //       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-  //       payload: false,
-  //     });
-  //   }
-  // }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
+  useEffect(() => {
+    if (
+      (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
+      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
+    ) {
+      if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined && localStore.ivrCampFlowData.flow['lang_audio_file']){
+        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
+      }
+      errorDispatch({
+        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+        payload: false,
+      });
+    }
+  }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;

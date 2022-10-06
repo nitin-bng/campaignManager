@@ -743,7 +743,6 @@ const IfIVRSelected = (props) => {
       if (obj.parent_dtmf) {
         obj.type = e.target.value;
         obj.actionType['ussd'] = e.target.value;
-        console.log('nitin obj', obj)
         if (obj.level === 3) {
           let levels = obj.id.split("_").map((e) => parseInt(e) - 1);
           localStore.ivrCampFlowData.flow.actions[levels[0]].actions[

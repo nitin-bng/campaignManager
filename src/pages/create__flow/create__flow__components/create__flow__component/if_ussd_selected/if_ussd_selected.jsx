@@ -10,18 +10,26 @@ import { CommonContext } from "../../../../../helpers/CommonContext";
 import MainDTMF from "../if__ivr__selected/main__dtmf/MainDTMF";
 import Typography from "@mui/material/Typography";
 import { LanguageComponent } from "../../../../../components/languageComponent";
-import { styled } from '@mui/material/styles';
-import Divider from '@mui/material/Divider';
-import Chip from '@mui/material/Chip';
-
+import { styled } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import Chip from "@mui/material/Chip";
 
 const numberOfDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
-const languageNames = {_E: 'English', _H: 'Hindi', _A: 'Arabic', _S: 'Spanish'}
+const languageNames = {
+  _E: "English",
+  _H: "Hindi",
+  _A: "Arabic",
+  _S: "Spanish",
+};
 
-const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, languageComponentProps }) => {
+const IfUssdSelected = ({
+  hideItemStyle,
+  disableEditingWhileCreatingCamp,
+  languageComponentProps,
+}) => {
   const globalState = useContext(store);
   const { dispatch } = globalState;
   const localStore = globalState.state;
@@ -33,7 +41,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
   });
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
-  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
+  const [isThankYouMsg, setIsThankYouMsg] = useState(false);
 
   const handleDataChange = (e) => {
     debugger;
@@ -460,12 +468,21 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
   // }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
 
   const handleUSSD = (msg, languageCode) => {
-    localStore.ivrCampFlowData.flow['main_audio_file'] = localStore.ivrCampFlowData.flow['main_audio_file'] ? localStore.ivrCampFlowData.flow['main_audio_file'] : {}
-    localStore.ivrCampFlowData.flow.main_audio_file[languageCode] = msg
-    localStore.ivrCampFlowData.flow.main_file['sms'] = localStore.ivrCampFlowData.flow.main_file['sms'] ? localStore.ivrCampFlowData.flow.main_file['sms'] : {} 
-    localStore.ivrCampFlowData.flow.main_file['sms'][languageCode] = msg
-    localStore.ivrCampFlowData.flow.main_file['ussd'] = localStore.ivrCampFlowData.flow.main_file['ussd'] ? localStore.ivrCampFlowData.flow.main_file['ussd'] : {}
-    localStore.ivrCampFlowData.flow.main_file['ussd'][languageCode] = msg
+    localStore.ivrCampFlowData.flow["main_audio_file"] = localStore
+      .ivrCampFlowData.flow["main_audio_file"]
+      ? localStore.ivrCampFlowData.flow["main_audio_file"]
+      : {};
+    localStore.ivrCampFlowData.flow.main_audio_file[languageCode] = msg;
+    localStore.ivrCampFlowData.flow.main_file["sms"] = localStore
+      .ivrCampFlowData.flow.main_file["sms"]
+      ? localStore.ivrCampFlowData.flow.main_file["sms"]
+      : {};
+    localStore.ivrCampFlowData.flow.main_file["sms"][languageCode] = msg;
+    localStore.ivrCampFlowData.flow.main_file["ussd"] = localStore
+      .ivrCampFlowData.flow.main_file["ussd"]
+      ? localStore.ivrCampFlowData.flow.main_file["ussd"]
+      : {};
+    localStore.ivrCampFlowData.flow.main_file["ussd"][languageCode] = msg;
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
@@ -557,10 +574,10 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
   var hellohello = [];
   var languageName = [];
 
-  const Root = styled('div')(({ theme }) => ({
-    width: '100%',
+  const Root = styled("div")(({ theme }) => ({
+    width: "100%",
     ...theme.typography.body2,
-    '& > :not(style) + :not(style)': {
+    "& > :not(style) + :not(style)": {
       marginTop: theme.spacing(2),
     },
   }));
@@ -701,6 +718,7 @@ const IfUssdSelected = ({ hideItemStyle, disableEditingWhileCreatingCamp, langua
             </Select>
           </FormControl>
         </div>
+
 
       <div className="ifIVRselected__number__of__DTMF__to__show__container">
         {genArray(

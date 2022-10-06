@@ -322,6 +322,7 @@ const CreateFlowComponent = (props) => {
                   {channel && <div className="call__flow__details__heading__container">
                     <h1>Basic Flow Creation</h1>
                   </div>}
+
               {channel === "IVR" ? (
                 <IfIVRSelected
                   disableEditingWhileCreatingCamp={

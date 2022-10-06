@@ -120,7 +120,7 @@ const CreateFlow = () => {
   const checkMandatoryFields = () => {
     let result = true;
     const keys = Object.keys(errorState);
-    console.log("function", errorState);
+    
     for (let key of keys) {
       if (Array.isArray(errorState[key]) && errorState[key].length !== 0) {
         result = false;
@@ -132,6 +132,7 @@ const CreateFlow = () => {
         }
       }
     }
+    console.log('Nitin returning', result)
     return result;
   };
 

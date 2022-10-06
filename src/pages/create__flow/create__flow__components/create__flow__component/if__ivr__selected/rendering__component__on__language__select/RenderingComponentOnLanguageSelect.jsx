@@ -83,8 +83,13 @@ const RenderingComponentOnLanguageSelect = (props) => {
   }, [normalState]);
 
   useEffect(() => {
-    if (props.hideItemStyle === undefined && localStore.ivrCampFlowData.flow.channel === 'IVR') {
-      errorDispatch({ type: "AUDIO", payload: true });
+    if (props.hideItemStyle === undefined) {
+      if(localStore.ivrCampFlowData.flow.channel === 'IVR'){
+        errorDispatch({ type: "AUDIO", payload: true });
+      }
+      if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
+        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+      }
     }
     errorDispatch({
       type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
@@ -102,6 +107,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
       (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
       (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
     ) {
+      if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined && localStore.ivrCampFlowData.flow['lang_audio_file']){
+        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
+      }
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
         payload: false,

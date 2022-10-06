@@ -596,7 +596,6 @@ const SubDTMF = (props) => {
         localStoreC.actionType['ussd'] = 'HITURL_USSD';
       }
       if(keyToChange === 'ussd_msg'){
-        console.log('nitin', localStoreC)
         localStoreC.audio_file[languageCode] = value
         localStoreC.file.sms[languageCode] = value
         localStoreC.file['ussd'] = localStoreC.file['ussd'] ? localStoreC.file['ussd'] : {} 

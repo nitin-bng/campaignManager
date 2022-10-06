@@ -9,6 +9,7 @@ const initialValue = {
     mainDtmf: [],
     subDtmf: [],
     audioError: [],
+    messageError: []
 }
 
 const errorReducer = (state, action) =>{
@@ -60,6 +61,15 @@ switch (action.type) {
             newVal.pop()
         }
         return {...state, audioError:newVal}
+    case "MESSAGE":
+         newVal = state.messageError
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, messageError:newVal}
     default:
         return state
 }

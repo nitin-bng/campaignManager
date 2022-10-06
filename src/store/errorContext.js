@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useState } from "react";
 
 const initialValue = {
     createFlowComponent: true,
-    rederingComponentOnLanguageSelect: true,
+    rederingComponentOnLanguageSelect: [],
     ifIvrSelected: true,
     ifUssdSelected: true,
     createCampaign: true,
@@ -19,7 +19,14 @@ switch (action.type) {
     case "CREATE_FLOW_COMPONENT":
         return {...state, createFlowComponent: action.payload}
     case "RENDERING_COMPONENT_ON_LANGUAGE_SELECT":
-        return {...state, rederingComponentOnLanguageSelect: action.payload}
+        newVal = state.rederingComponentOnLanguageSelect
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, rederingComponentOnLanguageSelect: newVal}
     case "IF_IVR_SELECTED":
         return {...state, ifIvrSelected: action.payload}
     case "IF_USSD_SELECTED":

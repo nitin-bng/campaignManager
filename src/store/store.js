@@ -247,16 +247,16 @@ const StateProvider = ({ children }) => {
             },
             sms: "",
             file: {
-              ivr: '',
-              sms: '',
-              ussd: ''
+              ivr: {},
+              sms: {},
+              ussd: {}
             },
             actionType: {
               ivr: "",
               sms: "",
               ussd: ""
             },
-            node_type: "ENDNODE",
+            node_type: "END",
             dtmf_key: '',
             audio_file: {},
             type: "HITURL_USSD",

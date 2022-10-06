@@ -449,23 +449,22 @@ const IfUssdSelected = ({
       .map((x, i) => i + 1);
   };
 
-  // useEffect(() => {
-  //   if (hideItemStyle === undefined) {
-  //     setShowError(false);
-  //     errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-  //   }
-  //   return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-  // }, []);
+  useEffect(() => {
+      setShowError(false);
+      console.log('nitin false ran')
+      errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+    return () => errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+  }, []);
 
-  // useEffect(() => {
-  //   if (hideItemStyle === undefined) {
-  //     if (localStore.ivrCampFlowData.flow.main_file.ussd._E) {
-  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
-  //     } else {
-  //       errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
-  //     }
-  //   }
-  // }, [localStore.ivrCampFlowData.flow.main_file.ussd._E]);
+  useEffect(() => {
+      if ((localStore.ivrCampFlowData.flow.main_file.ussd._E && localStore.ivrCampFlowData.flow.channel === 'IVR')||(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount >=0 && localStore.ivrCampFlowData.flow.channel === 'USSD')) {
+        console.log('Nitin true ran')
+        errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
+      } else {
+        console.log('nitin else ran', )
+        errorDispatch({ type: "IF_USSD_SELECTED", payload: false });
+      }
+  }, [localStore.ivrCampFlowData.flow.main_file.ussd._E, globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount]);
 
   const handleUSSD = (msg, languageCode) => {
     localStore.ivrCampFlowData.flow["main_audio_file"] = localStore

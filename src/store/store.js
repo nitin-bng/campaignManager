@@ -208,7 +208,7 @@ const StateProvider = ({ children }) => {
                 sms: "",
                 ussd: ""
               },
-              node_type: "PROCESSING",
+              node_type: "LEAF",
               dtmf_key: oldNumOfCards + e,
               audio_file: {},
               type: "PLAY",

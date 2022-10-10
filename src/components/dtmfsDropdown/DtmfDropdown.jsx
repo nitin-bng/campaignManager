@@ -52,7 +52,7 @@ import { store } from '../../store/store';
                   ivr: languageSelect,
                   sms: languageSelect,
                 },
-                node_type: "PROCESSING",
+                node_type: "LEAF",
                 input: {
                   ivr_key: e,
                   sms_key: "",

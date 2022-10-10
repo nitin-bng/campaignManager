@@ -25,6 +25,7 @@ import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForMainDTMF } from "../../../../../../components/fileUpload/FileUploaderForMainDTMF";
 import { CommonContext } from "../../../../../../helpers/CommonContext";
+import { MessageUploadForMainDTMF } from "../../../../../../components/messageUpload/MessageUploadForMainDTMF";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -287,12 +288,16 @@ const MainDTMF = (props) => {
     handleIVRSelectedChange(e);
     console.log("dtmfs--- options", props, e, target, current);
     if (target === "main_audio") {
+      console.log('nitin main')
       props.handleDataChange(e);
     } else if (target === "sub_audio_dtmfs") {
+      console.log('nitin sub')
       props.setDataDynamic("sub_audio_dtmfs", e, current);
     } else {
+      console.log('nitin else')
       let oldNumOfCards = 0;
       const newNumOfCards = e.target.value;
+      console.log('nitin value', newNumOfCards)
 
       if (current && current.dtmf_count) {
         oldNumOfCards = current.dtmf_count;
@@ -334,7 +339,7 @@ const MainDTMF = (props) => {
               ivr: languageSelect,
               sms: languageSelect,
             },
-            node_type: "PROCESSING",
+            node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
             input: {
               ivr_key: e,
               sms_key: "",
@@ -536,6 +541,18 @@ const MainDTMF = (props) => {
       });
     dispatch({ type: "SET_DATA", nState: localStore });
   };
+    const handleUSSD = (msg, languageCode) =>{
+      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
+          if(item.dtmf_key === props.global.dtmf_key){
+            item.audio_file[languageCode] = msg
+            item.file.sms[languageCode] = msg
+            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
+            item.file.ussd[languageCode] = msg
+          }
+        return item
+      })
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
 
   return (
     <>
@@ -942,96 +959,67 @@ const MainDTMF = (props) => {
                           hellohello
                         );
                       })}
-                      <div
-                        className="ghghg"
-                        style={{
-                          marginTop: "20px",
-                          display: "flex",
-                          justifyContent: "space-around",
-                          alignItems: "flex-end",
-                          // border: "2px solid green",
-                        }}
-                      >
-                        {languageName.map((el) => {
-                          return (
-                            <Typography
-                              style={{
-                                fontSize: "12px",
-                                // border: "2px solid red",
-                              }}
-                            >
-                              Message in {el}
-                            </Typography>
-                          );
-                        })}
-                      </div>
-                      <div
-                        className="ghghgh"
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                          width: "100%",
-                          // border: "2px solid green",
-                        }}
-                      >
-                        {localStore.ivrCampFlowData.flow.languageChange.map(
-                          (lang) => (
-                            <TextField
-                              id="outlined-multiline-static"
-                              label={` Message Response for ${
-                                globalState.state.ivrCampFlowData.flow.actions[
-                                  props.global.dtmf_key - 1
-                                ].input["ussd_key"]
-                              }`}
-                              multiline
-                              rows={2}
-                              variant="outlined"
-                              // value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
-                              onChange={(e) => handleUSSD(e.target.value, lang)}
-                              error={
-                                showError
-                                  ? localStore.ivrCampFlowData.flow.main_file
-                                      .ussd._E
-                                    ? false
-                                    : true
-                                  : false
-                              }
-                              style={{ width: "100%", margin: "1rem" }}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-                <div className="rendering__subdtmf__container">
-                  {props.global.actions.map((e, index) => {
-                    // e.actions = []
-                    return (
-                      <SubDTMF
-                        data={props}
-                        current={e}
-                        isBgColor={true}
-                        handleDataChange={props.handleDataChange}
-                        uploadFiles={props.uploadFiles}
-                        setWaitTime={props.setWaitTime}
-                        setDataDynamic={props.setDataDynamic}
-                        parentNumber={props.dtmfNumber}
-                        numberOfSubDTMF={e}
-                        dataHandleWithObj={props.dataHandleWithObj}
-                        hideItemStyle={props.hideItemStyle}
-                        disableEditingWhileCreatingCamp={
-                          props.disableEditingWhileCreatingCamp
-                        }
-                      />
-                    );
-                  })}
-                </div>
-              </Collapse>
-            </Card>
-          </div>
-        </div>
+    <div
+      className="ghghg"
+      style={{
+        margin: "10px 0",
+        display: "flex",
+        justifyContent: "space-evenly",
+      }}
+    >
+      {languageName.map((el) => {
+        return (
+          <Typography style={{ fontSize: "12px" }}>
+            Message in {el}
+          </Typography>
+        );
+      })}
+    </div>
+    <div
+      className="ghghgh"
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        width: "100%",
+      }}
+    >
+      {localStore.ivrCampFlowData.flow.languageChange.map(
+        (lang) => (
+          <MessageUploadForMainDTMF lang={lang} handleUSSD={handleUSSD} localStore={localStore} global={props.global} hideItemStyle={props.hideItemStyle} />
+        )
       )}
+    </div>
+  </div>
+              </div>
+            </CardContent>
+            <div className="rendering__subdtmf__container">
+              {props.global.actions.map((e, index) => {
+                // e.actions = []
+                return (
+                  <SubDTMF
+                    data={props}
+                    current={e}
+                    isBgColor={true}
+                    handleDataChange={props.handleDataChange}
+                    uploadFiles={props.uploadFiles}
+                    setWaitTime={props.setWaitTime}
+                    setDataDynamic={props.setDataDynamic}
+                    parentNumber={props.dtmfNumber}
+                    numberOfSubDTMF={e}
+                    dataHandleWithObj={props.dataHandleWithObj}
+                    hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp={
+                      props.disableEditingWhileCreatingCamp
+                    }
+                  />
+                );
+              })}
+            </div>
+          </Collapse>
+        </Card>
+      </div>
+    </div>
+      } 
     </>
   );
 };

@@ -104,7 +104,7 @@ const IfUssdSelected = ({
               ivr: languageSelect,
               sms: languageSelect,
             },
-            node_type: "PROCESSING",
+            node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
             input: {
               ivr_key: e,
               sms_key: "",
@@ -129,7 +129,7 @@ const IfUssdSelected = ({
                   ivr: languageSelect,
                   sms: languageSelect,
                 },
-                node_type: "PROCESSING",
+                node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                 input: {
                   ivr_key: 1,
                   sms_key: "",
@@ -153,7 +153,7 @@ const IfUssdSelected = ({
                   ivr: languageSelect,
                   sms: languageSelect,
                 },
-                node_type: "PROCESSING",
+                node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                 input: {
                   ivr_key: 2,
                   sms_key: "",
@@ -206,7 +206,7 @@ const IfUssdSelected = ({
           localStore.ivrCampFlowData.flow.actions[current.dtmf_key - 1]
             .dtmf_count;
         const newNumOfCards = e.target.value;
-
+        console.log('nitin value setDataDynamic', newNumOfCards === 0 ? "LEAF" : "PROCESSING")
         localStore.ivrCampFlowData.flow.actions[
           current.dtmf_key - 1
         ].dtmf_count = e.target.value;
@@ -245,7 +245,7 @@ const IfUssdSelected = ({
                           ivr: languageSelect,
                           sms: languageSelect,
                         },
-                        node_type: "PROCESSING",
+                        node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                         input: {
                           ivr_key: 1,
                           sms_key: "",
@@ -269,7 +269,7 @@ const IfUssdSelected = ({
                           ivr: languageSelect,
                           sms: languageSelect,
                         },
-                        node_type: "PROCESSING",
+                        node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                         input: {
                           ivr_key: 2,
                           sms_key: "",
@@ -291,7 +291,7 @@ const IfUssdSelected = ({
                 ivr: languageSelect,
                 sms: languageSelect,
               },
-              node_type: "PROCESSING",
+              node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
               input: {
                 ivr_key: oldNumOfCards + e,
                 sms_key: "",
@@ -367,7 +367,7 @@ const IfUssdSelected = ({
                     ivr: languageSelect,
                     sms: languageSelect,
                   },
-                  node_type: "PROCESSING",
+                  node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                   input: {
                     ivr_key: 1,
                     sms_key: "",
@@ -391,7 +391,7 @@ const IfUssdSelected = ({
                     ivr: languageSelect,
                     sms: languageSelect,
                   },
-                  node_type: "PROCESSING",
+                  node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
                   input: {
                     ivr_key: 2,
                     sms_key: "",
@@ -413,7 +413,7 @@ const IfUssdSelected = ({
                 ivr: languageSelect,
                 sms: languageSelect,
               },
-              node_type: "PROCESSING",
+              node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
               input: {
                 ivr_key: oldNumOfCards + e,
                 sms_key: "",

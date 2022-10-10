@@ -87,14 +87,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       if(localStore.ivrCampFlowData.flow.channel === 'IVR'){
         errorDispatch({ type: "AUDIO", payload: true });
       }
-      if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
-        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
-      }
     }
-    errorDispatch({
-      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-      payload: true,
-    });
     return () =>
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
@@ -103,19 +96,32 @@ const RenderingComponentOnLanguageSelect = (props) => {
   }, []);
 
   useEffect(() => {
+    if(props.hideItemStyle !== undefined){
     if (
       (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
       (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
     ) {
-      if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined && localStore.ivrCampFlowData.flow['lang_audio_file']){
-        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
-      }
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
         payload: false,
       });
     }
-  }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
+    else{
+      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+    }
+  }
+  }, [isError]);
+
+  useEffect(()=>{
+    if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined ){
+      if(!isError){
+      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
+    }
+    else{
+        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+      }
+    }
+  }, [isError])
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -524,6 +530,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       value={ussdKey}
                       onChange={(e) => {
                         saveValues(e, "USSD");
+                        setIsError(e.target.value === '')
                         setNormalState((prev) => !prev);
                       }}
                       onWheel={(e) => e.target.blur()}

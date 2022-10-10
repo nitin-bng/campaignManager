@@ -137,10 +137,7 @@ const CreateFlow = () => {
   };
 
   const handleNext = () => {
-    console.log(
-      "dtmf count",
-      globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
-    );
+    console.log('nitin function', errorState)
     if (checkMandatoryFields()) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setShowError(false);

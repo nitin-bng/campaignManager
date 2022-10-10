@@ -88,10 +88,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
         errorDispatch({ type: "AUDIO", payload: true });
       }
     }
-    errorDispatch({
-      type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-      payload: true,
-    });
     return () =>
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
@@ -100,6 +96,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   }, []);
 
   useEffect(() => {
+    if(props.hideItemStyle !== undefined){
     if (
       (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
       (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
@@ -109,7 +106,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
         payload: false,
       });
     }
-  }, [waitTime, localStore.ivrCampFlowData.flow.channel, ussdKey]);
+    else{
+      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+    }
+  }
+  }, [isError]);
 
   useEffect(()=>{
     if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined ){
@@ -529,6 +530,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       value={ussdKey}
                       onChange={(e) => {
                         saveValues(e, "USSD");
+                        setIsError(e.target.value === '')
                         setNormalState((prev) => !prev);
                       }}
                       onWheel={(e) => e.target.blur()}

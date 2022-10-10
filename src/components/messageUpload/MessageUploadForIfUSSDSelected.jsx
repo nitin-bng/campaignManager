@@ -3,14 +3,19 @@ import { useEffect, useContext, useState } from "react";
 import { useError } from "../../store/errorContext";
 import { store } from "../../store/store";
 
-const MessageUploadForIfUSSDSelected = ({lang, hideItemStyle, languageNames}) =>{
+const languageNames = {
+  _E: "English",
+  _H: "Hindi",
+  _A: "Arabic",
+  _S: "Spanish",
+};
+
+const MessageUploadForIfUSSDSelected = ({lang, hideItemStyle}) =>{
     const {errorDispatch, showError, errorState} = useError()
     const globalState = useContext(store);
     const localStore = globalState.state;
     const { dispatch } = globalState;
     const [isError, setIsError] = useState(true)
-
-    useEffect(()=> () =>  errorDispatch({type:'MESSAGE', payload: false}),[])
     
     useEffect(()=>{
     if(hideItemStyle === undefined){

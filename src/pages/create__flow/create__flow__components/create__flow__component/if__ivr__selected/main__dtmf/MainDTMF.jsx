@@ -25,6 +25,7 @@ import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForMainDTMF } from "../../../../../../components/fileUpload/FileUploaderForMainDTMF";
 import { CommonContext } from "../../../../../../helpers/CommonContext";
+import { MessageUploadForMainDTMF } from "../../../../../../components/messageUpload/MessageUploadForMainDTMF";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -903,75 +904,56 @@ const MainDTMF = (props) => {
                     </Select>
                   </FormControl>
                 </div>
-
                 <div
-                  className={props.hideItemStyle}
-                  style={{ width: "100%" }}
-                >
-                  {localStore.ivrCampFlowData.flow.language.map((hello) => {
-                    console.log(
-                      "localStore.ivrCampFlowData.flow.language ===>",
-                      hello
-                    );
-                    hellohello.push(hello.actions);
-                    hello.actions.forEach((el) => {
-                      console.log("action element ===>", el.languageName);
-                      languageName.push(el.languageName);
-                    });
-                    console.log(
-                      "localStore.ivrCampFlowData.flow.language hello ===>",
-                      hellohello
-                    );
-                  })}
-                  <div
-                    className="ghghg"
-                    style={{
-                      margin: "10px 0",
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    {languageName.map((el) => {
-                      return (
-                        <Typography style={{ fontSize: "12px" }}>
-                          Message in {el}
-                        </Typography>
-                      );
-                    })}
-                  </div>
-                  <div
-                    className="ghghgh"
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                      width: "100%",
-                    }}
-                  >
-                    {localStore.ivrCampFlowData.flow.languageChange.map(
-                      (lang) => (
-                        <TextField
-                    id="outlined-multiline-static"
-                    label={` Message Response for ${globalState.state.ivrCampFlowData.flow.actions[
-                      props.global.dtmf_key - 1
-                    ].input['ussd_key']} input key`}
-                    multiline
-                    rows={2}
-                    variant="outlined"
-                    // value={localStore.ivrCampFlowData.flow.main_file.ussd._E}
-                    onChange={(e) => handleUSSD(e.target.value, lang)}
-                    error={
-                      showError
-                        ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                          ? false
-                          : true
-                        : false
-                    }
-                    style={{ width: "100%", margin:"1rem" }}
-                  />
-                      )
-                    )}
-                  </div>
-                </div>
+    className={props.hideItemStyle}
+    style={{ width: "100%" }}
+  >
+    {localStore.ivrCampFlowData.flow.language.map((hello) => {
+      console.log(
+        "localStore.ivrCampFlowData.flow.language ===>",
+        hello
+      );
+      hellohello.push(hello.actions);
+      hello.actions.forEach((el) => {
+        console.log("action element ===>", el.languageName);
+        languageName.push(el.languageName);
+      });
+      console.log(
+        "localStore.ivrCampFlowData.flow.language hello ===>",
+        hellohello
+      );
+    })}
+    <div
+      className="ghghg"
+      style={{
+        margin: "10px 0",
+        display: "flex",
+        justifyContent: "space-evenly",
+      }}
+    >
+      {languageName.map((el) => {
+        return (
+          <Typography style={{ fontSize: "12px" }}>
+            Message in {el}
+          </Typography>
+        );
+      })}
+    </div>
+    <div
+      className="ghghgh"
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        width: "100%",
+      }}
+    >
+      {localStore.ivrCampFlowData.flow.languageChange.map(
+        (lang) => (
+          <MessageUploadForMainDTMF lang={lang} handleUSSD={handleUSSD} localStore={localStore} global={props.global} hideItemStyle={props.hideItemStyle} />
+        )
+      )}
+    </div>
+  </div>
               </div>
             </CardContent>
             <div className="rendering__subdtmf__container">

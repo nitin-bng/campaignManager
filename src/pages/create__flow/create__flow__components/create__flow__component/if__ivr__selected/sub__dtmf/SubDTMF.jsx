@@ -25,6 +25,7 @@ import config from "../../../../../../ApiConfig/Config";
 import { useError } from "../../../../../../store/errorContext";
 import { FileUploaderForSubDTMF } from "../../../../../../components/fileUpload/FileUploaderForSubDTMF";
 import { CommonContext } from "../../../../../../helpers/CommonContext";
+import { MessageUploadForSubDTMF } from "../../../../../../components/messageUpload/MessageUploadForSubDTMF";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -532,6 +533,9 @@ const SubDTMF = (props) => {
       }
       if(keyToChange === 'ussd_key'){
         return localStoreC.input.ussd_key
+      }
+      if(keyToChange === 'ussd_msg'){
+        return localStoreC.audio_file[languageCode]
       }
       return localStoreC[keyToChange];
     }
@@ -1198,36 +1202,7 @@ const SubDTMF = (props) => {
                   >
                     {localStore.ivrCampFlowData.flow.languageChange.map(
                       (lang) => (
-                        <TextField
-                    id="outlined-multiline-static"
-                    label={`Message Response for ${traverseAndModify(
-                      props.current.id,
-                      props.current,
-                      "ussd_key",
-                      null,
-                      "read"
-                    )} input key `}
-                    multiline
-                    rows={2}
-                    variant="outlined"
-                    onChange={(e) =>
-                      traverseAndModify(
-                        props.current.id,
-                        props.current,
-                        "ussd_msg",
-                        e.target.value,
-                        "edit",
-                        lang
-                      )}
-                    error={
-                      showError
-                        ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                          ? false
-                          : true
-                        : false
-                    }
-                    style={{ width: "100%", margin:"1rem" }}
-                  />
+                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} />
                       )
                     )}
                   </div>

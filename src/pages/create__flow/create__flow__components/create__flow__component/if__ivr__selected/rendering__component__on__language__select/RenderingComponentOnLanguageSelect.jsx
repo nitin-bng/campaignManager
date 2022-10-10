@@ -99,8 +99,6 @@ const RenderingComponentOnLanguageSelect = (props) => {
       });
   }, []);
 
-  // console.log('nitin value', localStore.ivrCampFlowData.flow['lang_audio_file'])
-
   useEffect(() => {
     if (
       (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||

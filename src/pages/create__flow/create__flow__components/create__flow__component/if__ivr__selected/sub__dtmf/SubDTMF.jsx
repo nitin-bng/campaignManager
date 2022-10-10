@@ -330,7 +330,7 @@ const SubDTMF = (props) => {
             ivr: languageSelect,
             sms: languageSelect,
           },
-          node_type: "PROCESSING",
+          node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
           input: {
             ivr_key: oldNumOfCards + e,
             sms_key: "",
@@ -393,11 +393,6 @@ const SubDTMF = (props) => {
         });
         genArray(newNumOfCards - oldNumOfCards).map((e) => {
           e = oldNumOfCards + e;
-          console.log(
-            "%c......PUSH.....",
-            "background: 'pink'; 'font-size: 1.5rem",
-            e
-          );
           localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.push({
             dtmf_key: e,
             parent_dtmf: current.dtmf_key,
@@ -408,7 +403,7 @@ const SubDTMF = (props) => {
               ivr: languageSelect,
               sms: languageSelect,
             },
-            node_type: "PROCESSING",
+            node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
             input: {
               ivr_key: e,
               sms_key: "",

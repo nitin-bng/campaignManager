@@ -28,6 +28,7 @@ import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
 import LayoutFlow from "./create__flow__components/previewFlowDragNDrop/DragnDrop";
+import { changeNodeType } from "../../services/changeNodeType";
 
 
 
@@ -132,7 +133,6 @@ const CreateFlow = () => {
         }
       }
     }
-    console.log('Nitin returning', result)
     return result;
   };
 
@@ -221,7 +221,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: globalState.state.ivrCampFlowData.flow,
+        flow: {...globalState.state.ivrCampFlowData.flow, actions: changeNodeType(globalState.state.ivrCampFlowData.flow.actions)},
         publisher: null,
         device: null,
         country: null,

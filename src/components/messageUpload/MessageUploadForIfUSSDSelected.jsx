@@ -10,8 +10,6 @@ const MessageUploadForIfUSSDSelected = ({lang, hideItemStyle, languageNames}) =>
     const { dispatch } = globalState;
     const [isError, setIsError] = useState(true)
 
-    console.log('nitin', errorState)
-
     useEffect(()=> () =>  errorDispatch({type:'MESSAGE', payload: false}),[])
     
     useEffect(()=>{

@@ -288,12 +288,16 @@ const MainDTMF = (props) => {
     handleIVRSelectedChange(e);
     console.log("dtmfs--- options", props, e, target, current);
     if (target === "main_audio") {
+      console.log('nitin main')
       props.handleDataChange(e);
     } else if (target === "sub_audio_dtmfs") {
+      console.log('nitin sub')
       props.setDataDynamic("sub_audio_dtmfs", e, current);
     } else {
+      console.log('nitin else')
       let oldNumOfCards = 0;
       const newNumOfCards = e.target.value;
+      console.log('nitin value', newNumOfCards)
 
       if (current && current.dtmf_count) {
         oldNumOfCards = current.dtmf_count;
@@ -335,7 +339,7 @@ const MainDTMF = (props) => {
               ivr: languageSelect,
               sms: languageSelect,
             },
-            node_type: "PROCESSING",
+            node_type: newNumOfCards === 0 ? "LEAF" : "PROCESSING",
             input: {
               ivr_key: e,
               sms_key: "",
@@ -530,6 +534,8 @@ const MainDTMF = (props) => {
       })
       dispatch({ type: "SET_DATA", nState: localStore });
     }
+
+    console.log('Nitin',localStore.ivrCampFlowData.flow.actions)
     
   return (
     <>

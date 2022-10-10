@@ -922,9 +922,9 @@ const MainDTMF = (props) => {
                       style={{
                         width: "100%",
                         // border: "2px solid blue",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        // display: "flex",
+                        // flexDirection: "column",
+                        // alignItems: "center",
                       }}
                     >
                       {localStore.ivrCampFlowData.flow.language.map((hello) => {

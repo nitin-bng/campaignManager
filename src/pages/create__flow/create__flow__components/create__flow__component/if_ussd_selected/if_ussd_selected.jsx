@@ -587,10 +587,10 @@ const IfUssdSelected = ({
     <>
       <div className={hideItemStyle}></div>
       <Divider style={{ marginTop: "1rem" }}>
-        Welcome{" "}
+        Welcome
         {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
           ? "& Language Selection"
-          : ""}{" "}
+          : ""}
         Node
       </Divider>
       <div
@@ -620,11 +620,11 @@ const IfUssdSelected = ({
         </div>
       </div>
 
-      <div className={hideItemStyle} style={{ marginTop: "1rem" }}>
+      {/* <div className={hideItemStyle} style={{ marginTop: "1rem" }}>
         <Divider className={hideItemStyle} style={{ marginTop: "1rem" }}>
           Sticker here
         </Divider>
-      </div>
+      </div> */}
       <LanguageComponent props={languageComponentProps} />
 
       <div className="main__dtms__container" style={{ width: "100%" }}>
@@ -740,7 +740,7 @@ const IfUssdSelected = ({
               localStore={localStore}
               lang={lang}
               id="outlined-multiline-static"
-              label={`Thank you message for ${languageNames[lang]}`}
+              label={`Thank you message in ${languageNames[lang]}`}
               multiline
               rows={2}
               variant="outlined"

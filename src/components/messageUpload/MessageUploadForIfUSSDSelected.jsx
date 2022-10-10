@@ -51,7 +51,8 @@ const MessageUploadForIfUSSDSelected = ({lang, hideItemStyle, languageNames}) =>
                 localStore={localStore}
                 lang={lang}
                 id="outlined-multiline-static"
-                label={`Welcome Message in ${languageNames[lang]}`}
+                // label={`Welcome Message in ${languageNames[lang]}`}
+                label= {`Welcome ${localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? "& Language Selection": ""} Node in ${languageNames[lang]}`}
                 multiline
                 rows={2}
                 value={localStore.ivrCampFlowData.flow.main_file["ussd"][lang]}

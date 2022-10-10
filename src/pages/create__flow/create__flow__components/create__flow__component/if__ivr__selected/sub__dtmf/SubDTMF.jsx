@@ -845,13 +845,13 @@ const SubDTMF = (props) => {
                   <div className="subdtmf__select__option__container">
                     <FormControl style={{ width: "100%" }}>
                       <InputLabel id="demo-simple-select-label">
-                        DTMF option
+                        Actions
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={props.current.type}
-                        label="DTMF__option"
+                        label="Actions"
                         disabled={props.disableEditingWhileCreatingCamp}
                         onChange={(e) => {
                           traverseAndModify(
@@ -1056,13 +1056,13 @@ const SubDTMF = (props) => {
                 <div className="subdtmf__select__option__container">
                   <FormControl style={{ width: "100%" }}>
                     <InputLabel id="demo-simple-select-label">
-                      DTMF option
+                      Actions
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={'HITURL_USSD'}
-                      label="DTMF__option"
+                      label="Actions"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
                         traverseAndModify(
@@ -1211,7 +1211,7 @@ const SubDTMF = (props) => {
                       "ussd_key",
                       null,
                       "read"
-                    )} input key `}
+                    )}`}
                     multiline
                     rows={2}
                     variant="outlined"

@@ -19,17 +19,17 @@ import "./createFlowComponent.css";
 import { useError } from "../../../../store/errorContext";
 import { IfUssdSelected } from "./if_ussd_selected/if_ussd_selected";
 import { LanguageComponent } from "../../../../components/languageComponent";
-import Divider from '@mui/material/Divider';
-
-
-
+import Divider from "@mui/material/Divider";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormLabel from "@mui/material/FormLabel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
-
 const CreateFlowComponent = (props) => {
   const { showError, errorDispatch } = useError();
-
 
   const languagesCode = [];
   const {
@@ -70,22 +70,25 @@ const CreateFlowComponent = (props) => {
       errorDispatch({ type: "INITIALIZE" });
     }
     errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
-    
-    return () => errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
+
+    return () =>
+      errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
   }, []);
-  
+
   useEffect(() => {
     if (
       ifIVRselectedThenLanguage.length &&
-      localStore.ivrCampFlowData.flow.flowName && localStore.ivrCampFlowData.flow.channel === 'IVR'
-      ) {
+      localStore.ivrCampFlowData.flow.flowName &&
+      localStore.ivrCampFlowData.flow.channel === "IVR"
+    ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
-    } 
-    else if(localStore.ivrCampFlowData.flow.channel === 'USSD' && localStore.ivrCampFlowData.flow.flowName && ifIVRselectedThenLanguage.length){
+    } else if (
+      localStore.ivrCampFlowData.flow.channel === "USSD" &&
+      localStore.ivrCampFlowData.flow.flowName &&
+      ifIVRselectedThenLanguage.length
+    ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
-      
-    }
-    else {
+    } else {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
     }
   }, [
@@ -272,61 +275,107 @@ const CreateFlowComponent = (props) => {
               </div>
             </div>
           </div>
-          <div className="call__flow__details__languages__dropdown__container">
-        <FormControl style={{ width: "50%" }}>
-          <InputLabel
-            style={{
-              backgroundColor: "white",
-              paddingRight: "4px",
-            }}
-            id="demo-multiple-checkbox-label"
-            required
-            error={
-              showError
-                ? ifIVRselectedThenLanguage.length
-                  ? false
-                  : true
-                : false
-            }
-          >
-            Flow Languages
-          </InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            value={
-              localStore.ivrCampFlowData.flow.language[0].actions
-                ? localStore.ivrCampFlowData.flow.language[0].actions.map(
-                    (item) => item.languageName
-                  )
-                : ifIVRselectedThenLanguage
-            }
-            onChange={handleLanguageChange}
-            input={<OutlinedInput label="Select language" />}
-            renderValue={(selected) => selected.join(", ")}
-            MenuProps={MenuProps}
-            disabled={props.disableEditingWhileCreatingCamp}
-            required
-            error={
-              showError
-                ? ifIVRselectedThenLanguage.length
-                  ? false
-                  : true
-                : false
-            }
-          >
-            {Languages.map((Languages) => (
-              <MenuItem key={Languages} value={Languages}>
-                <Checkbox
-                  checked={ifIVRselectedThenLanguage.indexOf(Languages) > -1}
-                />
-                <ListItemText primary={Languages} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
+     <div className="call__flow__details__languages__dropdown__container" style={{display:"flex", justifyContent:'space-evenly', alignItems:'center' }} >
+            <FormControl style={{ width: "40%" }}>
+              <InputLabel
+                style={{
+                  backgroundColor: "white",
+                  paddingRight: "4px",
+                }}
+                id="demo-multiple-checkbox-label"
+                required
+                error={
+                  showError
+                    ? ifIVRselectedThenLanguage.length
+                      ? false
+                      : true
+                    : false
+                }
+              >
+                Flow Languages
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={
+                  localStore.ivrCampFlowData.flow.language[0].actions
+                    ? localStore.ivrCampFlowData.flow.language[0].actions.map(
+                        (item) => item.languageName
+                      )
+                    : ifIVRselectedThenLanguage
+                }
+                onChange={handleLanguageChange}
+                input={<OutlinedInput label="Select language" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+                disabled={props.disableEditingWhileCreatingCamp}
+                required
+                error={
+                  showError
+                    ? ifIVRselectedThenLanguage.length
+                      ? false
+                      : true
+                    : false
+                }
+              >
+                {Languages.map((Languages) => (
+                  <MenuItem key={Languages} value={Languages}>
+                    <Checkbox
+                      checked={
+                        ifIVRselectedThenLanguage.indexOf(Languages) > -1
+                      }
+                    />
+                    <ListItemText primary={Languages} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
+              <>
+                <div style={{ display: "flex", flexDirection: "column", width: "40%" }}>
+                  <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}} >
+                    Select Your Default Language
+                  </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      name="radio-buttons-group"
+                    >
+                  <div style={{ display: "flex" }}>
+                      {ifIVRselectedThenLanguage.map((ele) => {
+                        return (
+                          <>
+                            <FormControlLabel
+                              value={ele}
+                              control={<Radio />}
+                              label={ele}
+                              onChange={()=>{
+                                console.log("ele Languages", ele, languages);
+                                {
+                                  languages.map((element)=>{
+                                    if(ele === element.lang){
+                                      console.log("found found",element);
+                                      localStore.ivrCampFlowData.flow.defaultLanguage = element.code
+                                      console.log("localStore.ivrCampFlowData.flow...",localStore.ivrCampFlowData.flow);
+                                    }else{
+                                      console.log("nothing found");
+                                    }
+                                  })
+                                }
+                              }}
+                            />
+                          </>
+                        );
+                      })}
+                  </div>
+                    </RadioGroup>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+
       {channel === "IVR" && <> 
       <div className="main__wait__time__container">
               <Box
@@ -420,11 +469,12 @@ const CreateFlowComponent = (props) => {
       </div>
       </>}
           <div className="call__flow__details__container">
-
-            <div className="call__flow__details" style={{marginTop:"1rem"}}>
-                  {channel && <div className="call__flow__details__heading__container">
-                    <h1>Basic Flow Creation</h1>
-                  </div>}
+            <div className="call__flow__details" style={{ marginTop: "1rem" }}>
+              {channel && (
+                <div className="call__flow__details__heading__container">
+                  <h1>Basic Flow Creation</h1>
+                </div>
+              )}
 
               {channel === "IVR" ? (
                 <IfIVRSelected
@@ -432,7 +482,7 @@ const CreateFlowComponent = (props) => {
                     props.disableEditingWhileCreatingCamp
                   }
                   hideItemStyle={props.hideItemStyle}
-                  languageComponentProps = {props}
+                  languageComponentProps={props}
                 />
               ) : (
                 ""
@@ -443,12 +493,16 @@ const CreateFlowComponent = (props) => {
                 ""
               )}
               {channel === "USSD" ? (
-                <IfUssdSelected disableEditingWhileCreatingCamp={
-                  props.disableEditingWhileCreatingCamp
-                } hideItemStyle={props.hideItemStyle} 
-                  languageComponentProps = {props}
-                  />
-              ): <></>}
+                <IfUssdSelected
+                  disableEditingWhileCreatingCamp={
+                    props.disableEditingWhileCreatingCamp
+                  }
+                  hideItemStyle={props.hideItemStyle}
+                  languageComponentProps={props}
+                />
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

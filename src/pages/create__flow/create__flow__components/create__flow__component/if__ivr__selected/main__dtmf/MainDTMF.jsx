@@ -528,19 +528,19 @@ const MainDTMF = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
-    const handleUSSD = (msg, languageCode) =>{
-      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
-          if(item.dtmf_key === props.global.dtmf_key){
-            item.audio_file[languageCode] = msg
-            item.file.sms[languageCode] = msg
-            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
-            item.file.ussd[languageCode] = msg
-          }
-        return item
-      })
-      dispatch({ type: "SET_DATA", nState: localStore });
-    }
-
+  const handleUSSD = (msg, languageCode) => {
+    localStore.ivrCampFlowData.flow.actions =
+      localStore.ivrCampFlowData.flow.actions.map((item) => {
+        if (item.dtmf_key === props.global.dtmf_key) {
+          item.audio_file[languageCode] = msg;
+          item.file.sms[languageCode] = msg;
+          item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
+          item.file.ussd[languageCode] = msg;
+        }
+        return item;
+      });
+    dispatch({ type: "SET_DATA", nState: localStore });
+  }
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -1006,7 +1006,7 @@ const MainDTMF = (props) => {
         </Card>
       </div>
     </div>
-     ) } 
+      )} 
     </>
   );
 };

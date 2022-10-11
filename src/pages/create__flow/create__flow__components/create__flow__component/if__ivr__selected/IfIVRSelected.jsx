@@ -871,41 +871,6 @@ const IfIVRSelected = (props) => {
           </div>
 
           <div className="main__wait__time__and__dtmf__container">
-            <div className="main__wait__time__container">
-              <Box
-                component="form"
-                style={{ width: "80%" }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id={"waitTime_" + global.dtmf_key}
-                  disabled={
-                    disableChannel == "SMS" ||
-                    disableChannel == "SMS" ||
-                    props.disableEditingWhileCreatingCamp
-                  }
-                  label="Welcome fggjhj Wait Time"
-                  type="number"
-                  name={"waitTime_" + global.dtmf_key}
-                  value={globalState.state.ivrCampFlowData.flow.waitTime}
-                  onChange={(e) => setWaitTime("main", e.target, null)}
-                  onWheel={(e) => e.target.blur()}
-                  variant="outlined"
-                  required
-                  error={
-                    showError
-                      ? parseInt(
-                          globalState.state.ivrCampFlowData.flow.waitTime,
-                          10
-                        ) >= 0
-                        ? false
-                        : true
-                      : false
-                  }
-                />
-              </Box>
-            </div>
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
                 <InputLabel

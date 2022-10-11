@@ -28,7 +28,7 @@ import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
 import LayoutFlow from "./create__flow__components/previewFlowDragNDrop/DragnDrop";
-import { changeNodeType } from "../../services/changeNodeType";
+import { modifyDataForBackend } from "../../services/modifyDataForBackend";
 
 
 
@@ -218,7 +218,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: {...globalState.state.ivrCampFlowData.flow, actions: changeNodeType(globalState.state.ivrCampFlowData.flow.actions)},
+        flow: {...globalState.state.ivrCampFlowData.flow, actions: modifyDataForBackend(globalState.state.ivrCampFlowData.flow)},
         publisher: null,
         device: null,
         country: null,

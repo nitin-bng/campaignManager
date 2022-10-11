@@ -98,7 +98,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   useEffect(() => {
     if(props.hideItemStyle !== undefined){
     if (
-      (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
+      localStore.ivrCampFlowData.flow.channel === "IVR"  ||
       (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
     ) {
       errorDispatch({
@@ -110,18 +110,16 @@ const RenderingComponentOnLanguageSelect = (props) => {
       errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
     }
   }
+  else if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
+    if(!isError){
+    errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
+  }
+  else{
+      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+    }
+  }
   }, [isError]);
 
-  useEffect(()=>{
-    if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined ){
-      if(!isError){
-      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
-    }
-    else{
-        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
-      }
-    }
-  }, [isError])
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;

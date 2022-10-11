@@ -184,6 +184,15 @@ const CreateFlowComponent = (props) => {
     console.log(localStore);
   };
 
+  const setWaitTime = (level, target, dtmf_key) => {
+    const val = target.value >= 0 ? target.value : 0;
+    let localStore = globalState.state;
+    if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
+    else if (level === "sub")
+      localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime = val;
+    console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
 
   return (
     <>
@@ -316,6 +325,114 @@ const CreateFlowComponent = (props) => {
           </Select>
         </FormControl>
       </div>
+      {channel === "IVR" && <> 
+      <div className="main__wait__time__container">
+              <Box
+                component="form"
+                style={{ width: "80%" }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id={"waitTime_" + global.dtmf_key}
+                  disabled={
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    props.disableEditingWhileCreatingCamp
+                  }
+                  label="Flow Wait Time"
+                  type="number"
+                  name={"waitTime_" + global.dtmf_key}
+                  value={globalState.state.ivrCampFlowData.flow.waitTime}
+                  onChange={(e) => setWaitTime("main", e.target, null)}
+                  onWheel={(e) => e.target.blur()}
+                  variant="outlined"
+                  required
+                  error={
+                    showError
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow.waitTime,
+                          10
+                        ) >= 0
+                        ? false
+                        : true
+                      : false
+                  }
+                />
+              </Box>
+      </div>
+      <div className="main__wait__time__container">
+              <Box
+                component="form"
+                style={{ width: "80%" }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id={"repeatCount_" + global.dtmf_key}
+                  disabled={
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    props.disableEditingWhileCreatingCamp
+                  }
+                  label="Flow Repeat Count"
+                  type="number"
+                  name={"repeatCount_" + global.dtmf_key}
+                  // value={globalState.state.ivrCampFlowData.flow.repeatCount}
+                  // onChange={(e) => setWaitTime("main", e.target, null)}
+                  onWheel={(e) => e.target.blur()}
+                  variant="outlined"
+                  required
+                  // error={
+                  //   showError
+                  //     ? parseInt(
+                  //         globalState.state.ivrCampFlowData.flow.waitTime,
+                  //         10
+                  //       ) >= 0
+                  //       ? false
+                  //       : true
+                  //     : false
+                  // }
+                />
+              </Box>
+      </div>
+      <div className="create__flow__component__select__channel__dropdown__container">
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    required
+                    // error={
+                    //   showError
+                    //     ? localStore.ivrCampFlowData.flow.channel.length
+                    //       ? false
+                    //       : true
+                    //     : false
+                    // }
+                  >
+                    Play bargein
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={false}
+                    label="Play Bargein"
+                    // onChange={handleChange}
+                    disabled={props.disableEditingWhileCreatingCamp}
+                    required
+                    // error={
+                    //   showError
+                    //     ? localStore.ivrCampFlowData.flow.channel.length
+                    //       ? false
+                    //       : true
+                    //     : false
+                    // }
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+      </>}
           <div className="call__flow__details__container">
 
             <div className="call__flow__details" style={{marginTop:"1rem"}}>

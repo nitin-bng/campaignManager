@@ -598,7 +598,7 @@ const MainDTMF = (props) => {
                         </Select>
                       </FormControl>
                     </div>
-                    <div className="main__dtmf__wait__time__container">
+                    {/* <div className="main__dtmf__wait__time__container">
                       <Box
                         component="form"
                         style={{ width: "100%" }}
@@ -643,7 +643,7 @@ const MainDTMF = (props) => {
                           }
                         />
                       </Box>
-                    </div>
+                    </div> */}
 
                     <div className="select__number__of__subDTMF__from__main__dtmf__container">
                       <FormControl style={{ width: "100%" }}>

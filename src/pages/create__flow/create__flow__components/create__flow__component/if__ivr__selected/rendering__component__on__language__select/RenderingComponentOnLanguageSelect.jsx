@@ -413,7 +413,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
           {console.log("component called")}
           <div className="rendering__component__on__language__select">
             <div className="rendering__component__on__language__select__container">
-              <div className="language__specific__wait__time__container">
+              {/* <div className="language__specific__wait__time__container">
                 <Box
                   component="form"
                   style={{ width: "100%" }}
@@ -442,7 +442,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     }
                   />
                 </Box>
-              </div>
+              </div> */}
               <div style={{}} className={props.hideItemStyle} hideItem>
                 <input
                   accept="audio/wav"

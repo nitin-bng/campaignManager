@@ -873,7 +873,7 @@ const SubDTMF = (props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  <div className="main__subdtmf__wait__time__container">
+                  {/* <div className="main__subdtmf__wait__time__container">
                     <Box
                       component="form"
                       style={{ width: "100%" }}
@@ -922,7 +922,7 @@ const SubDTMF = (props) => {
                         }
                       />
                     </Box>
-                  </div>
+                  </div> */}
                   <div className="select__number__of__subDTMF__from__subdtmf__container">
                     <FormControl style={{ width: "100%" }}>
                       <InputLabel id="demo-simple-select-label" required>

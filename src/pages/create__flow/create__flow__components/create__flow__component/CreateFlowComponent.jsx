@@ -51,6 +51,7 @@ const CreateFlowComponent = (props) => {
   const { dispatch } = globalState;
   let localStore = globalState.state;
   const languages = globalState.state.languages;
+  const {bargein, setBargein} = props
 
   const handleChange = (event) => {
     setChannel(event.target.value);
@@ -188,6 +189,7 @@ const CreateFlowComponent = (props) => {
     const val = target.value >= 0 ? target.value : 0;
     let localStore = globalState.state;
     if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
+    if (level === "repeatCount") localStore.ivrCampFlowData.flow.repeatCount = val;
     else if (level === "sub")
       localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime = val;
     console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
@@ -378,21 +380,21 @@ const CreateFlowComponent = (props) => {
                   label="Flow Repeat Count"
                   type="number"
                   name={"repeatCount_" + global.dtmf_key}
-                  // value={globalState.state.ivrCampFlowData.flow.repeatCount}
-                  // onChange={(e) => setWaitTime("main", e.target, null)}
+                  value={globalState.state.ivrCampFlowData.flow.repeatCount}
+                  onChange={(e) => setWaitTime("repeatCount", e.target, null)}
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
                   required
-                  // error={
-                  //   showError
-                  //     ? parseInt(
-                  //         globalState.state.ivrCampFlowData.flow.waitTime,
-                  //         10
-                  //       ) >= 0
-                  //       ? false
-                  //       : true
-                  //     : false
-                  // }
+                  error={
+                    showError
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow.repeatCount,
+                          10
+                        ) >= 0
+                        ? false
+                        : true
+                      : false
+                  }
                 />
               </Box>
       </div>
@@ -400,38 +402,22 @@ const CreateFlowComponent = (props) => {
                 <FormControl fullWidth>
                   <InputLabel
                     id="demo-simple-select-label"
-                    required
-                    // error={
-                    //   showError
-                    //     ? localStore.ivrCampFlowData.flow.channel.length
-                    //       ? false
-                    //       : true
-                    //     : false
-                    // }
                   >
                     Play bargein
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={false}
+                    value={bargein}
                     label="Play Bargein"
-                    // onChange={handleChange}
+                    onChange={(e) => setBargein(e.target.value)}
                     disabled={props.disableEditingWhileCreatingCamp}
-                    required
-                    // error={
-                    //   showError
-                    //     ? localStore.ivrCampFlowData.flow.channel.length
-                    //       ? false
-                    //       : true
-                    //     : false
-                    // }
                   >
                     <MenuItem value={true}>Yes</MenuItem>
                     <MenuItem value={false}>No</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
+      </div>
       </>}
           <div className="call__flow__details__container">
 

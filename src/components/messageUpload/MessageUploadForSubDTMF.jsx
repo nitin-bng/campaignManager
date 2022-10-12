@@ -20,7 +20,7 @@ const MessageUploadForSubDTMF = ({traverseAndModify, localStore, current, lang, 
 
     return    <TextField
     id="outlined-multiline-static"
-    label={`Message Response for ${traverseAndModify(
+    label={`Message response for ${traverseAndModify(
       current.id,
       current,
       channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key',

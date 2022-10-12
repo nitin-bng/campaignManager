@@ -592,7 +592,7 @@ const IfUssdSelected = ({
       <Divider style={{ marginTop: "1rem" }}>
         Welcome  
         {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-          ? "& Language Selection "
+          ? " & Language Selection "
           : "" +
         " Node"}
       </Divider>
@@ -646,9 +646,9 @@ const IfUssdSelected = ({
                 : false
             }
           >
-            Number of options after Welcome{" "}
+            Number of options after welcome{" "}
             {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-              ? "& Language Selection "
+              ? "& language selection "
               : ""}{" "}
             Node
           </InputLabel>
@@ -656,9 +656,9 @@ const IfUssdSelected = ({
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount}
-            label={`Number of options after Welcome ${
+            label={`Number of options after welcome ${
               localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-                ? "& Language Selection "
+                ? "& language selection "
                 : ""
             } Node`}
             onChange={(e) => {

@@ -545,7 +545,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 </div>
                 <div style={{marginTop:"1rem"}} className={props.hideItemStyle} hideItem>
                 <TextField
-                    label={`Message Response for ${ussdKey}`}
+                    label={`Message response for ${ussdKey}`}
                     multiline
                     rows={2}
                     variant="outlined"

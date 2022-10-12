@@ -231,7 +231,7 @@ const CreateFlowComponent = (props) => {
                         ? localStore.ivrCampFlowData.flow.flowName
                         : ""
                     }
-                    label="Flow name"
+                    label="Flow Name"
                     variant="outlined"
                     onChange={handelFlowNameChange}
                     disabled={props.disableEditingWhileCreatingCamp}
@@ -259,7 +259,7 @@ const CreateFlowComponent = (props) => {
                         : false
                     }
                   >
-                    Flow channel
+                    Flow Channel
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -309,11 +309,12 @@ const CreateFlowComponent = (props) => {
                 id="demo-multiple-checkbox"
                 multiple
                 value={
-                  localStore.ivrCampFlowData.flow.language[0].actions
-                    ? localStore.ivrCampFlowData.flow.language[0].actions.map(
-                        (item) => item.languageName
-                      )
-                    : ifIVRselectedThenLanguage
+                  // localStore.ivrCampFlowData.flow.language[0].actions
+                  //   ? localStore.ivrCampFlowData.flow.language[0].actions.map(
+                  //       (item) => item.languageName
+                  //     )
+                  //   : 
+                    ifIVRselectedThenLanguage
                 }
                 onChange={handleLanguageChange}
                 input={<OutlinedInput label="Select language" />}
@@ -350,7 +351,7 @@ const CreateFlowComponent = (props) => {
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
                       name="radio-buttons-group"
-                      value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                      // value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
                     >
                   <div style={{ display: "flex" }}>
                       {ifIVRselectedThenLanguage.map((ele) => {
@@ -361,19 +362,14 @@ const CreateFlowComponent = (props) => {
                               control={<Radio />}
                               label={ele}
                               disabled={props.disableEditingWhileCreatingCamp}
-                              onChange={()=>{
-                                console.log("ele Languages", ele, languages);
-                                {
-                                  languages.map((element)=>{
+                              onChange={()=>{            
+                                console.log('nitin language', localStore.languages)
+                                localStore.languages.forEach((element)=>{
                                     if(ele === element.lang){
-                                      console.log("found found",element);
                                       localStore.ivrCampFlowData.flow.defaultLanguage = element.code
-                                      console.log("localStore.ivrCampFlowData.flow...",localStore.ivrCampFlowData.flow);
-                                    }else{
-                                      console.log("nothing found");
                                     }
                                   })
-                                }
+                                  dispatch({ type: "SET_DATA", nState: localStore });
                               }}
                             />
                           </>

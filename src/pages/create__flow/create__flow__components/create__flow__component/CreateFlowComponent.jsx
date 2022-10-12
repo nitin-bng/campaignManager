@@ -267,6 +267,7 @@ const CreateFlowComponent = (props) => {
                   >
                     <MenuItem value={"IVR"}>IVR</MenuItem>
                     <MenuItem value={"USSD"}>USSD</MenuItem>
+                    <MenuItem value={"SMS"}>SMS</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -437,12 +438,12 @@ const CreateFlowComponent = (props) => {
               ) : (
                 ""
               )}
-              {channel === "SMS" ? (
+              {/* {channel === "SMS" ? (
                 <IfSMSSelected hideItemStyle={props.hideItemStyle} />
               ) : (
                 ""
-              )}
-              {channel === "USSD" ? (
+              )} */}
+              {(channel === "USSD" || channel === 'SMS') ? (
                 <IfUssdSelected disableEditingWhileCreatingCamp={
                   props.disableEditingWhileCreatingCamp
                 } hideItemStyle={props.hideItemStyle} 

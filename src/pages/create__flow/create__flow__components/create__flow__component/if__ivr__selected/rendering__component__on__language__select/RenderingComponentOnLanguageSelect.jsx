@@ -41,6 +41,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
             i
           ].input.ussd_key = e.target.value;
         }
+         else if (type === "SMS") {
+          localStore.ivrCampFlowData.flow.language[0].actions[
+            i
+          ].input.sms_key = e.target.value;
+        }
       }
 
       dispatch({ type: "SET_DATA", nState: localStore });
@@ -509,7 +514,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
           </div>
         </>
       ) : (
-        localStore.ivrCampFlowData.flow.channel === "USSD" && (
+        (localStore.ivrCampFlowData.flow.channel === "USSD" || localStore.ivrCampFlowData.flow.channel === "SMS") && (
           <>
             <div className="rendering__component__on__language__select">
               <div className="rendering__component__on__language__select__container">

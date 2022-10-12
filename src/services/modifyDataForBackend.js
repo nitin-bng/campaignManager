@@ -21,7 +21,7 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein ) => {
 
 
 const modifyDataForBackend = (data, waitTime=0, repeatCount=0, bargein=false) =>{
-    let result = data
+    let result = {...data}
     result.actions = arrangeActionsData(result.actions, waitTime, repeatCount, bargein)
     result.language[0].actions = arrangeActionsData(result.language[0].actions, waitTime, repeatCount, bargein)
     result = {...result, waitTime, repeatCount}

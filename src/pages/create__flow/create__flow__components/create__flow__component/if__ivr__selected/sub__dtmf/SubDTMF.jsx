@@ -557,6 +557,8 @@ const SubDTMF = (props) => {
       localStoreC.repeat.value = value.value == "false" ? true : false;
     } else if (keyToChange == "sms_key" && type == "edit") {
       localStoreC.input.sms_key = value;
+      localStoreC.type = 'HITURL_SMS';
+      localStoreC.actionType['sms'] = 'HITURL_SMS';
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -588,8 +590,10 @@ const SubDTMF = (props) => {
       }
       localStoreC.type = value;
     } else {
+
+      console.log('nitin rannnn')
       if(keyToChange==='ussd_key'){
-        console.log("this shouldn't run")
+        console.log('nitin ussd key type ran')
         localStoreC.input[keyToChange] = value;
         localStoreC.type = 'HITURL_USSD';
         localStoreC.actionType['ussd'] = 'HITURL_USSD';
@@ -1025,7 +1029,7 @@ const SubDTMF = (props) => {
           </Card>
         </div>
       </div>
-      :localStore.ivrCampFlowData.flow.channel === 'USSD' && <div className="subDTMF__subdtmf">
+      :(localStore.ivrCampFlowData.flow.channel === 'USSD' ||  localStore.ivrCampFlowData.flow.channel === 'SMS')&& <div className="subDTMF__subdtmf">
       <div className="sudDTMF__subdtmf__container">
         <Card
           style={{
@@ -1060,7 +1064,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={'HITURL_USSD'}
+                      value={ channel === 'USSD' ? 'HITURL_USSD' :  channel === 'SMS' && 'HITURL_SMS'}
                       label="Actions"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
@@ -1078,9 +1082,11 @@ const SubDTMF = (props) => {
                       }}
                       name="type"
                     >
-                      {["HITURL_USSD"].map((number, index) => {
-                        return <MenuItem value={number}>{number}</MenuItem>;
-                      })}
+                     { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
+                          return <MenuItem value={number}>{number}</MenuItem>;
+                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
+                            return <MenuItem value={number}>{number}</MenuItem>;
+                          })}
                     </Select>
                   </FormControl>
                 </div>
@@ -1099,7 +1105,7 @@ const SubDTMF = (props) => {
                       value={traverseAndModify(
                         props.current.id,
                         props.current,
-                        "ussd_key",
+                        channel === 'USSD' ? 'ussd_key' : 'sms_key',
                         null,
                         "read"
                       )}
@@ -1109,7 +1115,7 @@ const SubDTMF = (props) => {
                         traverseAndModify(
                           props.current.id,
                           props.current,
-                          "ussd_key",
+                          channel === 'USSD' ? 'ussd_key' :   'sms_key',
                           e.target.value,
                           "edit"
                         );
@@ -1122,7 +1128,7 @@ const SubDTMF = (props) => {
                           ? traverseAndModify(
                             props.current.id,
                             props.current,
-                            "ussd_key",
+                            channel === 'USSD' ? 'ussd_key' :  channel === 'SMS' && 'sms_key',
                             null,
                             "read"
                           )

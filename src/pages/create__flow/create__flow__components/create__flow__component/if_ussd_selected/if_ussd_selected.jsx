@@ -464,12 +464,12 @@ const IfUssdSelected = ({
       }
   }, [localStore.ivrCampFlowData.flow.main_file.ussd._E, globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount]);
 
-  const setInputKey = (level, target, dtmf_key) => {
+  const setInputKey = (level, target, dtmf_key, sms=false) => {
     let localStore = globalState.state;
     if (level === "main")
       localStore.ivrCampFlowData.flow.waitTime = target.value;
     else if (level === "sub")
-      localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].input["ussd_key"] =
+      localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].input[sms ? "sms_key" : "ussd_key"] =
         target.value;
     console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
     dispatch({ type: "SET_DATA", nState: localStore });
@@ -569,14 +569,17 @@ const IfUssdSelected = ({
     }
   };
 
+  console.log('nitin thank you', localStore.ivrCampFlowData.flow.actions)
   const handleThankYouMsg = (msg, languageCode) => {
     localStore.ivrCampFlowData.flow.actions =
       localStore.ivrCampFlowData.flow.actions.map((item) => {
-        if (item.node_type === "ENDNODE") {
+        if (item.node_type === "END") {
           item.audio_file[languageCode] = msg;
           item.file.sms[languageCode] = msg;
           item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
           item.file.ussd[languageCode] = msg;
+          item.file["sms"] = item.file["sms"] ? item.file["sms"] : {};
+          item.file.sms[languageCode] = msg;
         }
         return item;
       });
@@ -587,11 +590,11 @@ const IfUssdSelected = ({
     <>
       <div className={hideItemStyle}></div>
       <Divider style={{ marginTop: "1rem" }}>
-        Welcome
+        Welcome  
         {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-          ? "& Language Selection"
-          : ""}
-        Node
+          ? "& Language Selection "
+          : "" +
+        " Node"}
       </Divider>
       <div
         className="main__wait__time__and__dtmf__container"
@@ -645,7 +648,7 @@ const IfUssdSelected = ({
           >
             Number of options after Welcome{" "}
             {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-              ? "& Language Selection"
+              ? "& Language Selection "
               : ""}{" "}
             Node
           </InputLabel>
@@ -655,7 +658,7 @@ const IfUssdSelected = ({
             value={globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount}
             label={`Number of options after Welcome ${
               localStore.ivrCampFlowData.flow.language[0].actions.length > 1
-                ? "& Language Selection"
+                ? "& Language Selection "
                 : ""
             } Node`}
             onChange={(e) => {

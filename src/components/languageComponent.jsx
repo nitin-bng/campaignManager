@@ -43,7 +43,7 @@ const LanguageComponent = ({ props }) => {
       {ifIVRselectedThenLanguage.length > 1 ? (
         <div className="hello">
           {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
-          (channel === "IVR" || channel === "USSD") ? (
+          (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
               indxx={1}
               lang="Hindi"
@@ -59,7 +59,7 @@ const LanguageComponent = ({ props }) => {
             ""
           )}
           {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
-          (channel === "IVR" || channel === "USSD") ? (
+          (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
               indxx={2}
               lang="English"
@@ -75,7 +75,7 @@ const LanguageComponent = ({ props }) => {
             ""
           )}
           {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
-          (channel === "IVR" || channel === "USSD") ? (
+          (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
               indxx={3}
               lang="Arabic"
@@ -91,7 +91,7 @@ const LanguageComponent = ({ props }) => {
             ""
           )}
           {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
-          (channel === "IVR" || channel === "USSD") ? (
+          (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
               indxx={4}
               lang="Spanish"
@@ -108,7 +108,7 @@ const LanguageComponent = ({ props }) => {
           )}
 
           {/* .................. sms .................. */}
-          {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
+          {/* {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
           channel === "SMS" ? (
             <RenderingComponentOnLanguageSelectOfSMS lang="Hindi" />
           ) : (
@@ -131,7 +131,7 @@ const LanguageComponent = ({ props }) => {
             <RenderingComponentOnLanguageSelectOfSMS lang="Spanish" />
           ) : (
             ""
-          )}
+          )} */}
         </div>
       ) : (
         <></>

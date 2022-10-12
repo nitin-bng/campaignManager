@@ -78,7 +78,7 @@ const CreateCampaign = (props) => {
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
-    if(localStorage.getItem("channelName") == "USSD"){
+    if(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS"){
       setFormValues(prev=>{return {...prev,campaign_type: 'Outgoing'}})
     }
   }, []);
@@ -409,7 +409,7 @@ const CreateCampaign = (props) => {
               </TextField>
             </FormControl>
           </div>
-          {localStorage.getItem("channelName") == "USSD" ? (
+          {(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS") ? (
             <div
               className="create__campaign__campaign__type__radio__button"
               style={{          

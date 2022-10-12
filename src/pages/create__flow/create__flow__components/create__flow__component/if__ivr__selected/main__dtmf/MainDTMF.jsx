@@ -288,33 +288,16 @@ const MainDTMF = (props) => {
     handleIVRSelectedChange(e);
     console.log("dtmfs--- options", props, e, target, current);
     if (target === "main_audio") {
-      console.log('nitin main')
       props.handleDataChange(e);
     } else if (target === "sub_audio_dtmfs") {
-      console.log('nitin sub')
       props.setDataDynamic("sub_audio_dtmfs", e, current);
     } else {
-      console.log('nitin else')
       let oldNumOfCards = 0;
       const newNumOfCards = e.target.value;
-      console.log('nitin value', newNumOfCards)
 
       if (current && current.dtmf_count) {
         oldNumOfCards = current.dtmf_count;
       }
-
-      console.log(
-        "globalState.state.ivrCampFlowData.flow ",
-        localStore.ivrCampFlowData.flow,
-        "CURRENT.... ",
-        current
-      );
-      console.log(
-        "OLD NUMBER OF CARDS.... ",
-        oldNumOfCards,
-        "NEW NUMBER OF CARDS.... ",
-        newNumOfCards
-      );
 
       if (newNumOfCards >= oldNumOfCards) {
         debugger;
@@ -484,6 +467,14 @@ const MainDTMF = (props) => {
       ].actionType.ussd = "HITURL_USSD";
       dispatch({ type: "SET_DATA", nState: globalState.state });
     }
+    else if (channel === 'SMS'){
+      globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
+        "HITURL_SMS";
+      globalState.state.ivrCampFlowData.flow.actions[
+        props.data - 1
+    ].actionType.sms = "HITURL_SMS";
+    dispatch({ type: "SET_DATA", nState: globalState.state });
+    }
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
@@ -535,6 +526,8 @@ const MainDTMF = (props) => {
             item.file.sms[languageCode] = msg
             item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
             item.file.ussd[languageCode] = msg
+            item.file['sms'] = item.file['sms'] ? item.file['sms'] : {} 
+            item.file.sms[languageCode] = msg
           }
         return item
       })
@@ -823,8 +816,9 @@ const MainDTMF = (props) => {
                           disabled={props.disableEditingWhileCreatingCamp}
                           name="type"
                         >
-                          {["HITURL_USSD"].map((number, index) => {
-                            console.log(number);
+                          { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
+                            return <MenuItem value={number}>{number}</MenuItem>;
+                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
                         </Select>
@@ -850,14 +844,15 @@ const MainDTMF = (props) => {
                           value={
                             globalState.state.ivrCampFlowData.flow.actions[
                               props.global.dtmf_key - 1
-                            ].input["ussd_key"]
+                            ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key']
                           }
                           onChange={(e) => {
                             setIsFilled(() => e.target.value !== "");
                             props.setInputKey(
                               "sub",
                               e.target,
-                              props.global.dtmf_key
+                              props.global.dtmf_key,
+                              true
                             );
                           }}
                           onWheel={(e) => e.target.blur()}
@@ -867,7 +862,7 @@ const MainDTMF = (props) => {
                             showError
                               ? globalState.state.ivrCampFlowData.flow.actions[
                                   props.global.dtmf_key - 1
-                                ].input["ussd_key"]
+                                ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key']
                                 ? false
                                 : true
                               : false
@@ -900,7 +895,9 @@ const MainDTMF = (props) => {
                           name="sub_audio_dtmfs_dtmfCount"
                           onChange={(e) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
+                            console.log('nitin before removal', localStore.ivrCampFlowData.flow)
                             removeExtraSubDTMFs();
+                            console.log('nitin after removal', localStore.ivrCampFlowData.flow)
                           }}
                           disabled={props.disableEditingWhileCreatingCamp}
                           required

@@ -1003,7 +1003,7 @@ const MainDTMF = (props) => {
         </Card>
       </div>
     </div>
-     ) } 
+      )} 
     </>
   );
 };

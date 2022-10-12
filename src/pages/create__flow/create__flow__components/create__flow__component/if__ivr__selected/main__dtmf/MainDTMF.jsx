@@ -534,6 +534,10 @@ const MainDTMF = (props) => {
       dispatch({ type: "SET_DATA", nState: localStore });
     }
 
+    console.log('nitin main', globalState.state.ivrCampFlowData.flow.actions[
+      props.global.dtmf_key - 1
+    ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key'])
+
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -852,7 +856,7 @@ const MainDTMF = (props) => {
                               "sub",
                               e.target,
                               props.global.dtmf_key,
-                              true
+                              channel === 'SMS' ? true : false
                             );
                           }}
                           onWheel={(e) => e.target.blur()}
@@ -969,7 +973,7 @@ const MainDTMF = (props) => {
     >
       {localStore.ivrCampFlowData.flow.languageChange.map(
         (lang) => (
-          <MessageUploadForMainDTMF lang={lang} handleUSSD={handleUSSD} localStore={localStore} global={props.global} hideItemStyle={props.hideItemStyle} />
+          <MessageUploadForMainDTMF lang={lang} handleUSSD={handleUSSD} localStore={localStore} global={props.global} hideItemStyle={props.hideItemStyle} channel={channel} />
         )
       )}
     </div>

@@ -17,6 +17,7 @@ import ReactAudioPlayer from "react-audio-player";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 import { LanguageComponent } from "../../../../../components/languageComponent";
+import { Divider } from "@mui/material";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -826,9 +827,11 @@ const IfIVRSelected = (props) => {
   var languageName = [];
   return (
     <>
+      <Divider style={{ marginTop: "1rem" }}>
+        Welcome Node
+      </Divider>
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
-          <hr className="hr" />
           <div
             style={{ boxShadow: "2px 2px 3px grey" }}
             className={props.hideItemStyle}
@@ -886,7 +889,7 @@ const IfIVRSelected = (props) => {
                   }
                 >
                 
-                  Number of options in IVR flow
+                  Number of options after Welcome Node
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -895,7 +898,7 @@ const IfIVRSelected = (props) => {
                     globalState.state.ivrCampFlowData.flow
                       .main_audio_dtmfCount
                   }
-                  label="Number of options in IVR flow"
+                  label="Number of options after Welcome Node"
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);

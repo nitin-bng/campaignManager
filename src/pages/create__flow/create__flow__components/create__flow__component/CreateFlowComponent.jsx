@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Languages } from "../../../../helpers/All__mapping";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -27,6 +27,13 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
+const languageNames = {
+  _E: "English",
+  _H: "Hindi",
+  _A: "Arabic",
+  _S: "Spanish",
+};
 
 const CreateFlowComponent = (props) => {
   const { showError, errorDispatch } = useError();
@@ -199,6 +206,8 @@ const CreateFlowComponent = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
+  console.log('default language', languageNames[localStore.ivrCampFlowData.flow.defaultLanguage])
+
   return (
     <>
       <div className="create__flow__component">
@@ -335,12 +344,13 @@ const CreateFlowComponent = (props) => {
             {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
               <>
                 <div style={{ display: "flex", flexDirection: "column", width: "40%" }}>
-                  <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}} >
+                  <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}}>
                     Select Your Default Language
                   </FormLabel>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
                       name="radio-buttons-group"
+                      value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
                     >
                   <div style={{ display: "flex" }}>
                       {ifIVRselectedThenLanguage.map((ele) => {
@@ -350,6 +360,7 @@ const CreateFlowComponent = (props) => {
                               value={ele}
                               control={<Radio />}
                               label={ele}
+                              disabled={props.disableEditingWhileCreatingCamp}
                               onChange={()=>{
                                 console.log("ele Languages", ele, languages);
                                 {

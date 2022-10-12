@@ -534,6 +534,9 @@ const SubDTMF = (props) => {
       if(keyToChange === 'ussd_key'){
         return localStoreC.input.ussd_key
       }
+      if(keyToChange === 'sms_key'){
+        return localStoreC.input.sms_key
+      }
       if(keyToChange === 'ussd_msg'){
         return localStoreC.audio_file[languageCode]
       }
@@ -1115,7 +1118,7 @@ const SubDTMF = (props) => {
                         traverseAndModify(
                           props.current.id,
                           props.current,
-                          channel === 'USSD' ? 'ussd_key' :   'sms_key',
+                          channel === 'USSD' ? 'ussd_key' : 'sms_key',
                           e.target.value,
                           "edit"
                         );
@@ -1208,7 +1211,7 @@ const SubDTMF = (props) => {
                   >
                     {localStore.ivrCampFlowData.flow.languageChange.map(
                       (lang) => (
-                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} />
+                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} channel={channel} />
                       )
                     )}
                   </div>

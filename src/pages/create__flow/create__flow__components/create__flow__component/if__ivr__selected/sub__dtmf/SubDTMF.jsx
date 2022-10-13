@@ -824,10 +824,11 @@ const SubDTMF = (props) => {
             style={{
               backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
               width: props.width,
+              position:"relative"
             }}
           >
             <CardActions disableSpacing>
-              <Typography paragraph>SUB OPTION</Typography>
+              <Typography paragraph>SUB OPTION </Typography>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -843,6 +844,38 @@ const SubDTMF = (props) => {
               </ExpandMore>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position:"absolute",
+                    top:"10px",
+                    zIndex:"1"
+                  }}
+                >
+                  <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
+                    DTMF To Choose this option :{" "}
+                  </Typography>
+                  <button
+                    style={{
+                      height: "25px",
+                      width: "25px",
+                      backgroundColor: "rgb(214,214,214)",
+                      padding: "0",
+                      borderTop: "none",
+                      borderLeft: "none",
+                      boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
+                      color: "black",
+                      marginTop: ".5rem",
+                    }}
+                    disabled
+                  >
+                    {props.current.dtmf_key}
+                  </button>
+                </div>
               <CardContent>
                 <div className="main__dtmf__maincontent__container">
                   <div className="subdtmf__select__option__container">
@@ -1002,6 +1035,8 @@ const SubDTMF = (props) => {
               <div className="rendering__sub__subdtmf__container">
                 {props.current.actions &&
                   props.current.actions.map((e, index) => {
+                    console.log("kya hai", e);
+
                     return (
                       <div style={{}}>
                         <SubDTMF
@@ -1218,6 +1253,8 @@ const SubDTMF = (props) => {
             <div className="rendering__sub__subdtmf__container">
               {props.current.actions &&
                 props.current.actions.map((e, index) => {
+                  console.log("kya hai", e);
+
                   return (
                     <div style={{}}>
                       <SubDTMF

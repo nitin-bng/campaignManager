@@ -466,14 +466,13 @@ const MainDTMF = (props) => {
         props.data - 1
       ].actionType.ussd = "HITURL_USSD";
       dispatch({ type: "SET_DATA", nState: globalState.state });
-    }
-    else if (channel === 'SMS'){
+    } else if (channel === "SMS") {
       globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
         "HITURL_SMS";
       globalState.state.ivrCampFlowData.flow.actions[
         props.data - 1
-    ].actionType.sms = "HITURL_SMS";
-    dispatch({ type: "SET_DATA", nState: globalState.state });
+      ].actionType.sms = "HITURL_SMS";
+      dispatch({ type: "SET_DATA", nState: globalState.state });
     }
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
@@ -519,20 +518,21 @@ const MainDTMF = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
-    const handleUSSD = (msg, languageCode) =>{
-      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
-          if(item.dtmf_key === props.global.dtmf_key){
-            item.audio_file[languageCode] = msg
-            item.file.sms[languageCode] = msg
-            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
-            item.file.ussd[languageCode] = msg
-            item.file['sms'] = item.file['sms'] ? item.file['sms'] : {} 
-            item.file.sms[languageCode] = msg
-          }
-        return item
-      })
-      dispatch({ type: "SET_DATA", nState: localStore });
-    }
+  const handleUSSD = (msg, languageCode) => {
+    localStore.ivrCampFlowData.flow.actions =
+      localStore.ivrCampFlowData.flow.actions.map((item) => {
+        if (item.dtmf_key === props.global.dtmf_key) {
+          item.audio_file[languageCode] = msg;
+          item.file.sms[languageCode] = msg;
+          item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
+          item.file.ussd[languageCode] = msg;
+          item.file["sms"] = item.file["sms"] ? item.file["sms"] : {};
+          item.file.sms[languageCode] = msg;
+        }
+        return item;
+      });
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
 
   return (
     <>
@@ -543,6 +543,7 @@ const MainDTMF = (props) => {
               style={{
                 backgroundColor: "rgba(0, 0, 0, 0.04)",
                 padding: "1rem",
+                position:"relative"
               }}
               fullWidth
             >
@@ -553,12 +554,44 @@ const MainDTMF = (props) => {
                   onClick={handleExpandClick}
                   aria-expanded={expanded}
                   aria-label="show more"
-                  style={{ display: "flex", justifyContent: "flex-end" }}
+                  style={{ display: "flex", justifyContent: "flex-end", zIndex:"1000" }}
                 >
                   <ExpandMoreIcon />
                 </ExpandMore>
               </CardActions>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position:"absolute",
+                    top:"10px",
+                    zIndex:"1"
+                  }}
+                >
+                  <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
+                    DTMF To Choose this option :{" "}
+                  </Typography>
+                  <button
+                    style={{
+                      height: "25px",
+                      width: "25px",
+                      backgroundColor: "rgb(214,214,214)",
+                      padding: "0",
+                      borderTop: "none",
+                      borderLeft: "none",
+                      boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
+                      color: "black",
+                      marginTop: ".5rem",
+                    }}
+                    disabled
+                  >
+                    {props.dtmfNumber}
+                  </button>
+                </div>
                 <CardContent>
                   <div className="main__dtmf__maincontent__container">
                     <div className="dtmf__select__option__container">
@@ -744,6 +777,7 @@ const MainDTMF = (props) => {
                 </CardContent>
                 <div className="rendering__subdtmf__container">
                   {props.global.actions.map((e, index) => {
+                    console.log("kya hai", e);
                     return (
                       <SubDTMF
                         data={props}
@@ -790,6 +824,7 @@ const MainDTMF = (props) => {
                   <ExpandMoreIcon />
                 </ExpandMore>
               </CardActions>
+
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                   <div className="main__dtmf__maincontent__container">
@@ -816,11 +851,18 @@ const MainDTMF = (props) => {
                           disabled={props.disableEditingWhileCreatingCamp}
                           name="type"
                         >
-                          { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
-                            return <MenuItem value={number}>{number}</MenuItem>;
-                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
-                            return <MenuItem value={number}>{number}</MenuItem>;
-                          })}
+                          {channel === "USSD"
+                            ? ["HITURL_USSD"].map((number, index) => {
+                                return (
+                                  <MenuItem value={number}>{number}</MenuItem>
+                                );
+                              })
+                            : channel === "SMS" &&
+                              ["HITURL_SMS"].map((number, index) => {
+                                return (
+                                  <MenuItem value={number}>{number}</MenuItem>
+                                );
+                              })}
                         </Select>
                       </FormControl>
                     </div>
@@ -844,7 +886,11 @@ const MainDTMF = (props) => {
                           value={
                             globalState.state.ivrCampFlowData.flow.actions[
                               props.global.dtmf_key - 1
-                            ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key']
+                            ].input[
+                              channel === "USSD"
+                                ? "ussd_key"
+                                : channel === "SMS" && "sms_key"
+                            ]
                           }
                           onChange={(e) => {
                             setIsFilled(() => e.target.value !== "");
@@ -852,7 +898,7 @@ const MainDTMF = (props) => {
                               "sub",
                               e.target,
                               props.global.dtmf_key,
-                              channel === 'SMS' ? true : false
+                              channel === "SMS" ? true : false
                             );
                           }}
                           onWheel={(e) => e.target.blur()}
@@ -862,7 +908,11 @@ const MainDTMF = (props) => {
                             showError
                               ? globalState.state.ivrCampFlowData.flow.actions[
                                   props.global.dtmf_key - 1
-                                ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key']
+                                ].input[
+                                  channel === "USSD"
+                                    ? "ussd_key"
+                                    : channel === "SMS" && "sms_key"
+                                ]
                                 ? false
                                 : true
                               : false
@@ -941,67 +991,74 @@ const MainDTMF = (props) => {
                           hellohello
                         );
                       })}
-    <div
-      className="ghghg"
-      style={{
-        margin: "10px 0",
-        display: "flex",
-        justifyContent: "space-evenly",
-      }}
-    >
-      {languageName.map((el) => {
-        return (
-          <Typography style={{ fontSize: "12px" }}>
-            Message in {el}
-          </Typography>
-        );
-      })}
-    </div>
-    <div
-      className="ghghgh"
-      style={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        width: "100%",
-      }}
-    >
-      {localStore.ivrCampFlowData.flow.languageChange.map(
-        (lang) => (
-          <MessageUploadForMainDTMF lang={lang} handleUSSD={handleUSSD} localStore={localStore} global={props.global} hideItemStyle={props.hideItemStyle} channel={channel} />
-        )
+                      <div
+                        className="ghghg"
+                        style={{
+                          margin: "10px 0",
+                          display: "flex",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        {languageName.map((el) => {
+                          return (
+                            <Typography style={{ fontSize: "12px" }}>
+                              Message in {el}
+                            </Typography>
+                          );
+                        })}
+                      </div>
+                      <div
+                        className="ghghgh"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-evenly",
+                          width: "100%",
+                        }}
+                      >
+                        {localStore.ivrCampFlowData.flow.languageChange.map(
+                          (lang) => (
+                            <MessageUploadForMainDTMF
+                              lang={lang}
+                              handleUSSD={handleUSSD}
+                              localStore={localStore}
+                              global={props.global}
+                              hideItemStyle={props.hideItemStyle}
+                              channel={channel}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <div className="rendering__subdtmf__container">
+                  {props.global.actions.map((e, index) => {
+                    console.log("kya hai", e);
+                    return (
+                      <SubDTMF
+                        data={props}
+                        current={e}
+                        isBgColor={true}
+                        handleDataChange={props.handleDataChange}
+                        uploadFiles={props.uploadFiles}
+                        setWaitTime={props.setWaitTime}
+                        setDataDynamic={props.setDataDynamic}
+                        parentNumber={props.dtmfNumber}
+                        numberOfSubDTMF={e}
+                        dataHandleWithObj={props.dataHandleWithObj}
+                        hideItemStyle={props.hideItemStyle}
+                        disableEditingWhileCreatingCamp={
+                          props.disableEditingWhileCreatingCamp
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              </Collapse>
+            </Card>
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-              </div>
-            </CardContent>
-            <div className="rendering__subdtmf__container">
-              {props.global.actions.map((e, index) => {
-                // e.actions = []
-                return (
-                  <SubDTMF
-                    data={props}
-                    current={e}
-                    isBgColor={true}
-                    handleDataChange={props.handleDataChange}
-                    uploadFiles={props.uploadFiles}
-                    setWaitTime={props.setWaitTime}
-                    setDataDynamic={props.setDataDynamic}
-                    parentNumber={props.dtmfNumber}
-                    numberOfSubDTMF={e}
-                    dataHandleWithObj={props.dataHandleWithObj}
-                    hideItemStyle={props.hideItemStyle}
-                    disableEditingWhileCreatingCamp={
-                      props.disableEditingWhileCreatingCamp
-                    }
-                  />
-                );
-              })}
-            </div>
-          </Collapse>
-        </Card>
-      </div>
-    </div>
-      )} 
     </>
   );
 };

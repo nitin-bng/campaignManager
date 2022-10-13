@@ -377,7 +377,7 @@ const CreateFlow = () => {
         console.log("flowDataFromApi", flowDataFromApi);
         flowFromApi(data.flow);
         setOpenModal(true);
-        setBargein(data.actionType.ivr === 'PLAY_BARGEIN')
+        setBargein(data.flow.actionType.ivr === 'PLAY_BARGEIN')
         setChannel(flowDataFromApi.channel);
         localStore.ivrCampFlowData.flow.channel = flowDataFromApi.channel;
         localStorage.setItem("channelName", flowDataFromApi.channel);

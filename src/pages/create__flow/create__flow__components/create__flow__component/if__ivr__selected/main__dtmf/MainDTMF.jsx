@@ -572,6 +572,8 @@ const MainDTMF = (props) => {
                           value={
                             globalState.state.ivrCampFlowData.flow.actions[
                               props.data - 1
+                            ].type  === 'PLAY_BARGEIN' ? 'PLAY': globalState.state.ivrCampFlowData.flow.actions[
+                              props.data - 1
                             ].type
                           }
                           label="Actions"

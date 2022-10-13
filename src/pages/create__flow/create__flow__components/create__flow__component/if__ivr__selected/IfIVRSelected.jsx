@@ -829,7 +829,50 @@ const IfIVRSelected = (props) => {
           ? " & Language Selection "
           : "" + " Node"}
       </Divider>
-      {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
+     
+      <div className="if__ivr__selected">
+        <div className="if__ivr__selected__container">
+          <div
+            style={{ boxShadow: "2px 2px 3px grey" }}
+            className={props.hideItemStyle}
+          >
+            {localStore.ivrCampFlowData.flow.language.map((hello) => {
+              console.log(
+                "localStore.ivrCampFlowData.flow.language ===>",
+                hello
+              );
+              hellohello.push(hello.actions);
+              hello.actions.forEach((el) => {
+                console.log("action element ===>", el.languageName);
+                languageName.push(el.languageName);
+              });
+              console.log(
+                "localStore.ivrCampFlowData.flow.language hello ===>",
+                hellohello
+              );
+            })}
+            <div className="ghghg" style={{ margin: "10px 0" }}>
+              {languageName.map((el) => {
+                return (
+                  <Typography style={{ fontSize: "12px" }}>
+                    Welcome prompt file in {el}
+                  </Typography>
+                );
+              })}
+            </div>
+            <div className="ghghgh" style={{}}>
+              {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+                <FileUploaderForIVRSelected
+                  lang={lang}
+                  GetMainAudioFiles={GetMainAudioFiles}
+                  localStore={localStore}
+                  uploadFiles={uploadFiles}
+                  hideItemStyle={props.hideItemStyle}
+                />
+              ))}
+            </div>
+          </div>
+          {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
         <>
           <div
             style={{
@@ -879,49 +922,6 @@ const IfIVRSelected = (props) => {
           </div>
         </>
       ) : null}
-      <div className="if__ivr__selected">
-        <div className="if__ivr__selected__container">
-          <div
-            style={{ boxShadow: "2px 2px 3px grey" }}
-            className={props.hideItemStyle}
-          >
-            {localStore.ivrCampFlowData.flow.language.map((hello) => {
-              console.log(
-                "localStore.ivrCampFlowData.flow.language ===>",
-                hello
-              );
-              hellohello.push(hello.actions);
-              hello.actions.forEach((el) => {
-                console.log("action element ===>", el.languageName);
-                languageName.push(el.languageName);
-              });
-              console.log(
-                "localStore.ivrCampFlowData.flow.language hello ===>",
-                hellohello
-              );
-            })}
-            <div className="ghghg" style={{ margin: "10px 0" }}>
-              {languageName.map((el) => {
-                return (
-                  <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt trrthk file for {el}
-                  </Typography>
-                );
-              })}
-            </div>
-            <div className="ghghgh" style={{}}>
-              {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-                <FileUploaderForIVRSelected
-                  lang={lang}
-                  GetMainAudioFiles={GetMainAudioFiles}
-                  localStore={localStore}
-                  uploadFiles={uploadFiles}
-                  hideItemStyle={props.hideItemStyle}
-                />
-              ))}
-            </div>
-          </div>
-
           <div className="main__wait__time__and__dtmf__container">
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>

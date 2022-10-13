@@ -385,10 +385,10 @@ const CreateFlowComponent = (props) => {
           </div>
 
       {channel === "IVR" && <> 
-      <div className="main__wait__time__container">
+      <div className="main__wait__time__container" style={{ width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
               <Box
                 component="form"
-                style={{ width: "80%" }}
+                style={{ width: "40%" }}
                 noValidate
                 autoComplete="off"
               >
@@ -419,11 +419,9 @@ const CreateFlowComponent = (props) => {
                   }
                 />
               </Box>
-      </div>
-      <div className="main__wait__time__container">
               <Box
                 component="form"
-                style={{ width: "80%" }}
+                style={{ width: "40%" }}
                 noValidate
                 autoComplete="off"
               >
@@ -455,8 +453,9 @@ const CreateFlowComponent = (props) => {
                 />
               </Box>
       </div>
-      <div className="create__flow__component__select__channel__dropdown__container">
-                <FormControl fullWidth>
+
+      <div className="create__flow__component__select__channel__dropdown__container" style={{ width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
+                <FormControl style={{width:"40%"}}>
                   <InputLabel
                     id="demo-simple-select-label"
                   >

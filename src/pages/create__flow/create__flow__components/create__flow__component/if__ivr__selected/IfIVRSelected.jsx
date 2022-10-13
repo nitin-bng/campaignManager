@@ -839,7 +839,7 @@ const IfIVRSelected = (props) => {
                   <TextField
                     id="create__flow__component__flow__name"
                     value={ele.input.ivr_key}
-                    label={"input key for " + ele.languageName}
+                    label={"DTMF to choose " + ele.languageName}
                     variant="outlined"
                     disabled
                   />

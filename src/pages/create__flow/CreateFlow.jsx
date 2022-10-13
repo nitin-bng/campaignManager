@@ -479,7 +479,7 @@ const CreateFlow = () => {
                                   className="basic__flow__details__heading__container"
                                   style={{ padding: "1rem 0" }}
                                 >
-                                  <h1>List of created Flows</h1>
+                                  <h1>List Of Created Flows</h1>
                                 </div>
                                 <div className="table-responsive table-striped ctable">
                                   <TableContainer component={Paper}>
@@ -506,10 +506,10 @@ const CreateFlow = () => {
                                             Channel Supported
                                           </TableCell>
                                           <TableCell align="center">
-                                            Language supported
+                                            Language Supported
                                           </TableCell>
                                           <TableCell align="center">
-                                            Preview flow
+                                            Preview Flow
                                           </TableCell>
                                         </TableRow>
                                       </TableHead>

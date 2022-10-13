@@ -435,7 +435,7 @@ const CreateFlowComponent = (props) => {
                   label="Flow Repeat Count"
                   type="number"
                   name={"repeatCount_" + global.dtmf_key}
-                  value={globalState.state.ivrCampFlowData.flow.repeatCount}
+                  value={globalState.state.ivrCampFlowData.flow.repeatCount ? globalState.state.ivrCampFlowData.flow.repeatCount : null}
                   onChange={(e) => setWaitTime("repeatCount", e.target, null)}
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
@@ -459,7 +459,7 @@ const CreateFlowComponent = (props) => {
                   <InputLabel
                     id="demo-simple-select-label"
                   >
-                    Play bargein
+                    Play Bargein
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -479,7 +479,7 @@ const CreateFlowComponent = (props) => {
             <div className="call__flow__details" style={{ marginTop: "1rem" }}>
               {channel && (
                 <div className="call__flow__details__heading__container">
-                  <h1>Basic Flow Creation</h1>
+                  <h1>Flow Templete Creation</h1>
                 </div>
               )}
 

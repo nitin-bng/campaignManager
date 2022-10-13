@@ -534,10 +534,6 @@ const MainDTMF = (props) => {
       dispatch({ type: "SET_DATA", nState: localStore });
     }
 
-    console.log('nitin main', globalState.state.ivrCampFlowData.flow.actions[
-      props.global.dtmf_key - 1
-    ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key'])
-
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -899,9 +895,7 @@ const MainDTMF = (props) => {
                           name="sub_audio_dtmfs_dtmfCount"
                           onChange={(e) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
-                            console.log('nitin before removal', localStore.ivrCampFlowData.flow)
                             removeExtraSubDTMFs();
-                            console.log('nitin after removal', localStore.ivrCampFlowData.flow)
                           }}
                           disabled={props.disableEditingWhileCreatingCamp}
                           required

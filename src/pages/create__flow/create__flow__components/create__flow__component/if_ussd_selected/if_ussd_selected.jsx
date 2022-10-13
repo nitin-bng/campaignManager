@@ -206,7 +206,6 @@ const IfUssdSelected = ({
           localStore.ivrCampFlowData.flow.actions[current.dtmf_key - 1]
             .dtmf_count;
         const newNumOfCards = e.target.value;
-        console.log('nitin value setDataDynamic', newNumOfCards === 0 ? "LEAF" : "PROCESSING")
         localStore.ivrCampFlowData.flow.actions[
           current.dtmf_key - 1
         ].dtmf_count = e.target.value;
@@ -569,7 +568,6 @@ const IfUssdSelected = ({
     }
   };
 
-  console.log('nitin thank you', localStore.ivrCampFlowData.flow.actions)
   const handleThankYouMsg = (msg, languageCode) => {
     localStore.ivrCampFlowData.flow.actions =
       localStore.ivrCampFlowData.flow.actions.map((item) => {
@@ -714,7 +712,7 @@ const IfUssdSelected = ({
           );
         })}
       </div>
-      <div
+      {/* <div
         style={{ width: "30%", display: "flex", margin:"auto" }}
         className={hideItemStyle}
       >
@@ -758,7 +756,7 @@ const IfUssdSelected = ({
               style={{ width: "10%", marginTop: "1rem" }}
             />
           </div>
-        ))}
+        ))} */}
     </>
   );
 };

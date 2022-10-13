@@ -41,6 +41,11 @@ const RenderingComponentOnLanguageSelect = (props) => {
             i
           ].input.ussd_key = e.target.value;
         }
+         else if (type === "SMS") {
+          localStore.ivrCampFlowData.flow.language[0].actions[
+            i
+          ].input.sms_key = e.target.value;
+        }
       }
 
       dispatch({ type: "SET_DATA", nState: localStore });
@@ -98,7 +103,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
   useEffect(() => {
     if(props.hideItemStyle !== undefined){
     if (
-      (localStore.ivrCampFlowData.flow.channel === "IVR" && waitTime) ||
+      localStore.ivrCampFlowData.flow.channel === "IVR"  ||
       (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
     ) {
       errorDispatch({
@@ -110,18 +115,16 @@ const RenderingComponentOnLanguageSelect = (props) => {
       errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
     }
   }
+  else if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
+    if(!isError){
+    errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
+  }
+  else{
+      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
+    }
+  }
   }, [isError]);
 
-  useEffect(()=>{
-    if(localStore.ivrCampFlowData.flow.channel === 'USSD' && props.hideItemStyle === undefined ){
-      if(!isError){
-      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
-    }
-    else{
-        errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
-      }
-    }
-  }, [isError])
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -415,7 +418,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
           {console.log("component called")}
           <div className="rendering__component__on__language__select">
             <div className="rendering__component__on__language__select__container">
-              <div className="language__specific__wait__time__container">
+              {/* <div className="language__specific__wait__time__container">
                 <Box
                   component="form"
                   style={{ width: "100%" }}
@@ -444,7 +447,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     }
                   />
                 </Box>
-              </div>
+              </div> */}
               <div style={{}} className={props.hideItemStyle} hideItem>
                 <input
                   accept="audio/wav"
@@ -511,7 +514,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
           </div>
         </>
       ) : (
-        localStore.ivrCampFlowData.flow.channel === "USSD" && (
+        (localStore.ivrCampFlowData.flow.channel === "USSD" || localStore.ivrCampFlowData.flow.channel === "SMS") && (
           <>
             <div className="rendering__component__on__language__select">
               <div className="rendering__component__on__language__select__container">
@@ -542,7 +545,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 </div>
                 <div style={{marginTop:"1rem"}} className={props.hideItemStyle} hideItem>
                 <TextField
-                    label={`Message Response for ${ussdKey}`}
+                    label={`Message response for ${ussdKey}`}
                     multiline
                     rows={2}
                     variant="outlined"

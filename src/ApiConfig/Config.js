@@ -1,7 +1,7 @@
 const config = {
     server: {
-        path: 'http://41.217.203.246',
-        // path: 'http://34.214.61.86',
+        // path: 'http://41.217.203.246',
+        path: 'http://34.214.61.86',
         _port1: ":5001",
         get port1() {
             return this._port1

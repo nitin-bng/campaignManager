@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Languages } from "../../../../helpers/All__mapping";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -28,6 +28,13 @@ import FormLabel from "@mui/material/FormLabel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
+const languageNames = {
+  _E: "English",
+  _H: "Hindi",
+  _A: "Arabic",
+  _S: "Spanish",
+};
+
 const CreateFlowComponent = (props) => {
   const { showError, errorDispatch } = useError();
 
@@ -51,6 +58,7 @@ const CreateFlowComponent = (props) => {
   const { dispatch } = globalState;
   let localStore = globalState.state;
   const languages = globalState.state.languages;
+  const {bargein, setBargein} = props
 
   const handleChange = (event) => {
     setChannel(event.target.value);
@@ -187,6 +195,19 @@ const CreateFlowComponent = (props) => {
     console.log(localStore);
   };
 
+  const setWaitTime = (level, target, dtmf_key) => {
+    const val = target.value >= 0 ? target.value : 0;
+    let localStore = globalState.state;
+    if (level === "main") localStore.ivrCampFlowData.flow.waitTime = val;
+    if (level === "repeatCount") localStore.ivrCampFlowData.flow.repeatCount = val;
+    else if (level === "sub")
+      localStore.ivrCampFlowData.flow.actions[dtmf_key - 1].waitTime = val;
+    console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
+
+  console.log('default language', languageNames[localStore.ivrCampFlowData.flow.defaultLanguage])
+
   return (
     <>
       <div className="create__flow__component">
@@ -210,7 +231,7 @@ const CreateFlowComponent = (props) => {
                         ? localStore.ivrCampFlowData.flow.flowName
                         : ""
                     }
-                    label="Flow name"
+                    label="Flow Name"
                     variant="outlined"
                     onChange={handelFlowNameChange}
                     disabled={props.disableEditingWhileCreatingCamp}
@@ -238,7 +259,7 @@ const CreateFlowComponent = (props) => {
                         : false
                     }
                   >
-                    Flow channel
+                    Flow Channel
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -258,12 +279,13 @@ const CreateFlowComponent = (props) => {
                   >
                     <MenuItem value={"IVR"}>IVR</MenuItem>
                     <MenuItem value={"USSD"}>USSD</MenuItem>
+                    <MenuItem value={"SMS"}>SMS</MenuItem>
                   </Select>
                 </FormControl>
               </div>
             </div>
           </div>
-          <div className="call__flow__details__languages__dropdown__container" style={{display:"flex", justifyContent:'space-evenly', alignItems:'center' }} >
+     <div className="call__flow__details__languages__dropdown__container" style={{display:"flex", justifyContent:'space-evenly', alignItems:'center' }} >
             <FormControl style={{ width: "40%" }}>
               <InputLabel
                 style={{
@@ -287,11 +309,12 @@ const CreateFlowComponent = (props) => {
                 id="demo-multiple-checkbox"
                 multiple
                 value={
-                  localStore.ivrCampFlowData.flow.language[0].actions
-                    ? localStore.ivrCampFlowData.flow.language[0].actions.map(
-                        (item) => item.languageName
-                      )
-                    : ifIVRselectedThenLanguage
+                  // localStore.ivrCampFlowData.flow.language[0].actions
+                  //   ? localStore.ivrCampFlowData.flow.language[0].actions.map(
+                  //       (item) => item.languageName
+                  //     )
+                  //   : 
+                    ifIVRselectedThenLanguage
                 }
                 onChange={handleLanguageChange}
                 input={<OutlinedInput label="Select language" />}
@@ -322,12 +345,13 @@ const CreateFlowComponent = (props) => {
             {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
               <>
                 <div style={{ display: "flex", flexDirection: "column", width: "40%" }}>
-                  <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}} >
+                  <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}}>
                     Select Your Default Language
                   </FormLabel>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
                       name="radio-buttons-group"
+                      // value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
                     >
                   <div style={{ display: "flex" }}>
                       {ifIVRselectedThenLanguage.map((ele) => {
@@ -337,19 +361,15 @@ const CreateFlowComponent = (props) => {
                               value={ele}
                               control={<Radio />}
                               label={ele}
-                              onChange={()=>{
-                                console.log("ele Languages", ele, languages);
-                                {
-                                  languages.map((element)=>{
+                              disabled={props.disableEditingWhileCreatingCamp}
+                              onChange={()=>{            
+                                console.log('nitin language', localStore.languages)
+                                localStore.languages.forEach((element)=>{
                                     if(ele === element.lang){
-                                      console.log("found found",element);
                                       localStore.ivrCampFlowData.flow.defaultLanguage = element.code
-                                      console.log("localStore.ivrCampFlowData.flow...",localStore.ivrCampFlowData.flow);
-                                    }else{
-                                      console.log("nothing found");
                                     }
                                   })
-                                }
+                                  dispatch({ type: "SET_DATA", nState: localStore });
                               }}
                             />
                           </>
@@ -363,6 +383,99 @@ const CreateFlowComponent = (props) => {
               ""
             )}
           </div>
+
+      {channel === "IVR" && <> 
+      <div className="main__wait__time__container">
+              <Box
+                component="form"
+                style={{ width: "80%" }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id={"waitTime_" + global.dtmf_key}
+                  disabled={
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    props.disableEditingWhileCreatingCamp
+                  }
+                  label="Flow Wait Time"
+                  type="number"
+                  name={"waitTime_" + global.dtmf_key}
+                  value={globalState.state.ivrCampFlowData.flow.waitTime}
+                  onChange={(e) => setWaitTime("main", e.target, null)}
+                  onWheel={(e) => e.target.blur()}
+                  variant="outlined"
+                  required
+                  error={
+                    showError
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow.waitTime,
+                          10
+                        ) >= 0
+                        ? false
+                        : true
+                      : false
+                  }
+                />
+              </Box>
+      </div>
+      <div className="main__wait__time__container">
+              <Box
+                component="form"
+                style={{ width: "80%" }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id={"repeatCount_" + global.dtmf_key}
+                  disabled={
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    globalState.state.ivrCampFlowData.flow.channel == "SMS" ||
+                    props.disableEditingWhileCreatingCamp
+                  }
+                  label="Flow Repeat Count"
+                  type="number"
+                  name={"repeatCount_" + global.dtmf_key}
+                  value={globalState.state.ivrCampFlowData.flow.repeatCount}
+                  onChange={(e) => setWaitTime("repeatCount", e.target, null)}
+                  onWheel={(e) => e.target.blur()}
+                  variant="outlined"
+                  required
+                  error={
+                    showError
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow.repeatCount,
+                          10
+                        ) >= 0
+                        ? false
+                        : true
+                      : false
+                  }
+                />
+              </Box>
+      </div>
+      <div className="create__flow__component__select__channel__dropdown__container">
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                  >
+                    Play bargein
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={bargein}
+                    label="Play Bargein"
+                    onChange={(e) => setBargein(e.target.value)}
+                    disabled={props.disableEditingWhileCreatingCamp}
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </Select>
+                </FormControl>
+      </div>
+      </>}
           <div className="call__flow__details__container">
             <div className="call__flow__details" style={{ marginTop: "1rem" }}>
               {channel && (
@@ -382,22 +495,18 @@ const CreateFlowComponent = (props) => {
               ) : (
                 ""
               )}
-              {channel === "SMS" ? (
+              {/* {channel === "SMS" ? (
                 <IfSMSSelected hideItemStyle={props.hideItemStyle} />
               ) : (
                 ""
-              )}
-              {channel === "USSD" ? (
-                <IfUssdSelected
-                  disableEditingWhileCreatingCamp={
-                    props.disableEditingWhileCreatingCamp
-                  }
-                  hideItemStyle={props.hideItemStyle}
-                  languageComponentProps={props}
-                />
-              ) : (
-                <></>
-              )}
+              )} */}
+              {(channel === "USSD" || channel === 'SMS') ? (
+                <IfUssdSelected disableEditingWhileCreatingCamp={
+                  props.disableEditingWhileCreatingCamp
+                } hideItemStyle={props.hideItemStyle} 
+                  languageComponentProps = {props}
+                  />
+              ): <></>}
             </div>
           </div>
         </div>

@@ -17,6 +17,7 @@ import ReactAudioPlayer from "react-audio-player";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 import { LanguageComponent } from "../../../../../components/languageComponent";
+import { Divider } from "@mui/material";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -826,9 +827,11 @@ const IfIVRSelected = (props) => {
   var languageName = [];
   return (
     <>
+      <Divider style={{ marginTop: "1rem" }}>
+        Welcome Node
+      </Divider>
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
-          <hr className="hr" />
           <div
             style={{ boxShadow: "2px 2px 3px grey" }}
             className={props.hideItemStyle}
@@ -871,41 +874,6 @@ const IfIVRSelected = (props) => {
           </div>
 
           <div className="main__wait__time__and__dtmf__container">
-            <div className="main__wait__time__container">
-              <Box
-                component="form"
-                style={{ width: "80%" }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id={"waitTime_" + global.dtmf_key}
-                  disabled={
-                    disableChannel == "SMS" ||
-                    disableChannel == "SMS" ||
-                    props.disableEditingWhileCreatingCamp
-                  }
-                  label="Welcome fggjhj Wait Time"
-                  type="number"
-                  name={"waitTime_" + global.dtmf_key}
-                  value={globalState.state.ivrCampFlowData.flow.waitTime}
-                  onChange={(e) => setWaitTime("main", e.target, null)}
-                  onWheel={(e) => e.target.blur()}
-                  variant="outlined"
-                  required
-                  error={
-                    showError
-                      ? parseInt(
-                          globalState.state.ivrCampFlowData.flow.waitTime,
-                          10
-                        ) >= 0
-                        ? false
-                        : true
-                      : false
-                  }
-                />
-              </Box>
-            </div>
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
                 <InputLabel
@@ -921,7 +889,7 @@ const IfIVRSelected = (props) => {
                   }
                 >
                 
-                  Number of options in IVR flow
+                  Number of options after Welcome Node
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -930,7 +898,7 @@ const IfIVRSelected = (props) => {
                     globalState.state.ivrCampFlowData.flow
                       .main_audio_dtmfCount
                   }
-                  label="Number of options in IVR flow"
+                  label="Number of options after Welcome Node"
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);

@@ -2,7 +2,7 @@ import { TextField } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useError } from "../../store/errorContext"
 
-const MessageUploadForSubDTMF = ({traverseAndModify, localStore, current, lang, hideItemStyle}) =>{
+const MessageUploadForSubDTMF = ({traverseAndModify, localStore, current, lang, hideItemStyle, channel}) =>{
 
     const {showError, errorDispatch} = useError()
     const [isError, setIsError] = useState(true)
@@ -20,10 +20,10 @@ const MessageUploadForSubDTMF = ({traverseAndModify, localStore, current, lang, 
 
     return    <TextField
     id="outlined-multiline-static"
-    label={`Message Response for ${traverseAndModify(
+    label={`Message response for ${traverseAndModify(
       current.id,
       current,
-      "ussd_msg",
+      channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key',
       null,
       "read",
       lang

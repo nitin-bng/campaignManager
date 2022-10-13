@@ -2,7 +2,7 @@ import { TextField } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useError } from "../../store/errorContext"
 
-const MessageUploadForMainDTMF = ({handleUSSD, localStore, lang, global, hideItemStyle}) =>{
+const MessageUploadForMainDTMF = ({handleUSSD, localStore, lang, global, hideItemStyle, channel}) =>{
     const {showError, errorDispatch} = useError()
     const [isError, setIsError] = useState(true)
     
@@ -19,9 +19,9 @@ const MessageUploadForMainDTMF = ({handleUSSD, localStore, lang, global, hideIte
 
     return            <TextField
     id="outlined-multiline-static"
-    label={` Message Response for ${localStore.ivrCampFlowData.flow.actions[
+    label={` Message response for ${localStore.ivrCampFlowData.flow.actions[
       global.dtmf_key - 1
-    ].input['ussd_key']} input key`}
+    ].input[channel === 'USSD' ? "ussd_key": channel === 'SMS' && 'sms_key']} input key`}
     multiline
     rows={2}
     variant="outlined"

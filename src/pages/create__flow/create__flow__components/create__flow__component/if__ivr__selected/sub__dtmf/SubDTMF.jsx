@@ -534,6 +534,9 @@ const SubDTMF = (props) => {
       if(keyToChange === 'ussd_key'){
         return localStoreC.input.ussd_key
       }
+      if(keyToChange === 'sms_key'){
+        return localStoreC.input.sms_key
+      }
       if(keyToChange === 'ussd_msg'){
         return localStoreC.audio_file[languageCode]
       }
@@ -557,6 +560,8 @@ const SubDTMF = (props) => {
       localStoreC.repeat.value = value.value == "false" ? true : false;
     } else if (keyToChange == "sms_key" && type == "edit") {
       localStoreC.input.sms_key = value;
+      localStoreC.type = 'HITURL_SMS';
+      localStoreC.actionType['sms'] = 'HITURL_SMS';
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -588,8 +593,10 @@ const SubDTMF = (props) => {
       }
       localStoreC.type = value;
     } else {
+
+      console.log('nitin rannnn')
       if(keyToChange==='ussd_key'){
-        console.log("this shouldn't run")
+        console.log('nitin ussd key type ran')
         localStoreC.input[keyToChange] = value;
         localStoreC.type = 'HITURL_USSD';
         localStoreC.actionType['ussd'] = 'HITURL_USSD';
@@ -873,7 +880,7 @@ const SubDTMF = (props) => {
                       </Select>
                     </FormControl>
                   </div>
-                  <div className="main__subdtmf__wait__time__container">
+                  {/* <div className="main__subdtmf__wait__time__container">
                     <Box
                       component="form"
                       style={{ width: "100%" }}
@@ -922,7 +929,7 @@ const SubDTMF = (props) => {
                         }
                       />
                     </Box>
-                  </div>
+                  </div> */}
                   <div className="select__number__of__subDTMF__from__subdtmf__container">
                     <FormControl style={{ width: "100%" }}>
                       <InputLabel id="demo-simple-select-label" required>
@@ -1025,7 +1032,7 @@ const SubDTMF = (props) => {
           </Card>
         </div>
       </div>
-      :localStore.ivrCampFlowData.flow.channel === 'USSD' && <div className="subDTMF__subdtmf">
+      :(localStore.ivrCampFlowData.flow.channel === 'USSD' ||  localStore.ivrCampFlowData.flow.channel === 'SMS')&& <div className="subDTMF__subdtmf">
       <div className="sudDTMF__subdtmf__container">
         <Card
           style={{
@@ -1060,7 +1067,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={'HITURL_USSD'}
+                      value={ channel === 'USSD' ? 'HITURL_USSD' :  channel === 'SMS' && 'HITURL_SMS'}
                       label="Actions"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
@@ -1078,9 +1085,11 @@ const SubDTMF = (props) => {
                       }}
                       name="type"
                     >
-                      {["HITURL_USSD"].map((number, index) => {
-                        return <MenuItem value={number}>{number}</MenuItem>;
-                      })}
+                     { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
+                          return <MenuItem value={number}>{number}</MenuItem>;
+                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
+                            return <MenuItem value={number}>{number}</MenuItem>;
+                          })}
                     </Select>
                   </FormControl>
                 </div>
@@ -1099,7 +1108,7 @@ const SubDTMF = (props) => {
                       value={traverseAndModify(
                         props.current.id,
                         props.current,
-                        "ussd_key",
+                        channel === 'USSD' ? 'ussd_key' : 'sms_key',
                         null,
                         "read"
                       )}
@@ -1109,7 +1118,7 @@ const SubDTMF = (props) => {
                         traverseAndModify(
                           props.current.id,
                           props.current,
-                          "ussd_key",
+                          channel === 'USSD' ? 'ussd_key' : 'sms_key',
                           e.target.value,
                           "edit"
                         );
@@ -1122,7 +1131,7 @@ const SubDTMF = (props) => {
                           ? traverseAndModify(
                             props.current.id,
                             props.current,
-                            "ussd_key",
+                            channel === 'USSD' ? 'ussd_key' :  channel === 'SMS' && 'sms_key',
                             null,
                             "read"
                           )
@@ -1202,7 +1211,7 @@ const SubDTMF = (props) => {
                   >
                     {localStore.ivrCampFlowData.flow.languageChange.map(
                       (lang) => (
-                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} />
+                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} channel={channel} />
                       )
                     )}
                   </div>

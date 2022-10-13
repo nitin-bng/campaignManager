@@ -58,7 +58,7 @@ const initialState = {
       },
       actionType: {
         ivr: "PLAY",
-        sms: "SCHEDULE_SMS",
+        sms: "HITURL_SMS",
         ussd:"HITURL_USSD"
       },
       waitTime: '',
@@ -68,6 +68,7 @@ const initialState = {
         dtmf: 0,
         audio_file: [],
       },
+      repeatCount: 0
     },
   },
 };
@@ -140,7 +141,7 @@ const StateProvider = ({ children }) => {
               },
               actionType: {
                 ivr: "PLAY",
-                sms: "SCHEDULE_SMS",
+                sms: "HITURL_SMS",
                 ussd:"HITURL_USSD"
               },
               actions: [],
@@ -150,6 +151,7 @@ const StateProvider = ({ children }) => {
                 dtmf: 0,
                 audio_file: [],
               },
+              repeatCount: 0
             },
           },
         };
@@ -224,6 +226,7 @@ const StateProvider = ({ children }) => {
                 dtmf: 0,
                 audio_file: [],
               },
+              repeatCount: 0
             });
           });
         } else {
@@ -259,7 +262,7 @@ const StateProvider = ({ children }) => {
             node_type: "END",
             dtmf_key: '',
             audio_file: {},
-            type: "HITURL_USSD",
+            type: state.ivrCampFlowData.flow.channel || 'HITURL_USSD',
             level: 1,
             waitTime: "",
             dtmf_count: 0,
@@ -272,6 +275,7 @@ const StateProvider = ({ children }) => {
               dtmf: 0,
               audio_file: [],
             },
+            repeatCount: state.ivrCampFlowData.flow.repeatCount || 0
           }]
         }
         else{

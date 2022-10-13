@@ -28,7 +28,7 @@ import classNames from "classnames";
 import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
 import LayoutFlow from "./create__flow__components/previewFlowDragNDrop/DragnDrop";
-import { changeNodeType } from "../../services/changeNodeType";
+import { modifyDataForBackend } from "../../services/modifyDataForBackend";
 
 
 
@@ -69,6 +69,7 @@ const CreateFlow = () => {
   const { errorState, errorDispatch, setShowError } = useError();
   const { setChannel, setIfIVRselectedThenLanguage, ifIVRselectedThenLanguage } = useContext(CommonContext);
   var [tabledata3, setData3] = useState([]);
+  const [bargein, setBargein] = useState(false)
   const { dispatch, campaignName } = globalState;
   let localStore = globalState.state;
   var dataToSend = {};
@@ -218,7 +219,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: {...globalState.state.ivrCampFlowData.flow, actions: changeNodeType(globalState.state.ivrCampFlowData.flow.actions)},
+        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein),
         publisher: null,
         device: null,
         country: null,
@@ -658,6 +659,8 @@ const CreateFlow = () => {
                           <CreateFlowComponent
                             reset={false}
                             hideItemStyle={hideItemStyle}
+                            bargein={bargein}
+                            setBargein={setBargein}
                           />
                         )}
                       </>

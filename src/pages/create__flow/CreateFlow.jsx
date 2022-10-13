@@ -29,6 +29,7 @@ import { useError } from "../../store/errorContext";
 import { useNavigate } from "react-router-dom";
 import LayoutFlow from "./create__flow__components/previewFlowDragNDrop/DragnDrop";
 import { modifyDataForBackend } from "../../services/modifyDataForBackend";
+import { getUserFeatures } from "../../services/getUserFeatures";
 
 
 
@@ -37,6 +38,7 @@ const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
 const CreateFlow = () => {
   const navigate = useNavigate();
   let globalState = useContext(store);
+  let {userFeatures, setUserFeatures} = useContext(store);
   const useStyles = makeStyles((theme) => ({
     wrapper: {
       display: "flex",
@@ -118,6 +120,29 @@ const CreateFlow = () => {
         return error;
       });
   };
+
+  useEffect(()=>{
+    fetch(
+      config.server.path +
+        config.server.port3 +
+        "/" +
+        localStorage.getItem("userType") +
+        "/" +
+        localStorage.getItem('userId'),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((res) => {
+      res.json().then((res) => {
+        setUserFeatures(getUserFeatures(res.features))
+        
+      });
+    });
+
+},[])
 
   const checkMandatoryFields = () => {
     let result = true;
@@ -329,7 +354,7 @@ const CreateFlow = () => {
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log("hello hello hello", globalState);
   };
-  console.log('nitin bargein create flow', bargein)
+
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);

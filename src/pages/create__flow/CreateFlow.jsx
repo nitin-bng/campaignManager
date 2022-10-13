@@ -179,7 +179,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: globalState.state.ivrCampFlowData.flow,
+        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein),
         publisher: null,
         device: null,
         country: null,
@@ -224,7 +224,6 @@ const CreateFlow = () => {
         device: null,
         country: null,
       };
-
       if (activeStep === 0) {
         console.log("activeStep === 0");
         fetch(
@@ -330,7 +329,7 @@ const CreateFlow = () => {
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log("hello hello hello", globalState);
   };
-
+  console.log('nitin bargein create flow', bargein)
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);
@@ -353,6 +352,7 @@ const CreateFlow = () => {
         console.log("flowDataFromApi", flowDataFromApi);
         flowFromApi(data.flow);
         setOpenModal(true);
+        setBargein(data.actionType.ivr === 'PLAY_BARGEIN')
         setChannel(flowDataFromApi.channel);
         localStore.ivrCampFlowData.flow.channel = flowDataFromApi.channel;
         localStorage.setItem("channelName", flowDataFromApi.channel);
@@ -672,6 +672,7 @@ const CreateFlow = () => {
                         setFlowListData={setFlowListData}
                         hideItemStyle={hideItemStyle}
                         setDisableNext={setDisableNext}
+                        bargein={bargein}
                       />
                     ) : activeStep === 2 ? (
                       <ScheduleCampaign

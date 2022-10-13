@@ -351,7 +351,7 @@ const CreateFlowComponent = (props) => {
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
                       name="radio-buttons-group"
-                      // value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                      value={languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
                     >
                   <div style={{ display: "flex" }}>
                       {ifIVRselectedThenLanguage.map((ele) => {
@@ -363,7 +363,6 @@ const CreateFlowComponent = (props) => {
                               label={ele}
                               disabled={props.disableEditingWhileCreatingCamp}
                               onChange={()=>{            
-                                console.log('nitin language', localStore.languages)
                                 localStore.languages.forEach((element)=>{
                                     if(ele === element.lang){
                                       localStore.ivrCampFlowData.flow.defaultLanguage = element.code
@@ -455,6 +454,7 @@ const CreateFlowComponent = (props) => {
                 />
               </Box>
       </div>
+      {console.log('nitin bargein', bargein)}
       <div className="create__flow__component__select__channel__dropdown__container">
                 <FormControl fullWidth>
                   <InputLabel
@@ -466,7 +466,7 @@ const CreateFlowComponent = (props) => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={bargein}
-                    label="Play Bargein"
+                    label="Play bargein"
                     onChange={(e) => setBargein(e.target.value)}
                     disabled={props.disableEditingWhileCreatingCamp}
                   >

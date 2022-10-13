@@ -593,10 +593,7 @@ const SubDTMF = (props) => {
       }
       localStoreC.type = value;
     } else {
-
-      console.log('nitin rannnn')
       if(keyToChange==='ussd_key'){
-        console.log('nitin ussd key type ran')
         localStoreC.input[keyToChange] = value;
         localStoreC.type = 'HITURL_USSD';
         localStoreC.actionType['ussd'] = 'HITURL_USSD';
@@ -874,7 +871,7 @@ const SubDTMF = (props) => {
                         }}
                         name="type"
                       >
-                        {["PLAY", "Schedule SMS"].map((number, index) => {
+                        {["PLAY"].map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
                       </Select>

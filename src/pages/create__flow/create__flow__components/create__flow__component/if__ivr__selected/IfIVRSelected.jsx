@@ -21,9 +21,7 @@ import { Divider } from "@mui/material";
 
 const IfIVRSelected = (props) => {
   debugger;
-  const {
-    setnumberOfMainDTMFWhenIVRIsSelected,
-  } = useContext(CommonContext);
+  const { setnumberOfMainDTMFWhenIVRIsSelected } = useContext(CommonContext);
 
   const [data, setData] = useState({
     dtmf: 0,
@@ -36,13 +34,13 @@ const IfIVRSelected = (props) => {
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
-  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
+  const [isThankYouMsg, setIsThankYouMsg] = useState(false);
 
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "IF_IVR_SELECTED", payload: false });
 
-    return ()=> errorDispatch({ type: "IF_IVR_SELECTED", payload: true });
+    return () => errorDispatch({ type: "IF_IVR_SELECTED", payload: true });
   }, []);
 
   useEffect(() => {
@@ -263,9 +261,7 @@ const IfIVRSelected = (props) => {
         .split(",")
         .map((e, index) => {
           return (
-            <span
-              key={e}
-            >
+            <span key={e}>
               <span style={{ color: "darkgray" }}>
                 {index + 1} - {e}
               </span>{" "}
@@ -279,7 +275,7 @@ const IfIVRSelected = (props) => {
                 }}
               >
                 <ReactAudioPlayer
-                  src={config.server.path+`/cm_data/audio/${e}`}
+                  src={config.server.path + `/cm_data/audio/${e}`}
                   controls
                 />
               </div>
@@ -308,7 +304,7 @@ const IfIVRSelected = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {e}
                     <ReactAudioPlayer
-                  src={config.server.path+`/cm_data/audio/${e}`}
+                      src={config.server.path + `/cm_data/audio/${e}`}
                       controls
                     />
                     <br></br>
@@ -743,7 +739,7 @@ const IfIVRSelected = (props) => {
     if (key === "type") {
       if (obj.parent_dtmf) {
         obj.type = e.target.value;
-        obj.actionType['ussd'] = e.target.value;
+        obj.actionType["ussd"] = e.target.value;
         if (obj.level === 3) {
           let levels = obj.id.split("_").map((e) => parseInt(e) - 1);
           localStore.ivrCampFlowData.flow.actions[levels[0]].actions[
@@ -828,8 +824,31 @@ const IfIVRSelected = (props) => {
   return (
     <>
       <Divider style={{ marginTop: "1rem" }}>
-        Welcome Node
+        Welcome
+        {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
+          ? " & Language Selection "
+          : "" + " Node"}
       </Divider>
+      {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
+        <>
+            <div style={{width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
+          {localStore.ivrCampFlowData.flow.language[0].actions.map((ele) => {
+            console.log("hellohelloele", ele);
+            return (
+                <Box component="form" style={{ width: "20%" }}>
+                  <TextField
+                    id="create__flow__component__flow__name"
+                    value={ele.input.ivr_key}
+                    label={"DTMF to choose " + ele.languageName}
+                    variant="outlined"
+                    disabled
+                  />
+                </Box>
+            );
+          })}
+          </div>
+        </>
+      ) : null}
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
           <div
@@ -881,36 +900,40 @@ const IfIVRSelected = (props) => {
                   required
                   error={
                     showError
-                      ? parseInt(globalState.state.ivrCampFlowData.flow
-                          .main_audio_dtmfCount,10) >=0
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow
+                            .main_audio_dtmfCount,
+                          10
+                        ) >= 0
                         ? false
                         : true
                       : false
                   }
                 >
-                
                   Number of options after Welcome Node
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={
-                    globalState.state.ivrCampFlowData.flow
-                      .main_audio_dtmfCount
+                    globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
                   }
                   label="Number of options after Welcome Node"
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);
                     console.log("here");
-                  }}  
+                  }}
                   name="main_audio_dtmfCount"
                   disabled={props.disableEditingWhileCreatingCamp}
                   required
                   error={
                     showError
-                      ? parseInt(globalState.state.ivrCampFlowData.flow
-                          .main_audio_dtmfCount, 10) >=0
+                      ? parseInt(
+                          globalState.state.ivrCampFlowData.flow
+                            .main_audio_dtmfCount,
+                          10
+                        ) >= 0
                         ? false
                         : true
                       : false
@@ -927,9 +950,8 @@ const IfIVRSelected = (props) => {
               </FormControl>
             </div>
           </div>
-          <LanguageComponent  props={props.languageComponentProps}/>
+          <LanguageComponent props={props.languageComponentProps} />
           <div className="ifIVRselected__number__of__DTMF__to__show__container">
-          
             {genArray(
               globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ||
                 data.dtmf

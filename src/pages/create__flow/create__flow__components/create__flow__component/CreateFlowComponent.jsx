@@ -384,10 +384,10 @@ const CreateFlowComponent = (props) => {
           </div>
 
       {channel === "IVR" && <> 
-      <div className="main__wait__time__container">
+      <div className="main__wait__time__container" style={{ width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
               <Box
                 component="form"
-                style={{ width: "80%" }}
+                style={{ width: "40%" }}
                 noValidate
                 autoComplete="off"
               >
@@ -418,11 +418,9 @@ const CreateFlowComponent = (props) => {
                   }
                 />
               </Box>
-      </div>
-      <div className="main__wait__time__container">
               <Box
                 component="form"
-                style={{ width: "80%" }}
+                style={{ width: "40%" }}
                 noValidate
                 autoComplete="off"
               >
@@ -436,7 +434,7 @@ const CreateFlowComponent = (props) => {
                   label="Flow Repeat Count"
                   type="number"
                   name={"repeatCount_" + global.dtmf_key}
-                  value={globalState.state.ivrCampFlowData.flow.repeatCount}
+                  value={globalState.state.ivrCampFlowData.flow.repeatCount ? globalState.state.ivrCampFlowData.flow.repeatCount : null}
                   onChange={(e) => setWaitTime("repeatCount", e.target, null)}
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
@@ -454,13 +452,13 @@ const CreateFlowComponent = (props) => {
                 />
               </Box>
       </div>
-      {console.log('nitin bargein', bargein)}
-      <div className="create__flow__component__select__channel__dropdown__container">
-                <FormControl fullWidth>
+
+      <div className="create__flow__component__select__channel__dropdown__container" style={{ width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
+                <FormControl style={{width:"40%"}}>
                   <InputLabel
                     id="demo-simple-select-label"
                   >
-                    Play bargein
+                    Play Bargein
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -480,7 +478,7 @@ const CreateFlowComponent = (props) => {
             <div className="call__flow__details" style={{ marginTop: "1rem" }}>
               {channel && (
                 <div className="call__flow__details__heading__container">
-                  <h1>Basic Flow Creation</h1>
+                  <h1>Flow Templete Creation</h1>
                 </div>
               )}
 

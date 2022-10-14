@@ -1009,7 +1009,7 @@ const SubDTMF = (props) => {
                       {languageName.map((el) => {
                         return (
                           <Typography style={{ fontSize: "12px" }}>
-                            Welcome prompt audio file for {el}
+                            Response prompt audio file for {el}
                           </Typography>
                         );
                       })}

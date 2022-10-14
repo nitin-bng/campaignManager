@@ -453,6 +453,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 </Box>
               </div> */}
               <div style={{}} className={props.hideItemStyle} hideItem>
+                <p style={{fontSize:".6rem", textAlign:"center", marginBottom:".5rem" }}>Response Prompt for DTMF</p>
                 <input
                   accept="audio/wav"
                   style={

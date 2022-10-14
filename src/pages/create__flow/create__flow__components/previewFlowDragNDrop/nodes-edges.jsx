@@ -20,7 +20,7 @@ const createNodesAndEdges = (data) =>{
           initialNodes = [...initialNodes, {
             id: element.id+"_"+idx,
             type: "processing",
-            data: { label: element.languageName + "language node"},
+            data: { label: element.languageName + " language"},
             position
           }];
             initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType}]    
@@ -37,7 +37,7 @@ const createNodesAndEdges = (data) =>{
           initialNodes = [...initialNodes, {
           id: ele.level+"_"+ele.dtmf_key+"_"+index+randomness,
           type: "processing",
-          data: { label:"DTMF"+ ele.id },
+          data: { label:"Option "+ ele.id },
           position
       }];
       initialEdges = [...initialEdges,  {id: 'e'+element.level+"_"+element.dtmf_key+"_"+idx+proprandom+ele.level+"_"+ele.dtmf_key+"_"+index+randomness, source: element.level+"_"+element.dtmf_key+"_"+idx+proprandom, target: ele.level+"_"+ele.dtmf_key+"_"+index+randomness, type: edgeType}]
@@ -51,7 +51,7 @@ const createNodesAndEdges = (data) =>{
             initialNodes =  [...initialNodes, {
             id: element.level+"_"+element.dtmf_key+"_"+idx,
             type: "processing",
-            data: { label:"DTMF"+ element.dtmf_key },
+            data: { label:"Option "+ element.dtmf_key },
             position
           }];
         if(element.actions.length){

@@ -17,7 +17,7 @@ import ReactAudioPlayer from "react-audio-player";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 import { LanguageComponent } from "../../../../../components/languageComponent";
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 
 const IfIVRSelected = (props) => {
   debugger;
@@ -829,26 +829,7 @@ const IfIVRSelected = (props) => {
           ? " & Language Selection "
           : "" + " Node"}
       </Divider>
-      {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
-        <>
-            <div style={{width:"100%", display:"flex", justifyContent:"space-evenly", marginTop:"1rem"}}>
-          {localStore.ivrCampFlowData.flow.language[0].actions.map((ele) => {
-            console.log("hellohelloele", ele);
-            return (
-                <Box component="form" style={{ width: "20%" }}>
-                  <TextField
-                    id="create__flow__component__flow__name"
-                    value={ele.input.ivr_key}
-                    label={"DTMF to choose " + ele.languageName}
-                    variant="outlined"
-                    disabled
-                  />
-                </Box>
-            );
-          })}
-          </div>
-        </>
-      ) : null}
+
       <div className="if__ivr__selected">
         <div className="if__ivr__selected__container">
           <div
@@ -874,7 +855,7 @@ const IfIVRSelected = (props) => {
               {languageName.map((el) => {
                 return (
                   <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt trrthk file for {el}
+                    Welcome prompt file in {el}
                   </Typography>
                 );
               })}
@@ -891,7 +872,61 @@ const IfIVRSelected = (props) => {
               ))}
             </div>
           </div>
-
+          {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
+            <>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  marginTop: "1rem",
+                }}
+              >
+                {localStore.ivrCampFlowData.flow.language[0].actions.map(
+                  (ele) => {
+                    console.log("hellohelloele", ele);
+                    return (
+                      <Box
+                        component="form"
+                        style={{
+                          width: "20%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          style={{ fontSize: ".6rem", fontWeight: "800" }}
+                        >
+                          {"DTMF to choose " + ele.languageName}
+                        </Typography>
+                        <button
+                          style={{
+                            height: "35px",
+                            width: "35px",
+                            backgroundColor: "rgb(214,214,214)",
+                            padding: "0",
+                            borderTop: "none",
+                            borderLeft: "none",
+                            boxShadow:
+                              "3px 3px 5px #474343, -3px -3px 5px #fff",
+                            marginTop: "1rem",
+                            marginBottom: "1rem",
+                            color: "black",
+                          }}
+                          id="create__flow__component__flow__name"
+                          disabled
+                        >
+                          {ele.input.ivr_key}
+                        </button>
+                      </Box>
+                    );
+                  }
+                )}
+              </div>
+            </>
+          ) : null}
           <div className="main__wait__time__and__dtmf__container">
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
@@ -910,7 +945,12 @@ const IfIVRSelected = (props) => {
                       : false
                   }
                 >
-                  Number of options after Welcome Node
+                  Number of options after welcome
+                  {localStore.ivrCampFlowData.flow.language[0].actions.length >
+                  1
+                    ? "& language selection "
+                    : ""}{" "}
+                  Node
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -918,7 +958,12 @@ const IfIVRSelected = (props) => {
                   value={
                     globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount
                   }
-                  label="Number of options after Welcome Node"
+                  label={`Number of options after welcome ${
+                    localStore.ivrCampFlowData.flow.language[0].actions.length >
+                    1
+                      ? "& language selection "
+                      : ""
+                  } Node`}
                   onChange={(e) => {
                     detectLevel(e, "main_audio");
                     console.log(e.target);

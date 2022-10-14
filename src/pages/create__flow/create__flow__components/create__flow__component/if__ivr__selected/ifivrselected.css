@@ -84,7 +84,7 @@
 
   }
   .custom-file-input::before {
-    content: 'Select some files';
+    content: 'Upload Prompt';
     color: white;
     display: flex;
     background: #374151;

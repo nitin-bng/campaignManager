@@ -749,7 +749,7 @@ setLoader(true)
             <div className="card-body text-center p-0 col-sm-12">
               <div
                 className="basic__flow__details__heading__container"
-                style={{ padding: "1rem 0" }}
+                style={{ padding: "1rem 0", textTransform:"capitalize" }}
               >
                 <h1>List of scheduled Campaigns</h1>
               </div>

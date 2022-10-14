@@ -66,37 +66,31 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
 });
 
 const BlackOutDayInfo = `
-Blackout day
 Blackout day means those days on which you don't want to run any campaignn
 We can select multiple days
 If you select all days your campian will not work
 `;
 const TotalChannelInfo = `
-Total number of channels required
 Total number of channels means
 we can give only numeric values
 Numeric values shouls be greater than 1 and lesser that 5
 `;
 
 const TotalNumerOfTPSRequiredInfo = `
-Total number of TPS required
 Total number of channels means
 we can give only numeric values
 Numeric values shouls be greater than 1 and lesser that 5
 `;
 
 const BlackoutStartHourInfo = `
-Blackout start Hour
 Blackout start hour mean the starting time for a particular day for which you don't want to run any campaignn
 `;
 
 const BlackoutEndHourInfo = `
-Blackout end Hour
 Blackout end hour mean the ending time for a particular day for which you want to resume any campaignn
 `;
 
 const BlackoutDateInfo = `
-Blackout date
 Blackout date means those dates on which you don't want to run any campian
 You should not select previous dates
 

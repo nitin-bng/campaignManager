@@ -524,6 +524,7 @@ const MainDTMF = (props) => {
         if (item.dtmf_key === props.global.dtmf_key) {
           item.audio_file[languageCode] = msg;
           item.file.sms[languageCode] = msg;
+          console.log("msg msg msg", msg);
           item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
           item.file.ussd[languageCode] = msg;
           item.file["sms"] = item.file["sms"] ? item.file["sms"] : {};

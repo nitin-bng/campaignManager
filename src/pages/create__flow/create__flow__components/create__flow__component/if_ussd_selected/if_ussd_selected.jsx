@@ -644,7 +644,7 @@ const IfUssdSelected = ({
                 : false
             }
           >
-            Number of options after welcome{" "}
+            Number of options after welcome
             {localStore.ivrCampFlowData.flow.language[0].actions.length > 1
               ? "& language selection "
               : ""}{" "}

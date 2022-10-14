@@ -886,7 +886,7 @@ const SubDTMF = (props) => {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={props.current.type}
+                        value={props.current.type === 'PLAY_BARGEIN' ? 'PLAY': props.current.type}
                         label="Actions"
                         disabled={props.disableEditingWhileCreatingCamp}
                         onChange={(e) => {

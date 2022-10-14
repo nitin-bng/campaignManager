@@ -294,6 +294,11 @@ const StateProvider = ({ children }) => {
   const [campaignName, setCampaignName] = useState(null);
   const [campaignSchedulePriority, setCampaignSchedulePriority] =
     useState(null);
+  const [userFeatures, setUserFeatures] = useState({
+    IVR: {Outgoing: false, Incoming:false},
+    USSD: {Outgoing: false, Incoming:false},
+    SMS: {Outgoing: false, Incoming:false},
+})
 
   return (
     <Provider
@@ -304,6 +309,8 @@ const StateProvider = ({ children }) => {
         setCampaignName,
         campaignSchedulePriority,
         setCampaignSchedulePriority,
+        userFeatures, 
+        setUserFeatures
       }}
     >
       {children}

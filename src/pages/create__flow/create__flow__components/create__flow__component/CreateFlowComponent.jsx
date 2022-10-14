@@ -55,7 +55,7 @@ const CreateFlowComponent = (props) => {
     setChannel,
   } = useContext(CommonContext);
   const globalState = useContext(store);
-  const { dispatch } = globalState;
+  const { dispatch, userFeatures } = globalState;
   let localStore = globalState.state;
   const languages = globalState.state.languages;
   const {bargein, setBargein} = props
@@ -277,9 +277,11 @@ const CreateFlowComponent = (props) => {
                         : false
                     }
                   >
-                    <MenuItem value={"IVR"}>IVR</MenuItem>
-                    <MenuItem value={"USSD"}>USSD</MenuItem>
-                    <MenuItem value={"SMS"}>SMS</MenuItem>
+                    {Object.keys(userFeatures).map(item=>{
+                      if(userFeatures[item].Incoming || userFeatures[item].Outgoing){
+                        return <MenuItem value={item}>{item}</MenuItem>
+                      }
+                    })}
                   </Select>
                 </FormControl>
               </div>

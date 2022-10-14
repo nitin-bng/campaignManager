@@ -23,6 +23,7 @@ import config from "../../../../ApiConfig/Config";
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
+  const {userFeatures}  =globalState
   const localStore = globalState.state.ivrCampFlowData;
   const [isDisabled, setIsDisabled] = useState(false)
   const {
@@ -208,7 +209,8 @@ const CreateCampaign = (props) => {
   };
 
   const handleSubmit = (e) => {
-    scheduleData1["campaign_type"] = formValues.campaign_type ? formValues.campaign_type : "Outgoing"
+    scheduleData1["campaign_type"] = formValues.campaign_type ? formValues.campaign_type : userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'
+    console.log('nitin value', scheduleData1["campaign_type"])
     if (
       campaignName &&
       campaignSchedulePriority &&
@@ -409,7 +411,7 @@ const CreateCampaign = (props) => {
               </TextField>
             </FormControl>
           </div>
-          {(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS") ? (
+          {/* {(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS") ? (
             <div
               className="create__campaign__campaign__type__radio__button"
               style={{          
@@ -525,7 +527,64 @@ const CreateCampaign = (props) => {
                 </RadioGroup>
               </FormControl>
             </div>
-          )}
+          )} */}
+          {console.log('nitn user feat', userFeatures)}
+                      <div
+              className="create__campaign__campaign__type__radio__button"
+              style={{  
+                height: "50px",
+              }}
+            >
+              <FormControl
+              disabled={!(userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing)}
+                style={{
+                  border: "1px solid grey",
+                  borderRadius: "5px",
+                  display: "flex",
+                  height: "100%",
+                  position: "relative",
+                }}
+              >
+                <FormLabel
+                  id="demo-row-radio-buttons-group-label"
+                  style={{
+                    position: "absolute",
+                    top: "-13px",
+                    left: "7px",
+                    padding: "0 4px",
+                    backgroundColor: "white",
+                    fontSize: "15px",
+                  }}
+                  required
+                  error={
+                    showError
+                      ? formValues.campaign_type
+                        ? false
+                        : true
+                      : false
+                  }
+                >
+                  Campaign Type
+                </FormLabel>
+                <RadioGroup row value={(userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing) ? formValues.campaign_type :userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'}>
+                  <FormControlLabel
+                    name="campaign_type"
+                    value="incoming"
+                    control={<Radio />}
+                    label="Incoming"
+                    onChange={(e) => handleChange(e)}
+                    style={{ marginLeft: "5px" }}
+                  />
+                  <FormControlLabel
+                    name="campaign_type"
+                    value="outgoing"
+                    control={<Radio />}
+                    label="Outgoing"
+                    onChange={(e) => handleChange(e)}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
 
           <div className="cli__container">
             <Box

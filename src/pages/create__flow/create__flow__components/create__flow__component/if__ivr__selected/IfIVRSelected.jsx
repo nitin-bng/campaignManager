@@ -926,7 +926,7 @@ const IfIVRSelected = (props) => {
               </div>
             </>
           ) : null}
-                 <LanguageComponent props={props.languageComponentProps} dtmfNumber= {props.dtmfNumber}/>
+          <LanguageComponent props={props.languageComponentProps} dtmfNumber= {props.dtmfNumber}/>
           <div className="main__wait__time__and__dtmf__container">
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>

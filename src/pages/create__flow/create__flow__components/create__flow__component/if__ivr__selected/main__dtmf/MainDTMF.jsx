@@ -496,7 +496,12 @@ const MainDTMF = (props) => {
         !globalState.state.ivrCampFlowData.flow.actions[
           props.global.dtmf_key - 1
         ].input["ussd_key"] &&
-        localStore.ivrCampFlowData.flow.channel === "USSD")
+        localStore.ivrCampFlowData.flow.channel === "USSD") ||
+      (!isFilled &&
+        !globalState.state.ivrCampFlowData.flow.actions[
+          props.global.dtmf_key - 1
+        ].input["sms_key"] &&
+        localStore.ivrCampFlowData.flow.channel === "SMS")
     ) {
       errorDispatch({ type: "MAIN_DTMF", payload: true });
     }
@@ -518,22 +523,21 @@ const MainDTMF = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
-  const handleUSSD = (msg, languageCode) => {
-    localStore.ivrCampFlowData.flow.actions =
-      localStore.ivrCampFlowData.flow.actions.map((item) => {
-        if (item.dtmf_key === props.global.dtmf_key) {
-          item.audio_file[languageCode] = msg;
-          item.file.sms[languageCode] = msg;
-          console.log("msg msg msg", msg);
-          item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
-          item.file.ussd[languageCode] = msg;
-          item.file["sms"] = item.file["sms"] ? item.file["sms"] : {};
-          item.file.sms[languageCode] = msg;
-        }
-        return item;
-      });
-    dispatch({ type: "SET_DATA", nState: localStore });
-  };
+    const handleUSSD = (msg, languageCode) =>{
+      debugger
+      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
+          if(item.dtmf_key === props.global.dtmf_key){
+            item.audio_file[languageCode] = msg
+            item.file.sms[languageCode] = msg
+            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
+            item.file.ussd[languageCode] = msg
+            item.file['sms'] = item.file['sms'] ? item.file['sms'] : {} 
+            item.file.sms[languageCode] = msg
+          }
+        return item
+      })
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
 
   return (
     <>

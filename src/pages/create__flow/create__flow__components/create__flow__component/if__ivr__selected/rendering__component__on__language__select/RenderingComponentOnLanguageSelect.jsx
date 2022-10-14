@@ -78,12 +78,15 @@ const RenderingComponentOnLanguageSelect = (props) => {
           ussdKey:
             globalState.state.ivrCampFlowData.flow.language[0].actions[i].input
               .ussd_key,
+          smsKey:
+            globalState.state.ivrCampFlowData.flow.language[0].actions[i].input
+              .sms_key,
         };
       }
     }
     console.log("condition not met");
   };
-  const { waitTime, ussdKey } = useMemo(() => {
+  const { waitTime, ussdKey, smsKey } = useMemo(() => {
     return getLangWaitTime(props.languageCode);
   }, [normalState]);
 
@@ -104,7 +107,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
     if(props.hideItemStyle !== undefined){
     if (
       localStore.ivrCampFlowData.flow.channel === "IVR"  ||
-      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey)
+      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey) || (localStore.ivrCampFlowData.flow.channel === "SMS" && smsKey)
     ) {
       errorDispatch({
         type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
@@ -115,8 +118,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
       errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
     }
   }
-  else if(localStore.ivrCampFlowData.flow.channel === 'USSD'){
+  else if(localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS'){
     if(!isError){
+      console.log('this ran')
     errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
   }
   else{
@@ -530,22 +534,22 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       type="input"
                       label={"Input key to choose " + props.lang }
                       variant="outlined"
-                      value={ussdKey}
+                      value={localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey}
                       onChange={(e) => {
-                        saveValues(e, "USSD");
+                        saveValues(e, localStore.ivrCampFlowData.flow.channel);
                         setIsError(e.target.value === '')
                         setNormalState((prev) => !prev);
                       }}
                       onWheel={(e) => e.target.blur()}
                       disabled={props.disableEditingWhileCreatingCamp}
                       required
-                      error={showError ? (ussdKey ? false : true) : false}
+                      error={showError ? (localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey) ? false : true : false}
                     />
                   </Box>
                 </div>
                 <div style={{marginTop:"1rem"}} className={props.hideItemStyle} hideItem>
                 <TextField
-                    label={`Message response for ${ussdKey}`}
+                    label={`Message response for ${localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey}`}
                     multiline
                     rows={2}
                     variant="outlined"

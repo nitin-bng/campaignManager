@@ -763,10 +763,6 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
-    if(channel === 'USSD'){
-      console.log('inside useEffect', props.current)
-      // dispatch({ type: "SET_DATA", nState: localStore });
-    }
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
     };
@@ -793,7 +789,13 @@ const SubDTMF = (props) => {
           props.current,
           "ussd_key",
           null,
-          "read") && localStore.ivrCampFlowData.flow.channel === 'USSD')
+          "read") && localStore.ivrCampFlowData.flow.channel === 'USSD') || (!isFilled &&
+            !traverseAndModify(
+              props.current.id,
+              props.current,
+              "sms_key",
+              null,
+              "read") && localStore.ivrCampFlowData.flow.channel === 'SMS')
     ) {
       errorDispatch({ type: "SUB_DTMF", payload: true });
     }

@@ -8,7 +8,7 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein ) => {
                 obj = {...obj, node_type: "LEAF"}
             }
         }
-        obj = {...obj, waitTime, repeatCount}
+        obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}
 
         if(bargein){
             obj = {...obj, type:  'PLAY_BARGEIN', actionType:{...obj.actionType, ivr: 'PLAY_BARGEIN'}}

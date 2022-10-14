@@ -355,6 +355,8 @@ const CreateFlow = () => {
     console.log("hello hello hello", globalState);
   };
 
+  console.log('nitin flow', localStore.ivrCampFlowData.flow.actions)
+
   const getFlow = async (e, id) => {
     debugger;
     localStorage.setItem("wfId", id);

@@ -45,7 +45,6 @@ const IfIVRSelected = (props) => {
 
   useEffect(() => {
     if (
-      parseInt(globalState.state.ivrCampFlowData.flow.waitTime) >= 0 &&
       parseInt(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount) >= 0
     ) {
       errorDispatch({ type: "IF_IVR_SELECTED", payload: true });
@@ -53,7 +52,6 @@ const IfIVRSelected = (props) => {
       errorDispatch({ type: "IF_IVR_SELECTED", payload: false });
     }
   }, [
-    globalState.state.ivrCampFlowData.flow.waitTime,
     globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount,
   ]);
 

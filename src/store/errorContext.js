@@ -15,61 +15,61 @@ const initialValue = {
 const errorReducer = (state, action) =>{
 let newVal = ''
 switch (action.type) {
-    // case "INITIALIZE":
-    //     return {...initialValue, audioError: []}
-    // case "CREATE_FLOW_COMPONENT":
-    //     return {...state, createFlowComponent: action.payload}
-    // case "RENDERING_COMPONENT_ON_LANGUAGE_SELECT":
-    //     newVal = state.rederingComponentOnLanguageSelect
-    //     if(action.payload){
-    //         newVal.push(true)
-    //     }
-    //     else{
-    //         newVal.pop()
-    //     }
-    //     return {...state, rederingComponentOnLanguageSelect: newVal}
-    // case "IF_IVR_SELECTED":
-    //     return {...state, ifIvrSelected: action.payload}
-    // case "IF_USSD_SELECTED":
-    //     return {...state, ifUssdSelected: action.payload}
-    // case "MAIN_DTMF":
-    //      newVal = state.mainDtmf
-    //     if(action.payload){
-    //         newVal.push(true)
-    //     }
-    //     else{
-    //         newVal.pop()
-    //     }
-    //     return {...state, mainDtmf:newVal}
-    // case "SUB_DTMF":
-    //      newVal = state.subDtmf
-    //     if(action.payload){
-    //         newVal.push(true)
-    //     }
-    //     else{
-    //         newVal.pop()
-    //     }
-    //     return {...state, subDtmf:newVal}
-    // case "CREATE_CAMPAIGN":
-    //     return {...state, createCampaign: action.payload}
-    // case "AUDIO":
-    //      newVal = state.audioError
-    //     if(action.payload){
-    //         newVal.push(true)
-    //     }
-    //     else{
-    //         newVal.pop()
-    //     }
-    //     return {...state, audioError:newVal}
-    // case "MESSAGE":
-    //      newVal = state.messageError
-    //     if(action.payload){
-    //         newVal.push(true)
-    //     }
-    //     else{
-    //         newVal.pop()
-    //     }
-    //     return {...state, messageError:newVal}
+    case "INITIALIZE":
+        return {...initialValue, audioError: []}
+    case "CREATE_FLOW_COMPONENT":
+        return {...state, createFlowComponent: action.payload}
+    case "RENDERING_COMPONENT_ON_LANGUAGE_SELECT":
+        newVal = state.rederingComponentOnLanguageSelect
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, rederingComponentOnLanguageSelect: newVal}
+    case "IF_IVR_SELECTED":
+        return {...state, ifIvrSelected: action.payload}
+    case "IF_USSD_SELECTED":
+        return {...state, ifUssdSelected: action.payload}
+    case "MAIN_DTMF":
+         newVal = state.mainDtmf
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, mainDtmf:newVal}
+    case "SUB_DTMF":
+         newVal = state.subDtmf
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, subDtmf:newVal}
+    case "CREATE_CAMPAIGN":
+        return {...state, createCampaign: action.payload}
+    case "AUDIO":
+         newVal = state.audioError
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, audioError:newVal}
+    case "MESSAGE":
+         newVal = state.messageError
+        if(action.payload){
+            newVal.push(true)
+        }
+        else{
+            newVal.pop()
+        }
+        return {...state, messageError:newVal}
     default:
         return state
 }

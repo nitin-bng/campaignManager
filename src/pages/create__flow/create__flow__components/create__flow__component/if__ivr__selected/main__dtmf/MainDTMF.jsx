@@ -745,7 +745,7 @@ const MainDTMF = (props) => {
                         {languageName.map((el) => {
                           return (
                             <Typography style={{ fontSize: "12px" }}>
-                              Response prompt audio file for {el}
+                              Response prompt in {el} for DTMF : {props.dtmfNumber}
                             </Typography>
                           );
                         })}

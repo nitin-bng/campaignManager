@@ -40,11 +40,9 @@ const RenderingComponentOnLanguageSelect = (props) => {
           localStore.ivrCampFlowData.flow.language[0].actions[
             i
           ].input.ussd_key = e.target.value;
-        }
-         else if (type === "SMS") {
-          localStore.ivrCampFlowData.flow.language[0].actions[
-            i
-          ].input.sms_key = e.target.value;
+        } else if (type === "SMS") {
+          localStore.ivrCampFlowData.flow.language[0].actions[i].input.sms_key =
+            e.target.value;
         }
       }
 
@@ -92,7 +90,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
 
   useEffect(() => {
     if (props.hideItemStyle === undefined) {
-      if(localStore.ivrCampFlowData.flow.channel === 'IVR'){
+      if (localStore.ivrCampFlowData.flow.channel === "IVR") {
         errorDispatch({ type: "AUDIO", payload: true });
       }
     }
@@ -104,31 +102,40 @@ const RenderingComponentOnLanguageSelect = (props) => {
   }, []);
 
   useEffect(() => {
-    if(props.hideItemStyle !== undefined){
-    if (
-      localStore.ivrCampFlowData.flow.channel === "IVR"  ||
-      (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey) || (localStore.ivrCampFlowData.flow.channel === "SMS" && smsKey)
+    if (props.hideItemStyle !== undefined) {
+      if (
+        localStore.ivrCampFlowData.flow.channel === "IVR" ||
+        (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey) ||
+        (localStore.ivrCampFlowData.flow.channel === "SMS" && smsKey)
+      ) {
+        errorDispatch({
+          type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+          payload: false,
+        });
+      } else {
+        errorDispatch({
+          type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+          payload: true,
+        });
+      }
+    } else if (
+      localStore.ivrCampFlowData.flow.channel === "USSD" ||
+      localStore.ivrCampFlowData.flow.channel === "SMS"
     ) {
-      errorDispatch({
-        type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
-        payload: false,
-      });
+      if (!isError) {
+        console.log("this ran");
+        errorDispatch({
+          type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+          payload: false,
+        });
+      } else {
+        errorDispatch({
+          type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",
+          payload: true,
+        });
+      }
     }
-    else{
-      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
-    }
-  }
-  else if(localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS'){
-    if(!isError){
-      console.log('this ran')
-    errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: false });
-  }
-  else{
-      errorDispatch({ type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT", payload: true });
-    }
-  }
   }, [isError]);
-
 
   const uploadFiles = async (target, e, files, lang) => {
     debugger;
@@ -401,19 +408,23 @@ const RenderingComponentOnLanguageSelect = (props) => {
     return <span> {Filelist} </span>;
   };
 
-  const handleUSSD = (msg) =>{
-    localStore.ivrCampFlowData.flow['lang_audio_file'] = localStore.ivrCampFlowData.flow['lang_audio_file'] ? localStore.ivrCampFlowData.flow['lang_audio_file'] : {}
-    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = msg
-    localStore.ivrCampFlowData.flow.language[0].actions = localStore.ivrCampFlowData.flow.language[0].actions.map(item=>{
-    if(item.languageName === props.lang){
-      item.lang_file['sms'] = msg
-      item.lang_file['ussd'] = msg
-    }
-    return item
-    })
+  const handleUSSD = (msg) => {
+    localStore.ivrCampFlowData.flow["lang_audio_file"] = localStore
+      .ivrCampFlowData.flow["lang_audio_file"]
+      ? localStore.ivrCampFlowData.flow["lang_audio_file"]
+      : {};
+    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = msg;
+    localStore.ivrCampFlowData.flow.language[0].actions =
+      localStore.ivrCampFlowData.flow.language[0].actions.map((item) => {
+        if (item.languageName === props.lang) {
+          item.lang_file["sms"] = msg;
+          item.lang_file["ussd"] = msg;
+        }
+        return item;
+      });
     dispatch({ type: "SET_DATA", nState: localStore });
-    setIsError(msg === '');
-  }
+    setIsError(msg === "");
+  };
 
   return (
     <>
@@ -453,7 +464,15 @@ const RenderingComponentOnLanguageSelect = (props) => {
                 </Box>
               </div> */}
               <div style={{}} className={props.hideItemStyle} hideItem>
-                <p style={{fontSize:".6rem", textAlign:"center", marginBottom:".5rem" }}>Response Prompt for DTMF</p>
+                <p
+                  style={{
+                    fontSize: ".6rem",
+                    textAlign: "center",
+                    marginBottom: ".5rem",
+                  }}
+                >
+                  Response Prompt for DTMF {props.dtmfNumber}
+                </p>
                 <input
                   accept="audio/wav"
                   style={
@@ -519,7 +538,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
           </div>
         </>
       ) : (
-        (localStore.ivrCampFlowData.flow.channel === "USSD" || localStore.ivrCampFlowData.flow.channel === "SMS") && (
+        (localStore.ivrCampFlowData.flow.channel === "USSD" ||
+          localStore.ivrCampFlowData.flow.channel === "SMS") && (
           <>
             <div className="rendering__component__on__language__select">
               <div className="rendering__component__on__language__select__container">
@@ -533,34 +553,56 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     <TextField
                       id={"waitTime-" + props.languageCode}
                       type="input"
-                      label={"Input key to choose " + props.lang }
+                      label={"Input key to choose " + props.lang}
                       variant="outlined"
-                      value={localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey}
+                      value={
+                        localStore.ivrCampFlowData.flow.channel === "USSD"
+                          ? ussdKey
+                          : smsKey
+                      }
                       onChange={(e) => {
                         saveValues(e, localStore.ivrCampFlowData.flow.channel);
-                        setIsError(e.target.value === '')
+                        setIsError(e.target.value === "");
                         setNormalState((prev) => !prev);
                       }}
                       onWheel={(e) => e.target.blur()}
                       disabled={props.disableEditingWhileCreatingCamp}
                       required
-                      error={showError ? (localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey) ? false : true : false}
+                      error={
+                        showError
+                          ? (
+                              localStore.ivrCampFlowData.flow.channel === "USSD"
+                                ? ussdKey
+                                : smsKey
+                            )
+                            ? false
+                            : true
+                          : false
+                      }
                     />
                   </Box>
                 </div>
-                <div style={{marginTop:"1rem"}} className={props.hideItemStyle} hideItem>
-                <TextField
-                    label={`Message response for ${localStore.ivrCampFlowData.flow.channel === 'USSD' ? ussdKey : smsKey}`}
+                <div
+                  style={{ marginTop: "1rem" }}
+                  className={props.hideItemStyle}
+                  hideItem
+                >
+                  <TextField
+                    label={`Message response for ${
+                      localStore.ivrCampFlowData.flow.channel === "USSD"
+                        ? ussdKey
+                        : smsKey
+                    }`}
                     multiline
                     rows={2}
                     variant="outlined"
-                  // class="custom-file-input"
-                  name="lang_audio_file"
-                  onChange={(event) => handleUSSD(event.target.value)}
-                  id={props.languageCode + "-Lang"}
-                  required
-                  error={showError && isError ? true:false}
-                />
+                    // class="custom-file-input"
+                    name="lang_audio_file"
+                    onChange={(event) => handleUSSD(event.target.value)}
+                    id={props.languageCode + "-Lang"}
+                    required
+                    error={showError && isError ? true : false}
+                  />
                   {/* <TextField
                     id="outlined-multiline-static"
                     label="Type Your Message here"

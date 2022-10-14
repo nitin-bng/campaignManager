@@ -20,6 +20,7 @@ import { LanguageComponent } from "../../../../../components/languageComponent";
 import { Button, Divider } from "@mui/material";
 
 const IfIVRSelected = (props) => {
+  console.log("ghghghghghgh", props);
   debugger;
   const { setnumberOfMainDTMFWhenIVRIsSelected } = useContext(CommonContext);
 
@@ -925,6 +926,7 @@ const IfIVRSelected = (props) => {
               </div>
             </>
           ) : null}
+                 <LanguageComponent props={props.languageComponentProps} dtmfNumber= {props.dtmfNumber}/>
           <div className="main__wait__time__and__dtmf__container">
             <div className="main__dtms__container">
               <FormControl style={{ width: "80%" }}>
@@ -946,7 +948,7 @@ const IfIVRSelected = (props) => {
                   Number of options after welcome
                   {localStore.ivrCampFlowData.flow.language[0].actions.length >
                   1
-                    ? "& language selection "
+                    ? " & language selection "
                     : ""}{" "}
                   Node
                 </InputLabel>
@@ -993,7 +995,7 @@ const IfIVRSelected = (props) => {
               </FormControl>
             </div>
           </div>
-          <LanguageComponent props={props.languageComponentProps} />
+   
           <div className="ifIVRselected__number__of__DTMF__to__show__container">
             {genArray(
               globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount ||

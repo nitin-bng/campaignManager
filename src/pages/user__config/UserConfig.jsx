@@ -742,7 +742,7 @@ const UserConfig = () => {
                               <div className="userconfig__maincontent__form__inside__containers userconfig__append__country__code__container">
                                 <FormControl>
                                   <FormLabel id="demo-row-radio-buttons-group-label">
-                                    Mobile number Country code
+                                    Mobile number country code
                                   </FormLabel>
                                   <RadioGroup
                                     row

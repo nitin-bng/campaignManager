@@ -153,7 +153,7 @@ const Review = () => {
                     <TextField
                       disabled
                       id="outlined-basic"
-                      label="Work Flow Name"
+                      label="Workflow Name"
                       variant="outlined"
                       value={localStore.ivrCampFlowData.flow.flowName}
                     />

@@ -45,6 +45,7 @@ const LanguageComponent = ({ props }) => {
           {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
           (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
+            dtmfNumber = {props.dtmfNumber}
               indxx={1}
               lang="Hindi"
               dtmfTime={dtmfTimeHindi}
@@ -61,6 +62,7 @@ const LanguageComponent = ({ props }) => {
           {ifIVRselectedThenLanguage.indexOf("English") !== -1 &&
           (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
+            dtmfNumber = {props.dtmfNumber}
               indxx={2}
               lang="English"
               dtmfTime={dtmfTimeEnglish}
@@ -77,6 +79,7 @@ const LanguageComponent = ({ props }) => {
           {ifIVRselectedThenLanguage.indexOf("Arabic") !== -1 &&
           (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
+            dtmfNumber = {props.dtmfNumber}
               indxx={3}
               lang="Arabic"
               dtmfTime={dtmfTimeArabic}
@@ -93,6 +96,7 @@ const LanguageComponent = ({ props }) => {
           {ifIVRselectedThenLanguage.indexOf("Spanish") !== -1 &&
           (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
             <RenderingComponentOnLanguageSelect
+            dtmfNumber = {props.dtmfNumber}
               indxx={4}
               lang="Spanish"
               dtmfTime={dtmfTimeSpanish}

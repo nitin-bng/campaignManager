@@ -400,7 +400,7 @@ const CreateCampaign = (props) => {
               <TextField
                 labelId="demo-simple-select-label"
                 id="demo-simple-select wfId"
-                label="Work flow Name"
+                label="Workflow Name"
                 className="campaignId form-select"
                 aria-label="Default select example"
                 name="wfId"
@@ -593,7 +593,7 @@ const CreateCampaign = (props) => {
             >
               <TextField
                 type="input"
-                label={"cli"}
+                label={"Cli"}
                 variant="outlined"
                 className="form-control"
                 id={"cli_" + localStore.flow.channel?.toLowerCase()}

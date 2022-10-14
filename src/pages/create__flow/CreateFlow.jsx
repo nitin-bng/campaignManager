@@ -33,7 +33,7 @@ import { getUserFeatures } from "../../services/getUserFeatures";
 
 
 
-const steps = ["Create Flow", "Create campaign", "Schedule Campaign", "Review"];
+const steps = ["Create Flow", "Create Campaign", "Schedule Campaign", "Review"];
 
 const CreateFlow = () => {
   const navigate = useNavigate();
@@ -558,7 +558,7 @@ const CreateFlow = () => {
                                               {row.languageSupported.map(
                                                 (ele) => {
                                                   return (
-                                                    <span> &nbsp;{ele},</span>
+                                                    <span>{ele}&nbsp;&nbsp;</span>
                                                   );
                                                 }
                                               )}

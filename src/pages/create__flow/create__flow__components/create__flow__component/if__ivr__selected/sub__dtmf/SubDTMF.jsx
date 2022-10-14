@@ -776,14 +776,15 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     if (
-      (!isFilled &&
-      !traverseAndModify(
-        props.current.id,
-        props.current,
-        "waitTime",
-        null,
-        "read"
-      ) && localStore.ivrCampFlowData.flow.channel === 'IVR') || (!isFilled &&
+      // (!isFilled &&
+      // !traverseAndModify(
+      //   props.current.id,
+      //   props.current,
+      //   "waitTime",
+      //   null,
+      //   "read"
+      // ) && localStore.ivrCampFlowData.flow.channel === 'IVR') ||
+       (!isFilled &&
         !traverseAndModify(
           props.current.id,
           props.current,
@@ -1009,7 +1010,7 @@ const SubDTMF = (props) => {
                       {languageName.map((el) => {
                         return (
                           <Typography style={{ fontSize: "12px" }}>
-                            Response prompt audio file for {el}
+                            Response prompt in {el} for DTMF : {props.dtmfNumber}
                           </Typography>
                         );
                       })}

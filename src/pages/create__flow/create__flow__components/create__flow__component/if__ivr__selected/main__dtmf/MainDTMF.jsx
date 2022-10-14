@@ -490,11 +490,6 @@ const MainDTMF = (props) => {
       (!isFilled &&
         !globalState.state.ivrCampFlowData.flow.actions[
           props.global.dtmf_key - 1
-        ].waitTime &&
-        localStore.ivrCampFlowData.flow.channel === "IVR") ||
-      (!isFilled &&
-        !globalState.state.ivrCampFlowData.flow.actions[
-          props.global.dtmf_key - 1
         ].input["ussd_key"] &&
         localStore.ivrCampFlowData.flow.channel === "USSD") ||
       (!isFilled &&
@@ -507,8 +502,6 @@ const MainDTMF = (props) => {
     }
   }, [
     isFilled,
-    globalState.state.ivrCampFlowData.flow.actions[props.global.dtmf_key - 1]
-      .waitTime,
   ]);
 
   const removeExtraSubDTMFs = () => {

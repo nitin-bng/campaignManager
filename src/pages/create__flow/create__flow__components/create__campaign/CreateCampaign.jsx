@@ -80,7 +80,7 @@ const CreateCampaign = (props) => {
     setShowError(false);
     errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
     if(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS"){
-      setFormValues(prev=>{return {...prev,campaign_type: 'Outgoing'}})
+      setFormValues(prev=>{return {...prev,campaign_type: 'outgoing'}})
     }
   }, []);
 
@@ -90,7 +90,7 @@ const CreateCampaign = (props) => {
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues["cli_" + localStore.flow.channel.toLowerCase()]
+      formValues["cli_" + localStore.flow.channel?.toLowerCase()]
     ) {
       errorDispatch({ type: "CREATE_CAMPAIGN", payload: true });
     } else {
@@ -101,7 +101,7 @@ const CreateCampaign = (props) => {
     campaignSchedulePriority,
     formValues.wfId,
     formValues.campaign_type,
-    formValues["cli_" + localStore.flow.channel.toLowerCase()],
+    formValues["cli_" + localStore.flow.channel?.toLowerCase()],
   ]);
 
   const getFlow = async (id) => {
@@ -210,13 +210,12 @@ const CreateCampaign = (props) => {
 
   const handleSubmit = (e) => {
     scheduleData1["campaign_type"] = formValues.campaign_type ? formValues.campaign_type : userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'
-    console.log('nitin value', scheduleData1["campaign_type"])
     if (
       campaignName &&
       campaignSchedulePriority &&
       formValues.wfId &&
       formValues.campaign_type &&
-      formValues["cli_" + localStore.flow.channel.toLowerCase()]
+      formValues["cli_" + localStore.flow.channel?.toLowerCase()]
     ) {
       setShowError(false);
       e.preventDefault();
@@ -528,7 +527,6 @@ const CreateCampaign = (props) => {
               </FormControl>
             </div>
           )} */}
-          {console.log('nitn user feat', userFeatures)}
                       <div
               className="create__campaign__campaign__type__radio__button"
               style={{  
@@ -598,24 +596,24 @@ const CreateCampaign = (props) => {
                 label={"cli"}
                 variant="outlined"
                 className="form-control"
-                id={"cli_" + localStore.flow.channel.toLowerCase()}
+                id={"cli_" + localStore.flow.channel?.toLowerCase()}
                 aria-describedby="emailHelp"
                 placeholder={"Enter Cli"}
-                name={"cli_" + localStore.flow.channel.toLowerCase()}
+                name={"cli_" + localStore.flow.channel?.toLowerCase()}
                 value={
-                  formValues["cli_" + localStore.flow.channel.toLowerCase()]
+                  formValues["cli_" + localStore.flow.channel?.toLowerCase()]
                 }
                 onChange={(event) =>
                   handleChange(
                     event,
-                    "cli_" + localStore.flow.channel.toLowerCase()
+                    "cli_" + localStore.flow.channel?.toLowerCase()
                   )
                 }
                 onWheel={(e) => e.target.blur()}
                 required
                 error={
                   showError
-                    ? formValues["cli_" + localStore.flow.channel.toLowerCase()]
+                    ? formValues["cli_" + localStore.flow.channel?.toLowerCase()]
                       ? false
                       : true
                     : false

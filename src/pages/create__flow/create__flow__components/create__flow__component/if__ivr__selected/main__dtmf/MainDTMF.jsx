@@ -497,7 +497,12 @@ const MainDTMF = (props) => {
         !globalState.state.ivrCampFlowData.flow.actions[
           props.global.dtmf_key - 1
         ].input["ussd_key"] &&
-        localStore.ivrCampFlowData.flow.channel === "USSD")
+        localStore.ivrCampFlowData.flow.channel === "USSD") ||
+      (!isFilled &&
+        !globalState.state.ivrCampFlowData.flow.actions[
+          props.global.dtmf_key - 1
+        ].input["sms_key"] &&
+        localStore.ivrCampFlowData.flow.channel === "SMS")
     ) {
       errorDispatch({ type: "MAIN_DTMF", payload: true });
     }
@@ -520,6 +525,7 @@ const MainDTMF = (props) => {
   };
 
     const handleUSSD = (msg, languageCode) =>{
+      debugger
       localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
           if(item.dtmf_key === props.global.dtmf_key){
             item.audio_file[languageCode] = msg

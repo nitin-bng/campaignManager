@@ -86,13 +86,7 @@ const CreateFlowComponent = (props) => {
     if (
       ifIVRselectedThenLanguage.length &&
       localStore.ivrCampFlowData.flow.flowName &&
-      localStore.ivrCampFlowData.flow.channel === "IVR"
-    ) {
-      errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
-    } else if (
-      localStore.ivrCampFlowData.flow.channel === "USSD" &&
-      localStore.ivrCampFlowData.flow.flowName &&
-      ifIVRselectedThenLanguage.length
+      (localStore.ivrCampFlowData.flow.channel === 'IVR' || localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS')
     ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
     } else {

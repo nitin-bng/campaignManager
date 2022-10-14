@@ -456,7 +456,7 @@ const IfUssdSelected = ({
   }, []);
 
   useEffect(() => {
-      if ((localStore.ivrCampFlowData.flow.main_file.ussd._E && localStore.ivrCampFlowData.flow.channel === 'IVR')||(globalState.state.ivrCampFlowData.flow.main_audio_dtmfCount >=0 && localStore.ivrCampFlowData.flow.channel === 'USSD')) {
+      if ((localStore.ivrCampFlowData.flow.main_file.ussd._E && localStore.ivrCampFlowData.flow.channel === 'IVR')||(localStore.ivrCampFlowData.flow.main_audio_dtmfCount >=0 && (localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS'))) {
         errorDispatch({ type: "IF_USSD_SELECTED", payload: true });
       } else {
         errorDispatch({ type: "IF_USSD_SELECTED", payload: false });

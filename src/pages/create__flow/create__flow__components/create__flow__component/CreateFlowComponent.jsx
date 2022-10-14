@@ -86,7 +86,7 @@ const CreateFlowComponent = (props) => {
     if (
       ifIVRselectedThenLanguage.length &&
       localStore.ivrCampFlowData.flow.flowName &&
-      (localStore.ivrCampFlowData.flow.channel === 'IVR' || localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS')
+      ((localStore.ivrCampFlowData.flow.channel === 'IVR' && globalState.state.ivrCampFlowData.flow.repeatCount && globalState.state.ivrCampFlowData.flow.waitTime) || localStore.ivrCampFlowData.flow.channel === 'USSD' || localStore.ivrCampFlowData.flow.channel === 'SMS')
     ) {
       errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: true });
     } else {
@@ -96,6 +96,8 @@ const CreateFlowComponent = (props) => {
     localStore.ivrCampFlowData.flow.channel,
     ifIVRselectedThenLanguage,
     localStore.ivrCampFlowData.flow.flowName,
+    globalState.state.ivrCampFlowData.flow.waitTime,
+    globalState.state.ivrCampFlowData.flow.repeatCount
   ]);
 
   const handelFlowNameChange = (event) => {
@@ -199,8 +201,6 @@ const CreateFlowComponent = (props) => {
     console.log("localStore.ivrCampFlowData = ", localStore.ivrCampFlowData);
     dispatch({ type: "SET_DATA", nState: localStore });
   };
-
-  console.log('default language', languageNames[localStore.ivrCampFlowData.flow.defaultLanguage])
 
   return (
     <>
@@ -430,17 +430,15 @@ const CreateFlowComponent = (props) => {
                   label="Flow Repeat Count"
                   type="number"
                   name={"repeatCount_" + global.dtmf_key}
-                  value={globalState.state.ivrCampFlowData.flow.repeatCount ? globalState.state.ivrCampFlowData.flow.repeatCount : null}
+                  value={globalState.state.ivrCampFlowData.flow.repeatCount ? globalState.state.ivrCampFlowData.flow.repeatCount : ''}
                   onChange={(e) => setWaitTime("repeatCount", e.target, null)}
                   onWheel={(e) => e.target.blur()}
                   variant="outlined"
                   required
                   error={
                     showError
-                      ? parseInt(
-                          globalState.state.ivrCampFlowData.flow.repeatCount,
-                          10
-                        ) >= 0
+                      ?
+                        globalState.state.ivrCampFlowData.flow.repeatCount
                         ? false
                         : true
                       : false

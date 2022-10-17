@@ -37,10 +37,16 @@ const LanguageComponent = ({ props }) => {
   const languages = globalState.state.languages;
   const languagesCode = [];
 
+  const dtmfObj = {
+    Hindi: {time: dtmfTimeHindi, setTime: setDtmfTimeHindi},
+    English: {time: dtmfTimeEnglish, setTime: setDtmfTimeEnglish},
+    Arabic: {time: dtmfTimeArabic, setTime: setDtmfTimeArabic},
+    Spanish: {time: dtmfTimeSpanish, setTime: setDtmfTimeSpanish}
+}
 
   return (
     <>
-      {ifIVRselectedThenLanguage.length > 1 ? (
+      {/* {ifIVRselectedThenLanguage.length > 1 ? (
         <div className="hello">
           {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
           (channel === "IVR" || channel === "USSD" || channel === 'SMS') ? (
@@ -109,7 +115,7 @@ const LanguageComponent = ({ props }) => {
             />
           ) : (
             ""
-          )}
+          )} */}
 
           {/* .................. sms .................. */}
           {/* {ifIVRselectedThenLanguage.indexOf("Hindi") !== -1 &&
@@ -136,10 +142,26 @@ const LanguageComponent = ({ props }) => {
           ) : (
             ""
           )} */}
-        </div>
+        {/* </div>
       ) : (
         <></>
-      )}
+      )} */}
+      <div className="hello">
+      {ifIVRselectedThenLanguage.map(lang =>
+                  <RenderingComponentOnLanguageSelect
+                  dtmfNumber = {props.dtmfNumber}
+                    indxx={1}
+                    lang={lang}
+                    dtmfTime={dtmfObj[lang]['time']}
+                    setDtmfTime={dtmfObj[lang]['setTime']}
+                    languageCode={"_"+lang[0]}
+                    hideItemStyle={props.hideItemStyle}
+                    disableEditingWhileCreatingCamp={
+                      props.disableEditingWhileCreatingCamp
+                    }
+                  />
+        )}
+      </div>
     </>
   );
 };

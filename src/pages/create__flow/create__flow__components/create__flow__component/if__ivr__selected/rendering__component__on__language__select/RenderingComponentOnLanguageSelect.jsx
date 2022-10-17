@@ -50,6 +50,8 @@ const RenderingComponentOnLanguageSelect = (props) => {
     }
   };
 
+  const componentNumber = useMemo(()=>localStore.ivrCampFlowData.flow.language[0].actions.filter(item=> item.languageName === props.lang)[0].input.ivr_key, [localStore.ivrCampFlowData.flow.language[0].actions, props.lang])
+
   const getLangWaitTime = (lang) => {
     console.log("waittime=>", lang);
     console.log(
@@ -471,7 +473,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     marginBottom: ".5rem",
                   }}
                 >
-                  Response Prompt for DTMF {props.dtmfNumber}
+                  Response Prompt for DTMF {componentNumber}
                 </p>
                 
                 <input

@@ -187,6 +187,8 @@ const CreateFlowComponent = (props) => {
 
     console.log("finalLanguageList finalLanguageList", finalLanguageList);
     localStore.ivrCampFlowData.flow.language = finalLanguageList;
+    localStore.ivrCampFlowData.flow.defaultLanguage = finalLanguageList[0].actions[0].language;
+
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log(localStore);
   };

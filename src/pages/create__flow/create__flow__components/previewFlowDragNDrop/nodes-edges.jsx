@@ -3,12 +3,11 @@ const edgeType = 'smoothstep';
 
 
 const createNodesAndEdges = (data) =>{
-    console.log("rishabh data", data);
     let initialNodes = [
         {
           id: "0",
           type: "input",
-          data: { label: data.ivrCampFlowData.flow.flowName },
+          data: {label: `Welcome ${data.ivrCampFlowData.flow.language[0].actions.length > 1 ? '& Language Selection' : ''} Node`},
           position
         },
       ];
@@ -20,7 +19,7 @@ const createNodesAndEdges = (data) =>{
           initialNodes = [...initialNodes, {
             id: element.id+"_"+idx,
             type: "processing",
-            data: { label: element.languageName + " language"},
+            data: { label: element.languageName},
             position
           }];
             initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType}]    

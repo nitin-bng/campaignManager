@@ -71,13 +71,11 @@ You can select multiple days
 If you select all days your campian will not work
 `;
 const TotalChannelInfo = `
-Total number of channels means
 we can give only numeric values
 Numeric values shouls be greater than 1 and lesser that 5
 `;
 
 const TotalNumerOfTPSRequiredInfo = `
-Total number of channels means
 we can give only numeric values
 Numeric values shouls be greater than 1 and lesser that 5
 `;

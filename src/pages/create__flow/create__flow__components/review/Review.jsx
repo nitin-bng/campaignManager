@@ -88,7 +88,7 @@ const Review = () => {
                 console.log("elementelement", element.jobName, campCreateData.campName);
                 if(campCreateData.campName==element.jobName){
                     setCampScheduleData({...element, endDate: element.endDate.slice(0,10)})
-                    setCampScheduleData({...element, startDate: element.endDate.slice(0,10)})
+                    setCampScheduleData({...element, startDate: element.startDate.slice(0,10)})
                 }
             })
           }

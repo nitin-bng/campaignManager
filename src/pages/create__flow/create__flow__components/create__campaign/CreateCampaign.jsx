@@ -79,9 +79,8 @@ const CreateCampaign = (props) => {
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
-    if(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS"){
-      setFormValues(prev=>{return {...prev,campaign_type: 'outgoing'}})
-    }
+    const value = (userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing) ? formValues.campaign_type :userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'
+    setFormValues(prev=>{return {...prev,campaign_type: value}})
   }, []);
 
   useEffect(() => {

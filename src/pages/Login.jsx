@@ -45,6 +45,9 @@ const Login = () => {
             }
             else if(res.status === 'unsuccessful'){
               toast(res.reason)
+              if(res.reason === 'Your account is not verified')
+                localStorage.setItem("phoneNumber", res.phoneNumber)
+                Navigate('/Campaign-manager/verifyotp')
             }
            })
     })

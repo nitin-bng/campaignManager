@@ -71,7 +71,6 @@ export default function TemporaryDrawer(props) {
               }
               onClick={()=>{
                 setActiveNaavItem(text.menu__title);
-                console.log('nitin called')
                 props.setActiveStep && props.setActiveStep(0)
                 props.setShowFlowTable && props.setShowFlowTable(true)
               }}

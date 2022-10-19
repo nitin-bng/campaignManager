@@ -67,7 +67,7 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
 
 const BlackOutDayInfo = `
 Blackout day means those days on which you don't want to run any campaignn
-We can select multiple days
+You can select multiple days
 If you select all days your campian will not work
 `;
 const TotalChannelInfo = `
@@ -93,8 +93,24 @@ Blackout end hour mean the ending time for a particular day for which you want t
 const BlackoutDateInfo = `
 Blackout date means those dates on which you don't want to run any campian
 You should not select previous dates
-
 `;
+
+const MobileNumberWithLeadingZeros = `
+Mobile Number with leading Zeros means the number list that you will upload of mobile numbers will have zeros in the start or not
+`;
+
+const CountryCodeHelpIcon = `
+Country code means the two digit code of mobile number of your country
+`;
+
+const MobileNumberWithCountryCode = `
+Mobile Number with Country Code means the number list that you will upload of mobile numbers will have country code with them or not 
+`;
+
+const MobileNumberLength = `
+Mobile Number Length means the the count of digits of mobile number in your country without zeros or country code
+`;
+
 
 const formJSON = [
   {
@@ -204,8 +220,8 @@ const formJSON = [
 ];
 
 const UserConfig = () => {
-  const [expanded, setExpanded] = React.useState(false);
-  const [expanded2, setExpanded2] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
+  const [expanded2, setExpanded2] = React.useState(true);
   const [expanded3, setExpanded3] = React.useState(true);
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -698,7 +714,7 @@ const UserConfig = () => {
                                     />
                                   </RadioGroup>
                                 </FormControl>
-                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                <CustomWidthTooltip title={MobileNumberWithLeadingZeros}>
                                   <HelpIcon
                                     style={{
                                       cursor: "pointer",
@@ -728,7 +744,7 @@ const UserConfig = () => {
                                     variant="outlined"
                                   />
                                 </Box>
-                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                <CustomWidthTooltip title={CountryCodeHelpIcon}>
                                   <HelpIcon
                                     style={{
                                       cursor: "pointer",
@@ -768,7 +784,7 @@ const UserConfig = () => {
                                     />
                                   </RadioGroup>
                                 </FormControl>
-                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                <CustomWidthTooltip title={MobileNumberWithCountryCode}>
                                   <HelpIcon
                                     style={{
                                       cursor: "pointer",
@@ -798,7 +814,7 @@ const UserConfig = () => {
                                     onWheel={(e) => e.target.blur()}
                                   />
                                 </Box>
-                                <CustomWidthTooltip title={TotalChannelInfo}>
+                                <CustomWidthTooltip title={MobileNumberLength}>
                                   <HelpIcon
                                     style={{
                                       cursor: "pointer",

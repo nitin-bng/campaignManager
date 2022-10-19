@@ -269,7 +269,7 @@ const Review = () => {
                     />
                     {console.log("campCreateData", campCreateData)}
                   </div>
-                  <div
+                  {/* <div
                     className="feilds"
                     style={{
                       width: "40%",
@@ -299,7 +299,7 @@ const Review = () => {
                       variant="outlined"
                       value={campCreateData.wfId}
                     />
-                  </div>
+                  </div> */}
                   <div
                     className="feilds"
                     style={{

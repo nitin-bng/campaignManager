@@ -344,7 +344,7 @@ const CreateFlowComponent = (props) => {
               <>
                 <div style={{ display: "flex", flexDirection: "column", width: "40%" }}>
                   <FormLabel id="demo-radio-buttons-group-label" style={{fontSize:".7rem"}}>
-                    Select Your Default Language
+                    Flow Default Language
                   </FormLabel>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"

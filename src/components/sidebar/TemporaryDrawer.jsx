@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import "./TemporaryDrawer.css";
-export default function TemporaryDrawer() {
+export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
     left: false,
   });
@@ -71,7 +71,9 @@ export default function TemporaryDrawer() {
               }
               onClick={()=>{
                 setActiveNaavItem(text.menu__title);
-
+                console.log('nitin called')
+                props.setActiveStep && props.setActiveStep(0)
+                props.setShowFlowTable && props.setShowFlowTable(true)
               }}
             >
               {console.log("activenav", activeNavItem)}

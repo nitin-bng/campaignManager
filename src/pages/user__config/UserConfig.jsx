@@ -805,7 +805,7 @@ const UserConfig = () => {
                                   <TextField
                                     id="userconfig__required__channel__required"
                                     type="number"
-                                    label="Mobile number length"
+                                    label="Mobile number length without country code"
                                     variant="outlined"
                                     value={msisdnLength}
                                     onChange={(e) => {

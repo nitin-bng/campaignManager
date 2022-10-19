@@ -438,7 +438,7 @@ const CreateFlow = () => {
         <div className="create__flow__container">
           <div className="navbar__container">
             <div className="navbar">
-              <MenuAppBar />
+              <MenuAppBar setActiveStep={setActiveStep} setShowFlowTable={setShowFlowTable}/>
             </div>
           </div>
           <div className="create__flow__maincontent__container">

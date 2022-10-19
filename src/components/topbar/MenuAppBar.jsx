@@ -12,7 +12,7 @@ import TemporaryDrawer from "../sidebar/TemporaryDrawer";
 import './menuAppBar.css'
 import { useNavigate } from "react-router-dom";
 
-export default function MenuAppBar() {
+export default function MenuAppBar(props) {
   var auth = true;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const Navigate = useNavigate()
@@ -41,7 +41,7 @@ export default function MenuAppBar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <TemporaryDrawer />
+            <TemporaryDrawer setActiveStep={props.setActiveStep} setShowFlowTable={props.setShowFlowTable}/>
           </IconButton>
           <Typography
             style={{

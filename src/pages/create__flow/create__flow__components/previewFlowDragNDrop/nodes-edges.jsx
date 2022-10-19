@@ -19,7 +19,7 @@ const createNodesAndEdges = (data) =>{
           initialNodes = [...initialNodes, {
             id: element.id+"_"+idx,
             type: "processing",
-            data: { label: element.languageName},
+            data: { label: data.ivrCampFlowData.flow.language[0].actions.length > 1 ? `Message Response In ${element.languageName}` : element.languageName},
             position
           }];
             initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType}]    

@@ -17,7 +17,8 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
         }
     ,[])
 
-    return ( <div
+    return ( 
+    <div
         className="file__chooser__container"
         style={(showError && isError)?{
             width: "200px",

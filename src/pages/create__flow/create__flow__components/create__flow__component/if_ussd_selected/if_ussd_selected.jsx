@@ -712,7 +712,7 @@ const IfUssdSelected = ({
           );
         })}
       </div>
-      {/* <div
+      <div
         style={{ width: "30%", display: "flex", margin:"auto" }}
         className={hideItemStyle}
       >
@@ -746,17 +746,17 @@ const IfUssdSelected = ({
               rows={2}
               variant="outlined"
               onChange={(e) => handleThankYouMsg(e.target.value, lang)}
-              error={
-                showError
-                  ? localStore.ivrCampFlowData.flow.main_file.ussd._E
-                    ? false
-                    : true
-                  : false
-              }
+              // error={
+              //   showError
+              //     ? localStore.ivrCampFlowData.flow.main_file.ussd[lang]
+              //       ? false
+              //       : true
+              //     : false
+              // }
               style={{ width: "10%", marginTop: "1rem" }}
             />
           </div>
-        ))} */}
+        ))}
     </>
   );
 };

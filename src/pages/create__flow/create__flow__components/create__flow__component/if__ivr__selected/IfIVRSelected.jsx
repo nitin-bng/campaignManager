@@ -86,8 +86,18 @@ const IfIVRSelected = (props) => {
         l_name: localFileName,
         s_name: serverFileName,
       });
-
-      if (target === "main_audio_file" || target === "thanks_audio_file") {
+      if( target === "thanks_audio_file"){
+        localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map((item)=>{
+          if(item.node_type === 'END'){
+            console.log(`nitin this is thank you node for ${lang}`, item, uploadedFiles)
+            item.file.ivr[lang] = uploadedFiles.response
+            item.audio_file[lang] = uploadedFiles.response
+          }
+          return item
+        })
+        dispatch({type:'SET_DATA', nState: localStore})
+      }
+      else if (target === "main_audio_file") {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
@@ -329,6 +339,9 @@ const IfIVRSelected = (props) => {
   const AudioFiles = (props) => {
     debugger;
     console.log("audiofileprops", props);
+    console.log('nitin audio file', globalState.state.ivrCampFlowData.flow.actions[
+      props.dtmf
+    ].audio_file[props.lang])
     const Filelist = globalState.state.ivrCampFlowData.flow.actions[
       props.dtmf
     ].audio_file[props.lang]
@@ -1100,19 +1113,20 @@ const IfIVRSelected = (props) => {
         localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
           <div
           className="file__chooser__container"
-          // style={(showError && isError)?{
-          //     width: "200px",
-          //     display: "flex",
-          //     height: "fit-content",
-          //     flexDirection: "column",
-          //     border: "2px solid red",
-          //   }:{
-          //   width: "200px",
-          //   display: "flex",
-          //   height: "fit-content",
-          //   flexDirection: "column",
-          // }}
+          style={ showError ? {
+              width: "200px",
+              display: "flex",
+              height: "fit-content",
+              flexDirection: "column",
+              border: "2px solid red",
+            }:{
+            width: "200px",
+            display: "flex",
+            height: "fit-content",
+            flexDirection: "column",
+          }}
         >
+          <div>Upload file for {languageNames[lang]}</div>
           <input
             accept="audio/wav"
             type="file"
@@ -1125,9 +1139,7 @@ const IfIVRSelected = (props) => {
             onChange={async(event) => {
               setShowLoader(true)
               await uploadFiles(
-                "thanks_audio_file" +
-                  "_" +
-                  global.dtmf_key,
+                "thanks_audio_file",
                 event,
                 event.currentTarget.files,
                 lang,
@@ -1138,7 +1150,7 @@ const IfIVRSelected = (props) => {
             required
           />
           {globalState.state.ivrCampFlowData.flow.actions[
-            global.dtmf_key - 1
+           globalState.state.ivrCampFlowData.flow.actions.length - 1
           ].audio_file[lang] ? (
             
             <div
@@ -1152,7 +1164,7 @@ const IfIVRSelected = (props) => {
               }}
             >
               <AudioFiles
-                dtmf={global.dtmf_key - 1}
+                dtmf={ globalState.state.ivrCampFlowData.flow.actions.length - 1}
                 lang={lang}
               />
             </div>

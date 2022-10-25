@@ -65,19 +65,8 @@ const MainDTMF = (props) => {
   };
 
   const uploadFiles = async (target, e, files, lang) => {
-    debugger;
-    console.log(
-      "-------target and files------",
-      target,
-      files,
-      "event",
-      e,
-      "lang",
-      lang
-    );
     try {
       const uploadedFiles = await uploadMultipleFiles(files);
-      console.log("%c ==FILES UPLOADED==", "background:yellow", uploadedFiles);
       let localStore = globalState.state;
       const localFileName = uploadedFiles.response;
       const serverFileName = uploadedFiles.key;
@@ -97,8 +86,6 @@ const MainDTMF = (props) => {
         ) {
           oldStateFiles = localStore.ivrCampFlowData.flow[target][lang] + ",";
         }
-
-        console.log("oldState", oldStateFiles);
         dict[lang] = oldStateFiles + uploadedFiles.response;
         localStore.ivrCampFlowData.flow[key] = {
           ...localStore.ivrCampFlowData.flow[key],
@@ -231,8 +218,6 @@ const MainDTMF = (props) => {
   };
 
   async function uploadMultipleFiles(props) {
-    debugger;
-    console.log("-----------------props------", props);
     const files = [...props];
     var formData = new FormData();
     files.forEach((e) => {

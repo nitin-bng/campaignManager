@@ -908,24 +908,18 @@ const IfIVRSelected = (props) => {
               );
             })}
             <div className="ghghg" style={{ margin: "10px 0" }}>
-              {languageName.map((el) => {
-                return (
-                  <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt file in {el}
-                  </Typography>
-                );
-              })}
+                <Typography style={{ fontSize: "12px" }}>
+                    Welcome prompt file in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                </Typography>
             </div>
             <div className="ghghgh" style={{}}>
-              {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
                 <FileUploaderForIVRSelected
-                  lang={lang}
+                  lang={localStore.ivrCampFlowData.flow.defaultLanguage}
                   GetMainAudioFiles={GetMainAudioFiles}
                   localStore={localStore}
                   uploadFiles={uploadFiles}
                   hideItemStyle={props.hideItemStyle}
                 />
-              ))}
             </div>
           </div>
           {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (

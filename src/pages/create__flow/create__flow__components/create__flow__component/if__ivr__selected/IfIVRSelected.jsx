@@ -1109,6 +1109,8 @@ const IfIVRSelected = (props) => {
           Add Thank you node
         </label>
       </div>
+
+      <div style={{display:'flex', width:"100%",  marginTop:"1rem", justifyContent:'space-around'}}>
       {isThankYouNode &&
         localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
           <div
@@ -1173,6 +1175,8 @@ const IfIVRSelected = (props) => {
           {showLoader && <CircularProgress />}
         </div>
         ))}
+
+</div>
     </>
   );
 };

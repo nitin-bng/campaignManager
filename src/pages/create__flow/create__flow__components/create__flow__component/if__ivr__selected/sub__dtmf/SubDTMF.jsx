@@ -1016,7 +1016,6 @@ const SubDTMF = (props) => {
                       })}
                     </div>
                     <div className="ghghgh">
-                      {console.log('nitin before', localStore.ivrCampFlowData.flow.main_file.ivr)}
                       {localStore.ivrCampFlowData.flow.languageChange.map(
                         (lang) => (
                           <FileUploaderForSubDTMF

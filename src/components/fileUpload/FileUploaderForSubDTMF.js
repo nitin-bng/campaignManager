@@ -15,8 +15,6 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         return () => errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
-    
-    console.log('nitin', main_audio_file)
 
     return (<div className="file__chooser__container"  style={(showError && isError) ? {
         width: "200px",

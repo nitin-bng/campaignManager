@@ -85,7 +85,7 @@ const CreateFlow = () => {
   const [disableNext, setDisableNext] = useState(false);
   var flowDataFromApi = {};
   const [openModal, setOpenModal] = useState(false);
-
+  const [isThankYouNode, setIsThankYouNode] = useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   var rows3 = [];
   function createData3(
@@ -379,6 +379,7 @@ const CreateFlow = () => {
         setOpenModal(true);
         setBargein(data.flow.actionType.ivr === 'PLAY_BARGEIN')
         setChannel(flowDataFromApi.channel);
+        setIsThankYouNode(data.flow.actions.find(item=>item.node_type === 'END') !==  undefined)
         localStore.ivrCampFlowData.flow.channel = flowDataFromApi.channel;
         localStorage.setItem("channelName", flowDataFromApi.channel);
         dispatch({ type: "SET_DATA", nState: localStore });
@@ -686,6 +687,8 @@ const CreateFlow = () => {
                             hideItemStyle={hideItemStyle}
                             bargein={bargein}
                             setBargein={setBargein}
+                            isThankYouNode={isThankYouNode}
+                            setIsThankYouNode={setIsThankYouNode}
                           />
                         )}
                       </>
@@ -698,6 +701,8 @@ const CreateFlow = () => {
                         hideItemStyle={hideItemStyle}
                         setDisableNext={setDisableNext}
                         bargein={bargein}
+                        isThankYouNode={isThankYouNode}
+                        setIsThankYouNode={setIsThankYouNode}
                       />
                     ) : activeStep === 2 ? (
                       <ScheduleCampaign

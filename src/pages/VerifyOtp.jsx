@@ -45,7 +45,6 @@ export default function VerifyOtp(props) {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    localStorage.getItem("phoneNumber");
     getOtp();
   }, []);
   const getOtp = () => {

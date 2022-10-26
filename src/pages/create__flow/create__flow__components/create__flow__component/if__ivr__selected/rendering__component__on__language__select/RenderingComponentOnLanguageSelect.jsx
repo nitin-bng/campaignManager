@@ -546,7 +546,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
           <>
             <div className="rendering__component__on__language__select">
               <div className="rendering__component__on__language__select__container">
-                <div className="language__specific__wait__time__container">
+                {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 && <div className="language__specific__wait__time__container">
                   <Box
                     component="form"
                     style={{ width: "100%" }}
@@ -584,7 +584,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                       }
                     />
                   </Box>
-                </div>
+                </div>}
                 <div
                   style={{ marginTop: "1rem" }}
                   className={props.hideItemStyle}

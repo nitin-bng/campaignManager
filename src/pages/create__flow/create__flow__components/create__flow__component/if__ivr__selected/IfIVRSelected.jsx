@@ -17,7 +17,14 @@ import ReactAudioPlayer from "react-audio-player";
 import { useError } from "../../../../../store/errorContext";
 import { FileUploaderForIVRSelected } from "../../../../../components/fileUpload/FileUploaderForIVRSelected";
 import { LanguageComponent } from "../../../../../components/languageComponent";
-import { Button, Divider } from "@mui/material";
+import { Button, CircularProgress, Divider } from "@mui/material";
+
+const languageNames = {
+  _E: "English",
+  _H: "Hindi",
+  _A: "Arabic",
+  _S: "Spanish",
+};
 
 const IfIVRSelected = (props) => {
   console.log("ghghghghghgh", props);
@@ -35,7 +42,8 @@ const IfIVRSelected = (props) => {
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
-  const [isThankYouMsg, setIsThankYouMsg] = useState(false);
+  const [isThankYouNode, setIsThankYouNode] = useState(false);
+  const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
     setShowError(false);
@@ -78,8 +86,18 @@ const IfIVRSelected = (props) => {
         l_name: localFileName,
         s_name: serverFileName,
       });
-
-      if (target === "main_audio_file" || target === "thanks_audio_file") {
+      if( target === "thanks_audio_file"){
+        localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map((item)=>{
+          if(item.node_type === 'END'){
+            console.log(`nitin this is thank you node for ${lang}`, item, uploadedFiles)
+            item.file.ivr[lang] = uploadedFiles.response
+            item.audio_file[lang] = uploadedFiles.response
+          }
+          return item
+        })
+        dispatch({type:'SET_DATA', nState: localStore})
+      }
+      else if (target === "main_audio_file") {
         const key = e.target.name;
         const dict = {};
         let oldStateFiles = "";
@@ -317,6 +335,49 @@ const IfIVRSelected = (props) => {
 
     return <span> {Filelist} </span>;
   };
+
+  const AudioFiles = (props) => {
+    debugger;
+    console.log("audiofileprops", props);
+    console.log('nitin audio file', globalState.state.ivrCampFlowData.flow.actions[
+      props.dtmf
+    ].audio_file[props.lang])
+    const Filelist = globalState.state.ivrCampFlowData.flow.actions[
+      props.dtmf
+    ].audio_file[props.lang]
+      .split(",")
+      .map((e, index) => {
+        return (
+          <span key={e}>
+            <span style={{ color: "darkgray" }}> {index + 1} - </span>
+            <span style={{ color: "darkgray" }}>
+              {globalState.state.temp.uploads.length > 0
+                ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                  ? globalState.state.temp.uploads.find((f) => e === f.s_name)
+                      .l_name
+                  : e
+                : e}
+            </span>
+            <br />
+            <div
+              className="playingOptions"
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginTop: "5px",
+              }}
+            >
+              <ReactAudioPlayer
+                src={config.server.path + `/cm_data/audio/${e}`}
+                controls
+              />
+            </div>
+          </span>
+        );
+      });
+    return <span> {Filelist} </span>;
+  };
+
 
   const handleDataChange = (e) => {
     debugger;
@@ -814,6 +875,15 @@ const IfIVRSelected = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
+  const handleThankYou = (e) => {
+    setIsThankYouNode(e.target.checked);
+    if (e.target.checked) {
+      dispatch({ type: "SET_THANKYOU", nState: true });
+    } else {
+      dispatch({ type: "SET_THANKYOU", nState: false });
+    }
+  };
+
   const numberOfDTMF = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
@@ -851,24 +921,18 @@ const IfIVRSelected = (props) => {
               );
             })}
             <div className="ghghg" style={{ margin: "10px 0" }}>
-              {languageName.map((el) => {
-                return (
-                  <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt file in {el}
-                  </Typography>
-                );
-              })}
+                <Typography style={{ fontSize: "12px" }}>
+                    Welcome prompt file in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                </Typography>
             </div>
             <div className="ghghgh" style={{}}>
-              {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
                 <FileUploaderForIVRSelected
-                  lang={lang}
+                  lang={localStore.ivrCampFlowData.flow.defaultLanguage}
                   GetMainAudioFiles={GetMainAudioFiles}
                   localStore={localStore}
                   uploadFiles={uploadFiles}
                   hideItemStyle={props.hideItemStyle}
                 />
-              ))}
             </div>
           </div>
           {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? (
@@ -1024,6 +1088,91 @@ const IfIVRSelected = (props) => {
           </div>
         </div>
       </div>
+      <div
+        style={{ width: "30%", display: "flex", margin:"auto" }}
+        className={props.hideItemStyle}
+      >
+        <div style={{ width: "20%" }} className={props.hideItemStyle} >
+          <input
+            style={{}}
+            type="checkbox"
+            id="thank-you-node"
+            value={isThankYouNode}
+            onChange={(e) => handleThankYou(e)}
+          />
+        </div>
+        <label
+          style={{ width: "80%"}}
+          htmlFor="thank-you-node"
+          className={props.hideItemStyle}
+        >
+          Add Thank you node
+        </label>
+      </div>
+      {isThankYouNode &&
+        localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
+          <div
+          className="file__chooser__container"
+          style={ showError ? {
+              width: "200px",
+              display: "flex",
+              height: "fit-content",
+              flexDirection: "column",
+              border: "2px solid red",
+            }:{
+            width: "200px",
+            display: "flex",
+            height: "fit-content",
+            flexDirection: "column",
+          }}
+        >
+          <div>Upload file for {languageNames[lang]}</div>
+          <input
+            accept="audio/wav"
+            type="file"
+            class="custom-file-input"
+            name="thanks_audio_file"
+            style={{
+              display: "flex",
+              overflow: "hidden",
+            }}
+            onChange={async(event) => {
+              setShowLoader(true)
+              await uploadFiles(
+                "thanks_audio_file",
+                event,
+                event.currentTarget.files,
+                lang,
+              );
+              // setIsError(false)
+              setShowLoader(false)
+            }}
+            required
+          />
+          {globalState.state.ivrCampFlowData.flow.actions[
+           globalState.state.ivrCampFlowData.flow.actions.length - 1
+          ].audio_file[lang] ? (
+            
+            <div
+              style={{
+                border: ".2px solid black",
+                width: "200px",
+                fontSize: "10px",
+                wordWrap: "break-word",
+                marginBottom: "10px",
+                paddingBottom: "3px",
+              }}
+            >
+              <AudioFiles
+                dtmf={ globalState.state.ivrCampFlowData.flow.actions.length - 1}
+                lang={lang}
+              />
+            </div>
+          ) : 
+          null}
+          {showLoader && <CircularProgress />}
+        </div>
+        ))}
     </>
   );
 };

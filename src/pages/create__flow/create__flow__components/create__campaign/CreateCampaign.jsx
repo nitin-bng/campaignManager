@@ -48,7 +48,6 @@ const CreateCampaign = (props) => {
   const { showError, setShowError, errorState, errorDispatch } = useError();
   const [showFlowState, setShowFlowState] = useState(false);
   const [update, updateForm] = useState(false);
-  const [isThankYouMsg, setIsThankYouMsg] = useState(false)
 
   var scheduleData = {};
 
@@ -409,123 +408,6 @@ const CreateCampaign = (props) => {
               </TextField>
             </FormControl>
           </div>
-          {/* {(localStorage.getItem("channelName") == "USSD" || localStorage.getItem("channelName") == "SMS") ? (
-            <div
-              className="create__campaign__campaign__type__radio__button"
-              style={{          
-                height: "50px",
-              }}
-              disabled
-
-            >
-              <FormControl
-              disabled
-                style={{
-                  border: "1px solid grey",
-                  borderRadius: "5px",
-                  display: "flex",
-                  height: "100%",
-                  position: "relative",
-                }}
-              >
-                <FormLabel
-                  id="demo-row-radio-buttons-group-label"
-                  style={{
-                    position: "absolute",
-                    top: "-13px",
-                    left: "7px",
-                    padding: "0 4px",
-                    backgroundColor: "white",
-                    fontSize: "15px",
-                  }}
-                  required
-                  error={
-                    showError
-                      ? formValues.campaign_type
-                        ? false
-                        : true
-                      : false
-                  }
-                >
-                  Campaign Type
-                </FormLabel>
-                <RadioGroup row>
-                  <FormControlLabel
-                    name="campaign_type"
-                    value="incoming"
-                    control={<Radio />}
-                    label="Incoming"
-                    onChange={(e) => handleChange(e)}
-                    style={{ marginLeft: "5px" }}
-                  />
-                  <FormControlLabel
-                  checked
-                    name="campaign_type"
-                    value="outgoing"
-                    control={<Radio />}
-                    label="Outgoing"
-                    onChange={(e) => handleChange(e)}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
-          ) : (
-            <div
-              className="create__campaign__campaign__type__radio__button"
-              style={{  
-                height: "50px",
-              }}
-            >
-              <FormControl
-                style={{
-                  border: "1px solid grey",
-                  borderRadius: "5px",
-                  display: "flex",
-                  height: "100%",
-                  position: "relative",
-                }}
-              >
-                <FormLabel
-                  id="demo-row-radio-buttons-group-label"
-                  style={{
-                    position: "absolute",
-                    top: "-13px",
-                    left: "7px",
-                    padding: "0 4px",
-                    backgroundColor: "white",
-                    fontSize: "15px",
-                  }}
-                  required
-                  error={
-                    showError
-                      ? formValues.campaign_type
-                        ? false
-                        : true
-                      : false
-                  }
-                >
-                  Campaign Type
-                </FormLabel>
-                <RadioGroup row>
-                  <FormControlLabel
-                    name="campaign_type"
-                    value="incoming"
-                    control={<Radio />}
-                    label="Incoming"
-                    onChange={(e) => handleChange(e)}
-                    style={{ marginLeft: "5px" }}
-                  />
-                  <FormControlLabel
-                    name="campaign_type"
-                    value="outgoing"
-                    control={<Radio />}
-                    label="Outgoing"
-                    onChange={(e) => handleChange(e)}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
-          )} */}
                       <div
               className="create__campaign__campaign__type__radio__button"
               style={{  

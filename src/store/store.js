@@ -268,7 +268,6 @@ const StateProvider = ({ children }) => {
             dtmf_count: 0,
             actions: [],
             action_tag: "",
-
             id: state.ivrCampFlowData.flow.actions.length+1,
             repeat: {
               value: false,

@@ -916,7 +916,7 @@ const IfIVRSelected = (props) => {
             })}
             <div className="ghghg" style={{ margin: "10px 0" }}>
                 <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt file in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                    Welcome {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? " & Language Selection": ""} Prompt in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}`
                 </Typography>
             </div>
             <div className="ghghgh" style={{}}>

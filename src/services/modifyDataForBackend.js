@@ -5,7 +5,9 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions 
                 obj = {...obj, node_type: "PROCESSING", actions: arrangeActionsData(obj.actions, waitTime,repeatCount, bargein)}
             }
             else{
-                obj = {...obj, node_type: "LEAF"}
+                if(obj.node_type !== 'END'){
+                    obj = {...obj, node_type: "LEAF"}
+                }
             }
         }
         obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}

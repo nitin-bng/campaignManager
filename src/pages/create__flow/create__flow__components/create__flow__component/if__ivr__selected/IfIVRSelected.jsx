@@ -89,7 +89,6 @@ const IfIVRSelected = (props) => {
       if( target === "thanks_audio_file"){
         localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map((item)=>{
           if(item.node_type === 'END'){
-            console.log(`nitin this is thank you node for ${lang}`, item, uploadedFiles)
             item.file.ivr[lang] = uploadedFiles.response
             item.audio_file[lang] = uploadedFiles.response
           }
@@ -337,11 +336,6 @@ const IfIVRSelected = (props) => {
   };
 
   const AudioFiles = (props) => {
-    debugger;
-    console.log("audiofileprops", props);
-    console.log('nitin audio file', globalState.state.ivrCampFlowData.flow.actions[
-      props.dtmf
-    ].audio_file[props.lang])
     const Filelist = globalState.state.ivrCampFlowData.flow.actions[
       props.dtmf
     ].audio_file[props.lang]

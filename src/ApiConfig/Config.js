@@ -9,8 +9,6 @@ const config = {
         set port1(value) {
             this._port1 = value
         },
-        // port2: ':5002',
-        // port3: ':8087',  // login Api port
         port2: ':6002',
         port3: ':9087',  // login Api port
     },

@@ -599,24 +599,8 @@ const IfUssdSelected = ({
         style={{ display: "flex", flexDirection: "column" }}
       >
         <div style={{ width: "96%" }} className={hideItemStyle}>
-          {localStore.ivrCampFlowData.flow.language.map((hello) => {
-            console.log("localStore.ivrCampFlowData.flow.language ===>", hello);
-            hellohello.push(hello.actions);
-            hello.actions.forEach((el) => {
-              console.log("action element ===>", el.languageName);
-              languageName.push(el.languageName);
-            });
-            console.log(
-              "localStore.ivrCampFlowData.flow.language hello ===>",
-              hellohello
-            );
-          })}
           <div className="ghghgh" style={{}}>
-            {localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
-              <>
-                  <MessageUploadForIfUSSDSelected lang={lang} hideItemStyle={hideItemStyle} languageNames={languageNames} />
-              </>
-            ))}
+            <MessageUploadForIfUSSDSelected lang={localStore.ivrCampFlowData.flow.defaultLanguage} hideItemStyle={hideItemStyle} languageNames={languageNames} />
           </div>
         </div>
       </div>

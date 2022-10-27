@@ -55,6 +55,7 @@ const SubDTMF = (props) => {
   const {channel} = useContext(CommonContext)
 
   const [isFilled, setIsFilled] = useState(false);
+  const [isSuccessFailure,setIsSuccessFailure] = useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -840,6 +841,29 @@ const SubDTMF = (props) => {
 
   },[channel, props.isSuccessFailure])
 
+  useEffect(()=>{
+    let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+
+    if(!excludes.includes(props.current.type)){
+      let e = {target:{value: '2'}}
+      detectLevel(e, "sub_audio_dtmfs", props.current)
+        setIsSuccessFailure(true)
+        props.dataHandleWithObj(
+          e,
+          props.global || props.current
+          );
+        }
+      else{
+        let e = {target:{value: '0'}}
+        detectLevel(e, "sub_audio_dtmfs", props.current)
+        setIsSuccessFailure(false)
+        props.dataHandleWithObj(
+          e,
+          props.global || props.current
+        );  
+      }
+  },[props.current.type])
+
 
   return (
     <>
@@ -933,7 +957,7 @@ const SubDTMF = (props) => {
                         }}
                         name="type"
                       >
-                        {["PLAY"].map((number, index) => {
+                        {["PLAY", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
                       </Select>
@@ -998,7 +1022,7 @@ const SubDTMF = (props) => {
                         labelId="demo-simple-select-label"
                         id="demo-select"
                         value={props.current.dtmf_count}
-                        disabled={props.disableEditingWhileCreatingCamp}
+                        disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
                         label="Number of options after this node"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
@@ -1084,6 +1108,8 @@ const SubDTMF = (props) => {
                           disableEditingWhileCreatingCamp={
                             props.disableEditingWhileCreatingCamp
                           }
+                          isSuccessFailure={isSuccessFailure}
+                          index={index}
                         />
                       </div>
                     );
@@ -1128,7 +1154,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={ channel === 'USSD' ? 'HITURL_USSD' :  channel === 'SMS' && 'HITURL_SMS'}
+                      value={ props.current.type}
                       label="Actions"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
@@ -1146,9 +1172,9 @@ const SubDTMF = (props) => {
                       }}
                       name="type"
                     >
-                     { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
+                     { channel === 'USSD' ? ["HITURL_USSD", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;
-                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
+                          }): channel === 'SMS' && ["HITURL_SMS", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
                     </Select>
@@ -1212,7 +1238,7 @@ const SubDTMF = (props) => {
                       labelId="demo-simple-select-label"
                       id="demo-select"
                       value={props.current.dtmf_count}
-                      disabled={props.disableEditingWhileCreatingCamp}
+                      disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
                       label="Number of options after this node"
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
@@ -1302,6 +1328,8 @@ const SubDTMF = (props) => {
                         disableEditingWhileCreatingCamp={
                           props.disableEditingWhileCreatingCamp
                         }
+                        isSuccessFailure={isSuccessFailure}
+                        index={index}
                       />
                     </div>
                   );

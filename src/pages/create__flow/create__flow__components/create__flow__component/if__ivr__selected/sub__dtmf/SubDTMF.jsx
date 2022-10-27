@@ -561,8 +561,8 @@ const SubDTMF = (props) => {
       localStoreC.repeat.value = value.value == "false" ? true : false;
     } else if (keyToChange == "sms_key" && type == "edit") {
       localStoreC.input.sms_key = value;
-      // localStoreC.type = 'HITURL_SMS';
-      // localStoreC.actionType['sms'] = 'HITURL_SMS';
+      localStoreC.type = 'HITURL_SMS';
+      localStoreC.actionType['sms'] = 'HITURL_SMS';
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -596,8 +596,8 @@ const SubDTMF = (props) => {
     } else {
       if(keyToChange==='ussd_key'){
         localStoreC.input[keyToChange] = value;
-        // localStoreC.type = 'HITURL_USSD';
-        // localStoreC.actionType['ussd'] = 'HITURL_USSD';
+        localStoreC.type = 'HITURL_USSD';
+        localStoreC.actionType['ussd'] = 'HITURL_USSD';
       }
       if(keyToChange === 'ussd_msg'){
         localStoreC.audio_file[languageCode] = value
@@ -834,26 +834,27 @@ const SubDTMF = (props) => {
   ]);
 
   useEffect(()=>{
-    if((channel === 'USSD' || channel === 'SMS') && props.isSuccessFailure){
-      setIsFilled(true)
-      traverseAndModify(
-        props.current.id,
-        props.current,
-        channel === 'USSD' ? 'ussd_key' : 'sms_key',
-        props.index === 0 ? 'SUCCESS' : 'FAILURE',
-        "edit"
-      );
-    }else{
-      setIsFilled(false)
-      // traverseAndModify(
-      //   props.current.id,
-      //   props.current,
-      //   channel === 'USSD' ? 'ussd_key' : 'sms_key',
-      //   '',
-      //   "edit"
-      // );
-    }
-
+    if(props.hideItemStyle){
+      if((channel === 'USSD' || channel === 'SMS') && props.isSuccessFailure){
+        setIsFilled(true)
+        traverseAndModify(
+          props.current.id,
+          props.current,
+          channel === 'USSD' ? 'ussd_key' : 'sms_key',
+          props.index === 0 ? 'SUCCESS' : 'FAILURE',
+          "edit"
+        );
+      }else{
+        setIsFilled(false)
+        // traverseAndModify(
+        //   props.current.id,
+        //   props.current,
+        //   channel === 'USSD' ? 'ussd_key' : 'sms_key',
+        //   '',
+        //   "edit"
+        // );
+      }
+  }
   },[channel, props.isSuccessFailure])
 
   console.log('nitin', props.current.type, localStore.ivrCampFlowData.flow)

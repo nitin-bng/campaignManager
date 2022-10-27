@@ -517,6 +517,25 @@ const MainDTMF = (props) => {
       dispatch({ type: "SET_DATA", nState: localStore });
     }
 
+    useEffect(()=>{
+      let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+
+      if(!excludes.includes(globalState.state.ivrCampFlowData.flow.actions[
+        props.data - 1
+      ].type)){
+        let e = {target:{value: '2'}}
+        detectLevel(e, "sub_audio_dtmfs", props.global)
+        removeExtraSubDTMFs();
+      }
+      else{
+        let e = {target:{value: '0'}}
+        detectLevel(e, "sub_audio_dtmfs", props.global)
+        
+      }
+    },[globalState.state.ivrCampFlowData.flow.actions[
+      props.data - 1
+    ].type])
+
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -602,7 +621,7 @@ const MainDTMF = (props) => {
                           disabled={props.disableEditingWhileCreatingCamp}
                           name="type"
                         >
-                          {["PLAY"].map((number, index) => {
+                          {["PLAY", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                             console.log(number);
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
@@ -681,7 +700,11 @@ const MainDTMF = (props) => {
                           onChange={(e) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
                           }}
-                          disabled={props.disableEditingWhileCreatingCamp}
+                          disabled={props.disableEditingWhileCreatingCamp || (globalState.state.ivrCampFlowData.flow.actions[
+                            props.data - 1
+                          ].type !== 'PLAY' && globalState.state.ivrCampFlowData.flow.actions[
+                            props.data - 1
+                          ].type !== 'PLAY_BARGEIN')}
                           required
                           error={
                             showError
@@ -838,13 +861,13 @@ const MainDTMF = (props) => {
                           name="type"
                         >
                           {channel === "USSD"
-                            ? ["HITURL_USSD"].map((number, index) => {
+                            ? ["HITURL_USSD", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
                                 );
                               })
                             : channel === "SMS" &&
-                              ["HITURL_SMS"].map((number, index) => {
+                              ["HITURL_SMS", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
                                 );
@@ -933,7 +956,11 @@ const MainDTMF = (props) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
                             removeExtraSubDTMFs();
                           }}
-                          disabled={props.disableEditingWhileCreatingCamp}
+                          disabled={props.disableEditingWhileCreatingCamp || (globalState.state.ivrCampFlowData.flow.actions[
+                            props.data - 1
+                          ].type !== 'HITURL_SMS' && globalState.state.ivrCampFlowData.flow.actions[
+                            props.data - 1
+                          ].type !== 'HITURL_USSD') }
                           required
                           error={
                             showError

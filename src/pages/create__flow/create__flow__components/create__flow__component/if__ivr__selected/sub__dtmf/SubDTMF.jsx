@@ -41,7 +41,7 @@ const ExpandMore = styled((props) => {
 const numberOfSubDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
-
+let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
 const SubDTMF = (props) => {
 
   var hellohello = [];
@@ -55,7 +55,6 @@ const SubDTMF = (props) => {
   const {channel} = useContext(CommonContext)
 
   const [isFilled, setIsFilled] = useState(false);
-  const [isSuccessFailure,setIsSuccessFailure] = useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -262,7 +261,6 @@ const SubDTMF = (props) => {
   const globalState = useContext(store);
   let localStore = globalState.state;
   const { disableChannel } = props;
-  console.log("dtmfs options  hello", props);
 
   const { dispatch } = globalState;
 
@@ -271,6 +269,8 @@ const SubDTMF = (props) => {
       .fill()
       .map((x, i) => i + 1);
   };
+
+  const [isSuccessFailure,setIsSuccessFailure] = useState(!excludes.includes(props.current.type))
 
   const setDataDynamic = (type, e, current) => {
     debugger;
@@ -561,8 +561,8 @@ const SubDTMF = (props) => {
       localStoreC.repeat.value = value.value == "false" ? true : false;
     } else if (keyToChange == "sms_key" && type == "edit") {
       localStoreC.input.sms_key = value;
-      localStoreC.type = 'HITURL_SMS';
-      localStoreC.actionType['sms'] = 'HITURL_SMS';
+      // localStoreC.type = 'HITURL_SMS';
+      // localStoreC.actionType['sms'] = 'HITURL_SMS';
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -596,8 +596,8 @@ const SubDTMF = (props) => {
     } else {
       if(keyToChange==='ussd_key'){
         localStoreC.input[keyToChange] = value;
-        localStoreC.type = 'HITURL_USSD';
-        localStoreC.actionType['ussd'] = 'HITURL_USSD';
+        // localStoreC.type = 'HITURL_USSD';
+        // localStoreC.actionType['ussd'] = 'HITURL_USSD';
       }
       if(keyToChange === 'ussd_msg'){
         localStoreC.audio_file[languageCode] = value
@@ -612,7 +612,7 @@ const SubDTMF = (props) => {
 
     findAndModifyFirst(localStoreB, "actions", { id: id }, localStoreC);
     localStore.ivrCampFlowData.flow = localStoreB;
-
+    
     dispatch({ type: "SET_DATA", nState: localStore });
   }
 
@@ -764,6 +764,21 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
+    if(props.hideItemStyle){
+      let value = {IVR: 'PLAY', USSD: 'HITURL_USSD', SMS: 'HITURL_SMS'}
+      let e = {target:{value: value[localStore.ivrCampFlowData.flow.channel]}}
+      traverseAndModify(
+        props.current.id,
+        props.current,
+        "type",
+        e.target.value,
+        "edit"
+      );
+      props.dataHandleWithObj(
+        e,
+        props.global || props.current
+      );
+    }
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
     };
@@ -830,19 +845,21 @@ const SubDTMF = (props) => {
       );
     }else{
       setIsFilled(false)
-      traverseAndModify(
-        props.current.id,
-        props.current,
-        channel === 'USSD' ? 'ussd_key' : 'sms_key',
-        '',
-        "edit"
-      );
+      // traverseAndModify(
+      //   props.current.id,
+      //   props.current,
+      //   channel === 'USSD' ? 'ussd_key' : 'sms_key',
+      //   '',
+      //   "edit"
+      // );
     }
 
   },[channel, props.isSuccessFailure])
 
+  console.log('nitin', props.current.type, localStore.ivrCampFlowData.flow)
+
   useEffect(()=>{
-    let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+    if(props.hideItemStyle){
 
     if(!excludes.includes(props.current.type)){
       let e = {target:{value: '2'}}
@@ -862,6 +879,7 @@ const SubDTMF = (props) => {
           props.global || props.current
         );  
       }
+    }
   },[props.current.type])
 
 
@@ -906,28 +924,31 @@ const SubDTMF = (props) => {
                     zIndex:"1"
                   }}
                 >
-                  <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
-                    DTMF To Choose this option :{" "}
-                  </Typography>
                   {props.isSuccessFailure ?  
                   <div>{props.index === 0 ? 'SUCCESS' : 'FAILURE'}</div>
                   :
-                  <button
-                    style={{
-                      height: "25px",
-                      width: "25px",
-                      backgroundColor: "rgb(214,214,214)",
-                      padding: "0",
-                      borderTop: "none",
-                      borderLeft: "none",
-                      boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
-                      color: "black",
-                      marginTop: ".5rem",
-                    }}
-                    disabled
-                  >
-                    {props.current.dtmf_key}
-                  </button>}
+                  <>
+                    <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
+                      DTMF To Choose this option :{" "}
+                    </Typography>
+                    <button
+                      style={{
+                        height: "25px",
+                        width: "25px",
+                        backgroundColor: "rgb(214,214,214)",
+                        padding: "0",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
+                        color: "black",
+                        marginTop: ".5rem",
+                      }}
+                      disabled
+                    >
+                      {props.current.dtmf_key}
+                    </button>
+                  </>
+                  }
                 </div>
               <CardContent>
                 <div className="main__dtmf__maincontent__container">

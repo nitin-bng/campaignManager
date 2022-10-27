@@ -41,6 +41,8 @@ const numberOfSubDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
+let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+
 const MainDTMF = (props) => {
   var hellohello = [];
   var languageName = [];
@@ -48,7 +50,7 @@ const MainDTMF = (props) => {
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
   const { channel } = useContext(CommonContext);
-  const [isSuccessFailure, setIsSuccessFailure] = useState(false)
+
 
   console.log("props props props", props);
   const [
@@ -261,6 +263,10 @@ const MainDTMF = (props) => {
   let localStore = globalState.state;
   const { disableChannel } = props;
 
+  const [isSuccessFailure, setIsSuccessFailure] = useState(!excludes.includes(globalState.state.ivrCampFlowData.flow.actions[
+    props.data - 1
+  ]?.type))
+
   const { dispatch } = globalState;
   const genArray = (n) => {
     return Array(n)
@@ -444,6 +450,7 @@ const MainDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
+    if(props.hideItemStyle){
     if (channel === "USSD") {
       globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
         "HITURL_USSD";
@@ -459,6 +466,7 @@ const MainDTMF = (props) => {
       ].actionType.sms = "HITURL_SMS";
       dispatch({ type: "SET_DATA", nState: globalState.state });
     }
+  }
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
@@ -518,7 +526,7 @@ const MainDTMF = (props) => {
     }
 
     useEffect(()=>{
-      let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+      if(props.hideItemStyle){
 
       if(!excludes.includes(globalState.state.ivrCampFlowData.flow.actions[
         props.data - 1
@@ -533,7 +541,7 @@ const MainDTMF = (props) => {
         detectLevel(e, "sub_audio_dtmfs", props.global)
         setIsSuccessFailure(false)
         
-      }
+      }}
     },[globalState.state.ivrCampFlowData.flow.actions[
       props.data - 1
     ].type])

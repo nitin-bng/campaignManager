@@ -16,7 +16,6 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         }
     ,[])
 
-
     return (<div className="file__chooser__container"  style={(showError && isError) ? {
         width: "200px",
         display: "flex",
@@ -58,13 +57,13 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
           }}
           required
         />
-        {main_audio_file &&
-        main_audio_file[
-          lang
-        ] &&
-        main_audio_file[
-          lang
-        ] !== "" ? (
+        {traverseAndModify(
+                current.id,
+                null,
+                null,
+                null,
+                "return"
+              ).audio_file[lang] ? (
           <>
             <br></br>
             <div

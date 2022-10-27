@@ -25,6 +25,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
+import { useState } from "react";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -58,8 +59,7 @@ const CreateFlowComponent = (props) => {
   const { dispatch, userFeatures } = globalState;
   let localStore = globalState.state;
   const languages = globalState.state.languages;
-  const {bargein, setBargein} = props
-
+  const {bargein, setBargein, isThankYouNode, setIsThankYouNode} = props
   const handleChange = (event) => {
     setChannel(event.target.value);
     localStore.ivrCampFlowData.flow.channel = event.target.value;
@@ -107,6 +107,10 @@ const CreateFlowComponent = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
     localStorage.setItem("flowName", event.target.value);
     console.log(localStore);
+  };
+
+  const handleThankYou = (e) => {
+    setIsThankYouNode(e.target.checked);
   };
 
   const MenuProps = {
@@ -470,6 +474,27 @@ const CreateFlowComponent = (props) => {
                 </FormControl>
       </div>
       </>}
+      <div
+        style={{ width: "30%", display: "flex", margin:"auto" }}
+      
+      >
+        <div style={{ width: "20%" }} >
+          <input
+            style={{}}
+            type="checkbox"
+            id="thank-you-node"
+            checked={isThankYouNode}
+            onChange={(e) => handleThankYou(e)}
+            disabled={props.disableEditingWhileCreatingCamp}
+          />
+        </div>
+        <label
+          style={{ width: "80%"}}
+          htmlFor="thank-you-node"
+        >
+          Add Thank you node
+        </label>
+      </div>
           <div className="call__flow__details__container">
             <div className="call__flow__details" style={{ marginTop: "1rem" }}>
               {channel && (
@@ -485,6 +510,7 @@ const CreateFlowComponent = (props) => {
                   }
                   hideItemStyle={props.hideItemStyle}
                   languageComponentProps={props}
+                  isThankYouNode={isThankYouNode}
                 />
               ) : (
                 ""
@@ -499,6 +525,7 @@ const CreateFlowComponent = (props) => {
                   props.disableEditingWhileCreatingCamp
                 } hideItemStyle={props.hideItemStyle} 
                   languageComponentProps = {props}
+                  isThankYouNode={isThankYouNode}
                   />
               ): <></>}
             </div>

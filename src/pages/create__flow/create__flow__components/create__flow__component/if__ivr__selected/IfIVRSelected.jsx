@@ -35,6 +35,7 @@ const IfIVRSelected = (props) => {
     dtmf: 0,
     playOption: "PLAY",
   });
+  const {isThankYouNode} = props
 
   let globalState = useContext(store);
   const { dispatch } = globalState;
@@ -42,7 +43,6 @@ const IfIVRSelected = (props) => {
   let localStore = globalState.state;
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
-  const [isThankYouNode, setIsThankYouNode] = useState(false);
   const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
@@ -520,6 +520,9 @@ const IfIVRSelected = (props) => {
         newNumOfCards;
       dispatch({ type: "SET_DATA", nState: localStore });
     }
+    if(isThankYouNode){
+      dispatch({ type: "SET_THANKYOU", nState: true });
+    }
   };
 
   const setDataDynamic = (type, e, current) => {
@@ -869,15 +872,6 @@ const IfIVRSelected = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
-  const handleThankYou = (e) => {
-    setIsThankYouNode(e.target.checked);
-    if (e.target.checked) {
-      dispatch({ type: "SET_THANKYOU", nState: true });
-    } else {
-      dispatch({ type: "SET_THANKYOU", nState: false });
-    }
-  };
-
   const numberOfDTMF = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
@@ -916,7 +910,7 @@ const IfIVRSelected = (props) => {
             })}
             <div className="ghghg" style={{ margin: "10px 0" }}>
                 <Typography style={{ fontSize: "12px" }}>
-                    Welcome prompt file in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}
+                    Welcome {localStore.ivrCampFlowData.flow.language[0].actions.length > 1 ? " & Language Selection": ""} Prompt in {languageNames[localStore.ivrCampFlowData.flow.defaultLanguage]}`
                 </Typography>
             </div>
             <div className="ghghgh" style={{}}>
@@ -1082,30 +1076,9 @@ const IfIVRSelected = (props) => {
           </div>
         </div>
       </div>
-      <div
-        style={{ width: "30%", display: "flex", margin:"auto" }}
-        className={props.hideItemStyle}
-      >
-        <div style={{ width: "20%" }} className={props.hideItemStyle} >
-          <input
-            style={{}}
-            type="checkbox"
-            id="thank-you-node"
-            value={isThankYouNode}
-            onChange={(e) => handleThankYou(e)}
-          />
-        </div>
-        <label
-          style={{ width: "80%"}}
-          htmlFor="thank-you-node"
-          className={props.hideItemStyle}
-        >
-          Add Thank you node
-        </label>
-      </div>
 
-      <div style={{display:'flex', width:"100%",  marginTop:"1rem", justifyContent:'space-around'}}>
-      {isThankYouNode &&
+      <div style={{display:'flex', width:"100%",  marginTop:"1rem", justifyContent:'space-around'}} className={props.hideItemStyle}>
+      {isThankYouNode && !props.hideItemStyle &&
         localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
           <div
           className="file__chooser__container"
@@ -1147,7 +1120,7 @@ const IfIVRSelected = (props) => {
           />
           {globalState.state.ivrCampFlowData.flow.actions[
            globalState.state.ivrCampFlowData.flow.actions.length - 1
-          ].audio_file[lang] ? (
+          ]?.audio_file[lang] ? (
             
             <div
               style={{
@@ -1158,6 +1131,7 @@ const IfIVRSelected = (props) => {
                 marginBottom: "10px",
                 paddingBottom: "3px",
               }}
+              className={props.hideItemStyle}
             >
               <AudioFiles
                 dtmf={ globalState.state.ivrCampFlowData.flow.actions.length - 1}

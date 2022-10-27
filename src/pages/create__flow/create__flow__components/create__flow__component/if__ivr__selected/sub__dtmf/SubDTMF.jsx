@@ -1021,7 +1021,7 @@ const SubDTMF = (props) => {
                           <FileUploaderForSubDTMF
                             lang={lang}
                             main_audio_file={
-                              localStore.ivrCampFlowData.flow.main_audio_file
+                              localStore.ivrCampFlowData.flow.main_file.ivr
                             }
                             current={props.current}
                             uploadFiles={uploadFiles}

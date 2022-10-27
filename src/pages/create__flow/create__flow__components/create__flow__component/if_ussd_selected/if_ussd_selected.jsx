@@ -30,6 +30,7 @@ const IfUssdSelected = ({
   hideItemStyle,
   disableEditingWhileCreatingCamp,
   languageComponentProps,
+  isThankYouNode
 }) => {
   const globalState = useContext(store);
   const { dispatch } = globalState;
@@ -42,7 +43,6 @@ const IfUssdSelected = ({
   });
   const channel = globalState.state.ivrCampFlowData.flow.channel;
   const [disableChannel, setDisableChannel] = useState(channel);
-  const [isThankYouMsg, setIsThankYouMsg] = useState(false);
 
   const handleDataChange = (e) => {
     debugger;
@@ -185,6 +185,9 @@ const IfUssdSelected = ({
       localStore.ivrCampFlowData.flow.actions[current.id - 1].dtmf_count =
         newNumOfCards;
       dispatch({ type: "SET_DATA", nState: localStore });
+    }
+    if(isThankYouNode){
+      dispatch({ type: "SET_THANKYOU", nState: true });
     }
   };
 
@@ -559,14 +562,6 @@ const IfUssdSelected = ({
     },
   }));
 
-  const handleThankYou = (e) => {
-    setIsThankYouMsg(e.target.checked);
-    if (e.target.checked) {
-      dispatch({ type: "SET_THANKYOU", nState: true });
-    } else {
-      dispatch({ type: "SET_THANKYOU", nState: false });
-    }
-  };
 
   const handleThankYouMsg = (msg, languageCode) => {
     localStore.ivrCampFlowData.flow.actions =
@@ -696,28 +691,7 @@ const IfUssdSelected = ({
           );
         })}
       </div>
-      <div
-        style={{ width: "30%", display: "flex", margin:"auto" }}
-        className={hideItemStyle}
-      >
-        <div style={{ width: "20%" }} className={hideItemStyle} >
-          <input
-            style={{}}
-            type="checkbox"
-            id="thank-you-msg"
-            value={isThankYouMsg}
-            onChange={(e) => handleThankYou(e)}
-          />
-        </div>
-        <label
-          style={{ width: "80%"}}
-          htmlFor="thank-you-msg"
-          className={hideItemStyle}
-        >
-          Add Thank you message
-        </label>
-      </div>
-      {isThankYouMsg &&
+      {isThankYouNode && !hideItemStyle &&
         localStore.ivrCampFlowData.flow.languageChange.map((lang) => (
           <div style={{width:"40%", display:"inline-block", margin:"0 5%"}} className={hideItemStyle}>
             <TextField

@@ -278,7 +278,7 @@ const StateProvider = ({ children }) => {
           }]
         }
         else{
-          state.ivrCampFlowData.flow.actions = state.ivrCampFlowData.flow.actions.filter(item=> item.node_type !== 'ENDNODE')
+          state.ivrCampFlowData.flow.actions = state.ivrCampFlowData.flow.actions.filter(item=> item.node_type !== 'END')
         }
         return state
         

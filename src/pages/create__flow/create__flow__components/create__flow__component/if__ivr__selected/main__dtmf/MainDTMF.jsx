@@ -48,7 +48,7 @@ const MainDTMF = (props) => {
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
   const { channel } = useContext(CommonContext);
-  const [showLoader, setShowLoader] = useState(false);
+  const [isSuccessFailure, setIsSuccessFailure] = useState(false)
 
   console.log("props props props", props);
   const [
@@ -526,10 +526,12 @@ const MainDTMF = (props) => {
         let e = {target:{value: '2'}}
         detectLevel(e, "sub_audio_dtmfs", props.global)
         removeExtraSubDTMFs();
+        setIsSuccessFailure(true)
       }
       else{
         let e = {target:{value: '0'}}
         detectLevel(e, "sub_audio_dtmfs", props.global)
+        setIsSuccessFailure(false)
         
       }
     },[globalState.state.ivrCampFlowData.flow.actions[
@@ -803,6 +805,8 @@ const MainDTMF = (props) => {
                         disableEditingWhileCreatingCamp={
                           props.disableEditingWhileCreatingCamp
                         }
+                        isSuccessFailure={isSuccessFailure}
+                        index={index}
                       />
                     );
                   })}
@@ -1063,6 +1067,8 @@ const MainDTMF = (props) => {
                         disableEditingWhileCreatingCamp={
                           props.disableEditingWhileCreatingCamp
                         }
+                        isSuccessFailure={isSuccessFailure}
+                        index={index}
                       />
                     );
                   })}

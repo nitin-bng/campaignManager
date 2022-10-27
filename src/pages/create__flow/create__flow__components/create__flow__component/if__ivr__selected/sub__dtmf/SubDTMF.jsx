@@ -817,6 +817,29 @@ const SubDTMF = (props) => {
     )
   ]);
 
+  useEffect(()=>{
+    if((channel === 'USSD' || channel === 'SMS') && props.isSuccessFailure){
+      setIsFilled(true)
+      traverseAndModify(
+        props.current.id,
+        props.current,
+        channel === 'USSD' ? 'ussd_key' : 'sms_key',
+        props.index === 0 ? 'SUCCESS' : 'FAILURE',
+        "edit"
+      );
+    }else{
+      setIsFilled(false)
+      traverseAndModify(
+        props.current.id,
+        props.current,
+        channel === 'USSD' ? 'ussd_key' : 'sms_key',
+        '',
+        "edit"
+      );
+    }
+
+  },[channel, props.isSuccessFailure])
+
 
   return (
     <>
@@ -862,6 +885,9 @@ const SubDTMF = (props) => {
                   <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
                     DTMF To Choose this option :{" "}
                   </Typography>
+                  {props.isSuccessFailure ?  
+                  <div>{props.index === 0 ? 'SUCCESS' : 'FAILURE'}</div>
+                  :
                   <button
                     style={{
                       height: "25px",
@@ -877,7 +903,7 @@ const SubDTMF = (props) => {
                     disabled
                   >
                     {props.current.dtmf_key}
-                  </button>
+                  </button>}
                 </div>
               <CardContent>
                 <div className="main__dtmf__maincontent__container">
@@ -1139,7 +1165,7 @@ const SubDTMF = (props) => {
                       id="if__IVR__selected"
                       type="input"
                       label= "Input key to choose this option"
-                      disabled={props.disableEditingWhileCreatingCamp}
+                      disabled={props.disableEditingWhileCreatingCamp || props.isSuccessFailure}
                       value={traverseAndModify(
                         props.current.id,
                         props.current,

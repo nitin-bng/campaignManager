@@ -582,6 +582,8 @@ const SubDTMF = (props) => {
       localStoreC.input.sms_key = value;
       localStoreC.type = "HITURL_SMS";
       localStoreC.actionType["sms"] = "HITURL_SMS";
+    } else if (keyToChange == "ivr_key" && type == "edit") {
+      localStoreC.input.ivr_key = value;
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -860,15 +862,25 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     if (props.hideItemStyle) {
-      if ((channel === "USSD" || channel === "SMS") && props.isSuccessFailure) {
+      if (props.isSuccessFailure) {
         setIsFilled(true);
+        if(channel === "USSD" || channel === "SMS"){
         traverseAndModify(
           props.current.id,
           props.current,
           channel === "USSD" ? "ussd_key" : "sms_key",
-          props.index === 0 ? "SUCCESS" : "FAILURE",
+          props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
           "edit"
-        );
+        )}
+        else{
+          traverseAndModify(
+            props.current.id,
+            props.current,
+            "ivr_key",
+            props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
+            "edit"
+          )
+        }
       } else {
         setIsFilled(false);
         // traverseAndModify(
@@ -880,7 +892,7 @@ const SubDTMF = (props) => {
         // );
       }
     }
-  }, [channel, props.isSuccessFailure]);
+  }, [channel, props.isSuccessFailure, props.parentType]);
 
   console.log("nitin", props.current.type, localStore.ivrCampFlowData.flow);
 
@@ -942,7 +954,7 @@ const SubDTMF = (props) => {
                   }}
                 >
                   {props.isSuccessFailure ? (
-                    <div>{props.index === 0 ? "SUCCESS" : "FAILURE"}</div>
+                    <div>{ props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED"}</div>
                   ) : (
                     <>
                       <Typography
@@ -1135,6 +1147,7 @@ const SubDTMF = (props) => {
                             }
                             isSuccessFailure={isSuccessFailure}
                             index={index}
+                            parentNode={props.current.type}
                           />
                         </div>
                       );
@@ -1412,6 +1425,7 @@ const SubDTMF = (props) => {
                               }
                               isSuccessFailure={isSuccessFailure}
                               index={index}
+                              parentNode={props.current.type}
                             />
                           </div>
                         );

@@ -544,6 +544,21 @@ const MainDTMF = (props) => {
     }
   }, [globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type]);
 
+  const urlHandler = (e) =>{
+
+    localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map((item)=>{
+      if(item.dtmf_key === localStore.ivrCampFlowData.flow.actions[props.data - 1].dtmf_key){
+        console.log('this ran')
+        localStore.ivrCampFlowData.flow.languageChange.forEach(lang=>{
+          item.file.ivr[lang] = e.target.value
+          item.audio_file[lang] = e.target.value
+        })
+      }
+      return item
+    })
+    dispatch({type:'SET_DATA', nState: localStore})
+  }
+
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -745,12 +760,6 @@ const MainDTMF = (props) => {
                         </Select>
                       </FormControl>
                     </div>
-                    {console.log(
-                      "globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type",
-                      globalState.state.ivrCampFlowData.flow.actions[
-                        props.data - 1
-                      ].type
-                    )}
                     <div
                       className={props.hideItemStyle}
                       style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
@@ -761,22 +770,10 @@ const MainDTMF = (props) => {
                         <>
                           {localStore.ivrCampFlowData.flow.language.map(
                             (hello) => {
-                              console.log(
-                                "localStore.ivrCampFlowData.flow.language ===>",
-                                hello
-                              );
                               hellohello.push(hello.actions);
                               hello.actions.forEach((el) => {
-                                console.log(
-                                  "action element ===>",
-                                  el.languageName
-                                );
                                 languageName.push(el.languageName);
                               });
-                              console.log(
-                                "localStore.ivrCampFlowData.flow.language hello ===>",
-                                hellohello
-                              );
                             }
                           )}
                           <div
@@ -821,7 +818,7 @@ const MainDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField />
+                          <TextField onChange={(e)=>urlHandler(e)} />
                         </>
                       )}
                     </div>
@@ -1114,7 +1111,7 @@ const MainDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField />
+                          <TextField onChange={(e)=>urlHandler(e)} />
                         </>
                       )}
                     </div>

@@ -942,7 +942,7 @@ const SubDTMF = (props) => {
                   }}
                 >
                   {props.isSuccessFailure ? (
-                    <div>{props.index === 0 ? "hdg" : "hjhj"}</div>
+                    <div>{props.index === 0 ? "SUCCESS" : "FAILURE"}</div>
                   ) : (
                     <>
                       <Typography
@@ -1367,7 +1367,14 @@ const SubDTMF = (props) => {
                           </>
                         ) : (
                           <>
-                            <TextField onChange={(e) => urlHandler(e)}/>
+                            <TextField
+                            style={{marginTop:"1rem", width:'80%', textAlign:"center"}}
+                            id="outlined-multiline-static"
+                            label={`Enter URL`}
+                            multiline
+                            rows={1}
+                            variant="outlined"
+                            onChange={(e) => urlHandler(e)}/>
                           </>
                         )}
                       </div>

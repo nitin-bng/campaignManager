@@ -1045,11 +1045,12 @@ const MainDTMF = (props) => {
                         // alignItems: "center",
                       }}
                     >
-                      {(globalState.state.ivrCampFlowData.flow.actions[
+                      {globalState.state.ivrCampFlowData.flow.actions[
                         props.data - 1
-                      ].type == "HITURL_SMS") || (globalState.state.ivrCampFlowData.flow.actions[
+                      ].type == "HITURL_SMS" ||
+                      globalState.state.ivrCampFlowData.flow.actions[
                         props.data - 1
-                      ].type == "HITURL_USSD") ? (
+                      ].type == "HITURL_USSD" ? (
                         <>
                           {localStore.ivrCampFlowData.flow.language.map(
                             (hello) => {
@@ -1111,7 +1112,15 @@ const MainDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField onChange={(e)=>urlHandler(e)} />
+                          <TextField
+                            id="outlined-multiline-static"
+                            label={`Enter URL`}
+                            multiline
+                            rows={1}
+                            variant="outlined"
+                            style={{marginTop:"1rem", width:'80%', textAlign:"center"}}
+                            onChange={(e)=>urlHandler(e)}
+                          />
                         </>
                       )}
                     </div>

@@ -1093,9 +1093,11 @@ const IfIVRSelected = (props) => {
             display: "flex",
             height: "fit-content",
             flexDirection: "column",
+            justifyContent:"center",
+            alignItems:"center"
           }}
         >
-          <div>Upload file for {languageNames[lang]}</div>
+          <div style={{fontSize:".7rem", alignContent:"center"}}>Upload thanks prompt for {languageNames[lang]}</div>
           <input
             accept="audio/wav"
             type="file"

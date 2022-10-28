@@ -490,6 +490,19 @@ const SubDTMF = (props) => {
     }
   };
 
+  const urlHandler = (e) =>{
+    localStore.ivrCampFlowData.flow.languageChange.forEach(lang=>{
+      traverseAndModify(
+        props.current.id,
+        props.current,
+        "ussd_msg",
+        e.target.value,
+        "edit",
+        lang
+      )
+    })
+  }
+
   function traverseAndModify(
     id,
     objToTraverse,
@@ -1084,7 +1097,7 @@ const SubDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField />
+                          <TextField onChange={(e) => urlHandler(e)} />
                         </>
                       )}
                     </div>
@@ -1360,7 +1373,8 @@ const SubDTMF = (props) => {
                             label={`Enter URL`}
                             multiline
                             rows={1}
-                            variant="outlined"/>
+                            variant="outlined"
+                            onChange={(e) => urlHandler(e)}/>
                           </>
                         )}
                       </div>

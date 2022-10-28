@@ -41,7 +41,7 @@ const ExpandMore = styled((props) => {
 const numberOfSubDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
-
+let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
 const SubDTMF = (props) => {
 
   var hellohello = [];
@@ -261,7 +261,6 @@ const SubDTMF = (props) => {
   const globalState = useContext(store);
   let localStore = globalState.state;
   const { disableChannel } = props;
-  console.log("dtmfs options  hello", props);
 
   const { dispatch } = globalState;
 
@@ -270,6 +269,8 @@ const SubDTMF = (props) => {
       .fill()
       .map((x, i) => i + 1);
   };
+
+  const [isSuccessFailure,setIsSuccessFailure] = useState(!excludes.includes(props.current.type))
 
   const setDataDynamic = (type, e, current) => {
     debugger;
@@ -611,7 +612,7 @@ const SubDTMF = (props) => {
 
     findAndModifyFirst(localStoreB, "actions", { id: id }, localStoreC);
     localStore.ivrCampFlowData.flow = localStoreB;
-
+    
     dispatch({ type: "SET_DATA", nState: localStore });
   }
 
@@ -763,6 +764,21 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
+    if(props.hideItemStyle){
+      let value = {IVR: 'PLAY', USSD: 'HITURL_USSD', SMS: 'HITURL_SMS'}
+      let e = {target:{value: value[localStore.ivrCampFlowData.flow.channel]}}
+      traverseAndModify(
+        props.current.id,
+        props.current,
+        "type",
+        e.target.value,
+        "edit"
+      );
+      props.dataHandleWithObj(
+        e,
+        props.global || props.current
+      );
+    }
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
     };
@@ -817,6 +833,56 @@ const SubDTMF = (props) => {
     )
   ]);
 
+  useEffect(()=>{
+    if(props.hideItemStyle){
+      if((channel === 'USSD' || channel === 'SMS') && props.isSuccessFailure){
+        setIsFilled(true)
+        traverseAndModify(
+          props.current.id,
+          props.current,
+          channel === 'USSD' ? 'ussd_key' : 'sms_key',
+          props.index === 0 ? 'SUCCESS' : 'FAILURE',
+          "edit"
+        );
+      }else{
+        setIsFilled(false)
+        // traverseAndModify(
+        //   props.current.id,
+        //   props.current,
+        //   channel === 'USSD' ? 'ussd_key' : 'sms_key',
+        //   '',
+        //   "edit"
+        // );
+      }
+  }
+  },[channel, props.isSuccessFailure])
+
+  console.log('nitin', props.current.type, localStore.ivrCampFlowData.flow)
+
+  useEffect(()=>{
+    if(props.hideItemStyle){
+
+    if(!excludes.includes(props.current.type)){
+      let e = {target:{value: '2'}}
+      detectLevel(e, "sub_audio_dtmfs", props.current)
+        setIsSuccessFailure(true)
+        props.dataHandleWithObj(
+          e,
+          props.global || props.current
+          );
+        }
+      else{
+        let e = {target:{value: '0'}}
+        detectLevel(e, "sub_audio_dtmfs", props.current)
+        setIsSuccessFailure(false)
+        props.dataHandleWithObj(
+          e,
+          props.global || props.current
+        );  
+      }
+    }
+  },[props.current.type])
+
 
   return (
     <>
@@ -859,25 +925,31 @@ const SubDTMF = (props) => {
                     zIndex:"1"
                   }}
                 >
-                  <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
-                    DTMF To Choose this option :{" "}
-                  </Typography>
-                  <button
-                    style={{
-                      height: "25px",
-                      width: "25px",
-                      backgroundColor: "rgb(214,214,214)",
-                      padding: "0",
-                      borderTop: "none",
-                      borderLeft: "none",
-                      boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
-                      color: "black",
-                      marginTop: ".5rem",
-                    }}
-                    disabled
-                  >
-                    {props.current.dtmf_key}
-                  </button>
+                  {props.isSuccessFailure ?  
+                  <div>{props.index === 0 ? 'SUCCESS' : 'FAILURE'}</div>
+                  :
+                  <>
+                    <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
+                      DTMF To Choose this option :{" "}
+                    </Typography>
+                    <button
+                      style={{
+                        height: "25px",
+                        width: "25px",
+                        backgroundColor: "rgb(214,214,214)",
+                        padding: "0",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
+                        color: "black",
+                        marginTop: ".5rem",
+                      }}
+                      disabled
+                    >
+                      {props.current.dtmf_key}
+                    </button>
+                  </>
+                  }
                 </div>
               <CardContent>
                 <div className="main__dtmf__maincontent__container">
@@ -907,7 +979,7 @@ const SubDTMF = (props) => {
                         }}
                         name="type"
                       >
-                        {["PLAY"].map((number, index) => {
+                        {["PLAY", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;
                         })}
                       </Select>
@@ -972,7 +1044,7 @@ const SubDTMF = (props) => {
                         labelId="demo-simple-select-label"
                         id="demo-select"
                         value={props.current.dtmf_count}
-                        disabled={props.disableEditingWhileCreatingCamp}
+                        disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
                         label="Number of options after this node"
                         name="sub_audio_dtmfs_dtmfCount"
                         onChange={(e) => {
@@ -1058,6 +1130,8 @@ const SubDTMF = (props) => {
                           disableEditingWhileCreatingCamp={
                             props.disableEditingWhileCreatingCamp
                           }
+                          isSuccessFailure={isSuccessFailure}
+                          index={index}
                         />
                       </div>
                     );
@@ -1102,7 +1176,7 @@ const SubDTMF = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={ channel === 'USSD' ? 'HITURL_USSD' :  channel === 'SMS' && 'HITURL_SMS'}
+                      value={ props.current.type}
                       label="Actions"
                       disabled={props.disableEditingWhileCreatingCamp}
                       onChange={(e) => {
@@ -1120,9 +1194,9 @@ const SubDTMF = (props) => {
                       }}
                       name="type"
                     >
-                     { channel === 'USSD' ? ["HITURL_USSD"].map((number, index) => {
+                     { channel === 'USSD' ? ["HITURL_USSD", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                           return <MenuItem value={number}>{number}</MenuItem>;
-                          }): channel === 'SMS' && ["HITURL_SMS"].map((number, index) => {
+                          }): channel === 'SMS' && ["HITURL_SMS", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
                     </Select>
@@ -1139,7 +1213,7 @@ const SubDTMF = (props) => {
                       id="if__IVR__selected"
                       type="input"
                       label= "Input key to choose this option"
-                      disabled={props.disableEditingWhileCreatingCamp}
+                      disabled={props.disableEditingWhileCreatingCamp || props.isSuccessFailure}
                       value={traverseAndModify(
                         props.current.id,
                         props.current,
@@ -1186,7 +1260,7 @@ const SubDTMF = (props) => {
                       labelId="demo-simple-select-label"
                       id="demo-select"
                       value={props.current.dtmf_count}
-                      disabled={props.disableEditingWhileCreatingCamp}
+                      disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
                       label="Number of options after this node"
                       name="sub_audio_dtmfs_dtmfCount"
                       onChange={(e) => {
@@ -1276,6 +1350,8 @@ const SubDTMF = (props) => {
                         disableEditingWhileCreatingCamp={
                           props.disableEditingWhileCreatingCamp
                         }
+                        isSuccessFailure={isSuccessFailure}
+                        index={index}
                       />
                     </div>
                   );

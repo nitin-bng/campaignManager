@@ -1,8 +1,8 @@
-const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions = false ) => { 
+const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions = false, channel = false ) => { 
     return actions.map(obj=>{
         if(obj['actions']){
             if(obj.actions.length){
-                obj = {...obj, node_type: "PROCESSING", actions: arrangeActionsData(obj.actions, waitTime,repeatCount, bargein)}
+                obj = {...obj, node_type: "PROCESSING", actions: arrangeActionsData(obj.actions, waitTime,repeatCount, bargein,isInActions, channel)}
             }
             else{
                 if(obj.node_type !== 'END'){
@@ -12,6 +12,10 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions 
         }
         obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}
         
+        if(channel){
+            obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, [channel.toLowerCase()]: obj.type}}
+        }
+
         if(isInActions){
             obj = {...obj, file:{...obj.file, ivr: {...obj.audio_file}, sms:{...obj.audio_file}, ussd: {...obj.audio_file}}}
         }
@@ -24,9 +28,9 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions 
     })
 }
 
-const modifyDataForBackend = (data, waitTime=0, repeatCount=0, bargein=false) =>{
+const modifyDataForBackend = (data, waitTime=0, repeatCount=0, bargein=false, channel) =>{
     let result = {...data}
-    result = {...result,actions: arrangeActionsData(result.actions, waitTime, repeatCount, bargein, true)}
+    result = {...result,actions: arrangeActionsData(result.actions, waitTime, repeatCount, bargein, true, channel)}
     result = {...result, language: [{...result.language[0], actions: arrangeActionsData(result.language[0].actions, waitTime, repeatCount, bargein)}]}
     result = {...result, waitTime, repeatCount}
     if(bargein){

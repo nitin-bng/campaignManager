@@ -389,6 +389,7 @@ const IfIVRSelected = (props) => {
   };
 
   const detectLevel = (e, target, current) => {
+    dispatch({ type: "SET_THANKYOU", nState: false });
     handleChange(e);
     if (target === "main_audio") {
       handleDataChange(e);

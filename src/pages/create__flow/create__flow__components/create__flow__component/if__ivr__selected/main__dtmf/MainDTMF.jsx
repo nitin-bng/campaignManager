@@ -818,7 +818,14 @@ const MainDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField onChange={(e)=>urlHandler(e)} />
+                          <TextField 
+                          id="outlined-multiline-static"
+                          label={`Enter URL`}
+                          multiline
+                          rows={1}
+                          variant="outlined"
+                          style={{marginTop:"1rem", width:'80%', textAlign:"center"}}
+                          onChange={(e)=>urlHandler(e)} />
                         </>
                       )}
                     </div>

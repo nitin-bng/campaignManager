@@ -852,6 +852,7 @@ const MainDTMF = (props) => {
                         }
                         isSuccessFailure={isSuccessFailure}
                         index={index}
+                        parentType={globalState.state.ivrCampFlowData.flow.actions[props.data - 1]?.type}
                       />
                     );
                   })}
@@ -1154,6 +1155,7 @@ const MainDTMF = (props) => {
                         }
                         isSuccessFailure={isSuccessFailure}
                         index={index}
+                        parentType={globalState.state.ivrCampFlowData.flow.actions[props.data - 1]?.type}
                       />
                     );
                   })}

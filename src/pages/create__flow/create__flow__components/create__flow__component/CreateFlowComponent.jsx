@@ -525,7 +525,10 @@ const CreateFlowComponent = (props) => {
                 </FormControl>
 
               </div>
-                <div
+            </>
+          )}
+
+<div
                   style={{
                     width: "100%",
                     display: "flex",
@@ -547,8 +550,6 @@ const CreateFlowComponent = (props) => {
                     Add Thank you node
                   </label>
                 </div>
-            </>
-          )}
 
           <div className="call__flow__details__container">
             <div className="call__flow__details" style={{ marginTop: "1rem" }}>

@@ -108,7 +108,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
       if (
         localStore.ivrCampFlowData.flow.channel === "IVR" ||
         (localStore.ivrCampFlowData.flow.channel === "USSD" && ussdKey) ||
-        (localStore.ivrCampFlowData.flow.channel === "SMS" && smsKey)
+        (localStore.ivrCampFlowData.flow.channel === "SMS" && smsKey) || localStore.ivrCampFlowData.flow.language[0].actions.length === 1
       ) {
         errorDispatch({
           type: "RENDERING_COMPONENT_ON_LANGUAGE_SELECT",

@@ -204,7 +204,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein),
+        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein, localStore.ivrCampFlowData.flow.channel),
         publisher: null,
         device: null,
         country: null,
@@ -244,7 +244,7 @@ const CreateFlow = () => {
           timezonevalue: "00:00",
         },
         blackouthour: "form.blackouthour",
-        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein),
+        flow: modifyDataForBackend(globalState.state.ivrCampFlowData.flow, globalState.state.ivrCampFlowData.flow.waitTime,  globalState.state.ivrCampFlowData.flow.repeatCount, bargein, localStore.ivrCampFlowData.flow.channel),
         publisher: null,
         device: null,
         country: null,
@@ -354,6 +354,8 @@ const CreateFlow = () => {
     dispatch({ type: "SET_DATA", nState: localStore });
     console.log("hello hello hello", globalState);
   };
+
+  console.log('nitin global data', localStore.ivrCampFlowData.flow)
 
   const getFlow = async (e, id) => {
     debugger;

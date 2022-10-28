@@ -41,7 +41,7 @@ const numberOfSubDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
 
-let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+let excludes = ["PLAY", "PLAY_BARGEIN", "HITURL_USSD", "HITURL_SMS"];
 
 const MainDTMF = (props) => {
   var hellohello = [];
@@ -50,7 +50,6 @@ const MainDTMF = (props) => {
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
   const { channel } = useContext(CommonContext);
-
 
   console.log("props props props", props);
   const [
@@ -263,9 +262,11 @@ const MainDTMF = (props) => {
   let localStore = globalState.state;
   const { disableChannel } = props;
 
-  const [isSuccessFailure, setIsSuccessFailure] = useState(!excludes.includes(globalState.state.ivrCampFlowData.flow.actions[
-    props.data - 1
-  ]?.type))
+  const [isSuccessFailure, setIsSuccessFailure] = useState(
+    !excludes.includes(
+      globalState.state.ivrCampFlowData.flow.actions[props.data - 1]?.type
+    )
+  );
 
   const { dispatch } = globalState;
   const genArray = (n) => {
@@ -450,23 +451,23 @@ const MainDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
-    if(props.hideItemStyle){
-    if (channel === "USSD") {
-      globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
-        "HITURL_USSD";
-      globalState.state.ivrCampFlowData.flow.actions[
-        props.data - 1
-      ].actionType.ussd = "HITURL_USSD";
-      dispatch({ type: "SET_DATA", nState: globalState.state });
-    } else if (channel === "SMS") {
-      globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
-        "HITURL_SMS";
-      globalState.state.ivrCampFlowData.flow.actions[
-        props.data - 1
-      ].actionType.sms = "HITURL_SMS";
-      dispatch({ type: "SET_DATA", nState: globalState.state });
+    if (props.hideItemStyle) {
+      if (channel === "USSD") {
+        globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
+          "HITURL_USSD";
+        globalState.state.ivrCampFlowData.flow.actions[
+          props.data - 1
+        ].actionType.ussd = "HITURL_USSD";
+        dispatch({ type: "SET_DATA", nState: globalState.state });
+      } else if (channel === "SMS") {
+        globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type =
+          "HITURL_SMS";
+        globalState.state.ivrCampFlowData.flow.actions[
+          props.data - 1
+        ].actionType.sms = "HITURL_SMS";
+        dispatch({ type: "SET_DATA", nState: globalState.state });
+      }
     }
-  }
     return () => {
       errorDispatch({ type: "MAIN_DTMF", payload: false });
     };
@@ -493,9 +494,7 @@ const MainDTMF = (props) => {
     ) {
       errorDispatch({ type: "MAIN_DTMF", payload: true });
     }
-  }, [
-    isFilled,
-  ]);
+  }, [isFilled]);
 
   const removeExtraSubDTMFs = () => {
     localStore.ivrCampFlowData.flow.actions =
@@ -509,42 +508,41 @@ const MainDTMF = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
-    const handleUSSD = (msg, languageCode) =>{
-      debugger
-      localStore.ivrCampFlowData.flow.actions = localStore.ivrCampFlowData.flow.actions.map(item=>{
-          if(item.dtmf_key === props.global.dtmf_key){
-            item.audio_file[languageCode] = msg
-            item.file.sms[languageCode] = msg
-            item.file['ussd'] = item.file['ussd'] ? item.file['ussd'] : {} 
-            item.file.ussd[languageCode] = msg
-            item.file['sms'] = item.file['sms'] ? item.file['sms'] : {} 
-            item.file.sms[languageCode] = msg
-          }
-        return item
-      })
-      dispatch({ type: "SET_DATA", nState: localStore });
-    }
+  const handleUSSD = (msg, languageCode) => {
+    debugger;
+    localStore.ivrCampFlowData.flow.actions =
+      localStore.ivrCampFlowData.flow.actions.map((item) => {
+        if (item.dtmf_key === props.global.dtmf_key) {
+          item.audio_file[languageCode] = msg;
+          item.file.sms[languageCode] = msg;
+          item.file["ussd"] = item.file["ussd"] ? item.file["ussd"] : {};
+          item.file.ussd[languageCode] = msg;
+          item.file["sms"] = item.file["sms"] ? item.file["sms"] : {};
+          item.file.sms[languageCode] = msg;
+        }
+        return item;
+      });
+    dispatch({ type: "SET_DATA", nState: localStore });
+  };
 
-    useEffect(()=>{
-      if(props.hideItemStyle){
-
-      if(!excludes.includes(globalState.state.ivrCampFlowData.flow.actions[
-        props.data - 1
-      ].type)){
-        let e = {target:{value: '2'}}
-        detectLevel(e, "sub_audio_dtmfs", props.global)
+  useEffect(() => {
+    if (props.hideItemStyle) {
+      if (
+        !excludes.includes(
+          globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type
+        )
+      ) {
+        let e = { target: { value: "2" } };
+        detectLevel(e, "sub_audio_dtmfs", props.global);
         removeExtraSubDTMFs();
-        setIsSuccessFailure(true)
+        setIsSuccessFailure(true);
+      } else {
+        let e = { target: { value: "0" } };
+        detectLevel(e, "sub_audio_dtmfs", props.global);
+        setIsSuccessFailure(false);
       }
-      else{
-        let e = {target:{value: '0'}}
-        detectLevel(e, "sub_audio_dtmfs", props.global)
-        setIsSuccessFailure(false)
-        
-      }}
-    },[globalState.state.ivrCampFlowData.flow.actions[
-      props.data - 1
-    ].type])
+    }
+  }, [globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type]);
 
   return (
     <>
@@ -555,7 +553,7 @@ const MainDTMF = (props) => {
               style={{
                 backgroundColor: "rgba(0, 0, 0, 0.04)",
                 padding: "1rem",
-                position:"relative"
+                position: "relative",
               }}
               fullWidth
             >
@@ -566,7 +564,11 @@ const MainDTMF = (props) => {
                   onClick={handleExpandClick}
                   aria-expanded={expanded}
                   aria-label="show more"
-                  style={{ display: "flex", justifyContent: "flex-end", zIndex:"1000" }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    zIndex: "1000",
+                  }}
                 >
                   <ExpandMoreIcon />
                 </ExpandMore>
@@ -579,9 +581,9 @@ const MainDTMF = (props) => {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    position:"absolute",
-                    top:"10px",
-                    zIndex:"1"
+                    position: "absolute",
+                    top: "10px",
+                    zIndex: "1",
                   }}
                 >
                   <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
@@ -617,9 +619,11 @@ const MainDTMF = (props) => {
                           value={
                             globalState.state.ivrCampFlowData.flow.actions[
                               props.data - 1
-                            ].type  === 'PLAY_BARGEIN' ? 'PLAY': globalState.state.ivrCampFlowData.flow.actions[
-                              props.data - 1
-                            ].type
+                            ].type === "PLAY_BARGEIN"
+                              ? "PLAY"
+                              : globalState.state.ivrCampFlowData.flow.actions[
+                                  props.data - 1
+                                ].type
                           }
                           label="Actions"
                           onChange={(e) => {
@@ -631,7 +635,12 @@ const MainDTMF = (props) => {
                           disabled={props.disableEditingWhileCreatingCamp}
                           name="type"
                         >
-                          {["PLAY", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
+                          {[
+                            "PLAY",
+                            "HITURL_CHECKSUB",
+                            "HITURL_SUB",
+                            "HITURL_ANY",
+                          ].map((number, index) => {
                             console.log(number);
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
@@ -710,11 +719,15 @@ const MainDTMF = (props) => {
                           onChange={(e) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
                           }}
-                          disabled={props.disableEditingWhileCreatingCamp || (globalState.state.ivrCampFlowData.flow.actions[
-                            props.data - 1
-                          ].type !== 'PLAY' && globalState.state.ivrCampFlowData.flow.actions[
-                            props.data - 1
-                          ].type !== 'PLAY_BARGEIN')}
+                          disabled={
+                            props.disableEditingWhileCreatingCamp ||
+                            (globalState.state.ivrCampFlowData.flow.actions[
+                              props.data - 1
+                            ].type !== "PLAY" &&
+                              globalState.state.ivrCampFlowData.flow.actions[
+                                props.data - 1
+                              ].type !== "PLAY_BARGEIN")
+                          }
                           required
                           error={
                             showError
@@ -732,65 +745,85 @@ const MainDTMF = (props) => {
                         </Select>
                       </FormControl>
                     </div>
-
+                    {console.log(
+                      "globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type",
+                      globalState.state.ivrCampFlowData.flow.actions[
+                        props.data - 1
+                      ].type
+                    )}
                     <div
                       className={props.hideItemStyle}
                       style={{ boxShadow: "2px 2px 3px grey", width: "100%" }}
                     >
-                      {localStore.ivrCampFlowData.flow.language.map((hello) => {
-                        console.log(
-                          "localStore.ivrCampFlowData.flow.language ===>",
-                          hello
-                        );
-                        hellohello.push(hello.actions);
-                        hello.actions.forEach((el) => {
-                          console.log("action element ===>", el.languageName);
-                          languageName.push(el.languageName);
-                        });
-                        console.log(
-                          "localStore.ivrCampFlowData.flow.language hello ===>",
-                          hellohello
-                        );
-                      })}
-                      <div
-                        className="ghghg"
-                        style={{
-                          margin: "10px 0",
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                        }}
-                      >
-                        {languageName.map((el) => {
-                          return (
-                            <Typography style={{ fontSize: "12px" }}>
-                              Response prompt in {el} for DTMF : {props.dtmfNumber}
-                            </Typography>
-                          );
-                        })}
-                      </div>
-                      <div
-                        className="ghghgh"
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                          width: "100%",
-                        }}
-                      >
-                      
-                        {localStore.ivrCampFlowData.flow.languageChange.map(
-                          (lang) => (
-                            <FileUploaderForMainDTMF
-                              lang={lang}
-                              hideItemStyle={props.hideItemStyle}
-                              parentNode={props.parentNode}
-                              global={props.global}
-                              globalState={globalState}
-                              uploadFiles={uploadFiles}
-                              AudioFiles={AudioFiles}
-                            />
-                          )
-                        )}
-                      </div>
+                      {globalState.state.ivrCampFlowData.flow.actions[
+                        props.data - 1
+                      ].type == "PLAY" ? (
+                        <>
+                          {localStore.ivrCampFlowData.flow.language.map(
+                            (hello) => {
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language ===>",
+                                hello
+                              );
+                              hellohello.push(hello.actions);
+                              hello.actions.forEach((el) => {
+                                console.log(
+                                  "action element ===>",
+                                  el.languageName
+                                );
+                                languageName.push(el.languageName);
+                              });
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language hello ===>",
+                                hellohello
+                              );
+                            }
+                          )}
+                          <div
+                            className="ghghg"
+                            style={{
+                              margin: "10px 0",
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                            }}
+                          >
+                            {languageName.map((el) => {
+                              return (
+                                <Typography style={{ fontSize: "12px" }}>
+                                  Response prompt in {el} for DTMF :{" "}
+                                  {props.dtmfNumber}
+                                </Typography>
+                              );
+                            })}
+                          </div>
+                          <div
+                            className="ghghgh"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                              width: "100%",
+                            }}
+                          >
+                            {localStore.ivrCampFlowData.flow.languageChange.map(
+                              (lang) => (
+                                <FileUploaderForMainDTMF
+                                  lang={lang}
+                                  hideItemStyle={props.hideItemStyle}
+                                  parentNode={props.parentNode}
+                                  global={props.global}
+                                  globalState={globalState}
+                                  uploadFiles={uploadFiles}
+                                  AudioFiles={AudioFiles}
+                                />
+                              )
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <TextField />
+                        </>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -873,13 +906,23 @@ const MainDTMF = (props) => {
                           name="type"
                         >
                           {channel === "USSD"
-                            ? ["HITURL_USSD", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
+                            ? [
+                                "HITURL_USSD",
+                                "HITURL_CHECKSUB",
+                                "HITURL_SUB",
+                                "HITURL_ANY",
+                              ].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
                                 );
                               })
                             : channel === "SMS" &&
-                              ["HITURL_SMS", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
+                              [
+                                "HITURL_SMS",
+                                "HITURL_CHECKSUB",
+                                "HITURL_SUB",
+                                "HITURL_ANY",
+                              ].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
                                 );
@@ -968,11 +1011,15 @@ const MainDTMF = (props) => {
                             detectLevel(e, "sub_audio_dtmfs", props.global);
                             removeExtraSubDTMFs();
                           }}
-                          disabled={props.disableEditingWhileCreatingCamp || (globalState.state.ivrCampFlowData.flow.actions[
-                            props.data - 1
-                          ].type !== 'HITURL_SMS' && globalState.state.ivrCampFlowData.flow.actions[
-                            props.data - 1
-                          ].type !== 'HITURL_USSD') }
+                          disabled={
+                            props.disableEditingWhileCreatingCamp ||
+                            (globalState.state.ivrCampFlowData.flow.actions[
+                              props.data - 1
+                            ].type !== "HITURL_SMS" &&
+                              globalState.state.ivrCampFlowData.flow.actions[
+                                props.data - 1
+                              ].type !== "HITURL_USSD")
+                          }
                           required
                           error={
                             showError
@@ -1001,58 +1048,75 @@ const MainDTMF = (props) => {
                         // alignItems: "center",
                       }}
                     >
-                      {localStore.ivrCampFlowData.flow.language.map((hello) => {
-                        console.log(
-                          "localStore.ivrCampFlowData.flow.language ===>",
-                          hello
-                        );
-                        hellohello.push(hello.actions);
-                        hello.actions.forEach((el) => {
-                          console.log("action element ===>", el.languageName);
-                          languageName.push(el.languageName);
-                        });
-                        console.log(
-                          "localStore.ivrCampFlowData.flow.language hello ===>",
-                          hellohello
-                        );
-                      })}
-                      <div
-                        className="ghghg"
-                        style={{
-                          margin: "10px 0",
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                        }}
-                      >
-                        {languageName.map((el) => {
-                          return (
-                            <Typography style={{ fontSize: "12px" }}>
-                              Message in {el}
-                            </Typography>
-                          );
-                        })}
-                      </div>
-                      <div
-                        className="ghghgh"
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                          width: "100%",
-                        }}
-                      >
-                        {localStore.ivrCampFlowData.flow.languageChange.map(
-                          (lang) => (
-                            <MessageUploadForMainDTMF
-                              lang={lang}
-                              handleUSSD={handleUSSD}
-                              localStore={localStore}
-                              global={props.global}
-                              hideItemStyle={props.hideItemStyle}
-                              channel={channel}
-                            />
-                          )
-                        )}
-                      </div>
+                      {(globalState.state.ivrCampFlowData.flow.actions[
+                        props.data - 1
+                      ].type == "HITURL_SMS") || (globalState.state.ivrCampFlowData.flow.actions[
+                        props.data - 1
+                      ].type == "HITURL_USSD") ? (
+                        <>
+                          {localStore.ivrCampFlowData.flow.language.map(
+                            (hello) => {
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language ===>",
+                                hello
+                              );
+                              hellohello.push(hello.actions);
+                              hello.actions.forEach((el) => {
+                                console.log(
+                                  "action element ===>",
+                                  el.languageName
+                                );
+                                languageName.push(el.languageName);
+                              });
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language hello ===>",
+                                hellohello
+                              );
+                            }
+                          )}
+                          <div
+                            className="ghghg"
+                            style={{
+                              margin: "10px 0",
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                            }}
+                          >
+                            {languageName.map((el) => {
+                              return (
+                                <Typography style={{ fontSize: "12px" }}>
+                                  Message in {el}
+                                </Typography>
+                              );
+                            })}
+                          </div>
+                          <div
+                            className="ghghgh"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                              width: "100%",
+                            }}
+                          >
+                            {localStore.ivrCampFlowData.flow.languageChange.map(
+                              (lang) => (
+                                <MessageUploadForMainDTMF
+                                  lang={lang}
+                                  handleUSSD={handleUSSD}
+                                  localStore={localStore}
+                                  global={props.global}
+                                  hideItemStyle={props.hideItemStyle}
+                                  channel={channel}
+                                />
+                              )
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <TextField />
+                        </>
+                      )}
                     </div>
                   </div>
                 </CardContent>

@@ -41,9 +41,8 @@ const ExpandMore = styled((props) => {
 const numberOfSubDTMF = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
-let excludes = ['PLAY', 'PLAY_BARGEIN', 'HITURL_USSD', 'HITURL_SMS']
+let excludes = ["PLAY", "PLAY_BARGEIN", "HITURL_USSD", "HITURL_SMS"];
 const SubDTMF = (props) => {
-
   var hellohello = [];
   var languageName = [];
   const { showError, setShowError, errorDispatch } = useError();
@@ -52,14 +51,14 @@ const SubDTMF = (props) => {
     numberOfMainDTMFWhenIVRIsSelected,
     setnumberOfMainDTMFWhenIVRIsSelected,
   ] = useState("");
-  const {channel} = useContext(CommonContext)
+  const { channel } = useContext(CommonContext);
 
   const [isFilled, setIsFilled] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const [showLoader, setShowLoader] = useState(false)
+  const [showLoader, setShowLoader] = useState(false);
   const handleChange = (event) => {
     setnumberOfMainDTMFWhenIVRIsSelected(event.target.value);
   };
@@ -215,7 +214,7 @@ const SubDTMF = (props) => {
               <span style={{ color: "darkgray" }}> {index + 1} - </span>
               {e}
               <ReactAudioPlayer
-                src={config.server.path+`/cm_data/audio/${e}`}
+                src={config.server.path + `/cm_data/audio/${e}`}
                 controls
               />
             </span>
@@ -243,7 +242,7 @@ const SubDTMF = (props) => {
                     <span style={{ color: "darkgray" }}> {index + 1} - </span>
                     {e}
                     <ReactAudioPlayer
-                      src={config.server.path+`/cm_data/audio/${e}`}
+                      src={config.server.path + `/cm_data/audio/${e}`}
                       controls
                     />
                     <br></br>
@@ -270,7 +269,9 @@ const SubDTMF = (props) => {
       .map((x, i) => i + 1);
   };
 
-  const [isSuccessFailure,setIsSuccessFailure] = useState(!excludes.includes(props.current.type))
+  const [isSuccessFailure, setIsSuccessFailure] = useState(
+    !excludes.includes(props.current.type)
+  );
 
   const setDataDynamic = (type, e, current) => {
     debugger;
@@ -324,8 +325,7 @@ const SubDTMF = (props) => {
           url_fail: "",
           url_action: "",
           dtmf_count: 0,
-          actions: [
-          ],
+          actions: [],
           action_tag: "",
           sms: "",
           file: {
@@ -487,11 +487,17 @@ const SubDTMF = (props) => {
       localStore.ivrCampFlowData.flow.actions[current.id - 1].dtmf_count =
         newNumOfCards;
       dispatch({ type: "SET_DATA", nState: localStore });
-
     }
   };
 
-  function traverseAndModify(id, objToTraverse, keyToChange, value, type, languageCode='') {
+  function traverseAndModify(
+    id,
+    objToTraverse,
+    keyToChange,
+    value,
+    type,
+    languageCode = ""
+  ) {
     debugger;
     console.log(
       "traverse and modify",
@@ -532,14 +538,14 @@ const SubDTMF = (props) => {
       if (keyToChange == "input.sms_key") {
         return localStoreC.input.sms_key;
       }
-      if(keyToChange === 'ussd_key'){
-        return localStoreC.input.ussd_key
+      if (keyToChange === "ussd_key") {
+        return localStoreC.input.ussd_key;
       }
-      if(keyToChange === 'sms_key'){
-        return localStoreC.input.sms_key
+      if (keyToChange === "sms_key") {
+        return localStoreC.input.sms_key;
       }
-      if(keyToChange === 'ussd_msg'){
-        return localStoreC.audio_file[languageCode]
+      if (keyToChange === "ussd_msg") {
+        return localStoreC.audio_file[languageCode];
       }
       return localStoreC[keyToChange];
     }
@@ -561,8 +567,8 @@ const SubDTMF = (props) => {
       localStoreC.repeat.value = value.value == "false" ? true : false;
     } else if (keyToChange == "sms_key" && type == "edit") {
       localStoreC.input.sms_key = value;
-      localStoreC.type = 'HITURL_SMS';
-      localStoreC.actionType['sms'] = 'HITURL_SMS';
+      localStoreC.type = "HITURL_SMS";
+      localStoreC.actionType["sms"] = "HITURL_SMS";
     } else if (keyToChange == "sms" && type == "edit") {
       let id = value.target.id.split("-");
       localStoreC.file["sms"][id[1]] = value.target.value;
@@ -594,25 +600,26 @@ const SubDTMF = (props) => {
       }
       localStoreC.type = value;
     } else {
-      if(keyToChange==='ussd_key'){
+      if (keyToChange === "ussd_key") {
         localStoreC.input[keyToChange] = value;
-        localStoreC.type = 'HITURL_USSD';
-        localStoreC.actionType['ussd'] = 'HITURL_USSD';
+        localStoreC.type = "HITURL_USSD";
+        localStoreC.actionType["ussd"] = "HITURL_USSD";
       }
-      if(keyToChange === 'ussd_msg'){
-        localStoreC.audio_file[languageCode] = value
-        localStoreC.file.sms[languageCode] = value
-        localStoreC.file['ussd'] = localStoreC.file['ussd'] ? localStoreC.file['ussd'] : {} 
-        localStoreC.file.ussd[languageCode] = value
-      }
-      else{
-      localStoreC[keyToChange] = value;
+      if (keyToChange === "ussd_msg") {
+        localStoreC.audio_file[languageCode] = value;
+        localStoreC.file.sms[languageCode] = value;
+        localStoreC.file["ussd"] = localStoreC.file["ussd"]
+          ? localStoreC.file["ussd"]
+          : {};
+        localStoreC.file.ussd[languageCode] = value;
+      } else {
+        localStoreC[keyToChange] = value;
       }
     }
 
     findAndModifyFirst(localStoreB, "actions", { id: id }, localStoreC);
     localStore.ivrCampFlowData.flow = localStoreB;
-    
+
     dispatch({ type: "SET_DATA", nState: localStore });
   }
 
@@ -744,7 +751,7 @@ const SubDTMF = (props) => {
               }}
             >
               <ReactAudioPlayer
-                src={config.server.path+`/cm_data/audio/${e}`}
+                src={config.server.path + `/cm_data/audio/${e}`}
                 controls
               />
             </div>
@@ -764,9 +771,11 @@ const SubDTMF = (props) => {
 
   useEffect(() => {
     setShowError(false);
-    if(props.hideItemStyle){
-      let value = {IVR: 'PLAY', USSD: 'HITURL_USSD', SMS: 'HITURL_SMS'}
-      let e = {target:{value: value[localStore.ivrCampFlowData.flow.channel]}}
+    if (props.hideItemStyle) {
+      let value = { IVR: "PLAY", USSD: "HITURL_USSD", SMS: "HITURL_SMS" };
+      let e = {
+        target: { value: value[localStore.ivrCampFlowData.flow.channel] },
+      };
       traverseAndModify(
         props.current.id,
         props.current,
@@ -774,10 +783,7 @@ const SubDTMF = (props) => {
         e.target.value,
         "edit"
       );
-      props.dataHandleWithObj(
-        e,
-        props.global || props.current
-      );
+      props.dataHandleWithObj(e, props.global || props.current);
     }
     return () => {
       errorDispatch({ type: "SUB_DTMF", payload: false });
@@ -800,19 +806,24 @@ const SubDTMF = (props) => {
       //   null,
       //   "read"
       // ) && localStore.ivrCampFlowData.flow.channel === 'IVR') ||
-       (!isFilled &&
+      (!isFilled &&
         !traverseAndModify(
           props.current.id,
           props.current,
           "ussd_key",
           null,
-          "read") && localStore.ivrCampFlowData.flow.channel === 'USSD') || (!isFilled &&
-            !traverseAndModify(
-              props.current.id,
-              props.current,
-              "sms_key",
-              null,
-              "read") && localStore.ivrCampFlowData.flow.channel === 'SMS')
+          "read"
+        ) &&
+        localStore.ivrCampFlowData.flow.channel === "USSD") ||
+      (!isFilled &&
+        !traverseAndModify(
+          props.current.id,
+          props.current,
+          "sms_key",
+          null,
+          "read"
+        ) &&
+        localStore.ivrCampFlowData.flow.channel === "SMS")
     ) {
       errorDispatch({ type: "SUB_DTMF", payload: true });
     }
@@ -824,28 +835,29 @@ const SubDTMF = (props) => {
       "waitTime",
       null,
       "read"
-    ),traverseAndModify(
+    ),
+    traverseAndModify(
       props.current.id,
       props.current,
       "ussd_key",
       null,
       "read"
-    )
+    ),
   ]);
 
-  useEffect(()=>{
-    if(props.hideItemStyle){
-      if((channel === 'USSD' || channel === 'SMS') && props.isSuccessFailure){
-        setIsFilled(true)
+  useEffect(() => {
+    if (props.hideItemStyle) {
+      if ((channel === "USSD" || channel === "SMS") && props.isSuccessFailure) {
+        setIsFilled(true);
         traverseAndModify(
           props.current.id,
           props.current,
-          channel === 'USSD' ? 'ussd_key' : 'sms_key',
-          props.index === 0 ? 'SUCCESS' : 'FAILURE',
+          channel === "USSD" ? "ussd_key" : "sms_key",
+          props.index === 0 ? "SUCCESS" : "FAILURE",
           "edit"
         );
-      }else{
-        setIsFilled(false)
+      } else {
+        setIsFilled(false);
         // traverseAndModify(
         //   props.current.id,
         //   props.current,
@@ -854,513 +866,536 @@ const SubDTMF = (props) => {
         //   "edit"
         // );
       }
-  }
-  },[channel, props.isSuccessFailure])
+    }
+  }, [channel, props.isSuccessFailure]);
 
-  console.log('nitin', props.current.type, localStore.ivrCampFlowData.flow)
+  console.log("nitin", props.current.type, localStore.ivrCampFlowData.flow);
 
-  useEffect(()=>{
-    if(props.hideItemStyle){
-
-    if(!excludes.includes(props.current.type)){
-      let e = {target:{value: '2'}}
-      detectLevel(e, "sub_audio_dtmfs", props.current)
-        setIsSuccessFailure(true)
-        props.dataHandleWithObj(
-          e,
-          props.global || props.current
-          );
-        }
-      else{
-        let e = {target:{value: '0'}}
-        detectLevel(e, "sub_audio_dtmfs", props.current)
-        setIsSuccessFailure(false)
-        props.dataHandleWithObj(
-          e,
-          props.global || props.current
-        );  
+  useEffect(() => {
+    if (props.hideItemStyle) {
+      if (!excludes.includes(props.current.type)) {
+        let e = { target: { value: "2" } };
+        detectLevel(e, "sub_audio_dtmfs", props.current);
+        setIsSuccessFailure(true);
+        props.dataHandleWithObj(e, props.global || props.current);
+      } else {
+        let e = { target: { value: "0" } };
+        detectLevel(e, "sub_audio_dtmfs", props.current);
+        setIsSuccessFailure(false);
+        props.dataHandleWithObj(e, props.global || props.current);
       }
     }
-  },[props.current.type])
-
+  }, [props.current.type]);
 
   return (
     <>
-    {localStore.ivrCampFlowData.flow.channel === 'IVR' ? 
-      <div className="subDTMF__subdtmf">
-        <div className="sudDTMF__subdtmf__container">
-          <Card
-            style={{
-              backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
-              width: props.width,
-              position:"relative"
-            }}
-          >
-            <CardActions disableSpacing>
-              <Typography paragraph>SUB OPTION </Typography>
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-                style={{
-                  borderRadius: "0",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <ExpandMoreIcon />
-              </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <div
+      {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
+        <div className="subDTMF__subdtmf">
+          <div className="sudDTMF__subdtmf__container">
+            <Card
+              style={{
+                backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
+                width: props.width,
+                position: "relative",
+              }}
+            >
+              <CardActions disableSpacing>
+                <Typography paragraph>SUB OPTION </Typography>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                  style={{
+                    borderRadius: "0",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <div
                   style={{
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    position:"absolute",
-                    top:"10px",
-                    zIndex:"1"
+                    position: "absolute",
+                    top: "10px",
+                    zIndex: "1",
                   }}
                 >
-                  {props.isSuccessFailure ?  
-                  <div>{props.index === 0 ? 'SUCCESS' : 'FAILURE'}</div>
-                  :
-                  <>
-                    <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
-                      DTMF To Choose this option :{" "}
-                    </Typography>
-                    <button
-                      style={{
-                        height: "25px",
-                        width: "25px",
-                        backgroundColor: "rgb(214,214,214)",
-                        padding: "0",
-                        borderTop: "none",
-                        borderLeft: "none",
-                        boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
-                        color: "black",
-                        marginTop: ".5rem",
-                      }}
-                      disabled
-                    >
-                      {props.current.dtmf_key}
-                    </button>
-                  </>
-                  }
-                </div>
-              <CardContent>
-                <div className="main__dtmf__maincontent__container">
-                  <div className="subdtmf__select__option__container">
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel id="demo-simple-select-label">
-                        Actions
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={props.current.type === 'PLAY_BARGEIN' ? 'PLAY': props.current.type}
-                        label="Actions"
-                        disabled={props.disableEditingWhileCreatingCamp}
-                        onChange={(e) => {
-                          traverseAndModify(
-                            props.current.id,
-                            props.current,
-                            "type",
-                            e.target.value,
-                            "edit"
-                          );
-                          props.dataHandleWithObj(
-                            e,
-                            props.global || props.current
-                          );
-                        }}
-                        name="type"
+                  {props.isSuccessFailure ? (
+                    <div>{props.index === 0 ? "hdg" : "hjhj"}</div>
+                  ) : (
+                    <>
+                      <Typography
+                        style={{ fontSize: ".6rem", fontWeight: "800" }}
                       >
-                        {["PLAY", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
-                          return <MenuItem value={number}>{number}</MenuItem>;
-                        })}
-                      </Select>
-                    </FormControl>
-                  </div>
-                  {/* <div className="main__subdtmf__wait__time__container">
-                    <Box
-                      component="form"
-                      style={{ width: "100%" }}
-                      noValidate
-                      autoComplete="off"
-                    >
-                      <TextField
-                        id="if__IVR__selected"
-                        type="number"
-                        label="Wait Time for DTMF input"
-                        disabled={props.disableEditingWhileCreatingCamp}
-                        value={traverseAndModify(
-                          props.current.id,
-                          props.current,
-                          "waitTime",
-                          null,
-                          "read"
-                        )}
-                        onChange={(e) => {
-                          setIsFilled(() => e.target.value !== "");
-                          traverseAndModify(
-                            props.current.id,
-                            props.current,
-                            "waitTime",
-                            e.target.value >= 0 ? e.target.value : 0,
-                            "edit"
-                          );
+                        DTMF To Choose this option :{" "}
+                      </Typography>
+                      <button
+                        style={{
+                          height: "25px",
+                          width: "25px",
+                          backgroundColor: "rgb(214,214,214)",
+                          padding: "0",
+                          borderTop: "none",
+                          borderLeft: "none",
+                          boxShadow: "3px 3px 5px #474343, -3px -3px 5px #fff",
+                          color: "black",
+                          marginTop: ".5rem",
                         }}
-                        onWheel={(e) => e.target.blur()}
-                        variant="outlined"
-                        required
-                        error={
-                          showError
-                            ? parseInt(
-                                traverseAndModify(
-                                  props.current.id,
-                                  props.current,
-                                  "waitTime",
-                                  null,
-                                  "read"
-                                )
-                              ) >= 0
-                              ? false
-                              : true
-                            : false
-                        }
-                      />
-                    </Box>
-                  </div> */}
-                  <div className="select__number__of__subDTMF__from__subdtmf__container">
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel id="demo-simple-select-label" required>
-                      Number of options after this node
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-select"
-                        value={props.current.dtmf_count}
-                        disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
-                        label="Number of options after this node"
-                        name="sub_audio_dtmfs_dtmfCount"
-                        onChange={(e) => {
-                          detectLevel(e, "sub_audio_dtmfs", props.current);
-                        }}
-                        required
+                        disabled
                       >
-                        {numberOfSubDTMF.map((number, index) => {
-                          return <MenuItem value={number}>{number}</MenuItem>;
-                        })}
-                      </Select>
-                    </FormControl>
-                  </div>
-
-                  <div
-                    className={props.hideItemStyle}
-                    style={{ width: "100%" }}
-                  >
-                    {localStore.ivrCampFlowData.flow.language.map((hello) => {
-                      console.log(
-                        "localStore.ivrCampFlowData.flow.language ===>",
-                        hello
-                      );
-                      hellohello.push(hello.actions);
-                      hello.actions.forEach((el) => {
-                        console.log("action element ===>", el.languageName);
-                        languageName.push(el.languageName);
-                      });
-                      console.log(
-                        "localStore.ivrCampFlowData.flow.language hello ===>",
-                        hellohello
-                      );
-                    })}
-                    <div className="ghghg" style={{ margin: "10px 0" }}>
-                      {languageName.map((el) => {
-                        return (
-                          <Typography style={{ fontSize: "12px" }}>
-                            Response prompt in {el} for DTMF : {props.dtmfNumber}
-                          </Typography>
-                        );
-                      })}
-                    </div>
-                    <div className="ghghgh">
-                      {localStore.ivrCampFlowData.flow.languageChange.map(
-                        (lang) => (
-                          <FileUploaderForSubDTMF
-                            lang={lang}
-                            main_audio_file={
-                              localStore.ivrCampFlowData.flow.main_file.ivr
-                            }
-                            current={props.current}
-                            uploadFiles={uploadFiles}
-                            traverseAndModify={traverseAndModify}
-                            AudioFilesL2={AudioFilesL2}
-                            hideItemStyle={props.hideItemStyle}
-                          />
-                        )
-                      )}
-                    </div>
-                  </div>
+                        {props.current.dtmf_key}
+                      </button>
+                    </>
+                  )}
                 </div>
-              </CardContent>
-              <div className="rendering__sub__subdtmf__container">
-                {props.current.actions &&
-                  props.current.actions.map((e, index) => {
-                    console.log("kya hai", e);
-
-                    return (
-                      <div style={{}}>
-                        <SubDTMF
-                          width="100%"
-                          isBgColor={!props.isBgColor}
-                          data={props}
-                          current={e}
-                          handleDataChange={props.handleDataChange}
-                          uploadFiles={props.uploadFiles}
-                          setWaitTime={props.setWaitTime}
-                          setDataDynamic={props.setDataDynamic}
-                          parentNumber={props.dtmfNumber}
-                          numberOfSubDTMF={e}
-                          dataHandleWithObj={props.dataHandleWithObj}
-                          hideItemStyle={props.hideItemStyle}
-                          disableEditingWhileCreatingCamp={
-                            props.disableEditingWhileCreatingCamp
+                <CardContent>
+                  <div className="main__dtmf__maincontent__container">
+                    <div className="subdtmf__select__option__container">
+                      <FormControl style={{ width: "100%" }}>
+                        <InputLabel id="demo-simple-select-label">
+                          Actions
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={
+                            props.current.type === "PLAY_BARGEIN"
+                              ? "PLAY"
+                              : props.current.type
                           }
-                          isSuccessFailure={isSuccessFailure}
-                          index={index}
-                        />
-                      </div>
-                    );
-                  })}
-              </div>
-            </Collapse>
-          </Card>
-        </div>
-      </div>
-      :(localStore.ivrCampFlowData.flow.channel === 'USSD' ||  localStore.ivrCampFlowData.flow.channel === 'SMS')&& <div className="subDTMF__subdtmf">
-      <div className="sudDTMF__subdtmf__container">
-        <Card
-          style={{
-            backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
-            width: props.width,
-          }}
-        >
-          <CardActions disableSpacing>
-            <Typography paragraph>SUB OPTION</Typography>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-              style={{
-                borderRadius: "0",
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <div className="main__dtmf__maincontent__container">
-                <div className="subdtmf__select__option__container">
-                  <FormControl style={{ width: "100%" }}>
-                    <InputLabel id="demo-simple-select-label">
-                      Actions
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={ props.current.type}
-                      label="Actions"
-                      disabled={props.disableEditingWhileCreatingCamp}
-                      onChange={(e) => {
-                        traverseAndModify(
-                          props.current.id,
-                          props.current,
-                          "type",
-                          e.target.value,
-                          "edit"
-                        );
-                        props.dataHandleWithObj(
-                          e,
-                          props.global || props.current
-                        );
-                      }}
-                      name="type"
-                    >
-                     { channel === 'USSD' ? ["HITURL_USSD", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
-                          return <MenuItem value={number}>{number}</MenuItem>;
-                          }): channel === 'SMS' && ["HITURL_SMS", "HITURL_CHECKSUB", "HITURL_SUB", "HITURL_ANY"].map((number, index) => {
+                          label="Actions"
+                          disabled={props.disableEditingWhileCreatingCamp}
+                          onChange={(e) => {
+                            traverseAndModify(
+                              props.current.id,
+                              props.current,
+                              "type",
+                              e.target.value,
+                              "edit"
+                            );
+                            props.dataHandleWithObj(
+                              e,
+                              props.global || props.current
+                            );
+                          }}
+                          name="type"
+                        >
+                          {[
+                            "PLAY",
+                            "HITURL_CHECKSUB",
+                            "HITURL_SUB",
+                            "HITURL_ANY",
+                          ].map((number, index) => {
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="main__subdtmf__wait__time__container">
-                  <Box
-                    component="form"
-                    style={{ width: "100%" }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="if__IVR__selected"
-                      type="input"
-                      label= "Input key to choose this option"
-                      disabled={props.disableEditingWhileCreatingCamp || props.isSuccessFailure}
-                      value={traverseAndModify(
-                        props.current.id,
-                        props.current,
-                        channel === 'USSD' ? 'ussd_key' : 'sms_key',
-                        null,
-                        "read"
-                      )}
-                      onChange={(e) => {
-                        setIsFilled(() => e.target.value !== "");
-                        debugger
-                        traverseAndModify(
-                          props.current.id,
-                          props.current,
-                          channel === 'USSD' ? 'ussd_key' : 'sms_key',
-                          e.target.value,
-                          "edit"
-                        );
-                      }}
-                      onWheel={(e) => e.target.blur()}
-                      variant="outlined"
-                      required
-                      error={
-                        showError
-                          ? traverseAndModify(
-                            props.current.id,
-                            props.current,
-                            channel === 'USSD' ? 'ussd_key' :  channel === 'SMS' && 'sms_key',
-                            null,
-                            "read"
-                          )
-                            ? false
-                            : true
-                          : false
-                      }
-                    />
-                  </Box>
-                </div>
-                <div className="select__number__of__subDTMF__from__subdtmf__container">
-                  <FormControl style={{ width: "100%" }}>
-                    <InputLabel id="demo-simple-select-label" required>
-                    Number of options after this node
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-select"
-                      value={props.current.dtmf_count}
-                      disabled={props.disableEditingWhileCreatingCamp || isSuccessFailure}
-                      label="Number of options after this node"
-                      name="sub_audio_dtmfs_dtmfCount"
-                      onChange={(e) => {
-                        detectLevel(e, "sub_audio_dtmfs", props.current);
-                      }}
-                      required
-                    >
-                      {numberOfSubDTMF.map((number, index) => {
-                        return <MenuItem value={number}>{number}</MenuItem>;
-                      })}
-                    </Select>
-                  </FormControl>
-                </div>
+                        </Select>
+                      </FormControl>
+                    </div>
 
-                <div
-                  className={props.hideItemStyle}
-                  style={{ width: "100%" }}
-                >
-                  {localStore.ivrCampFlowData.flow.language.map((hello) => {
-                    console.log(
-                      "localStore.ivrCampFlowData.flow.language ===>",
-                      hello
-                    );
-                    hellohello.push(hello.actions);
-                    hello.actions.forEach((el) => {
-                      console.log("action element ===>", el.languageName);
-                      languageName.push(el.languageName);
-                    });
-                    console.log(
-                      "localStore.ivrCampFlowData.flow.language hello ===>",
-                      hellohello
-                    );
-                  })}
-                  <div
-                    className="ghghg"
-                    style={{
-                      margin: "10px 0",
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    {languageName.map((el) => {
+                    <div className="select__number__of__subDTMF__from__subdtmf__container">
+                      <FormControl style={{ width: "100%" }}>
+                        <InputLabel id="demo-simple-select-label" required>
+                          Number of options after this node
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-select"
+                          value={props.current.dtmf_count}
+                          disabled={
+                            props.disableEditingWhileCreatingCamp ||
+                            isSuccessFailure
+                          }
+                          label="Number of options after this node"
+                          name="sub_audio_dtmfs_dtmfCount"
+                          onChange={(e) => {
+                            detectLevel(e, "sub_audio_dtmfs", props.current);
+                          }}
+                          required
+                        >
+                          {numberOfSubDTMF.map((number, index) => {
+                            return <MenuItem value={number}>{number}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+
+                    <div
+                      className={props.hideItemStyle}
+                      style={{ width: "100%" }}
+                    >
+                      {props.current.type == "PLAY" ? (
+                        <>
+                          {localStore.ivrCampFlowData.flow.language.map(
+                            (hello) => {
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language ===>",
+                                hello
+                              );
+                              hellohello.push(hello.actions);
+                              hello.actions.forEach((el) => {
+                                console.log(
+                                  "action element ===>",
+                                  el.languageName
+                                );
+                                languageName.push(el.languageName);
+                              });
+                              console.log(
+                                "localStore.ivrCampFlowData.flow.language hello ===>",
+                                hellohello
+                              );
+                            }
+                          )}
+                          <div className="ghghg" style={{ margin: "10px 0" }}>
+                            {languageName.map((el) => {
+                              return (
+                                <Typography style={{ fontSize: "12px" }}>
+                                  Response prompt in {el} for DTMF :{" "}
+                                  {props.dtmfNumber}
+                                </Typography>
+                              );
+                            })}
+                          </div>
+                          <div className="ghghgh">
+                            {localStore.ivrCampFlowData.flow.languageChange.map(
+                              (lang) => (
+                                <FileUploaderForSubDTMF
+                                  lang={lang}
+                                  main_audio_file={
+                                    localStore.ivrCampFlowData.flow.main_file
+                                      .ivr
+                                  }
+                                  current={props.current}
+                                  uploadFiles={uploadFiles}
+                                  traverseAndModify={traverseAndModify}
+                                  AudioFilesL2={AudioFilesL2}
+                                  hideItemStyle={props.hideItemStyle}
+                                />
+                              )
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <TextField />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+                <div className="rendering__sub__subdtmf__container">
+                  {props.current.actions &&
+                    props.current.actions.map((e, index) => {
+                      console.log("kya hai", e);
+
                       return (
-                        <Typography style={{ fontSize: "12px" }}>
-                          Message in {el}
-                        </Typography>
+                        <div style={{}}>
+                          <SubDTMF
+                            width="100%"
+                            isBgColor={!props.isBgColor}
+                            data={props}
+                            current={e}
+                            handleDataChange={props.handleDataChange}
+                            uploadFiles={props.uploadFiles}
+                            setWaitTime={props.setWaitTime}
+                            setDataDynamic={props.setDataDynamic}
+                            parentNumber={props.dtmfNumber}
+                            numberOfSubDTMF={e}
+                            dataHandleWithObj={props.dataHandleWithObj}
+                            hideItemStyle={props.hideItemStyle}
+                            disableEditingWhileCreatingCamp={
+                              props.disableEditingWhileCreatingCamp
+                            }
+                            isSuccessFailure={isSuccessFailure}
+                            index={index}
+                          />
+                        </div>
                       );
                     })}
-                  </div>
-                  <div
-                    className="ghghgh"
+                </div>
+              </Collapse>
+            </Card>
+          </div>
+        </div>
+      ) : (
+        (localStore.ivrCampFlowData.flow.channel === "USSD" ||
+          localStore.ivrCampFlowData.flow.channel === "SMS") && (
+          <div className="subDTMF__subdtmf">
+            <div className="sudDTMF__subdtmf__container">
+              <Card
+                style={{
+                  backgroundColor: props.isBgColor ? "white" : "#f5f5f5",
+                  width: props.width,
+                }}
+              >
+                <CardActions disableSpacing>
+                  <Typography paragraph>SUB OPTION</Typography>
+                  <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
                     style={{
+                      borderRadius: "0",
                       display: "flex",
-                      justifyContent: "space-evenly",
-                      width: "100%",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    {localStore.ivrCampFlowData.flow.languageChange.map(
-                      (lang) => (
-                        <MessageUploadForSubDTMF lang={lang}  localStore={localStore} traverseAndModify={traverseAndModify} current={props.current} hideItemStyle={props.hideItemStyle} channel={channel} />
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <div className="rendering__sub__subdtmf__container">
-              {props.current.actions &&
-                props.current.actions.map((e, index) => {
-                  console.log("kya hai", e);
+                    <ExpandMoreIcon />
+                  </ExpandMore>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <div className="main__dtmf__maincontent__container">
+                      <div className="subdtmf__select__option__container">
+                        <FormControl style={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-label">
+                            Actions
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={props.current.type}
+                            label="Actions"
+                            disabled={props.disableEditingWhileCreatingCamp}
+                            onChange={(e) => {
+                              traverseAndModify(
+                                props.current.id,
+                                props.current,
+                                "type",
+                                e.target.value,
+                                "edit"
+                              );
+                              props.dataHandleWithObj(
+                                e,
+                                props.global || props.current
+                              );
+                            }}
+                            name="type"
+                          >
+                            {channel === "USSD"
+                              ? [
+                                  "HITURL_USSD",
+                                  "HITURL_CHECKSUB",
+                                  "HITURL_SUB",
+                                  "HITURL_ANY",
+                                ].map((number, index) => {
+                                  return (
+                                    <MenuItem value={number}>{number}</MenuItem>
+                                  );
+                                })
+                              : channel === "SMS" &&
+                                [
+                                  "HITURL_SMS",
+                                  "HITURL_CHECKSUB",
+                                  "HITURL_SUB",
+                                  "HITURL_ANY",
+                                ].map((number, index) => {
+                                  return (
+                                    <MenuItem value={number}>{number}</MenuItem>
+                                  );
+                                })}
+                          </Select>
+                        </FormControl>
+                      </div>
+                      <div className="main__subdtmf__wait__time__container">
+                        <Box
+                          component="form"
+                          style={{ width: "100%" }}
+                          noValidate
+                          autoComplete="off"
+                        >
+                          <TextField
+                            id="if__IVR__selected"
+                            type="input"
+                            label="Input key to choose this option"
+                            disabled={
+                              props.disableEditingWhileCreatingCamp ||
+                              props.isSuccessFailure
+                            }
+                            value={traverseAndModify(
+                              props.current.id,
+                              props.current,
+                              channel === "USSD" ? "ussd_key" : "sms_key",
+                              null,
+                              "read"
+                            )}
+                            onChange={(e) => {
+                              setIsFilled(() => e.target.value !== "");
+                              debugger;
+                              traverseAndModify(
+                                props.current.id,
+                                props.current,
+                                channel === "USSD" ? "ussd_key" : "sms_key",
+                                e.target.value,
+                                "edit"
+                              );
+                            }}
+                            onWheel={(e) => e.target.blur()}
+                            variant="outlined"
+                            required
+                            error={
+                              showError
+                                ? traverseAndModify(
+                                    props.current.id,
+                                    props.current,
+                                    channel === "USSD"
+                                      ? "ussd_key"
+                                      : channel === "SMS" && "sms_key",
+                                    null,
+                                    "read"
+                                  )
+                                  ? false
+                                  : true
+                                : false
+                            }
+                          />
+                        </Box>
+                      </div>
+                      <div className="select__number__of__subDTMF__from__subdtmf__container">
+                        <FormControl style={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-label" required>
+                            Number of options after this node
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-select"
+                            value={props.current.dtmf_count}
+                            disabled={
+                              props.disableEditingWhileCreatingCamp ||
+                              isSuccessFailure
+                            }
+                            label="Number of options after this node"
+                            name="sub_audio_dtmfs_dtmfCount"
+                            onChange={(e) => {
+                              detectLevel(e, "sub_audio_dtmfs", props.current);
+                            }}
+                            required
+                          >
+                            {numberOfSubDTMF.map((number, index) => {
+                              return (
+                                <MenuItem value={number}>{number}</MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </div>
 
-                  return (
-                    <div style={{}}>
-                      <SubDTMF
-                        width="100%"
-                        isBgColor={!props.isBgColor}
-                        data={props}
-                        current={e}
-                        handleDataChange={props.handleDataChange}
-                        uploadFiles={props.uploadFiles}
-                        setWaitTime={props.setWaitTime}
-                        setDataDynamic={props.setDataDynamic}
-                        parentNumber={props.dtmfNumber}
-                        numberOfSubDTMF={e}
-                        dataHandleWithObj={props.dataHandleWithObj}
-                        hideItemStyle={props.hideItemStyle}
-                        disableEditingWhileCreatingCamp={
-                          props.disableEditingWhileCreatingCamp
-                        }
-                        isSuccessFailure={isSuccessFailure}
-                        index={index}
-                      />
+                      <div
+                        className={props.hideItemStyle}
+                        style={{ width: "100%" }}
+                      >
+                        {(props.current.type == "HITURL_SMS") || (props.current.type == "HITURL_USSD")? (
+                          <>
+                            {localStore.ivrCampFlowData.flow.language.map(
+                              (hello) => {
+                                console.log(
+                                  "localStore.ivrCampFlowData.flow.language ===>",
+                                  hello
+                                );
+                                hellohello.push(hello.actions);
+                                hello.actions.forEach((el) => {
+                                  console.log(
+                                    "action element ===>",
+                                    el.languageName
+                                  );
+                                  languageName.push(el.languageName);
+                                });
+                                console.log(
+                                  "localStore.ivrCampFlowData.flow.language hello ===>",
+                                  hellohello
+                                );
+                              }
+                            )}
+                            <div
+                              className="ghghg"
+                              style={{
+                                margin: "10px 0",
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                              }}
+                            >
+                              {languageName.map((el) => {
+                                return (
+                                  <Typography style={{ fontSize: "12px" }}>
+                                    Message in {el}
+                                  </Typography>
+                                );
+                              })}
+                            </div>
+                            <div
+                              className="ghghgh"
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                                width: "100%",
+                              }}
+                            >
+                              {localStore.ivrCampFlowData.flow.languageChange.map(
+                                (lang) => (
+                                  <MessageUploadForSubDTMF
+                                    lang={lang}
+                                    localStore={localStore}
+                                    traverseAndModify={traverseAndModify}
+                                    current={props.current}
+                                    hideItemStyle={props.hideItemStyle}
+                                    channel={channel}
+                                  />
+                                )
+                              )}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <TextField />
+                          </>
+                        )}
+                      </div>
                     </div>
-                  );
-                })}
+                  </CardContent>
+                  <div className="rendering__sub__subdtmf__container">
+                    {props.current.actions &&
+                      props.current.actions.map((e, index) => {
+                        console.log("kya hai", e);
+
+                        return (
+                          <div style={{}}>
+                            <SubDTMF
+                              width="100%"
+                              isBgColor={!props.isBgColor}
+                              data={props}
+                              current={e}
+                              handleDataChange={props.handleDataChange}
+                              uploadFiles={props.uploadFiles}
+                              setWaitTime={props.setWaitTime}
+                              setDataDynamic={props.setDataDynamic}
+                              parentNumber={props.dtmfNumber}
+                              numberOfSubDTMF={e}
+                              dataHandleWithObj={props.dataHandleWithObj}
+                              hideItemStyle={props.hideItemStyle}
+                              disableEditingWhileCreatingCamp={
+                                props.disableEditingWhileCreatingCamp
+                              }
+                              isSuccessFailure={isSuccessFailure}
+                              index={index}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
+                </Collapse>
+              </Card>
             </div>
-          </Collapse>
-        </Card>
-      </div>
-    </div>}
+          </div>
+        )
+      )}
     </>
   );
 };

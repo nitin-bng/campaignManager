@@ -1,5 +1,7 @@
 import React, { createContext, useReducer, useState } from "react";
 
+let thanksType = {IVR: 'PLAY', USSD:'HITURL_USSD', SMS:'HITURL_SMS'}
+
 const initialState = {
   navBarToggle: {
     toggle: false,
@@ -262,7 +264,7 @@ const StateProvider = ({ children }) => {
             node_type: "END",
             dtmf_key: '',
             audio_file: {},
-            type: state.ivrCampFlowData.flow.channel || 'HITURL_USSD',
+            type: thanksType[state.ivrCampFlowData.flow.channel],
             level: 1,
             waitTime: "",
             dtmf_count: 0,

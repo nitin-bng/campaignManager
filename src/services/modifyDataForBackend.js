@@ -21,7 +21,7 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions 
         }
 
         if(bargein){
-            obj = {...obj, type:  'PLAY_BARGEIN', actionType:{...obj.actionType, ivr: 'PLAY_BARGEIN'}}
+            obj = {...obj, type:  obj.type === 'PLAY' ? 'PLAY_BARGEIN' : obj.type, actionType:{...obj.actionType, ivr: obj.actionType.ivr === 'PLAY' ? 'PLAY_BARGEIN' : obj.type}}
         }
 
         return obj

@@ -72,12 +72,12 @@ If you select all days your campian will not work
 `;
 const TotalChannelInfo = `
 we can give only numeric values
-Numeric values shouls be greater than 1 and lesser that 5
+Numeric values should be greater than 1 and lesser that 5
 `;
 
 const TotalNumerOfTPSRequiredInfo = `
 we can give only numeric values
-Numeric values shouls be greater than 1 and lesser that 5
+Numeric values should be greater than 1 and lesser that 5
 `;
 
 const BlackoutStartHourInfo = `
@@ -94,19 +94,19 @@ You should not select previous dates
 `;
 
 const MobileNumberWithLeadingZeros = `
-Mobile Number with leading Zeros means the number list that you will upload of mobile numbers will have zeros in the start or not
+Mobile number with leading zeros means the number list that you will upload of mobile numbers will have zeros in the start or not
 `;
 
 const CountryCodeHelpIcon = `
-Country code means the two digit code of mobile number of your country
+Country code means the two of three digit code of mobile number of your country
 `;
 
 const MobileNumberWithCountryCode = `
-Mobile Number with Country Code means the number list that you will upload of mobile numbers will have country code with them or not 
+Mobile number with country code means the number list that you will upload of mobile numbers will have country code with them or not 
 `;
 
 const MobileNumberLength = `
-Mobile Number Length means the the count of digits of mobile number in your country without zeros or country code
+Mobile number length means the the count of digits of mobile number in your country without zeros or country code
 `;
 
 

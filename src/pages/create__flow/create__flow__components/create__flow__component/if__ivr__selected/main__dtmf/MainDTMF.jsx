@@ -532,12 +532,12 @@ const MainDTMF = (props) => {
           globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type
         )
       ) {
-        let e = { target: { value: "2" } };
+        let e = { target: { value: 2 } };
         detectLevel(e, "sub_audio_dtmfs", props.global);
         removeExtraSubDTMFs();
         setIsSuccessFailure(true);
       } else {
-        let e = { target: { value: "0" } };
+        let e = { target: { value: 0 } };
         detectLevel(e, "sub_audio_dtmfs", props.global);
         setIsSuccessFailure(false);
       }

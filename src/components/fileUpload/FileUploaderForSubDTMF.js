@@ -10,9 +10,26 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
 
     useEffect(()=>{
         if (hideItemStyle === undefined) {
+          if(!traverseAndModify(
+            current.id,
+            null,
+            null,
+            null,
+            "return"
+          ).audio_file[lang]){
             errorDispatch({ type: "AUDIO", payload: true });
+          }else{
+            setIsError(false)
+          }
         }
-        return () => errorDispatch({ type: "AUDIO", payload: false });
+        
+        return () => !traverseAndModify(
+          current.id,
+          null,
+          null,
+          null,
+          "return"
+        ).audio_file[lang] && errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
 

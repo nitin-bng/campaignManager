@@ -11,11 +11,22 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
 
     useEffect(()=>{
         if (hideItemStyle === undefined) {
+          if(!globalState.state.ivrCampFlowData.flow.actions[
+            global.dtmf_key - 1
+          ].audio_file[lang]){
             errorDispatch({ type: "AUDIO", payload: true });
+          }else{
+            setIsError(false)
+          }
         }
-        return () => errorDispatch({ type: "AUDIO", payload: false });
+        
+        return () => !globalState.state.ivrCampFlowData.flow.actions[
+          global.dtmf_key - 1
+        ].audio_file[lang] && errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
+
+    console.log('file main error', showError, isError)
 
     return ( 
     <div

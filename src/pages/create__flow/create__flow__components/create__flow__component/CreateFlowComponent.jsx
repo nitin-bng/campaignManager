@@ -75,6 +75,7 @@ const CreateFlowComponent = (props) => {
     }
     if (props.hideItemStyle !== undefined) {
       errorDispatch({ type: "INITIALIZE" });
+      setIsThankYouNode(false)
     }
     errorDispatch({ type: "CREATE_FLOW_COMPONENT", payload: false });
 

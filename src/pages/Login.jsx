@@ -148,6 +148,7 @@ const Login = () => {
                 />
               </div>
             </div>
+            <div style={{zIndex: 1, cursor: "pointer"}} onClick={()=> setIsPasswordVisible(prev=>!prev)}>{isPasswordVisible ? 'Hide' : 'Show'}</div>
 
             <div className="terms__and__button__container">
               <div className="create__account__button button">

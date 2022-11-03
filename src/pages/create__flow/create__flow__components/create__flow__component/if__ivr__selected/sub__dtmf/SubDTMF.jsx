@@ -864,6 +864,7 @@ const SubDTMF = (props) => {
     if (props.hideItemStyle) {
       if (props.isSuccessFailure) {
         setIsFilled(true);
+<<<<<<< HEAD
         if (channel === "USSD" || channel === "SMS") {
           traverseAndModify(
             props.current.id,
@@ -879,10 +880,22 @@ const SubDTMF = (props) => {
             "edit"
           );
         } else {
+=======
+        if(channel === "USSD" || channel === "SMS"){
+        traverseAndModify(
+          props.current.id,
+          props.current,
+          channel === "USSD" ? "ussd_key" : "sms_key",
+          props.index === 0 ? "SUCCESS" : "FAILURE",
+          "edit"
+        )}
+        else{
+>>>>>>> ec99cb70f45a78987820b0a7b6073eba980fc395
           traverseAndModify(
             props.current.id,
             props.current,
             "ivr_key",
+<<<<<<< HEAD
             props.parentType !== "HITURL_CHECKSUB"
               ? props.index === 0
                 ? "SUCCESS"
@@ -890,6 +903,9 @@ const SubDTMF = (props) => {
               : props.index === 0
               ? "ALREADY SUBSCRIBED"
               : "NOT SUBSCRIBED",
+=======
+            props.index === 0 ? "SUCCESS" : "FAILURE",
+>>>>>>> ec99cb70f45a78987820b0a7b6073eba980fc395
             "edit"
           );
         }
@@ -905,8 +921,6 @@ const SubDTMF = (props) => {
       }
     }
   }, [channel, props.isSuccessFailure, props.parentType]);
-
-  console.log("nitin", props.current.type, localStore.ivrCampFlowData.flow);
 
   useEffect(() => {
     if (props.hideItemStyle) {
@@ -966,6 +980,7 @@ const SubDTMF = (props) => {
                   }}
                 >
                   {props.isSuccessFailure ? (
+<<<<<<< HEAD
                     <div>
                       {props.parentType !== "HITURL_CHECKSUB"
                         ? props.index === 0
@@ -975,6 +990,9 @@ const SubDTMF = (props) => {
                         ? "ALREADY SUBSCRIBED"
                         : "NOT SUBSCRIBED"}
                     </div>
+=======
+                    <div>{ props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "NOT_ELIGIBLE_FOR_SUB" : "ELIGIBLE_FOR_SUB"}</div>
+>>>>>>> ec99cb70f45a78987820b0a7b6073eba980fc395
                   ) : (
                     <>
                       <Typography

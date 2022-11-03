@@ -39,7 +39,7 @@ const createNodesAndEdges = (data) =>{
           data: { label:"Option "+ ele.id },
           position
       }];
-      initialEdges = [...initialEdges,  {id: 'e'+element.level+"_"+element.dtmf_key+"_"+idx+proprandom+ele.level+"_"+ele.dtmf_key+"_"+index+randomness, source: element.level+"_"+element.dtmf_key+"_"+idx+proprandom, target: ele.level+"_"+ele.dtmf_key+"_"+index+randomness, type: edgeType}]
+      initialEdges = [...initialEdges,  {id: 'e'+element.level+"_"+element.dtmf_key+"_"+idx+proprandom+ele.level+"_"+ele.dtmf_key+"_"+index+randomness, source: element.level+"_"+element.dtmf_key+"_"+idx+proprandom, target: ele.level+"_"+ele.dtmf_key+"_"+index+randomness, type: edgeType, label: ele.input[data.ivrCampFlowData.flow.channel.toLowerCase() +'_key']}]
       if(ele.actions.length){
         recursiveFunc(ele, index, randomness)
       }else{
@@ -57,10 +57,10 @@ const createNodesAndEdges = (data) =>{
               data: { label:"Option "+ element.dtmf_key },
               position
               }];
-        if(element.actions.length){
-          recursiveFunc(element, idx, '')
-        }else{
-          lastNodes = [...lastNodes, element.level+"_"+element.dtmf_key+"_"+idx]
+            if(element.actions.length){
+              recursiveFunc(element, idx, '')
+            }else{
+              lastNodes = [...lastNodes, element.level+"_"+element.dtmf_key+"_"+idx]
         }}
     })
         }

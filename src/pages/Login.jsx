@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   TextField,
@@ -15,6 +15,7 @@ import config from "../ApiConfig/Config";
 import { toast } from "react-toastify";
 const Login = () => {
   const Navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const {
     register,
@@ -124,7 +125,7 @@ const Login = () => {
               <div className="password">
                 <TextField
                   id="password"
-                  type="password"
+                  type={isPasswordVisible ? "text":"password"}
                   variant="outlined"
                   label="Enter password"
                   fullWidth
@@ -147,6 +148,7 @@ const Login = () => {
                 />
               </div>
             </div>
+            <div style={{zIndex: 1, cursor: "pointer"}} onClick={()=> setIsPasswordVisible(prev=>!prev)}>{isPasswordVisible ? 'Hide' : 'Show'}</div>
 
             <div className="terms__and__button__container">
               <div className="create__account__button button">

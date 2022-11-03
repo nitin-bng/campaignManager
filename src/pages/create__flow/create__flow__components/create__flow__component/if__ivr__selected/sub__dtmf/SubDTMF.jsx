@@ -869,7 +869,7 @@ const SubDTMF = (props) => {
           props.current.id,
           props.current,
           channel === "USSD" ? "ussd_key" : "sms_key",
-          props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
+          props.index === 0 ? "SUCCESS" : "FAILURE",
           "edit"
         )}
         else{
@@ -877,7 +877,7 @@ const SubDTMF = (props) => {
             props.current.id,
             props.current,
             "ivr_key",
-            props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
+            props.index === 0 ? "SUCCESS" : "FAILURE",
             "edit"
           )
         }
@@ -894,17 +894,15 @@ const SubDTMF = (props) => {
     }
   }, [channel, props.isSuccessFailure, props.parentType]);
 
-  console.log("nitin", props.current.type, localStore.ivrCampFlowData.flow);
-
   useEffect(() => {
     if (props.hideItemStyle) {
       if (!excludes.includes(props.current.type)) {
-        let e = { target: { value: "2" } };
+        let e = { target: { value: 2 } };
         detectLevel(e, "sub_audio_dtmfs", props.current);
         setIsSuccessFailure(true);
         props.dataHandleWithObj(e, props.global || props.current);
       } else {
-        let e = { target: { value: "0" } };
+        let e = { target: { value: 0 } };
         detectLevel(e, "sub_audio_dtmfs", props.current);
         setIsSuccessFailure(false);
         props.dataHandleWithObj(e, props.global || props.current);
@@ -954,7 +952,7 @@ const SubDTMF = (props) => {
                   }}
                 >
                   {props.isSuccessFailure ? (
-                    <div>{ props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED"}</div>
+                    <div>{ props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "NOT_ELIGIBLE_FOR_SUB" : "ELIGIBLE_FOR_SUB"}</div>
                   ) : (
                     <>
                       <Typography

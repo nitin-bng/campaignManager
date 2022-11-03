@@ -269,7 +269,8 @@ defaultEndDate.setDate(defaultEndDate.getDate());
     dashBoardData();
     let id = setInterval(() => {
       dashBoardData();
-    }, 30000);
+      getcampaignScheduleList();
+    }, 15000);
 
     return () =>{
       clearInterval(id)

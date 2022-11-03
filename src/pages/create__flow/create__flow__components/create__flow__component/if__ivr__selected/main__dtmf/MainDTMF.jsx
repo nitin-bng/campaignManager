@@ -304,6 +304,9 @@ const MainDTMF = (props) => {
             "background: 'pink'; 'font-size: 1.5rem",
             e
           );
+
+console.log("hello 306", e);
+
           localStore.ivrCampFlowData.flow.actions[current.id - 1].actions.push({
             dtmf_key: e,
             parent_dtmf: current.dtmf_key,
@@ -532,12 +535,12 @@ const MainDTMF = (props) => {
           globalState.state.ivrCampFlowData.flow.actions[props.data - 1].type
         )
       ) {
-        let e = { target: { value: "2" } };
+        let e = { target: { value: 2 } };
         detectLevel(e, "sub_audio_dtmfs", props.global);
         removeExtraSubDTMFs();
         setIsSuccessFailure(true);
       } else {
-        let e = { target: { value: "0" } };
+        let e = { target: { value: 0 } };
         detectLevel(e, "sub_audio_dtmfs", props.global);
         setIsSuccessFailure(false);
       }
@@ -602,7 +605,7 @@ const MainDTMF = (props) => {
                   }}
                 >
                   <Typography style={{ fontSize: ".6rem", fontWeight: "800" }}>
-                    DTMF To Choose this option :{" "}
+                    DTMF To Choose this option :
                   </Typography>
                   <button
                     style={{
@@ -618,6 +621,7 @@ const MainDTMF = (props) => {
                     }}
                     disabled
                   >
+                    {console.log("hello props.dtmfNumber", props.dtmfNumber)}
                     {props.dtmfNumber}
                   </button>
                 </div>

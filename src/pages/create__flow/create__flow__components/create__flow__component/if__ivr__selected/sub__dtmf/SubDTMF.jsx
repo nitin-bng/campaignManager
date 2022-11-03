@@ -490,8 +490,8 @@ const SubDTMF = (props) => {
     }
   };
 
-  const urlHandler = (e) =>{
-    localStore.ivrCampFlowData.flow.languageChange.forEach(lang=>{
+  const urlHandler = (e) => {
+    localStore.ivrCampFlowData.flow.languageChange.forEach((lang) => {
       traverseAndModify(
         props.current.id,
         props.current,
@@ -499,9 +499,9 @@ const SubDTMF = (props) => {
         e.target.value,
         "edit",
         lang
-      )
-    })
-  }
+      );
+    });
+  };
 
   function traverseAndModify(
     id,
@@ -864,22 +864,34 @@ const SubDTMF = (props) => {
     if (props.hideItemStyle) {
       if (props.isSuccessFailure) {
         setIsFilled(true);
-        if(channel === "USSD" || channel === "SMS"){
-        traverseAndModify(
-          props.current.id,
-          props.current,
-          channel === "USSD" ? "ussd_key" : "sms_key",
-          props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
-          "edit"
-        )}
-        else{
+        if (channel === "USSD" || channel === "SMS") {
+          traverseAndModify(
+            props.current.id,
+            props.current,
+            channel === "USSD" ? "ussd_key" : "sms_key",
+            props.parentType !== "HITURL_CHECKSUB"
+              ? props.index === 0
+                ? "SUCCESS"
+                : "FAILURE"
+              : props.index === 0
+              ? "ALREADY SUBSCRIBED"
+              : "NOT SUBSCRIBED",
+            "edit"
+          );
+        } else {
           traverseAndModify(
             props.current.id,
             props.current,
             "ivr_key",
-            props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED",
+            props.parentType !== "HITURL_CHECKSUB"
+              ? props.index === 0
+                ? "SUCCESS"
+                : "FAILURE"
+              : props.index === 0
+              ? "ALREADY SUBSCRIBED"
+              : "NOT SUBSCRIBED",
             "edit"
-          )
+          );
         }
       } else {
         setIsFilled(false);
@@ -899,12 +911,12 @@ const SubDTMF = (props) => {
   useEffect(() => {
     if (props.hideItemStyle) {
       if (!excludes.includes(props.current.type)) {
-        let e = { target: { value: "2" } };
+        let e = { target: { value: 2 } };
         detectLevel(e, "sub_audio_dtmfs", props.current);
         setIsSuccessFailure(true);
         props.dataHandleWithObj(e, props.global || props.current);
       } else {
-        let e = { target: { value: "0" } };
+        let e = { target: { value: 0 } };
         detectLevel(e, "sub_audio_dtmfs", props.current);
         setIsSuccessFailure(false);
         props.dataHandleWithObj(e, props.global || props.current);
@@ -954,7 +966,15 @@ const SubDTMF = (props) => {
                   }}
                 >
                   {props.isSuccessFailure ? (
-                    <div>{ props.parentType !== 'HITURL_CHECKSUB' ? props.index === 0 ? "SUCCESS" : "FAILURE" : props.index === 0 ? "ALREADY SUBSCRIBED" : "NOT SUBSCRIBED"}</div>
+                    <div>
+                      {props.parentType !== "HITURL_CHECKSUB"
+                        ? props.index === 0
+                          ? "SUCCESS"
+                          : "FAILURE"
+                        : props.index === 0
+                        ? "ALREADY SUBSCRIBED"
+                        : "NOT SUBSCRIBED"}
+                    </div>
                   ) : (
                     <>
                       <Typography
@@ -976,6 +996,11 @@ const SubDTMF = (props) => {
                         }}
                         disabled
                       >
+                        {console.log(
+                          "hello props.dtmfNumber",
+                          props.current.dtmf_key
+                        )}
+
                         {props.current.dtmf_key}
                       </button>
                     </>
@@ -1109,14 +1134,19 @@ const SubDTMF = (props) => {
                         </>
                       ) : (
                         <>
-                          <TextField 
-                          style={{marginTop:"1rem", width:'80%', textAlign:"center"}}
-                          id="outlined-multiline-static"
-                          label={`Enter URL`}
-                          multiline
-                          rows={1}
-                          variant="outlined"
-                          onChange={(e) => urlHandler(e)}/>
+                          <TextField
+                            style={{
+                              marginTop: "1rem",
+                              width: "80%",
+                              textAlign: "center",
+                            }}
+                            id="outlined-multiline-static"
+                            label={`Enter URL`}
+                            multiline
+                            rows={1}
+                            variant="outlined"
+                            onChange={(e) => urlHandler(e)}
+                          />
                         </>
                       )}
                     </div>
@@ -1325,7 +1355,8 @@ const SubDTMF = (props) => {
                         className={props.hideItemStyle}
                         style={{ width: "100%" }}
                       >
-                        {(props.current.type == "HITURL_SMS") || (props.current.type == "HITURL_USSD")? (
+                        {props.current.type == "HITURL_SMS" ||
+                        props.current.type == "HITURL_USSD" ? (
                           <>
                             {localStore.ivrCampFlowData.flow.language.map(
                               (hello) => {
@@ -1388,13 +1419,18 @@ const SubDTMF = (props) => {
                         ) : (
                           <>
                             <TextField
-                            style={{marginTop:"1rem", width:'80%', textAlign:"center"}}
-                            id="outlined-multiline-static"
-                            label={`Enter URL`}
-                            multiline
-                            rows={1}
-                            variant="outlined"
-                            onChange={(e) => urlHandler(e)}/>
+                              style={{
+                                marginTop: "1rem",
+                                width: "80%",
+                                textAlign: "center",
+                              }}
+                              id="outlined-multiline-static"
+                              label={`Enter URL`}
+                              multiline
+                              rows={1}
+                              variant="outlined"
+                              onChange={(e) => urlHandler(e)}
+                            />
                           </>
                         )}
                       </div>

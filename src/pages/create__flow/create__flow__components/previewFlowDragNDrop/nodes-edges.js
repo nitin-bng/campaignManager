@@ -22,10 +22,10 @@ const createNodesAndEdges = (data) =>{
             data: { label: data.ivrCampFlowData.flow.language[0].actions.length > 1 ? `Response In ${element.languageName}` : element.languageName},
             position
           }];
-            initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType}]
+            initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '0', target: element.id+"_"+idx, type: edgeType, label: element.input[data.ivrCampFlowData.flow.channel.toLowerCase() +'_key']}]
             lastNodes = [...lastNodes, element.id+"_"+idx]    
           data.ivrCampFlowData.flow.actions.forEach((ele, index)=>{
-                initialEdges = [...initialEdges,  {id: 'e'+element.id+"_"+idx+ele.level+"_"+ele.dtmf_key+"_"+index, source: element.id+"_"+idx, target: ele.level+"_"+ele.dtmf_key+"_"+index, type: edgeType}]
+                initialEdges = [...initialEdges,  {id: 'e'+element.id+"_"+idx+ele.level+"_"+ele.dtmf_key+"_"+index, source: element.id+"_"+idx, target: ele.level+"_"+ele.dtmf_key+"_"+index, type: edgeType, label: ele.input[data.ivrCampFlowData.flow.channel.toLowerCase() +'_key']}]
           })
         });
       }

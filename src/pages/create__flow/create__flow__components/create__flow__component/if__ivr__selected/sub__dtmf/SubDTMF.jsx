@@ -894,8 +894,6 @@ const SubDTMF = (props) => {
     }
   }, [channel, props.isSuccessFailure, props.parentType]);
 
-  console.log("nitin", props.current.type, localStore.ivrCampFlowData.flow);
-
   useEffect(() => {
     if (props.hideItemStyle) {
       if (!excludes.includes(props.current.type)) {

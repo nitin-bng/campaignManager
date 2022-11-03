@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import ReactFlow, { addEdge, ConnectionLineType, useNodesState, useEdgesState } from 'react-flow-renderer';
 import dagre from 'dagre';
 
-import { createNodesAndEdges } from './nodes-edges.jsx';
+import { createNodesAndEdges } from './nodes-edges.js';
 import { store } from "../../../../store/store";
 
 import './index.css';

@@ -395,7 +395,7 @@ const CreateFlow = () => {
   };
   useEffect(() => {
     // const path = config.server.path + config.server.port2+`/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`;
-    fetch(
+if(activeStep === 0){    fetch(
       config.server.path +
         config.server.port2 +
         `/bng/ui/list/flows?userId=${localStorage.getItem("userId")}`
@@ -430,8 +430,8 @@ const CreateFlow = () => {
       .catch(function (error) {
         console.log("failed", error);
         return error;
-      });
-  }, []);
+      });}
+  }, [activeStep]);
 
   return (
     <>

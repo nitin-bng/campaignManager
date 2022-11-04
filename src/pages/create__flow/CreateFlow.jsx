@@ -85,6 +85,7 @@ const CreateFlow = () => {
   const [disableNext, setDisableNext] = useState(false);
   var flowDataFromApi = {};
   const [openModal, setOpenModal] = useState(false);
+  
   const [isThankYouNode, setIsThankYouNode] = useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   var rows3 = [];
@@ -355,7 +356,7 @@ const CreateFlow = () => {
     console.log("hello hello hello", globalState);
   };
 
-  const getFlow = async (e, id) => {
+  const getFlow = async (id) => {
     debugger;
     localStorage.setItem("wfId", id);
     // const path = config.server.path + config.server.port2+ "/bng/ui/get/flow?wfId=" + id;
@@ -580,7 +581,7 @@ if(activeStep === 0){    fetch(
                                                 }}
                                                 className="closeBtn"
                                                 onClick={() => {
-                                                  getFlow(row.id, row.wfId);
+                                                  getFlow(row.wfId);
                                                 }}
                                               >
                                                 Preview
@@ -703,6 +704,7 @@ if(activeStep === 0){    fetch(
                         bargein={bargein}
                         isThankYouNode={isThankYouNode}
                         setIsThankYouNode={setIsThankYouNode}
+                        getFlowOnCampPrev={getFlow}
                       />
                     ) : activeStep === 2 ? (
                       <ScheduleCampaign

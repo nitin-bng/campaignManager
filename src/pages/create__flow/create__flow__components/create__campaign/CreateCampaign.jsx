@@ -20,6 +20,7 @@ import "./createCampaign.css";
 import { toast } from "react-toastify";
 import { useMemo } from "react";
 import config from "../../../../ApiConfig/Config";
+import LayoutFlow from "../previewFlowDragNDrop/DragnDrop";
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
@@ -48,6 +49,7 @@ const CreateCampaign = (props) => {
   const { showError, setShowError, errorState, errorDispatch } = useError();
   const [showFlowState, setShowFlowState] = useState(false);
   const [update, updateForm] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   var scheduleData = {};
 
@@ -304,8 +306,6 @@ const CreateCampaign = (props) => {
       setShowError(true);
     }
   };
-
-
 
   const flowFromApi = (data) => {
     debugger;
@@ -568,19 +568,53 @@ const CreateCampaign = (props) => {
                 textShadow: "1px 1px 2px black",
                 transition: "all 0.5s",
                 fontWeight: "700",
-                position:"fixed",
-                right:"0",
-                top:"45%",  
-                writingMode:"vertical-lr",
+                position: "fixed",
+                right: "0",
+                top: "45%",
+                writingMode: "vertical-lr",
                 textOrientation: "upright",
               }}
               className="closeBtn"
-              // onClick={() => {
-              //   getFlowOnCampPage();
-              // }}
+              onClick={() => {
+                props.getFlowOnCampPrev(localStorage.getItem("wfId"));
+                setOpenModal(true);
+              }}
             >
-              P <br/>r<br/>e<br/>v<br/>i<br/>e<br/>w<br/><br/><br/>f<br/>l<br/>o<br/>w
+              P<br />r<br />e<br />v<br />i<br />e<br />w<br />
+              <br />
+              <br />f<br />l<br />o<br />w
             </button>
+            {openModal && (
+              <div
+                className="bg-modal"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  position: "fixed",
+                  left: "0",
+                  top: "0",
+                }}
+              >
+                <div
+                  className="modal-content"
+                  style={{
+                    width: "90vw",
+                    height: "90vh",
+                  }}
+                >
+                  {/* <CreateFlowComponent
+                                    hideItemStyle={hideItemStyle}
+                                    disableEditingWhileCreatingCamp={true}
+                                  /> */}
+                  <LayoutFlow />
+                  {console.log("hello hello hello", globalState)}
+                </div>
+                <div>
+                  <button onClick={() => setOpenModal(false)}>close</button>
+                </div>
+              </div>
+            )}
+
             <div style={{ paddingBottom: "2rem" }}>
               <CreateFlowComponent
                 disableEditingWhileCreatingCamp={true}

@@ -45,7 +45,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 };
 
 
-const LayoutFlow = ({data}) => {
+const LayoutFlow = () => {
 
 
   const [nodes, setNodes, onNodesChange] = useNodesState();

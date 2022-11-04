@@ -350,10 +350,8 @@ const CreateFlow = () => {
   const flowFromApi = (data) => {
     debugger;
     let localStore = globalState.state;
-    console.log("local store ... ", localStore);
     localStore.ivrCampFlowData.flow = data;
     dispatch({ type: "SET_DATA", nState: localStore });
-    console.log("hello hello hello", globalState);
   };
 
   const getFlow = async (id) => {
@@ -704,7 +702,6 @@ if(activeStep === 0){    fetch(
                         bargein={bargein}
                         isThankYouNode={isThankYouNode}
                         setIsThankYouNode={setIsThankYouNode}
-                        getFlowOnCampPrev={getFlow}
                       />
                     ) : activeStep === 2 ? (
                       <ScheduleCampaign

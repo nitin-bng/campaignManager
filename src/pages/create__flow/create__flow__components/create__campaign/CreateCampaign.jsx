@@ -23,9 +23,9 @@ import config from "../../../../ApiConfig/Config";
 
 const CreateCampaign = (props) => {
   const globalState = useContext(store);
-  const {userFeatures}  =globalState
+  const { userFeatures } = globalState;
   const localStore = globalState.state.ivrCampFlowData;
-  const [isDisabled, setIsDisabled] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false);
   const {
     dispatch,
     setCampaignName,
@@ -51,35 +51,50 @@ const CreateCampaign = (props) => {
 
   var scheduleData = {};
 
-  const localWfId = localStorage.getItem('wfId')
-  const value = useMemo(()=>props.FlowListData.filter(item=>item.wfId === localWfId)[0],[props.FlowListData, localWfId])
+  const localWfId = localStorage.getItem("wfId");
+  const value = useMemo(
+    () => props.FlowListData.filter((item) => item.wfId === localWfId)[0],
+    [props.FlowListData, localWfId]
+  );
 
-  useEffect(()=>{
-    if(value){
+  useEffect(() => {
+    if (value) {
       setFormValues({
-      ...formValues,
-      "wfId": !isNaN(value.wfId) ? (value.wfId >= 0 ? value.wfId : 0) : value.wfId,
-    });
-    scheduleData["wfId"] = value.wfId;
+        ...formValues,
+        wfId: !isNaN(value.wfId)
+          ? value.wfId >= 0
+            ? value.wfId
+            : 0
+          : value.wfId,
+      });
+      scheduleData["wfId"] = value.wfId;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,
-      }))
+      }));
     }
-  },[value])
+  }, [value]);
 
   useEffect(() => {
     debugger;
     props.setDisableNext(true);
-    setCampaignName('')
-    setCampaignSchedulePriority()
+    setCampaignName("");
+    setCampaignSchedulePriority();
   }, []);
 
   useEffect(() => {
     setShowError(false);
     errorDispatch({ type: "CREATE_CAMPAIGN", payload: false });
-    const value = (userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing) ? formValues.campaign_type :userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'
-    setFormValues(prev=>{return {...prev,campaign_type: value}})
+    const value =
+      userFeatures[localStorage.getItem("channelName")].Incoming &&
+      userFeatures[localStorage.getItem("channelName")].Outgoing
+        ? formValues.campaign_type
+        : userFeatures[localStorage.getItem("channelName")].Incoming
+        ? "incoming"
+        : "outgoing";
+    setFormValues((prev) => {
+      return { ...prev, campaign_type: value };
+    });
   }, []);
 
   useEffect(() => {
@@ -106,11 +121,13 @@ const CreateCampaign = (props) => {
     debugger;
     localStorage.setItem("wfId", id);
     // const path = config.server.path+config.server.port2+"/bng/ui/get/flow?wfId=" + id;
-    return await fetch(config.server.path+config.server.port2+"/bng/ui/get/flow?wfId=" + id)
+    return await fetch(
+      config.server.path + config.server.port2 + "/bng/ui/get/flow?wfId=" + id
+    )
       .then((response) => response.json())
       .then(function (data) {
-        localStorage.setItem("channelName", data.flow.channel); 
-        localStorage.setItem("flowName", data.service_Data.name);  
+        localStorage.setItem("channelName", data.flow.channel);
+        localStorage.setItem("flowName", data.service_Data.name);
         flowFromApi(data.flow);
         return data;
       })
@@ -127,7 +144,6 @@ const CreateCampaign = (props) => {
       [name]: !isNaN(value) ? (value >= 0 ? value : 0) : value,
     });
     if (e.target.id == "campName") {
-      
       scheduleData["campName"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -153,21 +169,18 @@ const CreateCampaign = (props) => {
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_ivr") {
-      
       scheduleData["cli_ivr"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_sms") {
-      
       scheduleData["cli_sms"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
         ...scheduleData,
       }));
     } else if (e.target.id == "cli_ussd") {
-      
       scheduleData["cli_ussd"] = e.target.value;
       setScheduleData((scheduleData1) => ({
         ...scheduleData1,
@@ -207,7 +220,11 @@ const CreateCampaign = (props) => {
   };
 
   const handleSubmit = (e) => {
-    scheduleData1["campaign_type"] = formValues.campaign_type ? formValues.campaign_type : userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'
+    scheduleData1["campaign_type"] = formValues.campaign_type
+      ? formValues.campaign_type
+      : userFeatures[localStorage.getItem("channelName")].Incoming
+      ? "incoming"
+      : "outgoing";
     if (
       campaignName &&
       campaignSchedulePriority &&
@@ -220,7 +237,7 @@ const CreateCampaign = (props) => {
       e.preventDefault();
       if (update) {
         fetch(
-          config.server.path+config.server.port2 + "/bng/ui/update/campaign",
+          config.server.path + config.server.port2 + "/bng/ui/update/campaign",
           {
             method: "PUT",
             headers: {
@@ -247,7 +264,7 @@ const CreateCampaign = (props) => {
           });
       } else {
         fetch(
-          config.server.path+config.server.port2 + "/bng/ui/create/campaign",
+          config.server.path + config.server.port2 + "/bng/ui/create/campaign",
 
           {
             method: "POST",
@@ -264,7 +281,7 @@ const CreateCampaign = (props) => {
         )
           .then((res) => {
             res.json().then((res) => {
-              if (res.status === 'successful') {
+              if (res.status === "successful") {
                 localStorage.setItem("campId", res.campId);
                 // history.push({
                 //   pathname: "/Campaigns/createFlow",
@@ -273,9 +290,9 @@ const CreateCampaign = (props) => {
                 // showSuccess(true)
                 setShowFlowState(true);
                 props.setDisableNext(false);
-                setIsDisabled(true)
-              } else if (res.status === 'unsuccessful') {
-                toast(res.reason)
+                setIsDisabled(true);
+              } else if (res.status === "unsuccessful") {
+                toast(res.reason);
               }
             });
           })
@@ -283,11 +300,12 @@ const CreateCampaign = (props) => {
             console.log(e);
           });
       }
-      
     } else {
       setShowError(true);
     }
   };
+
+
 
   const flowFromApi = (data) => {
     debugger;
@@ -393,8 +411,7 @@ const CreateCampaign = (props) => {
                 id="demo-simple-select-label"
                 required
                 error={showError ? (formValues.wfId ? false : true) : false}
-              >
-              </Box>
+              ></Box>
               <TextField
                 labelId="demo-simple-select-label"
                 id="demo-simple-select wfId"
@@ -402,68 +419,78 @@ const CreateCampaign = (props) => {
                 className="campaignId form-select"
                 aria-label="Default select example"
                 name="wfId"
-                value={value?.flowName ? value.flowName : ''}
+                value={value?.flowName ? value.flowName : ""}
                 disabled={true}
-              >
-              </TextField>
+              ></TextField>
             </FormControl>
           </div>
-                      <div
-              className="create__campaign__campaign__type__radio__button"
-              style={{  
-                height: "50px",
+          <div
+            className="create__campaign__campaign__type__radio__button"
+            style={{
+              height: "50px",
+            }}
+          >
+            <FormControl
+              disabled={
+                !(
+                  userFeatures[localStorage.getItem("channelName")].Incoming &&
+                  userFeatures[localStorage.getItem("channelName")].Outgoing
+                )
+              }
+              style={{
+                border: "1px solid grey",
+                borderRadius: "5px",
+                display: "flex",
+                height: "100%",
+                position: "relative",
               }}
             >
-              <FormControl
-              disabled={!(userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing)}
+              <FormLabel
+                id="demo-row-radio-buttons-group-label"
                 style={{
-                  border: "1px solid grey",
-                  borderRadius: "5px",
-                  display: "flex",
-                  height: "100%",
-                  position: "relative",
+                  position: "absolute",
+                  top: "-13px",
+                  left: "7px",
+                  padding: "0 4px",
+                  backgroundColor: "white",
+                  fontSize: "15px",
                 }}
+                required
+                error={
+                  showError ? (formValues.campaign_type ? false : true) : false
+                }
               >
-                <FormLabel
-                  id="demo-row-radio-buttons-group-label"
-                  style={{
-                    position: "absolute",
-                    top: "-13px",
-                    left: "7px",
-                    padding: "0 4px",
-                    backgroundColor: "white",
-                    fontSize: "15px",
-                  }}
-                  required
-                  error={
-                    showError
-                      ? formValues.campaign_type
-                        ? false
-                        : true
-                      : false
-                  }
-                >
-                  Campaign Type
-                </FormLabel>
-                <RadioGroup row value={(userFeatures[localStorage.getItem("channelName")].Incoming && userFeatures[localStorage.getItem("channelName")].Outgoing) ? formValues.campaign_type :userFeatures[localStorage.getItem("channelName")].Incoming ? 'incoming' : 'outgoing'}>
-                  <FormControlLabel
-                    name="campaign_type"
-                    value="incoming"
-                    control={<Radio />}
-                    label="Incoming"
-                    onChange={(e) => handleChange(e)}
-                    style={{ marginLeft: "5px" }}
-                  />
-                  <FormControlLabel
-                    name="campaign_type"
-                    value="outgoing"
-                    control={<Radio />}
-                    label="Outgoing"
-                    onChange={(e) => handleChange(e)}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
+                Campaign Type
+              </FormLabel>
+              <RadioGroup
+                row
+                value={
+                  userFeatures[localStorage.getItem("channelName")].Incoming &&
+                  userFeatures[localStorage.getItem("channelName")].Outgoing
+                    ? formValues.campaign_type
+                    : userFeatures[localStorage.getItem("channelName")].Incoming
+                    ? "incoming"
+                    : "outgoing"
+                }
+              >
+                <FormControlLabel
+                  name="campaign_type"
+                  value="incoming"
+                  control={<Radio />}
+                  label="Incoming"
+                  onChange={(e) => handleChange(e)}
+                  style={{ marginLeft: "5px" }}
+                />
+                <FormControlLabel
+                  name="campaign_type"
+                  value="outgoing"
+                  control={<Radio />}
+                  label="Outgoing"
+                  onChange={(e) => handleChange(e)}
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
 
           <div className="cli__container">
             <Box
@@ -494,7 +521,9 @@ const CreateCampaign = (props) => {
                 required
                 error={
                   showError
-                    ? formValues["cli_" + localStore.flow.channel?.toLowerCase()]
+                    ? formValues[
+                        "cli_" + localStore.flow.channel?.toLowerCase()
+                      ]
                       ? false
                       : true
                     : false
@@ -527,9 +556,39 @@ const CreateCampaign = (props) => {
           Submit
         </button>
         {showFlowState ? (
-          <div style={{ paddingBottom: "2rem" }}>
-            <CreateFlowComponent disableEditingWhileCreatingCamp={true} bargein={props.bargein} isThankYouNode={props.isThankYouNode}/>
-          </div>
+          <>
+            <button
+              style={{
+                padding: ".5rem 1rem",
+                border: "none",
+                outline: "none",
+                backgroundColor: " #374151",
+                color: "white",
+                textTransform: "uppercase",
+                textShadow: "1px 1px 2px black",
+                transition: "all 0.5s",
+                fontWeight: "700",
+                position:"fixed",
+                right:"0",
+                top:"45%",  
+                writingMode:"vertical-lr",
+                textOrientation: "upright",
+              }}
+              className="closeBtn"
+              // onClick={() => {
+              //   getFlowOnCampPage();
+              // }}
+            >
+              P <br/> r<br/>e<br/>v<br/>i<br/>e<br/>w<br/><br/><br/>f<br/>l<br/>o<br/>w
+            </button>
+            <div style={{ paddingBottom: "2rem" }}>
+              <CreateFlowComponent
+                disableEditingWhileCreatingCamp={true}
+                bargein={props.bargein}
+                isThankYouNode={props.isThankYouNode}
+              />
+            </div>
+          </>
         ) : null}
       </div>
     </>

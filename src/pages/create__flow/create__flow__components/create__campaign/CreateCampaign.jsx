@@ -579,7 +579,7 @@ const CreateCampaign = (props) => {
               //   getFlowOnCampPage();
               // }}
             >
-              P <br/> r<br/>e<br/>v<br/>i<br/>e<br/>w<br/><br/><br/>f<br/>l<br/>o<br/>w
+              P <br/>r<br/>e<br/>v<br/>i<br/>e<br/>w<br/><br/><br/>f<br/>l<br/>o<br/>w
             </button>
             <div style={{ paddingBottom: "2rem" }}>
               <CreateFlowComponent

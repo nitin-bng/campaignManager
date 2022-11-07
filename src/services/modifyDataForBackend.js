@@ -10,10 +10,14 @@ const arrangeActionsData = (actions, waitTime,repeatCount, bargein, isInActions 
                 }
             }
         }
-        obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}
-        
+        if(obj.node_type !== "END" && obj.node_type !== "LEAF"){
+            obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}
+        }else{
+            obj = {...obj, waitTime: 0, repeatCount: 0, actionType:{...obj.actionType, ivr: 'PLAY', ussd: 'HITURL_USSD', sms: 'HITURL_SMS'}}
+        }
+
         if(channel){
-            obj = {...obj, waitTime, repeatCount, actionType:{...obj.actionType, [channel.toLowerCase()]: obj.type}}
+            obj = {...obj, actionType:{...obj.actionType, [channel.toLowerCase()]: obj.type}}
         }
 
         if(isInActions){

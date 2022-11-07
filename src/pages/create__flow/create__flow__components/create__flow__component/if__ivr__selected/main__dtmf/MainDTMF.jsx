@@ -50,6 +50,7 @@ const MainDTMF = (props) => {
   const { showError, setShowError, errorDispatch } = useError();
   const [isFilled, setIsFilled] = useState(false);
   const { channel } = useContext(CommonContext);
+  const [openModal, setOpenModal] = useState(false)
 
   console.log("props props props", props);
   const [
@@ -646,6 +647,7 @@ console.log("hello 306", e);
                           }
                           label="Actions"
                           onChange={(e) => {
+                            setOpenModal(e.target.value === 'HITURL_DYNAMIC')
                             props.dataHandleWithObj(
                               e,
                               props.global || props.current
@@ -659,6 +661,7 @@ console.log("hello 306", e);
                             "HITURL_CHECKSUB",
                             "HITURL_SUB",
                             "HITURL_ANY",
+                            "HITURL_DYNAMIC"
                           ].map((number, index) => {
                             console.log(number);
                             return <MenuItem value={number}>{number}</MenuItem>;
@@ -864,6 +867,11 @@ console.log("hello 306", e);
               </Collapse>
             </Card>
           </div>
+          {openModal && <div className="bg-modal">
+              <div className="modal-content">
+              <button onClick={()=>setOpenModal(false)}>Close</button>
+              </div>
+          </div>}
         </div>
       ) : (
         <div className="main__dtmf">
@@ -906,6 +914,7 @@ console.log("hello 306", e);
                           }
                           label="Actions"
                           onChange={(e) => {
+                            setOpenModal(e.target.value === 'HITURL_DYNAMIC')
                             props.dataHandleWithObj(
                               e,
                               props.global || props.current
@@ -920,6 +929,7 @@ console.log("hello 306", e);
                                 "HITURL_CHECKSUB",
                                 "HITURL_SUB",
                                 "HITURL_ANY",
+                                "HITURL_DYNAMIC"
                               ].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
@@ -931,6 +941,7 @@ console.log("hello 306", e);
                                 "HITURL_CHECKSUB",
                                 "HITURL_SUB",
                                 "HITURL_ANY",
+                                "HITURL_DYNAMIC"
                               ].map((number, index) => {
                                 return (
                                   <MenuItem value={number}>{number}</MenuItem>
@@ -1167,6 +1178,11 @@ console.log("hello 306", e);
               </Collapse>
             </Card>
           </div>
+          {openModal && <div className="bg-modal">
+              <div className="modal-content">
+                <button onClick={()=>setOpenModal(false)}>Close</button>
+              </div>
+          </div>}
         </div>
       )}
     </>

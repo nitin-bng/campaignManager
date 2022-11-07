@@ -52,6 +52,8 @@ const SubDTMF = (props) => {
     setnumberOfMainDTMFWhenIVRIsSelected,
   ] = useState("");
   const { channel } = useContext(CommonContext);
+  const [openModal, setOpenModal] = useState(false)
+
 
   const [isFilled, setIsFilled] = useState(false);
 
@@ -1002,6 +1004,7 @@ const SubDTMF = (props) => {
                           label="Actions"
                           disabled={props.disableEditingWhileCreatingCamp}
                           onChange={(e) => {
+                            setOpenModal(e.target.value === 'HITURL_DYNAMIC')
                             traverseAndModify(
                               props.current.id,
                               props.current,
@@ -1021,6 +1024,7 @@ const SubDTMF = (props) => {
                             "HITURL_CHECKSUB",
                             "HITURL_SUB",
                             "HITURL_ANY",
+                            "HITURL_DYNAMIC"
                           ].map((number, index) => {
                             return <MenuItem value={number}>{number}</MenuItem>;
                           })}
@@ -1164,6 +1168,11 @@ const SubDTMF = (props) => {
               </Collapse>
             </Card>
           </div>
+          {openModal && <div className="bg-modal">
+              <div className="modal-content">
+                <button onClick={()=>setOpenModal(false)}>Close</button>
+              </div>
+          </div>}
         </div>
       ) : (
         (localStore.ivrCampFlowData.flow.channel === "USSD" ||
@@ -1207,6 +1216,7 @@ const SubDTMF = (props) => {
                             label="Actions"
                             disabled={props.disableEditingWhileCreatingCamp}
                             onChange={(e) => {
+                            setOpenModal(e.target.value === 'HITURL_DYNAMIC')
                               traverseAndModify(
                                 props.current.id,
                                 props.current,
@@ -1227,6 +1237,7 @@ const SubDTMF = (props) => {
                                   "HITURL_CHECKSUB",
                                   "HITURL_SUB",
                                   "HITURL_ANY",
+                                  "HITURL_DYNAMIC"
                                 ].map((number, index) => {
                                   return (
                                     <MenuItem value={number}>{number}</MenuItem>
@@ -1238,6 +1249,7 @@ const SubDTMF = (props) => {
                                   "HITURL_CHECKSUB",
                                   "HITURL_SUB",
                                   "HITURL_ANY",
+                                  "HITURL_DYNAMIC"
                                 ].map((number, index) => {
                                   return (
                                     <MenuItem value={number}>{number}</MenuItem>
@@ -1448,6 +1460,11 @@ const SubDTMF = (props) => {
                 </Collapse>
               </Card>
             </div>
+            {openModal && <div className="bg-modal">
+              <div className="modal-content">
+                <button onClick={()=>setOpenModal(false)}>Close</button>
+              </div>
+          </div>}
           </div>
         )
       )}

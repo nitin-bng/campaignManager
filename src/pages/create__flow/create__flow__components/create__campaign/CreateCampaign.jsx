@@ -314,6 +314,12 @@ const CreateCampaign = (props) => {
     dispatch({ type: "SET_DATA", nState: localStore });
   };
 
+  const getFlowOnCampPrev = () =>{
+    let flowDataFromApi = localStore.flow;
+    flowFromApi(flowDataFromApi);
+    setOpenModal(true);
+  }
+
   return (
     <>
       <div
@@ -576,7 +582,7 @@ const CreateCampaign = (props) => {
               }}
               className="closeBtn"
               onClick={() => {
-                props.getFlowOnCampPrev(localStorage.getItem("wfId"));
+                getFlowOnCampPrev();
                 setOpenModal(true);
               }}
             >

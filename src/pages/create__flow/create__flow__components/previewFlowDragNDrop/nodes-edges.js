@@ -6,9 +6,13 @@ const createNodesAndEdges = (data) =>{
     let initialNodes = [
         {
           id: '0',
-          type: 'input',
+          type: 'output',
           data: {label: data.ivrCampFlowData.flow.flowName},
-          position
+          position,
+          style: {
+            background: '#2B6CB0',
+            color: 'white',
+          },
         },
         {
           id: "1",
@@ -26,7 +30,11 @@ const createNodesAndEdges = (data) =>{
             id: element.id+"_"+idx,
             type: "processing",
             data: { label: data.ivrCampFlowData.flow.language[0].actions.length > 1 ? `Response In ${element.languageName}` : element.languageName},
-            position
+            position,
+            style: {
+              background: 'red',
+              color: 'white',
+            },
           }];
             initialEdges = [...initialEdges,   { id: 'e0'+element.id+"_"+idx, source: '1', target: element.id+"_"+idx, type: edgeType, label: element.input[data.ivrCampFlowData.flow.channel.toLowerCase() +'_key']}]
             lastNodes = [...lastNodes, element.id+"_"+idx]    
@@ -43,7 +51,8 @@ const createNodesAndEdges = (data) =>{
           id: ele.level+"_"+ele.dtmf_key+"_"+index+randomness,
           type: "processing",
           data: { label:"Option "+ ele.id +` [${ele.type}]` },
-          position
+          position,
+          
       }];
       initialEdges = [...initialEdges,  {id: 'e'+element.level+"_"+element.dtmf_key+"_"+idx+proprandom+ele.level+"_"+ele.dtmf_key+"_"+index+randomness, source: element.level+"_"+element.dtmf_key+"_"+idx+proprandom, target: ele.level+"_"+ele.dtmf_key+"_"+index+randomness, type: edgeType, label: ele.input[data.ivrCampFlowData.flow.channel.toLowerCase() +'_key']}]
       if(ele.actions.length){
@@ -60,8 +69,12 @@ const createNodesAndEdges = (data) =>{
               initialNodes =  [...initialNodes, {
               id: element.level+"_"+element.dtmf_key+"_"+idx,
               type: "processing",
-              data: { label:"Option "+ element.dtmf_key +` [${element.type}]` },
-              position
+              data: { label:"Option "+ element.dtmf_key + ` [${element.type}]` },
+              position,
+              style: {
+                background: 'yellow',
+                color: 'black',
+              },
               }];
             if(element.actions.length){
               recursiveFunc(element, idx, '')
@@ -77,7 +90,11 @@ const createNodesAndEdges = (data) =>{
           id: '2',
           type: "processing",
           data: {label: `Thank you Node`},
-          position
+          position,
+          // style: {
+          //   background: '#2B6CB0',
+          //   color: 'red',
+          // },
         },
       ]
 

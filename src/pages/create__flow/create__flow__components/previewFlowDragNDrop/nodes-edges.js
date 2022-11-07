@@ -1,7 +1,29 @@
 const position = { x: 0, y: 0 };
 const edgeType = "smoothstep";
 
-var hello = true
+const checkAllFiles = (obj, langs) =>{
+  console.log('nitin', obj, langs)
+  let result = true
+  for(let lang of langs){
+    if(!obj[lang]){
+      result = false
+      break
+    }
+  }
+  return result
+}
+const checkActive = (obj, langs) =>{
+  let result = false
+  for(let lang of langs){
+    if(obj[lang]){
+      result = true
+      break
+    }
+  }
+  return result
+}
+
+
 
 const createNodesAndEdges = (data) => {
   let initialNodes = [
@@ -28,7 +50,7 @@ const createNodesAndEdges = (data) => {
       },
       position,
       style: {
-        border: hello ? " 2px solid red": "2px solid black",
+        border: data.ivrCampFlowData.flow.main_file[data.ivrCampFlowData.flow.channel.toLowerCase()][data.ivrCampFlowData.flow.defaultLanguage] ? "2px solid green" : "2px solid black",
         boxShadow: "2px 2px 3px red",
       }
     },
@@ -55,7 +77,7 @@ const createNodesAndEdges = (data) => {
           style: {
             // background: 'red',
             // color: 'white',
-            border: "2px solid green",
+            border: element.lang_file[data.ivrCampFlowData.flow.channel.toLowerCase()] ? "2px solid green" : "2px solid black",
             boxShadow: "2px 2px 3px green",
           },
         },
@@ -114,7 +136,7 @@ const createNodesAndEdges = (data) => {
           style: {
             // background: '#2B6CB0',
             // color: 'red',
-            border: "2px solid green",
+            border: checkAllFiles(ele.file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid green" : checkActive(ele.file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid orange" : "2px solid black",
             boxShadow: "2px 2px 3px green",
           },
         },
@@ -170,7 +192,7 @@ const createNodesAndEdges = (data) => {
             style: {
               // background: 'yellow',
               // color: 'black',
-              border: "2px solid green",
+              border: checkAllFiles(element.file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid green" : checkActive(element.file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid orange" : "2px solid black",
               boxShadow: "2px 2px 3px green",
             },
           },
@@ -200,7 +222,7 @@ const createNodesAndEdges = (data) => {
         style: {
           // background: '#2B6CB0',
           // color: 'red',
-          border: "2px solid red",
+          border: checkAllFiles(data.ivrCampFlowData.flow.actions.find((item) => item.node_type === "END").file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid green" : checkActive(data.ivrCampFlowData.flow.actions.find((item) => item.node_type === "END").file[data.ivrCampFlowData.flow.channel.toLowerCase()], data.ivrCampFlowData.flow.languageChange) ? "2px solid orange" : "2px solid black",
           boxShadow: "2px 2px 3px red",
         },
       },

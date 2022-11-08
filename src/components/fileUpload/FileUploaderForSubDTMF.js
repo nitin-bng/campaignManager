@@ -33,6 +33,12 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
         }
     ,[])
 
+    const deleteAudioFile = () =>{
+      // globalState.state.ivrCampFlowData.flow.actions[global.dtmf_key - 1].audio_file[lang] = ''
+      // globalState.state.ivrCampFlowData.flow.actions[global.dtmf_key - 1].file['ivr'][lang] = ''
+      // dispatch({ type: "SET_DATA", nState: globalState.state });
+    }
+
     return (<div className="file__chooser__container"  style={(showError && isError) ? {
         width: "200px",
         display: "flex",
@@ -95,6 +101,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
                 null,
                 "return"
               ).audio_file[lang] ? (
+                <>
                 <div style={{
                   border: ".2px solid black",
                   width: "200px",
@@ -112,6 +119,8 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
                     lang={lang}
                   />
                 </div>
+                <button onClick={()=> deleteAudioFile()}>Delete</button>
+                </>
               ) : (   
                 null
               )}

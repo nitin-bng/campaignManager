@@ -1,11 +1,13 @@
 import { CircularProgress } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useError } from "../../store/errorContext";
+import { store } from "../../store/store";
 
 const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudioFiles, hideItemStyle}) =>{
     const {errorDispatch, showError} = useError()
     const [isError, setIsError] = useState(true)
     const [showLoader, setShowLoader] = useState(false)
+    const {dispatch} = useContext(store)
 
     useEffect(()=>{
         if(hideItemStyle === undefined){
@@ -13,6 +15,12 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
           }
           return () =>  errorDispatch({type:'AUDIO', payload: false})
     },[])
+
+    const deleteAudioFile = () =>{
+      localStore.ivrCampFlowData.flow.main_audio_file[localStore.ivrCampFlowData.flow.defaultLanguage] = ''
+      localStore.ivrCampFlowData.flow.main_file[localStore.ivrCampFlowData.flow.channel.toLowerCase()][localStore.ivrCampFlowData.flow.defaultLanguage] = ''
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
 
     return (
       <div
@@ -69,6 +77,7 @@ const FileUploaderForIVRSelected = ({lang, uploadFiles, localStore, GetMainAudio
             >
               {GetMainAudioFiles(lang, "MainAudioFile")}
             </div>
+            <button onClick={()=>deleteAudioFile()}>Delete</button>
           </>
         ) : null}
         {showLoader && <CircularProgress />}

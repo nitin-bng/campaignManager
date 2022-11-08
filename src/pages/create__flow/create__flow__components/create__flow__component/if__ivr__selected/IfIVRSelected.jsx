@@ -266,6 +266,8 @@ const IfIVRSelected = (props) => {
       });
   }
 
+  console.log('nitin data', localStore)
+
   const GetMainAudioFiles = (lang, type) => {
     debugger;
     let id = lang.split("-");

@@ -428,6 +428,17 @@ const RenderingComponentOnLanguageSelect = (props) => {
     setIsError(msg === "");
   };
 
+  const deleteAudioFile = () =>{
+    localStore.ivrCampFlowData.flow.language[0].actions = localStore.ivrCampFlowData.flow.language[0].actions.map(item=>{
+      if(item.languageName === props.lang){
+        item.lang_file['ivr'] = ''
+      }
+      return item
+    })
+    localStore.ivrCampFlowData.flow.lang_audio_file[props.languageCode] = ''
+    dispatch({ type: "SET_DATA", nState: localStore });
+  }
+
   return (
     <>
       {localStore.ivrCampFlowData.flow.channel === "IVR" ? (
@@ -533,6 +544,7 @@ const RenderingComponentOnLanguageSelect = (props) => {
                     >
                       {GetMainAudioFiles(props.languageCode, "LangAudioFile")}
                     </div>
+                    <button onClick={()=> deleteAudioFile()}>Delete</button>
                   </>
                 ) : null}
                 {showLoader && <CircularProgress />}

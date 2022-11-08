@@ -9,6 +9,16 @@ export const FileUploaderFotThankYou = ({lang, languageNames, uploadFiles, Audio
     const {showError} = useError()
     const [showLoader, setShowLoader] = useState(false)
     let globalState = useContext(store);
+    let localStore = globalState.state
+    let {dispatch} = globalState
+
+    const deleteAudioFile = () =>{
+      console.log('nitin inside', localStore.ivrCampFlowData.flow.actions[localStore.ivrCampFlowData.flow.actions.length-1])
+      localStore.ivrCampFlowData.flow.actions[localStore.ivrCampFlowData.flow.actions.length-1].file['ivr'][lang] = ''
+      localStore.ivrCampFlowData.flow.actions[localStore.ivrCampFlowData.flow.actions.length-1].audio_file[lang] = ''
+
+      dispatch({ type: "SET_DATA", nState: localStore });
+    }
 
     return <div
     className="file__chooser__container"
@@ -53,7 +63,7 @@ export const FileUploaderFotThankYou = ({lang, languageNames, uploadFiles, Audio
     {globalState.state.ivrCampFlowData.flow.actions[
      globalState.state.ivrCampFlowData.flow.actions.length - 1
     ]?.audio_file[lang] ? (
-      
+      <>
       <div
         style={{
           border: ".2px solid black",
@@ -70,6 +80,8 @@ export const FileUploaderFotThankYou = ({lang, languageNames, uploadFiles, Audio
           lang={lang}
         />
       </div>
+        <button onClick={()=>deleteAudioFile()}>Delete</button>
+        </>
     ) : 
     null}
     {showLoader && <CircularProgress />}

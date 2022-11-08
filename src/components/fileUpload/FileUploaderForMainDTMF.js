@@ -7,6 +7,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
     const [isError, setIsError] = useState(true)
     const {errorDispatch, showError} = useError()
     const [showLoader, setShowLoader] = useState(false)
+    const {dispatch} = globalState
 
 
     useEffect(()=>{
@@ -26,7 +27,11 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
         }
     ,[])
 
-    console.log('file main error', showError, isError)
+    const deleteAudioFile = () =>{
+      globalState.state.ivrCampFlowData.flow.actions[global.dtmf_key - 1].audio_file[lang] = ''
+      globalState.state.ivrCampFlowData.flow.actions[global.dtmf_key - 1].file['ivr'][lang] = ''
+      dispatch({ type: "SET_DATA", nState: globalState.state });
+    }
 
     return ( 
     <div
@@ -71,7 +76,7 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
         {globalState.state.ivrCampFlowData.flow.actions[
           global.dtmf_key - 1
         ].audio_file[lang] ? (
-          
+          <>
           <div
             style={{
               border: ".2px solid black",
@@ -87,6 +92,8 @@ const FileUploaderForMainDTMF = ({lang, hideItemStyle, parentNode, global, globa
               lang={lang}
             />
           </div>
+          <button onClick={()=> deleteAudioFile()}>Delete</button>
+          </>
         ) : 
         null}
         {showLoader && <CircularProgress />}

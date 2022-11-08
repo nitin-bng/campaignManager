@@ -2,24 +2,28 @@ const position = { x: 0, y: 0 };
 const edgeType = "smoothstep";
 
 const checkAllFiles = (obj, langs) =>{
-  console.log('nitin', obj, langs)
-  let result = true
-  for(let lang of langs){
-    if(!obj[lang]){
-      result = false
-      break
+  if(obj){
+    let result = true
+    for(let lang of langs){
+      if(!obj[lang]){
+        result = false
+        break
+      }
     }
+    return result
+  }else{
+    return false
   }
-  return result
 }
 const checkActive = (obj, langs) =>{
   let result = false
-  for(let lang of langs){
-    if(obj[lang]){
-      result = true
-      break
-    }
-  }
+  if(obj){  
+    for(let lang of langs){
+      if(obj[lang]){
+        result = true
+        break
+      }
+    }}
   return result
 }
 
@@ -77,7 +81,7 @@ const createNodesAndEdges = (data) => {
           style: {
             // background: 'red',
             // color: 'white',
-            border: element.lang_file[data.ivrCampFlowData.flow.channel.toLowerCase()] ? "2px solid green" : "2px solid black",
+            border: element.lang_file ? element.lang_file[data.ivrCampFlowData.flow.channel.toLowerCase()] ? "2px solid green" : "2px solid black": "2px solid black",
             boxShadow: "2px 2px 3px green",
           },
         },

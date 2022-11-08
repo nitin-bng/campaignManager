@@ -16,7 +16,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
             null,
             null,
             "return"
-          ).audio_file[lang]){
+          )?.audio_file[lang]){
             errorDispatch({ type: "AUDIO", payload: true });
           }else{
             setIsError(false)
@@ -29,7 +29,7 @@ const FileUploaderForSubDTMF =({lang, current, main_audio_file, uploadFiles, tra
           null,
           null,
           "return"
-        ).audio_file[lang] && errorDispatch({ type: "AUDIO", payload: false });
+        )?.audio_file[lang] && errorDispatch({ type: "AUDIO", payload: false });
         }
     ,[])
 
